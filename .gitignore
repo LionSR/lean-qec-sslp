@@ -1,0 +1,46 @@
+# Lean / Lake
+.lake/
+build/
+*.olean
+*.ilean
+*.c
+*.o
+*.a
+*.so
+*.dylib
+*.exe
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# LaTeX auxiliary files
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.nav
+*.snm
+*.vrb
+*.xdv
+*.dvi
+_minted*/
+
+# Generated PDFs for SS writeups
+/SSv*.pdf
+
+# TeXPad
+.texpadtmp/

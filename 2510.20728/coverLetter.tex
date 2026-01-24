@@ -1,0 +1,32 @@
+
+\documentclass[a4paper,12pt]{letter}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\setlength{\parindent}{0em}
+
+% Author information
+\signature{Xi He, Sirui Lu, and Bei Zeng}
+\address{Department of Physics\\The University of Texas at Dallas\\Richardson, Texas 75080, USA\\Email: bei.zeng@utdallas.edu}
+
+\begin{document}
+
+\begin{letter}{Editor\\Nature Machine Intelligence}
+
+    \opening{Dear Editor,}
+
+    We submit our manuscript ``Co-Designing Quantum Codes with Transversal Diagonal Gates via Multi-Agent Systems'' for consideration at Nature Machine Intelligence. This work demonstrates that multi-agent AI systems can not only discover new mathematical structures through large-scale search, but also abstract these discoveries into closed-form analytical families---bridging numerical exploration and theoretical understanding in a domain where both rigor and scalability are essential.\\
+
+    Quantum error correction presents an ideal testbed for AI-assisted scientific discovery: the design space is combinatorially vast, yet correctness is governed by explicit algebraic conditions (the Knill--Laflamme equations) that permit exact verification. We exploit this ``hard to generate, easy to verify'' structure [arXiv:2411.04872; arXiv:2506.06214] through a multi-agent architecture where specialized agents collaborate under human orchestration. A Synthesis Agent derives mathematical reformulations that decompose the nonlinear feasibility problem into tractable subproblems; a Search Agent executes large-scale enumeration via tool-use loops [NeurIPS 2022, ReAct]; and an Audit Agent independently verifies all results behind a no-communication barrier---ensuring that verification is not contaminated by the search process, analogous to independent testing in software engineering [ICLR 2024, SWE-bench].\\
+
+    The system, powered by GPT-5 and implemented within the TeXRA platform, produces a certified catalogue of new nonadditive quantum codes on up to six qubits with transversal diagonal gates of cyclic orders 2 through 18. Crucially, all solutions are reconstructed as exact rationals and verified symbolically. From these numerical discoveries, the Synthesis Agent identifies structural patterns and proposes parameterized constructions, which we prove yield infinite families of codes with prescribed logical gates. This progression---from search hits to analytical understanding---exemplifies how AI can augment rather than replace theoretical reasoning.\\
+
+    We believe this work offers three contributions relevant to Nature Machine Intelligence's readership. First, it provides a concrete methodology for AI-assisted discovery in mathematical physics, applicable to classification problems sharing similar structure (discrete choices plus convex constraints) such as symmetry-protected phases [Phys.\ Rev.\ B 87, 155114 (2013)] and code enumeration [arXiv:2501.17447]. Second, the multi-agent architecture with independent verification addresses practical concerns about reliability in AI-generated scientific claims. Third, the results themselves advance quantum error correction by expanding the known landscape of nonadditive codes with high-order transversal gates [Phys.\ Rev.\ Lett.\ 131, 240601 (2023)], relevant to fault-tolerant quantum computation.\\
+
+    Thank you for considering our submission.\\
+
+    \closing{Yours sincerely,}
+
+    \vspace{1.5em}
+
+\end{letter}
+\end{document}

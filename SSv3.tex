@@ -1,0 +1,717 @@
+\documentclass[11pt]{article}
+
+% pdfLaTeX-friendly (no fontspec)
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+
+% Dirac notation (keep \rangle correct)
+\newcommand{\ket}[1]{\lvert #1 \rangle}
+\newcommand{\bra}[1]{\langle #1 \rvert}
+
+% Lean listings setup (handles Lean Unicode in code blocks)
+\lstdefinelanguage{Lean}{
+  morekeywords={import,open,scoped,namespace,section,end,variable,def,abbrev,lemma,theorem,by,fun,have,calc,refine,intro,exact,classical,simp,funext,by_cases,omit},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+
+\lstset{
+  language=Lean,
+  basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{black!25},
+  keywordstyle=\color{blue!70!black},
+  commentstyle=\color{green!40!black},
+  stringstyle=\color{orange!60!black},
+  showstringspaces=false,
+  keepspaces=true,
+  literate=
+    {ℕ}{{\ensuremath{\mathbb{N}}}}1
+    {𝕜}{{\ensuremath{\mathbb{k}}}}1
+    {→}{{\ensuremath{\to}}}1
+    {↔}{{\ensuremath{\leftrightarrow}}}1
+    {∑}{{\ensuremath{\sum}}}1
+    {⊆}{{\ensuremath{\subseteq}}}1
+    {∈}{{\ensuremath{\in}}}1
+    {∀}{{\ensuremath{\forall}}}1
+    {≠}{{\ensuremath{\neq}}}1
+    {↑}{{\ensuremath{\uparrow}}}1
+    {·}{{\ensuremath{\bullet}}}1
+    {⦃}{{\{} }1
+    {⦄}{{\}} }1
+    {“}{{``}}1
+    {”}{{''}}1
+}
+
+\title{Explanation of the Lean 4 (mathlib) Code for the Subset-Sum (SS) Condition}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Big picture}
+
+You're formalizing the ``subset-sum support constraint'' for transversal diagonal gates:
+
+\begin{itemize}
+\item A transversal diagonal gate assigns each computational basis string $s\in\{0,1\}^n$ a phase depending on a modular weighted sum
+\[
+\sum_j a_j s_j \bmod m.
+\]
+\item For a logical basis state
+\[
+\ket{k_L}=\sum_s c^{(k)}_s \ket{s}
+\]
+to be an eigenvector with eigenvalue $e^{2\pi i b_k/m}$, every string $s$ that appears with nonzero coefficient must satisfy
+\[
+\sum_j a_j s_j \equiv b_k \pmod m.
+\]
+\item You formalize that as: \textbf{support $\subseteq S_k$} (for finitary ``support sets'') or as: \textbf{if amplitude is nonzero then weight $=b_k$} (for functional amplitude vectors).
+\end{itemize}
+
+Then you prove a correctness lemma:
+
+\begin{itemize}
+\item If the SS condition holds, then the abstract diagonal action \texttt{Dact} acts as a \textbf{global phase} on the state.
+\end{itemize}
+
+This is the core ``SS $\Rightarrow$ eigenstate under diagonal action'' statement.
+
+\section*{Imports and namespace}
+
+\begin{lstlisting}
+import Mathlib.Data.ZMod.Basic
+import Mathlib.Data.Bool.Basic
+import Mathlib.Data.Finset.Lattice.Basic
+import Mathlib.Algebra.BigOperators.Fin
+
+open scoped BigOperators
+namespace SS
+\end{lstlisting}
+
+\begin{itemize}
+\item \texttt{ZMod.Basic}: gives \texttt{ZMod m} and basic algebra on it.
+\item \texttt{Bool.Basic}: for \texttt{Bool} and simp lemmas about \texttt{if}.
+\item \texttt{Finset.Lattice.Basic}: gives coercions \texttt{(↑supp : Set α)}, subset relations, etc.
+\item \texttt{BigOperators.Fin}: provides \texttt{∑ i : Fin n, ...} notation.
+\end{itemize}
+
+All of your definitions are placed in \texttt{namespace SS} so names don't pollute globally.
+
+\section*{BitString}
+
+\begin{lstlisting}
+abbrev BitString (n : ℕ) : Type := Fin n → Bool
+\end{lstlisting}
+
+This is your encoding of a binary string of length $n$.
+
+\begin{itemize}
+\item A string $s\in\{0,1\}^n$ is a function \texttt{Fin n → Bool}.
+\item This is convenient in Lean because \texttt{Fin n} is the index type $\{0,\dots,n-1\}$.
+\end{itemize}
+
+\subsection*{Bitwise complement \texttt{complement}}
+
+The BD$_{2m}$ symmetry constraint in the paper involves ``bitwise complement'' of strings.
+In Lean this is implemented as Boolean negation at each coordinate.
+
+\begin{lstlisting}
+def complement {n : ℕ} (s : BitString n) : BitString n := fun i => !s i
+
+@[simp] lemma complement_apply {n : ℕ} (s : BitString n) (i : Fin n) :
+    complement s i = !s i := rfl
+
+@[simp] lemma complement_complement {n : ℕ} (s : BitString n) :
+    complement (complement s) = s := by
+  funext i
+  simp [complement]
+\end{lstlisting}
+
+So if $s\in\{0,1\}^n$, then $\overline{s}$ is defined by $(\overline{s})_i = 1 - s_i$.
+The lemma \texttt{complement\_complement} formalizes that complement is an involution.
+
+\section*{Section Basic}
+
+\subsection*{Variables}
+
+\begin{lstlisting}
+section Basic
+variable {m n : ℕ} [NeZero m]
+\end{lstlisting}
+
+Here you initially assume $m\neq 0$ so you can treat \texttt{ZMod m} as the usual modular ring.
+You later discovered some lemmas don't need it, so you used \texttt{omit} for those.
+
+\subsection*{\texttt{bit : Bool → ZMod m}}
+
+\begin{lstlisting}
+def bit (b : Bool) : ZMod m := if b then (1 : ZMod m) else 0
+\end{lstlisting}
+
+This is the map $\{0,1\}\to\mathbb{Z}_m$ that sends
+\begin{itemize}
+\item \texttt{false} $\mapsto 0$
+\item \texttt{true} $\mapsto 1$
+\end{itemize}
+This is the bridge between your Boolean bitstrings and arithmetic in \texttt{ZMod m}.
+
+\subsection*{simp lemmas \texttt{bit\_false}, \texttt{bit\_true}}
+
+\begin{lstlisting}
+omit [NeZero m] in
+@[simp] lemma bit_false : bit (m := m) false = 0 := by
+  simp [bit]
+
+omit [NeZero m] in
+@[simp] lemma bit_true : bit (m := m) true = 1 := by
+  simp [bit]
+\end{lstlisting}
+
+They just tell \texttt{simp} how to reduce \texttt{bit false} and \texttt{bit true}.
+You wrapped them in \texttt{omit [NeZero m]} because they don't actually use $m\neq 0$.
+
+\subsection*{\texttt{weight}}
+
+\begin{lstlisting}
+def weight (a : Fin n → ZMod m) (s : BitString n) : ZMod m :=
+  ∑ i : Fin n, a i * bit (m := m) (s i)
+\end{lstlisting}
+
+This is exactly the modular subset-sum:
+\begin{itemize}
+\item You provide an ``angle vector'' $a=(a_0,\dots,a_{n-1})$ as \texttt{Fin n → ZMod m}.
+\item For a bitstring $s$, compute
+\[
+w_a(s)=\sum_i a_i\cdot s_i \pmod m,
+\]
+where $s_i\in\{0,1\}$ is implemented as \texttt{bit (s i)}.
+\end{itemize}
+
+This \texttt{weight} is the mathematical core of SS: it tells you what phase a diagonal gate assigns to $\ket{s}$.
+
+\subsection*{\texttt{Sk} (support subset)}
+
+\begin{lstlisting}
+def Sk (a : Fin n → ZMod m) (bk : ZMod m) : Set (BitString n) :=
+  { s | weight (m := m) a s = bk }
+\end{lstlisting}
+
+This is the SS subset
+\[
+S_k=\{\, s\in\{0,1\}^n : w_a(s)=b_k \}.
+\]
+In other words, \texttt{Sk a bk} is the set of computational basis strings that pick up the same phase label \texttt{bk}.
+
+\subsection*{\texttt{mem\_Sk}}
+
+\begin{lstlisting}
+omit [NeZero m] in
+@[simp] lemma mem_Sk {m n : ℕ} (a : Fin n → ZMod m) (bk : ZMod m) (s : BitString n) :
+    s ∈ Sk (m := m) a bk ↔ weight (m := m) a s = bk :=
+  Iff.rfl
+\end{lstlisting}
+
+Just the definitional unfolding of membership in that set. Again it doesn't need \texttt{NeZero}.
+
+\subsection*{\texttt{SSConditionSupport}}
+
+\begin{lstlisting}
+def SSConditionSupport (a : Fin n → ZMod m) (bk : ZMod m) (supp : Finset (BitString n)) : Prop :=
+  (↑supp : Set (BitString n)) ⊆ Sk (m := m) a bk
+\end{lstlisting}
+
+This is the SS condition stated as a support containment statement:
+
+\begin{quote}
+Every string in the (finite) support \texttt{supp} lies inside \texttt{Sk}.
+\end{quote}
+
+This matches the paper's statement $c^{(k)}_s\neq 0 \Rightarrow s\in S_k$,
+but phrased for a \texttt{Finset} support rather than amplitudes.
+
+\subsection*{\texttt{SSConditionSupport'}}
+
+\begin{lstlisting}
+def SSConditionSupport' (a : Fin n → ZMod m) (bk : ZMod m) (supp : Finset (BitString n)) : Prop :=
+  ∀ ⦃s⦄, s ∈ supp → weight (m := m) a s = bk
+\end{lstlisting}
+
+Same condition, but in ``elementwise'' form:
+
+\begin{quote}
+If $s\in\texttt{supp}$, then its weight equals \texttt{bk}.
+\end{quote}
+
+\subsection*{\texttt{SSConditionSupport\_iff}}
+
+\begin{lstlisting}
+omit [NeZero m] in
+theorem SSConditionSupport_iff
+    {m n : ℕ} (a : Fin n → ZMod m) (bk : ZMod m) (supp : Finset (BitString n)) :
+    SSConditionSupport (m := m) a bk supp ↔ SSConditionSupport' (m := m) a bk supp := by
+  constructor
+  · intro h s hs
+    have : s ∈ (↑supp : Set (BitString n)) := by simpa using hs
+    have : s ∈ Sk (m := m) a bk := h this
+    simpa [Sk] using this
+  · intro h s hs
+    have hs' : s ∈ supp := by simpa using hs
+    simpa [Sk] using h hs'
+
+end Basic
+\end{lstlisting}
+
+This theorem proves those two formulations are logically equivalent:
+\[
+\texttt{SSConditionSupport a bk supp} \leftrightarrow  \texttt{SSConditionSupport' a bk supp}.
+\]
+So you can use whichever is more convenient when proving things.
+
+\begin{itemize}
+\item The $\Rightarrow$ direction: from set inclusion you get the weight equation using \texttt{Sk}'s definition.
+\item The $\Leftarrow$ direction: from the pointwise property you build the set inclusion.
+\end{itemize}
+
+Again, you \texttt{omit [NeZero m]} because this proof doesn't need $m\neq 0$.
+
+\section*{Section BDSymmetry (BD$_{2m}$ constraint)}
+
+This is the new piece you added to match the BD$_{2m}$ (binary dihedral) symmetry constraint from the paper.
+
+Physically, when the code has a transversal Pauli-$X$ of the form $X^{\otimes n}$ acting as a logical $X$, the logical basis states satisfy
+\[
+\ket{1_L} = X^{\otimes n} \ket{0_L}.
+\]
+Applying $X$ flips every physical bit, so at the level of basis strings and supports you expect a ``complement symmetry'':
+\[
+S_1 = \{\, \overline{s} : s \in S_0 \}.
+\]
+
+In the paper, BD$_{2m}$ symmetry also enforces a constraint on the angle vector $a$:
+\[
+\sum_i a_i \equiv -1 \pmod m,
+\]
+which ensures $0^n \in S_0$ and $1^n \in S_1$.
+
+\subsection*{Angle constraint \texttt{BDAngleCondition}}
+
+\begin{lstlisting}
+section BDSymmetry
+
+variable {m n : ℕ}
+
+/-- BD_{2m} angle constraint: the total angle sum is `-1` in `ZMod m`. -/
+def BDAngleCondition (a : Fin n → ZMod m) : Prop :=
+  ∑ i : Fin n, a i = -1
+\end{lstlisting}
+
+This is a direct translation of $\sum_i a_i \equiv -1 \pmod m$ into Lean.
+(It does not require the assumption \texttt{[NeZero m]}.)
+
+\subsection*{A helper simp lemma: \texttt{bit\_not}}
+
+To relate weights of $s$ and $\overline{s}$, you first prove that Boolean negation corresponds to $1-\texttt{bit}$:
+
+\begin{lstlisting}
+@[simp] lemma bit_not {m : ℕ} (b : Bool) :
+    bit (m := m) (!b) = 1 - bit (m := m) b := by
+  cases b <;> simp [bit]
+\end{lstlisting}
+
+Mathematically, this is just:
+\[
+\mathrm{bit}(1-b) = 1 - \mathrm{bit}(b).
+\]
+
+\subsection*{Key identity: weight of a complemented string}
+
+\begin{lstlisting}
+theorem weight_complement (a : Fin n → ZMod m) (s : BitString n) :
+    weight (m := m) a (complement s) =
+      (∑ i : Fin n, a i) - weight (m := m) a s := by
+  classical
+  simp [weight, complement, bit_not, mul_sub, Finset.sum_sub_distrib]
+\end{lstlisting}
+
+This is the formal version of the computation
+\[
+\sum_i a_i (1-s_i) = \left(\sum_i a_i\right) - \sum_i a_i s_i.
+\]
+
+\subsection*{Main lemma: \texttt{complement\_mem\_S1\_of\_mem\_S0}}
+
+With the angle constraint and the SS definition of $S_k$, you prove:
+
+\begin{lstlisting}
+theorem complement_mem_S1_of_mem_S0
+    (a : Fin n → ZMod m) (hBD : BDAngleCondition (m := m) a)
+    (s : BitString n) (hs : s ∈ Sk (m := m) a 0) :
+    complement s ∈ Sk (m := m) a (-1) := by
+  simp [Sk] at hs ⊢
+  have hsum : (∑ i : Fin n, a i) = (-1 : ZMod m) := by
+    simpa [BDAngleCondition] using hBD
+  calc
+    weight (m := m) a (complement s)
+        = (∑ i : Fin n, a i) - weight (m := m) a s := weight_complement (m := m) a s
+    _ = (-1 : ZMod m) - 0 := by simp [hsum, hs]
+    _ = (-1 : ZMod m) := by simp
+\end{lstlisting}
+
+This is exactly the paper's reasoning:
+if $w_a(s)=0$ and $\sum_i a_i = -1$, then
+\[
+w_a(\overline{s}) = \left(\sum_i a_i\right) - w_a(s) = -1 - 0 = -1.
+\]
+
+For the set equality later, you also prove the reverse direction
+\texttt{complement\_mem\_S0\_of\_mem\_S1}, using that complement is an involution.
+
+\subsection*{Supports are complement-related: \texttt{Sk\_complement\_eq}}
+
+\begin{lstlisting}
+theorem Sk_complement_eq (a : Fin n → ZMod m) (hBD : BDAngleCondition (m := m) a) :
+    Sk (m := m) a (-1) = complement '' Sk (m := m) a 0 := by
+  ext s
+  constructor
+  · intro hs
+    refine ⟨complement s, complement_mem_S0_of_mem_S1 (m := m) a hBD s hs, ?_⟩
+    simp
+  · rintro ⟨t, ht, rfl⟩
+    exact complement_mem_S1_of_mem_S0 (m := m) a hBD t ht
+\end{lstlisting}
+
+This says: under BD$_{2m}$ symmetry, the phase-$(-1)$ SS set is exactly the image of the phase-$0$ SS set under bitwise complement.
+
+\section*{Section ResidueShiftScreen (Classical Distance Condition)}
+
+This section formalizes the \textbf{Residue-Shift Screen} from paper 2510.20728 (Equation 3).
+The screen condition ensures that no two codewords from different residue classes are Hamming-1 neighbors,
+which guarantees the classical distance $d(C) \geq 2$.
+This is crucial because it makes X-type and Y-type Knill-Laflamme conditions vanish automatically.
+
+\subsection*{Bit flipping: \texttt{flipBit}}
+
+First, we define the operation of flipping a single bit at position $i$:
+
+\begin{lstlisting}
+def flipBit (s : BitString n) (i : Fin n) : BitString n :=
+  fun j => if j = i then !s j else s j
+\end{lstlisting}
+
+This creates a Hamming-1 neighbor of $s$ by toggling the $i$-th bit.
+We also prove basic properties:
+
+\begin{lstlisting}
+@[simp] lemma flipBit_apply_eq (s : BitString n) (i : Fin n) :
+    flipBit s i i = !s i := by simp [flipBit]
+
+@[simp] lemma flipBit_apply_ne (s : BitString n) (i j : Fin n) (hij : j ≠ i) :
+    flipBit s i j = s j := by simp [flipBit, hij]
+
+@[simp] lemma flipBit_flipBit (s : BitString n) (i : Fin n) :
+    flipBit (flipBit s i) i = s
+\end{lstlisting}
+
+The last lemma shows that flipping the same bit twice returns the original string.
+
+\subsection*{Key lemma: \texttt{weight\_flipBit}}
+
+The central technical result relates the weight of a flipped string to the original:
+
+\begin{lstlisting}
+theorem weight_flipBit (a : Fin n → ZMod m) (s : BitString n) (i : Fin n) :
+    weight a (flipBit s i) = weight a s + (if s i then -a i else a i)
+\end{lstlisting}
+
+Mathematically, this says:
+\[
+w_a(\text{flip}_i(s)) = w_a(s) + \begin{cases} -a_i & \text{if } s_i = 1 \\ +a_i & \text{if } s_i = 0 \end{cases}
+\]
+
+The proof isolates the $i$-th term in the sum using \texttt{Finset.sum\_eq\_single\_of\_mem}:
+\begin{itemize}
+\item For $j \neq i$: the $j$-th term is unchanged since $(\text{flip}_i(s))_j = s_j$.
+\item For $j = i$: the term changes from $a_i \cdot s_i$ to $a_i \cdot (1 - s_i)$, giving a difference of $\pm a_i$.
+\end{itemize}
+
+We also provide a variant expressing this as a difference:
+
+\begin{lstlisting}
+theorem weight_flipBit_sub (a : Fin n → ZMod m) (s : BitString n) (i : Fin n) :
+    weight a (flipBit s i) - weight a s = if s i then -a i else a i
+\end{lstlisting}
+
+\subsection*{The screen condition: \texttt{ResidueShiftScreen}}
+
+\begin{lstlisting}
+def ResidueShiftScreen (a : Fin n → ZMod m) (S : Fin K → ZMod m) : Prop :=
+  ∀ i : Fin n, ∀ j k : Fin K, j ≠ k →
+    S j - S k ≠ a i ∧ S j - S k ≠ -a i
+\end{lstlisting}
+
+This is the formal statement of Equation (3) from the paper:
+\[
+S_j - S_k \not\equiv \pm a_i \pmod{m} \quad \text{for all } i \text{ and } j \neq k.
+\]
+
+Here $S : \texttt{Fin K} \to \texttt{ZMod m}$ assigns phase labels to the $K$ logical basis states.
+The condition forbids the difference between any two distinct phase labels from equaling $\pm a_i$ for any weight component $a_i$.
+
+\subsection*{Main theorem: \texttt{no\_hamming1\_neighbor\_of\_screen}}
+
+\begin{lstlisting}
+theorem no_hamming1_neighbor_of_screen
+    (a : Fin n → ZMod m) (S : Fin K → ZMod m)
+    (hScreen : ResidueShiftScreen a S)
+    (_hInj : Function.Injective S)
+    {j k : Fin K} (hjk : j ≠ k)
+    {s : BitString n} (hs : s ∈ Sk a (S j))
+    {i : Fin n} :
+    flipBit s i ∉ Sk a (S k)
+\end{lstlisting}
+
+This is the key result: \emph{if the screen condition holds and $s \in S_j$, then flipping any bit of $s$ cannot land in $S_k$ for $k \neq j$}.
+
+The proof proceeds by contradiction:
+\begin{enumerate}
+\item Assume $\text{flip}_i(s) \in S_k$.
+\item From \texttt{weight\_flipBit}: $w_a(\text{flip}_i(s)) = w_a(s) + (\pm a_i) = S_j + (\pm a_i)$.
+\item But $\text{flip}_i(s) \in S_k$ means $w_a(\text{flip}_i(s)) = S_k$.
+\item Therefore $S_k - S_j = \pm a_i$, contradicting the screen condition.
+\end{enumerate}
+
+\subsection*{Corollaries}
+
+We provide two additional formulations:
+
+\begin{lstlisting}
+theorem disjoint_hamming1_of_screen
+    (a : Fin n → ZMod m) (S : Fin K → ZMod m)
+    (hScreen : ResidueShiftScreen a S)
+    (hInj : Function.Injective S) :
+    ∀ j k : Fin K, j ≠ k → ∀ s ∈ Sk a (S j), ∀ i : Fin n, flipBit s i ∉ Sk a (S k)
+\end{lstlisting}
+
+This restates the main theorem in a more explicit ``for all'' form:
+the union of all supports has no Hamming-1 neighbors between different classes.
+
+\begin{lstlisting}
+theorem hamming_distance_ge_2_of_screen
+    (a : Fin n → ZMod m) (S : Fin K → ZMod m)
+    (hScreen : ResidueShiftScreen a S)
+    (hInj : Function.Injective S)
+    {j k : Fin K} (hjk : j ≠ k)
+    {s t : BitString n} (hs : s ∈ Sk a (S j)) (ht : t ∈ Sk a (S k)) :
+    ¬ ∃ i : Fin n, t = flipBit s i
+\end{lstlisting}
+
+This is the distance formulation: any two codewords from different residue classes have Hamming distance $\geq 2$.
+In other words, no codeword in $S_k$ can be obtained by flipping a single bit of any codeword in $S_j$ (for $j \neq k$).
+
+\subsection*{Physical significance}
+
+The Residue-Shift Screen is important because:
+\begin{itemize}
+\item It guarantees the classical code (union of all $S_k$) has minimum distance $d \geq 2$.
+\item This makes single-qubit X and Y errors always detectable.
+\item In the Knill-Laflamme framework, X-type and Y-type conditions become trivially satisfied when $d \geq 2$, since such errors cannot map between valid codewords.
+\item Only Z-type Knill-Laflamme conditions need to be checked separately (which involve amplitude constraints).
+\end{itemize}
+
+\section*{Section Disjointness}
+
+\subsection*{Setup}
+
+\begin{lstlisting}
+section Disjointness
+
+variable {m n K : ℕ}      -- removed [NeZero m]
+variable (a : Fin n → ZMod m)
+variable (b : Fin K → ZMod m)
+variable (supp : Fin K → Finset (BitString n))
+\end{lstlisting}
+
+Here you introduce:
+\begin{itemize}
+\item \texttt{b : Fin K → ZMod m} = the list of intended logical phase labels $(b_0,\dots,b_{K-1})$.
+\item \texttt{supp k} = the finite support set for the $k$-th logical basis state.
+\end{itemize}
+
+\subsection*{Theorem \texttt{supports\_disjoint\_of\_injective}}
+
+\begin{lstlisting}
+theorem supports_disjoint_of_injective
+    (hb : Function.Injective b)
+    (hSS : ∀ k, SSConditionSupport' (m := m) a (b k) (supp k)) :
+    ∀ {k l : Fin K}, k ≠ l → Disjoint (supp k) (supp l) := by
+  intro k l hkl
+  classical
+  refine Finset.disjoint_left.2 ?_
+  intro s hsk hsl
+  have hk : weight (m := m) a s = b k := hSS k hsk
+  have hl : weight (m := m) a s = b l := hSS l hsl
+  have hbl : b k = b l := by
+    calc
+      b k = weight (m := m) a s := hk.symm
+      _   = b l               := hl
+  exact hkl (hb hbl)
+
+end Disjointness
+\end{lstlisting}
+
+Meaning:
+\begin{itemize}
+\item If the phase labels \texttt{b k} are all distinct (injective), and
+\item each support \texttt{supp k} satisfies SS with its label \texttt{b k},
+\item then supports for different logical indices cannot overlap.
+\end{itemize}
+
+This is the orthogonality-by-disjoint-support fact: if $b_k\neq b_\ell$, no basis string can appear in both
+$\ket{k_L}$ and $\ket{\ell_L}$ under the SS rule.
+
+How the proof works (in plain math):
+\begin{itemize}
+\item Suppose a string $s$ lies in both \texttt{supp k} and \texttt{supp l}.
+\item Then SS says \texttt{weight a s = b k} and also \texttt{weight a s = b l}.
+\item Hence \texttt{b k = b l}, contradicting injectivity unless $k=l$.
+\item Therefore they are disjoint.
+\end{itemize}
+
+This matches the statement in your manuscript that distinct $b_k$ make $S_k$ disjoint and thus (at least) support-level orthogonality.
+
+\section*{Section DiagonalAction}
+
+This section switches from ``supports as finsets'' to ``full amplitude vectors''.
+
+\subsection*{Variables}
+
+\begin{lstlisting}
+section DiagonalAction
+
+variable {m n : ℕ} -- no [NeZero m]
+variable {𝕜 : Type*} [MonoidWithZero 𝕜]
+\end{lstlisting}
+
+\begin{itemize}
+\item \texttt{𝕜} is the coefficient type for amplitudes. You only assume \texttt{MonoidWithZero} because you need multiplication (\texttt{*}) and a zero element.
+\item You deliberately don't assume \texttt{𝕜 = ℂ} yet: this keeps it abstract and reusable.
+\end{itemize}
+
+\subsection*{\texttt{State}}
+
+\begin{lstlisting}
+abbrev State (n : ℕ) (k : Type*) : Type _ := BitString n → k
+\end{lstlisting}
+
+A ``state'' is an amplitude assignment $\psi:\{0,1\}^n\to\mathbb{k}$.
+So in physics notation: $\psi(s)$ is the coefficient of $\ket{s}$.
+(You fixed the universe issue by writing \texttt{Type \_}.)
+
+\subsection*{\texttt{SSConditionState}}
+
+\begin{lstlisting}
+def SSConditionState (a : Fin n → ZMod m) (bk : ZMod m) (ψ : State n 𝕜) : Prop :=
+  ∀ s, ψ s ≠ 0 → weight (m := m) a s = bk
+\end{lstlisting}
+
+This is the most faithful Lean version of the manuscript SS condition:
+if amplitude at $s$ is nonzero, then $s$ must have the right subset-sum.
+It is literally the ``support lies in $S_k
+
+\begin{lstlisting}
+def Dact (phase : ZMod m → 𝕜) (a : Fin n → ZMod m) (ψ : State n 𝕜) : State n 𝕜 :=
+  fun s => phase (weight (m := m) a s) * ψ s
+\end{lstlisting}
+
+This is an abstract diagonal operator acting on amplitude functions.
+
+\begin{itemize}
+\item In the computational basis, a diagonal gate acts by multiplying each basis vector $\ket{s}$ by some scalar depending on $s$.
+\item Here, the scalar is \texttt{phase (weight a s)}.
+\end{itemize}
+
+So this corresponds exactly to the transversal diagonal gate's induced action
+\[
+(D\psi)(s)=\omega^{w_a(s)} \psi(s),
+\]
+but abstracted as \texttt{phase : ZMod m → 𝕜} instead of hardcoding $\omega^x$.
+
+\subsection*{Theorem \texttt{Dact\_eq\_global\_of\_SS}}
+
+\begin{lstlisting}
+theorem Dact_eq_global_of_SS
+    (phase : ZMod m → 𝕜) (a : Fin n → ZMod m) (bk : ZMod m) (ψ : State n 𝕜)
+    (hSS : SSConditionState (m := m) a bk ψ) :
+    Dact (m := m) phase a ψ = fun s => phase bk * ψ s := by
+  classical
+  funext s
+  by_cases hs : ψ s = 0
+  · simp [Dact, hs]
+  · have hw : weight (m := m) a s = bk := hSS s hs
+    simp [Dact, hw]
+
+end DiagonalAction
+
+end SS
+\end{lstlisting}
+
+This is the ``SS correctness'' lemma:
+If $\psi$ only has support on strings with weight $=b_k$, then applying the diagonal action multiplies every nonzero component by the same scalar \texttt{phase bk}.
+So the whole state is an eigenvector with eigenvalue \texttt{phase bk}.
+
+How the proof works:
+\begin{itemize}
+\item Prove equality of functions, so \texttt{funext s}.
+\item Split into two cases:
+\begin{enumerate}
+\item $\psi(s)=0$: both sides are $0$ after multiplication, so \texttt{simp} closes it.
+\item $\psi(s)\neq 0$: SS tells you \texttt{weight a s = bk}, so the phase is \texttt{phase bk}, and \texttt{simp} closes it.
+\end{enumerate}
+\end{itemize}
+
+This is the formal Lean statement that SS implies the state is an eigenstate of the diagonal gate.
+
+\section*{What this file verifies (and what it doesn't yet)}
+
+\subsection*{Verified / formalized}
+
+\begin{itemize}
+\item The definition of subset-sum weights on bitstrings.
+\item The definition of the SS subsets $S_k$.
+\item The SS condition as ``support subset'' and as ``nonzero amplitude $\Rightarrow$ correct congruence''.
+\item Bitwise complement on bitstrings (\texttt{complement}) and the involution property \texttt{complement\_complement}.
+\item The BD$_{2m}$ symmetry constraint on angles (\texttt{BDAngleCondition}) and its consequences, including \texttt{complement\_mem\_S1\_of\_mem\_S0} and \texttt{Sk\_complement\_eq}.
+\item \textbf{Residue-Shift Screen} (Eq.~3 of paper 2510.20728):
+  \begin{itemize}
+  \item Bit-flip operation \texttt{flipBit} and its properties.
+  \item Key lemma \texttt{weight\_flipBit}: weight changes by $\pm a_i$ under bit flip.
+  \item Screen condition \texttt{ResidueShiftScreen}: $S_j - S_k \not\equiv \pm a_i \pmod{m}$.
+  \item Main theorem \texttt{no\_hamming1\_neighbor\_of\_screen}: screen $\Rightarrow$ no Hamming-1 neighbors between classes.
+  \item Corollary \texttt{hamming\_distance\_ge\_2\_of\_screen}: classical distance $d(C) \geq 2$.
+  \end{itemize}
+\item SS $\Rightarrow$ disjoint supports (under distinct phase labels).
+\item SS $\Rightarrow$ eigenstate under the abstract diagonal action (global phase).
+\end{itemize}
+
+\subsection*{Not yet formalized}
+
+\begin{itemize}
+\item Z-type Knill-Laflamme conditions (linear constraints on amplitudes: $\sum_x (1-2x_i) p_{j,x} = t_i$).
+\item Concrete code verification (e.g., verifying specific codes from the catalogue).
+\item Control phases for multi-control gates.
+\end{itemize}
+
+\end{document}
