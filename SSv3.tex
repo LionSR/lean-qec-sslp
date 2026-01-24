@@ -38,6 +38,8 @@
   keepspaces=true,
   literate=
     {ℕ}{{\ensuremath{\mathbb{N}}}}1
+    {ℤ}{{\ensuremath{\mathbb{Z}}}}1
+    {ℚ}{{\ensuremath{\mathbb{Q}}}}1
     {𝕜}{{\ensuremath{\mathbb{k}}}}1
     {→}{{\ensuremath{\to}}}1
     {↔}{{\ensuremath{\leftrightarrow}}}1
@@ -45,6 +47,10 @@
     {⊆}{{\ensuremath{\subseteq}}}1
     {∈}{{\ensuremath{\in}}}1
     {∀}{{\ensuremath{\forall}}}1
+    {∃}{{\ensuremath{\exists}}}1
+    {∧}{{\ensuremath{\wedge}}}1
+    {≤}{{\ensuremath{\le}}}1
+    {≥}{{\ensuremath{\ge}}}1
     {≠}{{\ensuremath{\neq}}}1
     {↑}{{\ensuremath{\uparrow}}}1
     {·}{{\ensuremath{\bullet}}}1
@@ -96,6 +102,8 @@ import Mathlib.Data.ZMod.Basic
 import Mathlib.Data.Bool.Basic
 import Mathlib.Data.Finset.Lattice.Basic
 import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Data.Rat.Defs
+import Mathlib.Data.Fintype.Sets
 
 open scoped BigOperators
 namespace SS
@@ -106,6 +114,8 @@ namespace SS
 \item \texttt{Bool.Basic}: for \texttt{Bool} and simp lemmas about \texttt{if}.
 \item \texttt{Finset.Lattice.Basic}: gives coercions \texttt{(↑supp : Set α)}, subset relations, etc.
 \item \texttt{BigOperators.Fin}: provides \texttt{∑ i : Fin n, ...} notation.
+\item \texttt{Rat.Defs}: provides the rational numbers \texttt{ℚ} with the additive/ordered structure needed for big sums.
+\item \texttt{Fintype.Sets}: provides \texttt{Set.toFinset}, used to turn residue classes \texttt{Sk a (S j)} into \texttt{Finset}s.
 \end{itemize}
 
 All of your definitions are placed in \texttt{namespace SS} so names don't pollute globally.
@@ -476,7 +486,6 @@ The condition forbids the difference between any two distinct phase labels from 
 theorem no_hamming1_neighbor_of_screen
     (a : Fin n → ZMod m) (S : Fin K → ZMod m)
     (hScreen : ResidueShiftScreen a S)
-    (_hInj : Function.Injective S)
     {j k : Fin K} (hjk : j ≠ k)
     {s : BitString n} (hs : s ∈ Sk a (S j))
     {i : Fin n} :
@@ -500,8 +509,7 @@ We provide two additional formulations:
 \begin{lstlisting}
 theorem disjoint_hamming1_of_screen
     (a : Fin n → ZMod m) (S : Fin K → ZMod m)
-    (hScreen : ResidueShiftScreen a S)
-    (hInj : Function.Injective S) :
+    (hScreen : ResidueShiftScreen a S) :
     ∀ j k : Fin K, j ≠ k → ∀ s ∈ Sk a (S j), ∀ i : Fin n, flipBit s i ∉ Sk a (S k)
 \end{lstlisting}
 
@@ -512,7 +520,6 @@ the union of all supports has no Hamming-1 neighbors between different classes.
 theorem hamming_distance_ge_2_of_screen
     (a : Fin n → ZMod m) (S : Fin K → ZMod m)
     (hScreen : ResidueShiftScreen a S)
-    (hInj : Function.Injective S)
     {j k : Fin K} (hjk : j ≠ k)
     {s t : BitString n} (hs : s ∈ Sk a (S j)) (ht : t ∈ Sk a (S k)) :
     ¬ ∃ i : Fin n, t = flipBit s i
@@ -528,7 +535,7 @@ The Residue-Shift Screen is important because:
 \item It guarantees the classical code (union of all $S_k$) has minimum distance $d \geq 2$.
 \item This makes single-qubit X and Y errors always detectable.
 \item In the Knill-Laflamme framework, X-type and Y-type conditions become trivially satisfied when $d \geq 2$, since such errors cannot map between valid codewords.
-\item Only Z-type Knill-Laflamme conditions need to be checked separately (which involve amplitude constraints).
+\item Only Z-type Knill--Laflamme conditions need to be checked separately; these are formalized in Section~ZTypeKL below as linear constraints on probability weights.
 \end{itemize}
 
 \section*{Section Disjointness}
@@ -629,7 +636,8 @@ def SSConditionState (a : Fin n → ZMod m) (bk : ZMod m) (ψ : State n 𝕜) : 
 
 This is the most faithful Lean version of the manuscript SS condition:
 if amplitude at $s$ is nonzero, then $s$ must have the right subset-sum.
-It is literally the ``support lies in $S_k
+It is literally the ``support lies in $S_k$'' condition.
+\subsection*{\texttt{Dact}}
 
 \begin{lstlisting}
 def Dact (phase : ZMod m → 𝕜) (a : Fin n → ZMod m) (ψ : State n 𝕜) : State n 𝕜 :=
@@ -664,8 +672,6 @@ theorem Dact_eq_global_of_SS
     simp [Dact, hw]
 
 end DiagonalAction
-
-end SS
 \end{lstlisting}
 
 This is the ``SS correctness'' lemma:
@@ -683,6 +689,93 @@ How the proof works:
 \end{itemize}
 
 This is the formal Lean statement that SS implies the state is an eigenstate of the diagonal gate.
+
+\section*{Section ZTypeKL (Z-type Knill--Laflamme conditions)}
+
+This section formalizes the \textbf{Z-type Knill--Laflamme (KL)} constraints from paper 2510.20728 (Eq.~6).
+For each physical qubit $i$, the expectation value of $Z_i$ must be the same across all logical states.
+
+If a logical state $\ket{j_L}$ has a probability distribution $p_{j,x}$ supported on some finite set \texttt{supp j},
+the condition is:
+\[
+\langle j_L|Z_i|j_L\rangle = \sum_{x \in \text{supp}_j} p_{j,x}\,(1-2x_i) = t_i,
+\]
+where $t_i$ is independent of $j$.
+
+\subsection*{Sign for Z measurement: \texttt{zSign}}
+
+\begin{lstlisting}
+def zSign (s : BitString n) (i : Fin n) : ℤ := if s i then -1 else 1
+\end{lstlisting}
+
+This encodes $(-1)^{x_i}$ (equivalently $1-2x_i$).
+
+\subsection*{Z expectation over a finite support: \texttt{zExpectation}}
+
+\begin{lstlisting}
+def zExpectation (supp : Finset (BitString n)) (p : BitString n → ℚ) (i : Fin n) : ℚ :=
+  ∑ x ∈ supp, p x * zSign x i
+\end{lstlisting}
+
+\subsection*{Z-type KL constraints across $K$ logical states}
+
+\begin{lstlisting}
+def ZTypeKL (K : ℕ) (supp : Fin K → Finset (BitString n))
+    (prob : Fin K → BitString n → ℚ) : Prop :=
+  ∀ i : Fin n, ∀ j k : Fin K,
+    zExpectation (supp j) (prob j) i = zExpectation (supp k) (prob k) i
+\end{lstlisting}
+
+\subsection*{Alternative formulation with explicit targets}
+
+\begin{lstlisting}
+def ZTypeKL' (K : ℕ) (supp : Fin K → Finset (BitString n))
+    (prob : Fin K → BitString n → ℚ) (target : Fin n → ℚ) : Prop :=
+  ∀ j : Fin K, ∀ i : Fin n, zExpectation (supp j) (prob j) i = target i
+\end{lstlisting}
+
+\subsection*{Equivalence theorem}
+
+\begin{lstlisting}
+theorem ZTypeKL_iff_exists_target (K : ℕ) [NeZero K]
+    (supp : Fin K → Finset (BitString n)) (prob : Fin K → BitString n → ℚ) :
+    ZTypeKL (n := n) K supp prob ↔ ∃ target : Fin n → ℚ, ZTypeKL' (n := n) K supp prob target := by
+  constructor
+  · intro h
+    have hK : 0 < K := Nat.pos_of_ne_zero (NeZero.ne K)
+    let j0 : Fin K := ⟨0, hK⟩
+    refine ⟨fun i => zExpectation (supp j0) (prob j0) i, ?_⟩
+    intro j i
+    simpa using h i j j0
+  · rintro ⟨target, htarget⟩
+    intro i j k
+    calc
+      zExpectation (supp j) (prob j) i = target i := htarget j i
+      _ = zExpectation (supp k) (prob k) i := (htarget k i).symm
+\end{lstlisting}
+
+The forward direction simply picks a reference logical index $j_0$ (using \texttt{[NeZero K]}) and defines the target values as the expectations for that state.
+
+\subsection*{Normalization of probability distributions}
+
+\begin{lstlisting}
+def IsNormalizedProb (supp : Finset (BitString n)) (p : BitString n → ℚ) : Prop :=
+  (∀ x, x ∉ supp → p x = 0) ∧ (∀ x ∈ supp, 0 ≤ p x) ∧ (∑ x ∈ supp, p x = 1)
+\end{lstlisting}
+
+\subsection*{Connecting to residue classes: \texttt{SSLPSetup}}
+
+In the full SS-LP setup, supports are the residue classes \texttt{Sk a (S j)} turned into finsets using \texttt{Set.toFinset}.
+
+\begin{lstlisting}
+def SSLPSetup (n K : ℕ) (m : ℕ) [NeZero m]
+    (a : Fin n → ZMod m) (S : Fin K → ZMod m)
+    (prob : Fin K → BitString n → ℚ) : Prop :=
+  by
+    classical
+    let supp : Fin K → Finset (BitString n) := fun j => (Sk (m := m) a (S j)).toFinset
+    exact (∀ j, IsNormalizedProb (n := n) (supp j) (prob j)) ∧ ZTypeKL (n := n) K supp prob
+\end{lstlisting}
 
 \section*{What this file verifies (and what it doesn't yet)}
 
