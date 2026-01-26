@@ -1,0 +1,384 @@
+\documentclass[11pt]{article}
+
+% pdfLaTeX-friendly (no fontspec)
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+% Unicode characters for regular text
+\DeclareUnicodeCharacter{2208}{\ensuremath{\in}}
+\DeclareUnicodeCharacter{2286}{\ensuremath{\subseteq}}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\to}}
+\DeclareUnicodeCharacter{2200}{\ensuremath{\forall}}
+\DeclareUnicodeCharacter{2260}{\ensuremath{\neq}}
+\DeclareUnicodeCharacter{2191}{\ensuremath{\uparrow}}
+\DeclareUnicodeCharacter{22C5}{\ensuremath{\cdot}}
+\DeclareUnicodeCharacter{27E8}{\ensuremath{\langle}}
+\DeclareUnicodeCharacter{27E9}{\ensuremath{\rangle}}
+\DeclareUnicodeCharacter{03C8}{\ensuremath{\psi}}
+\DeclareUnicodeCharacter{03C9}{\ensuremath{\omega}}
+
+
+% Dirac notation (keep \rangle correct)
+\newcommand{\ket}[1]{\lvert #1 \rangle}
+\newcommand{\bra}[1]{\langle #1 \rvert}
+
+% Lean listings setup (handles Lean Unicode in code blocks)
+\lstdefinelanguage{Lean}{
+  morekeywords={import,open,scoped,namespace,section,end,variable,def,abbrev,lemma,theorem,by,fun,have,calc,refine,intro,exact,classical,simp,funext,by_cases,fin_cases,rcases,subst},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+
+\lstset{
+  language=Lean,
+  basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{black!25},
+  keywordstyle=\color{blue!70!black},
+  commentstyle=\color{green!40!black},
+  stringstyle=\color{orange!60!black},
+  showstringspaces=false,
+  keepspaces=true,
+  literate=
+    {ℕ}{{\ensuremath{\mathbb{N}}}}1
+    {ℚ}{{\ensuremath{\mathbb{Q}}}}1
+    {ℤ}{{\ensuremath{\mathbb{Z}}}}1
+    {𝕜}{{\ensuremath{\mathbb{k}}}}1
+    {ψ}{{\ensuremath{\psi}}}1
+    {ω}{{\ensuremath{\omega}}}1
+    {→}{{\ensuremath{\to}}}1
+    {↔}{{\ensuremath{\leftrightarrow}}}1
+    {∨}{{\ensuremath{\lor}}}1
+    {∧}{{\ensuremath{\land}}}1
+    {¬}{{\ensuremath{\neg}}}1
+    {∑}{{\ensuremath{\sum}}}1
+    {⊆}{{\ensuremath{\subseteq}}}1
+    {∈}{{\ensuremath{\in}}}1
+    {∀}{{\ensuremath{\forall}}}1
+    {≠}{{\ensuremath{\neq}}}1
+    {↑}{{\ensuremath{\uparrow}}}1
+    {·}{{\ensuremath{\bullet}}}1
+    {⟨}{{\ensuremath{\langle}}}1
+    {⟩}{{\ensuremath{\rangle}}}1
+    {⦃}{{\{} }1
+    {⦄}{{\}} }1
+    {“}{{``}}1
+    {”}{{''}}1
+}
+
+\title{Explanation of the Lean 4 (mathlib) Code for the Canonical $((5,2,2))$ Example}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Big picture}
+
+This Lean block formalizes (and checks) one concrete instance from the paper: a $((5,2,2))$ code that admits a transversal diagonal gate with logical action
+\[
+\overline U=\mathrm{diag}(1,\omega_7^4).
+\]
+It verifies two things:
+
+\begin{itemize}
+\item \textbf{SS diagonal condition (support subset-sum constraint).}
+Each logical basis state \(\ket{k_L}\) is supported only on computational basis strings \(s\in\{0,1\}^5\) whose modular weighted sum
+\[
+w_a(s)=\sum_{i=1}^5 a_i s_i \pmod 7
+\]
+equals the residue label \(b_k\) (here \(b_0=0\), \(b_1=4\)). This guarantees the transversal diagonal action is a \emph{global phase} on \(\ket{k_L}\).
+
+\item \textbf{Z-type KL condition (distance-2 Z-marginals).}
+Using the squared amplitudes as probabilities, it verifies that the expectation values \(\langle Z_i\rangle\) are the same for \(\ket{0_L}\) and \(\ket{1_L}\), and match the claimed values:
+\[
+\langle Z_i\rangle=
+\begin{cases}
+\frac{3}{7}, & i=1,2,\\[4pt]
+-\frac{1}{7}, & i=3,4,5.
+\end{cases}
+\]
+\end{itemize}
+
+The Lean code does \emph{not} attempt to build a full Hilbert-space model with complex amplitudes and square roots. Instead, it proves the SS claim using the \emph{support} only (nonzero amplitudes), and it proves the Z expectations using exact rational probabilities.
+
+\section*{Context: where this example lives in the Lean file}
+
+You already have the general infrastructure:
+
+\begin{itemize}
+\item \texttt{BitString n := Fin n → Bool} for computational basis strings.
+\item \texttt{weight a s : ZMod m} for modular subset-sums.
+\item \texttt{SSConditionSupport'} and \texttt{SSConditionState} for SS constraints.
+\item \texttt{Dact} and \texttt{Dact\_eq\_global\_of\_SS} for diagonal global-phase correctness.
+\item \texttt{zSign}, \texttt{zExpectation}, \texttt{ZTypeKL}, \texttt{ZTypeKL'} for Z-type KL constraints.
+\item \texttt{IsNormalizedProb} for probability normalization.
+\end{itemize}
+
+This example adds a self-contained \texttt{section WorkedExample\_5\_2\_2} that instantiates all of that.
+
+\section*{Step 1: fixing the parameters \(n=5\), \(m=7\), \(K=2\)}
+
+Inside the example you set three local notations:
+
+\begin{lstlisting}
+local notation "n" => 5
+local notation "m" => 7
+local notation "K" => 2
+
+local instance : NeZero (m : ℕ) := ⟨by decide⟩
+local instance : NeZero (K : ℕ) := ⟨by decide⟩
+local instance : DecidableEq (BitString n) := by infer_instance
+\end{lstlisting}
+
+Meaning:
+\begin{itemize}
+\item \(n=5\) physical qubits.
+\item \(m=7\) modulus for the SS subset-sum.
+\item \(K=2\) logical basis states.
+\item \texttt{NeZero} lets \texttt{ZMod m} behave as usual (no degenerate modulus).
+\item \texttt{DecidableEq} is needed so finset membership (\texttt{s} $\in$ \texttt{supp0}) is decidable.
+\end{itemize}
+
+\section*{Step 2: the weight vector and residue labels}
+
+The paper uses weights \(w=(1,1,2,2,2)\) modulo \(7\), and residues \((0,4)\).
+In Lean:
+
+\begin{lstlisting}
+/-- weight vector w = (1,1,2,2,2) in ZMod 7 -/
+def a522 : Fin n → ZMod m := ![(1 : ZMod m), 1, 2, 2, 2]
+
+/-- residues (S0,S1) = (0,4) in ZMod 7 -/
+def S522 : Fin K → ZMod m := ![(0 : ZMod m), 4]
+\end{lstlisting}
+
+So:
+\[
+a_{522}(0)=1,\ a_{522}(1)=1,\ a_{522}(2)=2,\ a_{522}(3)=2,\ a_{522}(4)=2 \quad (\bmod 7),
+\]
+and \(S_{522}(0)=0,\ S_{522}(1)=4\).
+
+\section*{Step 3: encoding basis strings (0-based indexing)}
+
+Each bitstring is a function \(\texttt{Fin 5}\to\texttt{Bool}\). The shorthand \texttt{![...]} builds such a function from a 5-entry vector.
+
+\begin{lstlisting}
+def x00000 : BitString n := ![false,false,false,false,false]
+def x01111 : BitString n := ![false,true ,true ,true ,true ]
+def x10111 : BitString n := ![true ,false,true ,true ,true ]
+
+def x00011 : BitString n := ![false,false,false,true ,true ]
+def x00101 : BitString n := ![false,false,true ,false,true ]
+def x00110 : BitString n := ![false,false,true ,true ,false]
+def x11001 : BitString n := ![true ,true ,false,false,true ]
+\end{lstlisting}
+
+Important detail: indices are \(\{0,1,2,3,4\}\) in Lean.
+So the paper's ``site \(1\)'' corresponds to \texttt{i = 0}, site \(2\) to \texttt{i = 1}, etc.
+
+\section*{Step 4: supports of \(\ket{0_L}\) and \(\ket{1_L}\)}
+
+The canonical supports (with the last two free probabilities set to 0 in the paper) are:
+
+\begin{lstlisting}
+def supp0 : Finset (BitString n) := {x00000, x01111, x10111}
+def supp1 : Finset (BitString n) := {x00011, x00101, x00110, x11001}
+\end{lstlisting}
+
+So in Dirac notation, this matches
+\[
+\ket{0_L}\propto \ket{00000}+\ket{01111}+\ket{10111},\qquad
+\ket{1_L}\propto \ket{00011}+\ket{00101}+\ket{00110}+\ket{11001}.
+\]
+The amplitudes are handled later via probabilities (squared amplitudes).
+
+\section*{Step 5: simp helper lemmas for \texttt{prob0} / \texttt{prob1}}
+
+The probability functions are nested \texttt{if}-chains comparing bitstrings for equality. To make \texttt{simp} reduce those chains cleanly, you provide a handful of \([\texttt{simp}]\) lemmas stating distinct strings are unequal, e.g.
+
+\begin{lstlisting}
+@[simp] lemma x01111_ne_x00000 : x01111 ≠ x00000 := by decide
+...
+@[simp] lemma x00110_ne_x00101 : x00110 ≠ x00101 := by decide
+\end{lstlisting}
+
+These do not add mathematical content; they just allow \texttt{simp} to pick the right \texttt{if}-branch without getting stuck.
+
+\section*{Step 6: SS diagonal condition on supports}
+
+For SS, you prove that every string in \texttt{supp0} has weight \(0\) modulo \(7\), and every string in \texttt{supp1} has weight \(4\) modulo \(7\):
+
+\begin{lstlisting}
+lemma supp0_SS : SSConditionSupport' a522 (0 : ZMod m) supp0 := by
+  intro s hs
+  have hs' : s = x00000 ∨ s = x01111 ∨ s = x10111 := by
+    simpa [supp0] using hs
+  rcases hs' with rfl | rfl | rfl <;> decide
+
+lemma supp1_SS : SSConditionSupport' a522 (4 : ZMod m) supp1 := by
+  intro s hs
+  have hs' : s = x00011 ∨ s = x00101 ∨ s = x00110 ∨ s = x11001 := by
+    simpa [supp1] using hs
+  rcases hs' with rfl | rfl | rfl | rfl <;> decide
+\end{lstlisting}
+
+Why \texttt{decide} works here: after case-splitting, each goal is a concrete equality in \(\mathbb{Z}_7\), and Lean can compute it.
+
+\section*{Step 7: optional residue-shift screen (classical distance \(\ge 2\))}
+
+You also prove the screen condition for this \((a,S)\):
+
+\begin{lstlisting}
+set_option linter.flexible false in
+lemma screen522 : ResidueShiftScreen a522 S522 := by
+  intro i j k hjk
+  fin_cases j <;> fin_cases k
+  · cases hjk rfl
+  · fin_cases i <;> (simp [S522, a522] ; decide)
+  · fin_cases i <;> (simp [S522, a522] ; decide)
+  · cases hjk rfl
+\end{lstlisting}
+
+This matches the paper's distance-2 classical screening idea: different residue classes cannot be Hamming-1 neighbors.
+
+\section*{Step 8: SS global-phase action via indicator states}
+
+The SS-to-global-phase theorem \texttt{Dact\_eq\_global\_of\_SS} is already in your library code. In the example you instantiate it on indicator states.
+
+First define indicator amplitude functions (over an abstract coefficient type \(\mathbb{k}\)):
+
+\begin{lstlisting}
+section Diagonal
+variable {k : Type*} [MonoidWithZero k]
+
+def ψ0 : State n k := fun s => if s ∈ supp0 then (1 : k) else 0
+def ψ1 : State n k := fun s => if s ∈ supp1 then (1 : k) else 0
+\end{lstlisting}
+
+Then show they satisfy SS in the \texttt{SSConditionState} form:
+
+\begin{lstlisting}
+lemma ψ0_SS : SSConditionState (𝕜 := k) a522 (0 : ZMod m) ψ0 := by
+  intro s hs
+  by_cases hmem : s ∈ supp0
+  · exact supp0_SS (s := s) hmem
+  · have : False := by simpa [ψ0, hmem] using hs
+    exact this.elim
+\end{lstlisting}
+
+and similarly for \(\psi_1\).
+
+Finally apply the global-phase theorem:
+
+\begin{lstlisting}
+theorem Dact_ψ0_eq_global (phase : ZMod m → k) :
+    Dact (𝕜 := k) phase a522 ψ0 = fun s => phase (0 : ZMod m) * ψ0 s := by
+  simpa using
+    (Dact_eq_global_of_SS (phase := phase) (a := a522) (bk := (0 : ZMod m)) (ψ := ψ0) ψ0_SS)
+
+theorem Dact_ψ1_eq_global (phase : ZMod m → k) :
+    Dact (𝕜 := k) phase a522 ψ1 = fun s => phase (4 : ZMod m) * ψ1 s := by
+  simpa using
+    (Dact_eq_global_of_SS (phase := phase) (a := a522) (bk := (4 : ZMod m)) (ψ := ψ1) ψ1_SS)
+\end{lstlisting}
+
+Interpretation:
+if you later set \(k=\mathbb{C}\) and \(\texttt{phase}(r)=\omega_7^{r}\),
+then \(\psi_0\) is an eigenstate with eigenvalue \(\omega_7^0=1\) and \(\psi_1\) with eigenvalue \(\omega_7^4\), i.e. \(\overline U=\mathrm{diag}(1,\omega_7^4)\).
+
+\section*{Step 9: probabilities for Z-expectations}
+
+You encode squared amplitudes as exact rationals:
+
+\begin{lstlisting}
+def prob0 : BitString n → ℚ :=
+  fun s =>
+    if s = x00000 then (3 : ℚ) / 7
+    else if s = x01111 then (2 : ℚ) / 7
+    else if s = x10111 then (2 : ℚ) / 7
+    else 0
+
+def prob1 : BitString n → ℚ :=
+  fun s =>
+    if s = x00011 then (1 : ℚ) / 7
+    else if s = x00101 then (1 : ℚ) / 7
+    else if s = x00110 then (3 : ℚ) / 7
+    else if s = x11001 then (2 : ℚ) / 7
+    else 0
+\end{lstlisting}
+
+These correspond to the paper's canonical solution:
+\[
+|0_L|^2 = \Bigl\{\tfrac{3}{7},\tfrac{2}{7},\tfrac{2}{7}\Bigr\},\qquad
+|1_L|^2 = \Bigl\{\tfrac{1}{7},\tfrac{1}{7},\tfrac{3}{7},\tfrac{2}{7}\Bigr\}.
+\]
+
+You then prove they are normalized (\(p\ge 0\) on support, sum \(=1\), zero off support) using \texttt{simp} plus \texttt{norm\_num}.
+
+\section*{Step 10: target Z expectations}
+
+You define the target expectation vector (0-based indices):
+
+\begin{lstlisting}
+def targetZ : Fin n → ℚ :=
+  ![(3 : ℚ) / 7, (3 : ℚ) / 7, (-1 : ℚ) / 7, (-1 : ℚ) / 7, (-1 : ℚ) / 7]
+\end{lstlisting}
+
+So \(\langle Z_0\rangle=\langle Z_1\rangle=3/7\) and \(\langle Z_2\rangle=\langle Z_3\rangle=\langle Z_4\rangle=-1/7\),
+which corresponds to the paper's sites \(1,2\) versus \(3,4,5\).
+
+\section*{Step 11: Z-type KL (distance-2 Z-marginals)}
+
+The statement \texttt{ZTypeKL'} says: each logical state has Z-expectation equal to the same target function at each site.
+
+Your proof works by finite case splits on \(j\in\{0,1\}\) and \(i\in\{0,1,2,3,4\}\), and then brute-force simplification:
+
+\begin{lstlisting}
+theorem canonical_ZTypeKL' :
+    ZTypeKL' K ![supp0, supp1] ![prob0, prob1] targetZ := by
+  classical
+  intro j i
+  fin_cases j <;> fin_cases i <;>
+    simp [ZTypeKL', zExpectation, zSign, targetZ,
+      supp0, supp1, prob0, prob1,
+      x00000, x01111, x10111, x00011, x00101, x00110, x11001] <;>
+    norm_num
+\end{lstlisting}
+
+Key point: the \texttt{simp} list explicitly includes the bitstring definitions \texttt{x00000}, \texttt{x01111}, etc., so the boolean tests \texttt{x01111 i} reduce to concrete \texttt{true/false}. That eliminates the ``stuck if'' goals you saw earlier, and \texttt{norm\_num} finishes the rational arithmetic.
+
+Finally, the unprimed KL statement \texttt{ZTypeKL} follows directly by comparing both sides to the target:
+
+\begin{lstlisting}
+theorem canonical_ZTypeKL :
+    ZTypeKL K ![supp0, supp1] ![prob0, prob1] := by
+  intro i j k
+  calc
+    zExpectation (![supp0, supp1] j) (![prob0, prob1] j) i = targetZ i := canonical_ZTypeKL' j i
+    _ = zExpectation (![supp0, supp1] k) (![prob0, prob1] k) i := (canonical_ZTypeKL' k i).symm
+\end{lstlisting}
+
+\section*{What the example certifies}
+
+At the end of \texttt{WorkedExample\_5\_2\_2}, you have machine-checked:
+
+\begin{itemize}
+\item The two supports are in the correct residue classes \(S_0\) and \(S_1\) for \((w,m)=( (1,1,2,2,2),7)\).
+\item Therefore, the induced diagonal action \texttt{Dact} is a global phase on each logical basis state (hence \(\overline U=\mathrm{diag}(1,\omega_7^4)\) under the usual choice \(\texttt{phase}(r)=\omega_7^r\)).
+\item With the canonical probabilities, both logical states have the same Z-site expectations, matching \(\{3/7,3/7,-1/7,-1/7,-1/7\}\).
+\end{itemize}
+
+This is exactly the ``Step 7'' verification you wanted: SS diagonal eigenvalue structure plus distance-2 Z-type KL equalities, for the explicit canonical solution.
+
+\end{document}
