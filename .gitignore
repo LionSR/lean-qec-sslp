@@ -41,6 +41,7 @@ _minted*/
 
 # Generated PDFs for SS writeups
 /SSv*.pdf
+/522example.pdf
 
 # TeXPad
 .texpadtmp/
