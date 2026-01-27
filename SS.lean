@@ -5,4 +5,8 @@ import SS.ResidueShiftScreen
 import SS.Disjointness
 import SS.DiagonalAction
 import SS.ZTypeKL
+import SS.BitStringFinset
+import SS.Combinatorics
+import SS.FixedWeightSlice
 import SS.Verify
+import SS.FamilyI

@@ -1,0 +1,273 @@
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Tactic
+
+import SS.Verify
+import SS.LambdaV2.Common
+
+/-!
+# LambdaV2, Family B
+
+This file formalizes **Family B** from `lambdav2.tex`.
+
+Parameters:
+* `n = 5` qubits
+* `m = 6`
+* weights `w = (1,1,1,5,3)`
+* residues `(S0,S1) = (0,2)`
+
+Each logical state has support size 4 and depends on a parameter `lam ∈ [0,1]`.
+-/
+
+namespace SS
+namespace LambdaV2
+namespace FamilyB
+
+open scoped BigOperators
+open Verify
+
+abbrev n : ℕ := 5
+abbrev m : ℕ := 6
+abbrev K : ℕ := 2
+
+local instance : NeZero (m : ℕ) := ⟨by decide⟩
+local instance : DecidableEq (BitString n) := by infer_instance
+
+/-- weights `w = (1,1,1,5,3)` in `ZMod 6` -/
+def a : Fin n → ZMod m := ![(1 : ZMod m), 1, 1, 5, 3]
+
+/-- residues `(S0,S1) = (0,2)` in `ZMod 6` -/
+def S : Fin K → ZMod m := ![(0 : ZMod m), 2]
+
+/-! ## Basis strings -/
+
+def x00000 : BitString n := ![false,false,false,false,false]
+
+def x00110 : BitString n := ![false,false,true,true,false]
+
+def x10010 : BitString n := ![true,false,false,true,false]
+
+def x11101 : BitString n := ![true,true,true,false,true]
+
+
+def x00011 : BitString n := ![false,false,false,true,true]
+
+def x01100 : BitString n := ![false,true,true,false,false]
+
+def x10100 : BitString n := ![true,false,true,false,false]
+
+def x11000 : BitString n := ![true,true,false,false,false]
+
+/-- Support `C0 ⊆ C_0(w)` -/
+def C0 : Finset (BitString n) := {x00000, x00110, x10010, x11101}
+
+/-- Support `C2 ⊆ C_2(w)` -/
+def C2 : Finset (BitString n) := {x00011, x01100, x10100, x11000}
+
+/-- Probabilities on `C0`, parameterized by `lam`. -/
+def prob0 (lam : ℚ) : BitString n → ℚ :=
+  probFour x00000 x00110 x10010 x11101 ((1 : ℚ) / 3) (lam / 3) ((1 - lam) / 3) ((1 : ℚ) / 3)
+
+/-- Probabilities on `C2`, parameterized by `lam`. -/
+def prob1 (lam : ℚ) : BitString n → ℚ :=
+  probFour x00011 x01100 x10100 x11000 ((1 : ℚ) / 3) (lam / 3) ((1 : ℚ) / 3) ((1 - lam) / 3)
+
+/-- Target Z expectations (matching the boxed formula in `lambdav2.tex`). -/
+def targetZ (lam : ℚ) : Fin n → ℚ :=
+  ![(2 * lam - 1) / 3, (1 : ℚ) / 3, (1 - 2 * lam) / 3, (1 : ℚ) / 3, (1 : ℚ) / 3]
+
+/-- Bundle the Family-B data as an `ExampleData` value (parameterized by `lam`). -/
+def ex (lam : ℚ) : ExampleData n m K :=
+  { a := a
+    S := S
+    supp := ![C0, C2]
+    prob := ![prob0 lam, prob1 lam]
+    targetZ := targetZ lam }
+
+/-! ## SS conditions and screen (purely finite, discharged by computation) -/
+
+lemma SS_C0 : SSConditionSupport' (m := m) a (S 0) C0 := by
+  native_decide
+
+lemma SS_C2 : SSConditionSupport' (m := m) a (S 1) C2 := by
+  native_decide
+
+lemma screen : ResidueShiftScreen (m := m) a S := by
+  native_decide
+
+/-! ## Probability normalization -/
+
+lemma isNormalized_prob0 (lam : ℚ) (hlam : 0 ≤ lam ∧ lam ≤ 1) :
+    IsNormalizedProb (n := n) C0 (prob0 lam) := by
+  have h12 : x00000 ≠ x00110 := by decide
+  have h13 : x00000 ≠ x10010 := by decide
+  have h14 : x00000 ≠ x11101 := by decide
+  have h23 : x00110 ≠ x10010 := by decide
+  have h24 : x00110 ≠ x11101 := by decide
+  have h34 : x10010 ≠ x11101 := by decide
+
+  have hp1 : 0 ≤ (1 : ℚ) / 3 := by norm_num
+  have hp2 : 0 ≤ lam / 3 := by
+    have h3 : 0 < (3 : ℚ) := by norm_num
+    exact div_nonneg hlam.1 (le_of_lt h3)
+  have hp3 : 0 ≤ (1 - lam) / 3 := by
+    have hnonneg : 0 ≤ (1 - lam) := sub_nonneg.2 hlam.2
+    have h3 : 0 < (3 : ℚ) := by norm_num
+    exact div_nonneg hnonneg (le_of_lt h3)
+  have hp4 : 0 ≤ (1 : ℚ) / 3 := by norm_num
+
+  have hsum : (1 : ℚ) / 3 + lam / 3 + (1 - lam) / 3 + (1 : ℚ) / 3 = 1 := by
+    field_simp
+    ring
+
+  simpa [C0, prob0] using
+    (isNormalizedProb_probFour (n := n)
+      x00000 x00110 x10010 x11101 ((1 : ℚ) / 3) (lam / 3) ((1 - lam) / 3) ((1 : ℚ) / 3)
+      h12 h13 h14 h23 h24 h34 hp1 hp2 hp3 hp4 hsum)
+
+lemma isNormalized_prob1 (lam : ℚ) (hlam : 0 ≤ lam ∧ lam ≤ 1) :
+    IsNormalizedProb (n := n) C2 (prob1 lam) := by
+  have h12 : x00011 ≠ x01100 := by decide
+  have h13 : x00011 ≠ x10100 := by decide
+  have h14 : x00011 ≠ x11000 := by decide
+  have h23 : x01100 ≠ x10100 := by decide
+  have h24 : x01100 ≠ x11000 := by decide
+  have h34 : x10100 ≠ x11000 := by decide
+
+  have hp1 : 0 ≤ (1 : ℚ) / 3 := by norm_num
+  have hp2 : 0 ≤ lam / 3 := by
+    have h3 : 0 < (3 : ℚ) := by norm_num
+    exact div_nonneg hlam.1 (le_of_lt h3)
+  have hp3 : 0 ≤ (1 : ℚ) / 3 := by norm_num
+  have hp4 : 0 ≤ (1 - lam) / 3 := by
+    have hnonneg : 0 ≤ (1 - lam) := sub_nonneg.2 hlam.2
+    have h3 : 0 < (3 : ℚ) := by norm_num
+    exact div_nonneg hnonneg (le_of_lt h3)
+
+  have hsum : (1 : ℚ) / 3 + lam / 3 + (1 : ℚ) / 3 + (1 - lam) / 3 = 1 := by
+    field_simp
+    ring
+
+  simpa [C2, prob1] using
+    (isNormalizedProb_probFour (n := n)
+      x00011 x01100 x10100 x11000 ((1 : ℚ) / 3) (lam / 3) ((1 : ℚ) / 3) ((1 - lam) / 3)
+      h12 h13 h14 h23 h24 h34 hp1 hp2 hp3 hp4 hsum)
+
+/-! ## Z-type KL (explicit computation) -/
+
+lemma zExpectation_C0 (lam : ℚ) :
+    ∀ i : Fin n, zExpectation (n := n) C0 (prob0 lam) i = targetZ lam i := by
+  intro i
+  have h12 : x00000 ≠ x00110 := by decide
+  have h13 : x00000 ≠ x10010 := by decide
+  have h14 : x00000 ≠ x11101 := by decide
+  have h23 : x00110 ≠ x10010 := by decide
+  have h24 : x00110 ≠ x11101 := by decide
+  have h34 : x10010 ≠ x11101 := by decide
+
+  have hrew :
+      zExpectation (n := n) C0 (prob0 lam) i
+        = ((1 : ℚ) / 3) * zSign x00000 i
+          + (lam / 3) * zSign x00110 i
+          + ((1 - lam) / 3) * zSign x10010 i
+          + ((1 : ℚ) / 3) * zSign x11101 i := by
+    simpa [C0, prob0] using
+      (zExpectation_probFour (n := n)
+        x00000 x00110 x10010 x11101 ((1 : ℚ) / 3) (lam / 3) ((1 - lam) / 3) ((1 : ℚ) / 3) i
+        h12 h13 h14 h23 h24 h34)
+
+  fin_cases i <;>
+    simp [hrew, targetZ, zSign, x00000, x00110, x10010, x11101] <;>
+    field_simp <;> ring_nf
+
+lemma zExpectation_C2 (lam : ℚ) :
+    ∀ i : Fin n, zExpectation (n := n) C2 (prob1 lam) i = targetZ lam i := by
+  intro i
+  have h12 : x00011 ≠ x01100 := by decide
+  have h13 : x00011 ≠ x10100 := by decide
+  have h14 : x00011 ≠ x11000 := by decide
+  have h23 : x01100 ≠ x10100 := by decide
+  have h24 : x01100 ≠ x11000 := by decide
+  have h34 : x10100 ≠ x11000 := by decide
+
+  have hrew :
+      zExpectation (n := n) C2 (prob1 lam) i
+        = ((1 : ℚ) / 3) * zSign x00011 i
+          + (lam / 3) * zSign x01100 i
+          + ((1 : ℚ) / 3) * zSign x10100 i
+          + ((1 - lam) / 3) * zSign x11000 i := by
+    simpa [C2, prob1] using
+      (zExpectation_probFour (n := n)
+        x00011 x01100 x10100 x11000 ((1 : ℚ) / 3) (lam / 3) ((1 : ℚ) / 3) ((1 - lam) / 3) i
+        h12 h13 h14 h23 h24 h34)
+
+  fin_cases i <;>
+    simp [hrew, targetZ, zSign, x00011, x01100, x10100, x11000] <;>
+    field_simp <;> ring_nf
+
+lemma zTypeKL' (lam : ℚ) : ZTypeKL' (n := n) K (![C0, C2]) (![prob0 lam, prob1 lam]) (targetZ lam) := by
+  intro j i
+  fin_cases j
+  · simpa using zExpectation_C0 (lam := lam) i
+  · simpa using zExpectation_C2 (lam := lam) i
+
+/-- Full bundled verification goal for Family B. -/
+theorem ex_ok (lam : ℚ) (hlam : 0 ≤ lam ∧ lam ≤ 1) : (ex lam).OK := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · intro k
+    fin_cases k
+    · simpa [ex] using SS_C0
+    · simpa [ex] using SS_C2
+  · simpa [ex] using screen
+  · intro k
+    fin_cases k
+    · simpa [ex] using isNormalized_prob0 (lam := lam) hlam
+    · simpa [ex] using isNormalized_prob1 (lam := lam) hlam
+  · simpa [ex] using zTypeKL' (lam := lam)
+
+/-! ## SigmaZ(lam) -/
+
+/-- `SigmaZ(lam)` computed from the target `Z`-marginals. -/
+def SigmaZ (lam : ℚ) : ℚ := LambdaV2.SigmaZ (n := n) (targetZ lam)
+
+lemma SigmaZ_eq_poly (lam : ℚ) : SigmaZ lam = (8 * (lam * lam) - 8 * lam + 5) / 9 := by
+  simp [SigmaZ, LambdaV2.SigmaZ, targetZ, Fin.sum_univ_five]
+  field_simp
+  ring
+
+/-- Range statement: over `lam ∈ [0,1]`, `SigmaZ(lam) ∈ [1/3, 5/9]`. -/
+theorem SigmaZ_range {lam : ℚ} (hlam : 0 ≤ lam ∧ lam ≤ 1) : (1 : ℚ) / 3 ≤ SigmaZ lam ∧ SigmaZ lam ≤ (5 : ℚ) / 9 := by
+  -- lower bound: SigmaZ - 1/3 = (8/9) * (lam - 1/2)^2 ≥ 0
+  have hlow : (1 : ℚ) / 3 ≤ SigmaZ lam := by
+    have hsq : 0 ≤ (lam - (1 : ℚ) / 2) * (lam - (1 : ℚ) / 2) := by
+      simpa using (mul_self_nonneg (lam - (1 : ℚ) / 2))
+    have h9pos : 0 < (9 : ℚ) := by norm_num
+    have hdiff :
+        SigmaZ lam - (1 : ℚ) / 3 = (8 * ((lam - (1 : ℚ) / 2) * (lam - (1 : ℚ) / 2))) / 9 := by
+      simp [SigmaZ_eq_poly]
+      field_simp
+      ring
+    have hsub : 0 ≤ SigmaZ lam - (1 : ℚ) / 3 := by
+      rw [hdiff]
+      refine div_nonneg (mul_nonneg (by norm_num) hsq) (le_of_lt h9pos)
+    exact (sub_nonneg).1 hsub
+
+  -- upper bound: 5/9 - SigmaZ = (8/9) * lam * (1-lam) ≥ 0
+  have hup : SigmaZ lam ≤ (5 : ℚ) / 9 := by
+    have hprod : 0 ≤ lam * (1 - lam) := by
+      refine mul_nonneg hlam.1 ?_
+      exact sub_nonneg.2 hlam.2
+    have h9pos : 0 < (9 : ℚ) := by norm_num
+    have hdiff : (5 : ℚ) / 9 - SigmaZ lam = (8 * (lam * (1 - lam))) / 9 := by
+      simp [SigmaZ_eq_poly]
+      field_simp
+      ring
+    have hsub : 0 ≤ (5 : ℚ) / 9 - SigmaZ lam := by
+      rw [hdiff]
+      refine div_nonneg (mul_nonneg (by norm_num) hprod) (le_of_lt h9pos)
+    exact (sub_nonneg).1 hsub
+
+  exact ⟨hlow, hup⟩
+
+end FamilyB
+end LambdaV2
+end SS
