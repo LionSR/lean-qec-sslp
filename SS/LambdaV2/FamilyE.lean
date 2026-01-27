@@ -61,19 +61,11 @@ def C4 : Finset (BitString n) := {x00111, x11010, x11001}
 
 /-- Probabilities on `C0`, parameterized by `lam`. -/
 def prob0 (lam : ℚ) : BitString n → ℚ :=
-  fun x =>
-    if x = x01011 then (1 : ℚ) / 2
-    else if x = x10110 then (1 - lam) / 2
-    else if x = x10101 then lam / 2
-    else 0
+  probThree x01011 x10110 x10101 ((1 : ℚ) / 2) ((1 - lam) / 2) (lam / 2)
 
 /-- Probabilities on `C4`, parameterized by `lam`. -/
 def prob1 (lam : ℚ) : BitString n → ℚ :=
-  fun x =>
-    if x = x00111 then (1 : ℚ) / 2
-    else if x = x11010 then (1 - lam) / 2
-    else if x = x11001 then lam / 2
-    else 0
+  probThree x00111 x11010 x11001 ((1 : ℚ) / 2) ((1 - lam) / 2) (lam / 2)
 
 /-- Target Z expectations (matching the boxed formula in `lambdav2.tex`). -/
 def targetZ (lam : ℚ) : Fin n → ℚ := ![0, 0, 0, lam - 1, -lam]
@@ -101,123 +93,91 @@ lemma screen : ResidueShiftScreen (m := m) a S := by
 
 lemma isNormalized_prob0 (lam : ℚ) (hlam : 0 ≤ lam ∧ lam ≤ 1) :
     IsNormalizedProb (n := n) C0 (prob0 lam) := by
-  classical
-  refine ⟨?_, ?_, ?_⟩
-  · intro x hx
-    have hx0 : x ≠ x01011 := by intro h; apply hx; simp [C0, h]
-    have hx1 : x ≠ x10110 := by intro h; apply hx; simp [C0, h]
-    have hx2 : x ≠ x10101 := by intro h; apply hx; simp [C0, h]
-    simp [prob0, hx0, hx1, hx2]
-  · intro x hx
-    have hx' : x = x01011 ∨ x = x10110 ∨ x = x10101 := by
-      simpa [C0] using hx
-    rcases hx' with rfl | rfl | rfl
-    · norm_num [prob0]
-    ·
-      have hnonneg : 0 ≤ (1 - lam) := sub_nonneg.2 hlam.2
-      have h2 : 0 < (2 : ℚ) := by norm_num
-      have : 0 ≤ (1 - lam) / 2 := div_nonneg hnonneg (le_of_lt h2)
-      simpa [prob0] using this
-    ·
-      have h2 : 0 < (2 : ℚ) := by norm_num
-      have : 0 ≤ lam / 2 := div_nonneg hlam.1 (le_of_lt h2)
-      simpa [prob0] using this
-  ·
-    have h0 : x01011 ∉ ({x10110, x10101} : Finset (BitString n)) := by decide
-    have h1 : x10110 ∉ ({x10101} : Finset (BitString n)) := by decide
-    have hsum := LambdaV2.sum_mem_three (f := prob0 lam) x01011 x10110 x10101 h0 h1
-    calc
-      (∑ x ∈ C0, prob0 lam x)
-          = prob0 lam x01011 + prob0 lam x10110 + prob0 lam x10101 := by
-              simpa [C0] using hsum
-      _ = (1 : ℚ) := by
-            have h10110_0 : x10110 ≠ x01011 := by decide
-            have h10101_0 : x10101 ≠ x01011 := by decide
-            have h10101_1 : x10101 ≠ x10110 := by decide
-            simp [prob0, h10110_0, h10101_0, h10101_1]
-            field_simp
-            ring
+  have h12 : x01011 ≠ x10110 := by decide
+  have h13 : x01011 ≠ x10101 := by decide
+  have h23 : x10110 ≠ x10101 := by decide
+
+  have hp1 : 0 ≤ (1 : ℚ) / 2 := by norm_num
+  have hp2 : 0 ≤ (1 - lam) / 2 := by
+    have hnonneg : 0 ≤ (1 - lam) := sub_nonneg.2 hlam.2
+    have h2 : 0 < (2 : ℚ) := by norm_num
+    exact div_nonneg hnonneg (le_of_lt h2)
+  have hp3 : 0 ≤ lam / 2 := by
+    have h2 : 0 < (2 : ℚ) := by norm_num
+    exact div_nonneg hlam.1 (le_of_lt h2)
+
+  have hsum : (1 : ℚ) / 2 + (1 - lam) / 2 + lam / 2 = 1 := by
+    field_simp
+    ring
+
+  simpa [C0, prob0] using
+    (isNormalizedProb_probThree (n := n)
+      x01011 x10110 x10101 ((1 : ℚ) / 2) ((1 - lam) / 2) (lam / 2)
+      h12 h13 h23 hp1 hp2 hp3 hsum)
 
 lemma isNormalized_prob1 (lam : ℚ) (hlam : 0 ≤ lam ∧ lam ≤ 1) :
     IsNormalizedProb (n := n) C4 (prob1 lam) := by
-  classical
-  refine ⟨?_, ?_, ?_⟩
-  · intro x hx
-    have hx0 : x ≠ x00111 := by intro h; apply hx; simp [C4, h]
-    have hx1 : x ≠ x11010 := by intro h; apply hx; simp [C4, h]
-    have hx2 : x ≠ x11001 := by intro h; apply hx; simp [C4, h]
-    simp [prob1, hx0, hx1, hx2]
-  · intro x hx
-    have hx' : x = x00111 ∨ x = x11010 ∨ x = x11001 := by
-      simpa [C4] using hx
-    rcases hx' with rfl | rfl | rfl
-    · norm_num [prob1]
-    ·
-      have hnonneg : 0 ≤ (1 - lam) := sub_nonneg.2 hlam.2
-      have h2 : 0 < (2 : ℚ) := by norm_num
-      have : 0 ≤ (1 - lam) / 2 := div_nonneg hnonneg (le_of_lt h2)
-      simpa [prob1] using this
-    ·
-      have h2 : 0 < (2 : ℚ) := by norm_num
-      have : 0 ≤ lam / 2 := div_nonneg hlam.1 (le_of_lt h2)
-      simpa [prob1] using this
-  ·
-    have h0 : x00111 ∉ ({x11010, x11001} : Finset (BitString n)) := by decide
-    have h1 : x11010 ∉ ({x11001} : Finset (BitString n)) := by decide
-    have hsum := LambdaV2.sum_mem_three (f := prob1 lam) x00111 x11010 x11001 h0 h1
-    calc
-      (∑ x ∈ C4, prob1 lam x)
-          = prob1 lam x00111 + prob1 lam x11010 + prob1 lam x11001 := by
-              simpa [C4] using hsum
-      _ = (1 : ℚ) := by
-            have h11010_0 : x11010 ≠ x00111 := by decide
-            have h11001_0 : x11001 ≠ x00111 := by decide
-            have h11001_1 : x11001 ≠ x11010 := by decide
-            simp [prob1, h11010_0, h11001_0, h11001_1]
-            field_simp
-            ring
+  have h12 : x00111 ≠ x11010 := by decide
+  have h13 : x00111 ≠ x11001 := by decide
+  have h23 : x11010 ≠ x11001 := by decide
+
+  have hp1 : 0 ≤ (1 : ℚ) / 2 := by norm_num
+  have hp2 : 0 ≤ (1 - lam) / 2 := by
+    have hnonneg : 0 ≤ (1 - lam) := sub_nonneg.2 hlam.2
+    have h2 : 0 < (2 : ℚ) := by norm_num
+    exact div_nonneg hnonneg (le_of_lt h2)
+  have hp3 : 0 ≤ lam / 2 := by
+    have h2 : 0 < (2 : ℚ) := by norm_num
+    exact div_nonneg hlam.1 (le_of_lt h2)
+
+  have hsum : (1 : ℚ) / 2 + (1 - lam) / 2 + lam / 2 = 1 := by
+    field_simp
+    ring
+
+  simpa [C4, prob1] using
+    (isNormalizedProb_probThree (n := n)
+      x00111 x11010 x11001 ((1 : ℚ) / 2) ((1 - lam) / 2) (lam / 2)
+      h12 h13 h23 hp1 hp2 hp3 hsum)
 
 /-! ## Z-type KL (explicit computation) -/
 
 lemma zExpectation_C0 (lam : ℚ) :
     ∀ i : Fin n, zExpectation (n := n) C0 (prob0 lam) i = targetZ lam i := by
-  classical
   intro i
-  fin_cases i
-  all_goals
-    have h0 : x01011 ∉ ({x10110, x10101} : Finset (BitString n)) := by decide
-    have h1 : x10110 ∉ ({x10101} : Finset (BitString n)) := by decide
+  have h12 : x01011 ≠ x10110 := by decide
+  have h13 : x01011 ≠ x10101 := by decide
+  have h23 : x10110 ≠ x10101 := by decide
 
-    have h10110_0 : x10110 ≠ x01011 := by decide
-    have h10101_0 : x10101 ≠ x01011 := by decide
-    have h10101_1 : x10101 ≠ x10110 := by decide
+  have hrew :
+      zExpectation (n := n) C0 (prob0 lam) i
+        = ((1 : ℚ) / 2) * zSign x01011 i
+          + ((1 - lam) / 2) * zSign x10110 i
+          + (lam / 2) * zSign x10101 i := by
+    simpa [C0, prob0] using
+      (zExpectation_probThree (n := n)
+        x01011 x10110 x10101 ((1 : ℚ) / 2) ((1 - lam) / 2) (lam / 2) i h12 h13 h23)
 
-    simp [zExpectation, C0, Finset.sum_insert, Finset.sum_singleton,
-      h0, h1, prob0, targetZ, zSign,
-      h10110_0, h10101_0, h10101_1,
-      x01011, x10110, x10101]
-    field_simp
-    ring_nf
+  rw [hrew]
+  fin_cases i <;> simp [targetZ, zSign, x01011, x10110, x10101] <;> ring
 
 lemma zExpectation_C4 (lam : ℚ) :
     ∀ i : Fin n, zExpectation (n := n) C4 (prob1 lam) i = targetZ lam i := by
-  classical
   intro i
-  fin_cases i
-  all_goals
-    have h0 : x00111 ∉ ({x11010, x11001} : Finset (BitString n)) := by decide
-    have h1 : x11010 ∉ ({x11001} : Finset (BitString n)) := by decide
+  have h12 : x00111 ≠ x11010 := by decide
+  have h13 : x00111 ≠ x11001 := by decide
+  have h23 : x11010 ≠ x11001 := by decide
 
-    have h11010_0 : x11010 ≠ x00111 := by decide
-    have h11001_0 : x11001 ≠ x00111 := by decide
-    have h11001_1 : x11001 ≠ x11010 := by decide
+  have hrew :
+      zExpectation (n := n) C4 (prob1 lam) i
+        = ((1 : ℚ) / 2) * zSign x00111 i
+          + ((1 - lam) / 2) * zSign x11010 i
+          + (lam / 2) * zSign x11001 i := by
+    simpa [C4, prob1] using
+      (zExpectation_probThree (n := n)
+        x00111 x11010 x11001 ((1 : ℚ) / 2) ((1 - lam) / 2) (lam / 2) i h12 h13 h23)
 
-    simp [zExpectation, C4, Finset.sum_insert, Finset.sum_singleton,
-      h0, h1, prob1, targetZ, zSign,
-      h11010_0, h11001_0, h11001_1,
-      x00111, x11010, x11001]
-    field_simp
-    ring_nf
+  rw [hrew]
+  fin_cases i <;> simp [targetZ, zSign, x00111, x11010, x11001] <;> ring
 
 lemma zTypeKL' (lam : ℚ) : ZTypeKL' (n := n) K (![C0, C4]) (![prob0 lam, prob1 lam]) (targetZ lam) := by
   intro j i
@@ -249,33 +209,10 @@ lemma SigmaZ_eq_poly (lam : ℚ) : SigmaZ lam = 2 * (lam * lam) - 2 * lam + 1 :=
   ring
 
 /-- Range statement: over `lam ∈ [0,1]`, `SigmaZ(lam) ∈ [1/2,1]`. -/
-theorem SigmaZ_range {lam : ℚ} (hlam : 0 ≤ lam ∧ lam ≤ 1) : (1 : ℚ) / 2 ≤ SigmaZ lam ∧ SigmaZ lam ≤ 1 := by
-  -- identical to Family A
-  have hlow : (1 : ℚ) / 2 ≤ SigmaZ lam := by
-    have hsq : 0 ≤ (lam - (1 : ℚ) / 2) * (lam - (1 : ℚ) / 2) := by
-      simpa using (mul_self_nonneg (lam - (1 : ℚ) / 2))
-    have hshift : SigmaZ lam - (1 : ℚ) / 2 = 2 * ((lam - (1 : ℚ) / 2) * (lam - (1 : ℚ) / 2)) := by
-      simp [SigmaZ_eq_poly]
-      field_simp
-      ring
-    have hsub : 0 ≤ SigmaZ lam - (1 : ℚ) / 2 := by
-      rw [hshift]
-      exact mul_nonneg (by norm_num) hsq
-    exact (sub_nonneg).1 hsub
-
-  have hup : SigmaZ lam ≤ 1 := by
-    have hprod : 0 ≤ lam * (1 - lam) := by
-      refine mul_nonneg hlam.1 ?_
-      exact sub_nonneg.2 hlam.2
-    have hshift : 1 - SigmaZ lam = 2 * (lam * (1 - lam)) := by
-      simp [SigmaZ_eq_poly]
-      ring
-    have hsub : 0 ≤ 1 - SigmaZ lam := by
-      rw [hshift]
-      exact mul_nonneg (by norm_num) hprod
-    exact (sub_nonneg).1 hsub
-
-  exact ⟨hlow, hup⟩
+theorem SigmaZ_range {lam : ℚ} (hlam : 0 ≤ lam ∧ lam ≤ 1) :
+    (1 : ℚ) / 2 ≤ SigmaZ lam ∧ SigmaZ lam ≤ 1 := by
+  rw [SigmaZ_eq_poly]
+  exact SigmaZ_typeI_range hlam
 
 end FamilyE
 end LambdaV2

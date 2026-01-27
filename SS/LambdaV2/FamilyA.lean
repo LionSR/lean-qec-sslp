@@ -165,9 +165,8 @@ lemma zExpectation_C0 (lam : ℚ) :
       (zExpectation_probThree (n := n)
         x10010 x11101 x01100 ((1 : ℚ) / 2) ((1 - lam) / 2) (lam / 2) i h12 h13 h23)
 
-  fin_cases i <;>
-    simp [hrew, targetZ, zSign, x10010, x11101, x01100] <;>
-    field_simp <;> ring
+  rw [hrew]
+  fin_cases i <;> simp [targetZ, zSign, x10010, x11101, x01100] <;> ring
 
 lemma zExpectation_C3 (lam : ℚ) :
     ∀ i : Fin n, zExpectation (n := n) C3 (prob1 lam) i = targetZ lam i := by
@@ -185,9 +184,8 @@ lemma zExpectation_C3 (lam : ℚ) :
       (zExpectation_probThree (n := n)
         x11000 x10111 x00110 ((1 : ℚ) / 2) ((1 - lam) / 2) (lam / 2) i h12 h13 h23)
 
-  fin_cases i <;>
-    simp [hrew, targetZ, zSign, x11000, x10111, x00110] <;>
-    field_simp <;> ring
+  rw [hrew]
+  fin_cases i <;> simp [targetZ, zSign, x11000, x10111, x00110] <;> ring
 
 lemma zTypeKL' (lam : ℚ) : ZTypeKL' (n := n) K (![C0, C3]) (![prob0 lam, prob1 lam]) (targetZ lam) := by
   intro j i
@@ -214,52 +212,15 @@ theorem ex_ok (lam : ℚ) (hlam : 0 ≤ lam ∧ lam ≤ 1) : (ex lam).OK := by
 /-- `SigmaZ(lam)` computed from the target `Z`-marginals. -/
 def SigmaZ (lam : ℚ) : ℚ := LambdaV2.SigmaZ (n := n) (targetZ lam)
 
-lemma SigmaZ_eq (lam : ℚ) : SigmaZ lam = (lam - 1) * (lam - 1) + lam * lam := by
-  -- only two sites contribute; the others are zero
-  simp [SigmaZ, LambdaV2.SigmaZ, targetZ, Fin.sum_univ_five]
-
 lemma SigmaZ_eq_poly (lam : ℚ) : SigmaZ lam = 2 * (lam * lam) - 2 * lam + 1 := by
-  simp [SigmaZ_eq]
+  simp [SigmaZ, LambdaV2.SigmaZ, targetZ, Fin.sum_univ_five]
   ring
 
 /-- Range statement: over `lam ∈ [0,1]`, `SigmaZ(lam) ∈ [1/2,1]`. -/
 theorem SigmaZ_range {lam : ℚ} (hlam : 0 ≤ lam ∧ lam ≤ 1) :
     (1 : ℚ) / 2 ≤ SigmaZ lam ∧ SigmaZ lam ≤ 1 := by
-  -- lower bound
-  have hlow : (1 : ℚ) / 2 ≤ SigmaZ lam := by
-    have hsq : 0 ≤ (lam - (1 : ℚ) / 2) * (lam - (1 : ℚ) / 2) := by
-      simpa using (mul_self_nonneg (lam - (1 : ℚ) / 2))
-
-    have hshift :
-        SigmaZ lam - (1 : ℚ) / 2
-          = 2 * ((lam - (1 : ℚ) / 2) * (lam - (1 : ℚ) / 2)) := by
-      simp [SigmaZ_eq_poly]
-      field_simp
-      ring
-
-    have hnonneg : 0 ≤ SigmaZ lam - (1 : ℚ) / 2 := by
-      rw [hshift]
-      exact mul_nonneg (by norm_num) hsq
-
-    linarith
-
-  -- upper bound
-  have hup : SigmaZ lam ≤ 1 := by
-    have hprod : 0 ≤ lam * (1 - lam) := by
-      refine mul_nonneg hlam.1 ?_
-      exact sub_nonneg.2 hlam.2
-
-    have hshift : 1 - SigmaZ lam = 2 * (lam * (1 - lam)) := by
-      simp [SigmaZ_eq_poly]
-      ring
-
-    have hnonneg : 0 ≤ 1 - SigmaZ lam := by
-      rw [hshift]
-      exact mul_nonneg (by norm_num) hprod
-
-    linarith
-
-  exact ⟨hlow, hup⟩
+  rw [SigmaZ_eq_poly]
+  exact SigmaZ_typeI_range hlam
 
 end FamilyA
 end LambdaV2

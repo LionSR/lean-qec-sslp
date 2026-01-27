@@ -175,9 +175,8 @@ lemma zExpectation_C0 (lam : ℚ) :
         x00000 x01111 x10111 x11000 ((1 : ℚ) / 3) (lam / 3) ((1 - lam) / 3) ((1 : ℚ) / 3) i
         h12 h13 h14 h23 h24 h34)
 
-  fin_cases i <;>
-    simp [hrew, targetZ, zSign, x00000, x01111, x10111, x11000] <;>
-    field_simp <;> ring_nf
+  rw [hrew]
+  fin_cases i <;> simp [targetZ, zSign, x00000, x01111, x10111, x11000] <;> ring
 
 lemma zExpectation_C4 (lam : ℚ) :
     ∀ i : Fin n, zExpectation (n := n) C4 (prob1 lam) i = targetZ lam i := by
@@ -200,9 +199,8 @@ lemma zExpectation_C4 (lam : ℚ) :
         x01001 x01100 x10010 x10100 ((1 : ℚ) / 3) (lam / 3) ((1 : ℚ) / 3) ((1 - lam) / 3) i
         h12 h13 h14 h23 h24 h34)
 
-  fin_cases i <;>
-    simp [hrew, targetZ, zSign, x01001, x01100, x10010, x10100] <;>
-    field_simp <;> ring_nf
+  rw [hrew]
+  fin_cases i <;> simp [targetZ, zSign, x01001, x01100, x10010, x10100] <;> ring
 
 lemma zTypeKL' (lam : ℚ) : ZTypeKL' (n := n) K (![C0, C4]) (![prob0 lam, prob1 lam]) (targetZ lam) := by
   intro j i
@@ -235,37 +233,10 @@ lemma SigmaZ_eq_poly (lam : ℚ) : SigmaZ lam = (8 * (lam * lam) - 8 * lam + 5) 
   ring
 
 /-- Range statement: over `lam ∈ [0,1]`, `SigmaZ(lam) ∈ [1/3, 5/9]`. -/
-theorem SigmaZ_range {lam : ℚ} (hlam : 0 ≤ lam ∧ lam ≤ 1) : (1 : ℚ) / 3 ≤ SigmaZ lam ∧ SigmaZ lam ≤ (5 : ℚ) / 9 := by
-  -- identical to Family B
-  have hlow : (1 : ℚ) / 3 ≤ SigmaZ lam := by
-    have hsq : 0 ≤ (lam - (1 : ℚ) / 2) * (lam - (1 : ℚ) / 2) := by
-      simpa using (mul_self_nonneg (lam - (1 : ℚ) / 2))
-    have h9pos : 0 < (9 : ℚ) := by norm_num
-    have hdiff :
-        SigmaZ lam - (1 : ℚ) / 3 = (8 * ((lam - (1 : ℚ) / 2) * (lam - (1 : ℚ) / 2))) / 9 := by
-      simp [SigmaZ_eq_poly]
-      field_simp
-      ring
-    have hsub : 0 ≤ SigmaZ lam - (1 : ℚ) / 3 := by
-      rw [hdiff]
-      refine div_nonneg (mul_nonneg (by norm_num) hsq) (le_of_lt h9pos)
-    exact (sub_nonneg).1 hsub
-
-  have hup : SigmaZ lam ≤ (5 : ℚ) / 9 := by
-    have hprod : 0 ≤ lam * (1 - lam) := by
-      refine mul_nonneg hlam.1 ?_
-      exact sub_nonneg.2 hlam.2
-    have h9pos : 0 < (9 : ℚ) := by norm_num
-    have hdiff : (5 : ℚ) / 9 - SigmaZ lam = (8 * (lam * (1 - lam))) / 9 := by
-      simp [SigmaZ_eq_poly]
-      field_simp
-      ring
-    have hsub : 0 ≤ (5 : ℚ) / 9 - SigmaZ lam := by
-      rw [hdiff]
-      refine div_nonneg (mul_nonneg (by norm_num) hprod) (le_of_lt h9pos)
-    exact (sub_nonneg).1 hsub
-
-  exact ⟨hlow, hup⟩
+theorem SigmaZ_range {lam : ℚ} (hlam : 0 ≤ lam ∧ lam ≤ 1) :
+    (1 : ℚ) / 3 ≤ SigmaZ lam ∧ SigmaZ lam ≤ (5 : ℚ) / 9 := by
+  rw [SigmaZ_eq_poly]
+  exact SigmaZ_typeII_range hlam
 
 end FamilyC
 end LambdaV2

@@ -156,51 +156,51 @@ lemma isNormalized_prob1 (lam : ℚ) (hlam : 0 ≤ lam ∧ lam ≤ 1) :
 
 lemma zExpectation_C0 (lam : ℚ) :
     ∀ i : Fin n, zExpectation (n := n) C0 (prob0 lam) i = targetZ lam i := by
-  classical
   intro i
-  fin_cases i
-  all_goals
-    have h0 : x00000 ∉ ({x01001, x11101, x11110} : Finset (BitString n)) := by decide
-    have h1 : x01001 ∉ ({x11101, x11110} : Finset (BitString n)) := by decide
-    have h2 : x11101 ∉ ({x11110} : Finset (BitString n)) := by decide
+  have h12 : x00000 ≠ x01001 := by decide
+  have h13 : x00000 ≠ x11101 := by decide
+  have h14 : x00000 ≠ x11110 := by decide
+  have h23 : x01001 ≠ x11101 := by decide
+  have h24 : x01001 ≠ x11110 := by decide
+  have h34 : x11101 ≠ x11110 := by decide
 
-    have h01001_0 : x01001 ≠ x00000 := by decide
-    have h11101_0 : x11101 ≠ x00000 := by decide
-    have h11101_1 : x11101 ≠ x01001 := by decide
-    have h11110_0 : x11110 ≠ x00000 := by decide
-    have h11110_1 : x11110 ≠ x01001 := by decide
-    have h11110_2 : x11110 ≠ x11101 := by decide
+  have hrew :
+      zExpectation (n := n) C0 (prob0 lam) i
+        = ((1 : ℚ) / 3) * zSign x00000 i
+          + (lam / 3) * zSign x01001 i
+          + ((1 - lam) / 3) * zSign x11101 i
+          + ((1 : ℚ) / 3) * zSign x11110 i := by
+    simpa [C0, prob0] using
+      (zExpectation_probFour (n := n)
+        x00000 x01001 x11101 x11110 ((1 : ℚ) / 3) (lam / 3) ((1 - lam) / 3) ((1 : ℚ) / 3) i
+        h12 h13 h14 h23 h24 h34)
 
-    simp [zExpectation, C0, Finset.sum_insert, Finset.sum_singleton,
-      h0, h1, h2, prob0, targetZ, zSign,
-      h01001_0, h11101_0, h11101_1, h11110_0, h11110_1, h11110_2,
-      x00000, x01001, x11101, x11110]
-    field_simp
-    ring_nf
+  rw [hrew]
+  fin_cases i <;> simp [targetZ, zSign, x00000, x01001, x11101, x11110] <;> ring
 
 lemma zExpectation_C4 (lam : ℚ) :
     ∀ i : Fin n, zExpectation (n := n) C4 (prob1 lam) i = targetZ lam i := by
-  classical
   intro i
-  fin_cases i
-  all_goals
-    have h0 : x00011 ∉ ({x01100, x10111, x11000} : Finset (BitString n)) := by decide
-    have h1 : x01100 ∉ ({x10111, x11000} : Finset (BitString n)) := by decide
-    have h2 : x10111 ∉ ({x11000} : Finset (BitString n)) := by decide
+  have h12 : x00011 ≠ x01100 := by decide
+  have h13 : x00011 ≠ x10111 := by decide
+  have h14 : x00011 ≠ x11000 := by decide
+  have h23 : x01100 ≠ x10111 := by decide
+  have h24 : x01100 ≠ x11000 := by decide
+  have h34 : x10111 ≠ x11000 := by decide
 
-    have h01100_0 : x01100 ≠ x00011 := by decide
-    have h10111_0 : x10111 ≠ x00011 := by decide
-    have h10111_1 : x10111 ≠ x01100 := by decide
-    have h11000_0 : x11000 ≠ x00011 := by decide
-    have h11000_1 : x11000 ≠ x01100 := by decide
-    have h11000_2 : x11000 ≠ x10111 := by decide
+  have hrew :
+      zExpectation (n := n) C4 (prob1 lam) i
+        = (lam / 3) * zSign x00011 i
+          + ((1 : ℚ) / 3) * zSign x01100 i
+          + ((1 - lam) / 3) * zSign x10111 i
+          + ((1 : ℚ) / 3) * zSign x11000 i := by
+    simpa [C4, prob1] using
+      (zExpectation_probFour (n := n)
+        x00011 x01100 x10111 x11000 (lam / 3) ((1 : ℚ) / 3) ((1 - lam) / 3) ((1 : ℚ) / 3) i
+        h12 h13 h14 h23 h24 h34)
 
-    simp [zExpectation, C4, Finset.sum_insert, Finset.sum_singleton,
-      h0, h1, h2, prob1, targetZ, zSign,
-      h01100_0, h10111_0, h10111_1, h11000_0, h11000_1, h11000_2,
-      x00011, x01100, x10111, x11000]
-    field_simp
-    ring_nf
+  rw [hrew]
+  fin_cases i <;> simp [targetZ, zSign, x00011, x01100, x10111, x11000] <;> ring
 
 lemma zTypeKL' (lam : ℚ) : ZTypeKL' (n := n) K (![C0, C4]) (![prob0 lam, prob1 lam]) (targetZ lam) := by
   intro j i
@@ -233,37 +233,10 @@ lemma SigmaZ_eq_poly (lam : ℚ) : SigmaZ lam = (8 * (lam * lam) - 8 * lam + 5) 
   ring
 
 /-- Range statement: over `lam ∈ [0,1]`, `SigmaZ(lam) ∈ [1/3, 5/9]`. -/
-theorem SigmaZ_range {lam : ℚ} (hlam : 0 ≤ lam ∧ lam ≤ 1) : (1 : ℚ) / 3 ≤ SigmaZ lam ∧ SigmaZ lam ≤ (5 : ℚ) / 9 := by
-  -- identical to Families B/C
-  have hlow : (1 : ℚ) / 3 ≤ SigmaZ lam := by
-    have hsq : 0 ≤ (lam - (1 : ℚ) / 2) * (lam - (1 : ℚ) / 2) := by
-      simpa using (mul_self_nonneg (lam - (1 : ℚ) / 2))
-    have h9pos : 0 < (9 : ℚ) := by norm_num
-    have hdiff :
-        SigmaZ lam - (1 : ℚ) / 3 = (8 * ((lam - (1 : ℚ) / 2) * (lam - (1 : ℚ) / 2))) / 9 := by
-      simp [SigmaZ_eq_poly]
-      field_simp
-      ring
-    have hsub : 0 ≤ SigmaZ lam - (1 : ℚ) / 3 := by
-      rw [hdiff]
-      refine div_nonneg (mul_nonneg (by norm_num) hsq) (le_of_lt h9pos)
-    exact (sub_nonneg).1 hsub
-
-  have hup : SigmaZ lam ≤ (5 : ℚ) / 9 := by
-    have hprod : 0 ≤ lam * (1 - lam) := by
-      refine mul_nonneg hlam.1 ?_
-      exact sub_nonneg.2 hlam.2
-    have h9pos : 0 < (9 : ℚ) := by norm_num
-    have hdiff : (5 : ℚ) / 9 - SigmaZ lam = (8 * (lam * (1 - lam))) / 9 := by
-      simp [SigmaZ_eq_poly]
-      field_simp
-      ring
-    have hsub : 0 ≤ (5 : ℚ) / 9 - SigmaZ lam := by
-      rw [hdiff]
-      refine div_nonneg (mul_nonneg (by norm_num) hprod) (le_of_lt h9pos)
-    exact (sub_nonneg).1 hsub
-
-  exact ⟨hlow, hup⟩
+theorem SigmaZ_range {lam : ℚ} (hlam : 0 ≤ lam ∧ lam ≤ 1) :
+    (1 : ℚ) / 3 ≤ SigmaZ lam ∧ SigmaZ lam ≤ (5 : ℚ) / 9 := by
+  rw [SigmaZ_eq_poly]
+  exact SigmaZ_typeII_range hlam
 
 end FamilyD
 end LambdaV2
