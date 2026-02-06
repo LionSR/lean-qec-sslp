@@ -1,0 +1,792 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{braket}
+\usepackage{hyperref}
+
+% Code formatting (portable: no external pygments needed)
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\color{green!40!black},
+  stringstyle=\color{red!50!black},
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible
+}
+
+\title{Analytical (Parametric) Solutions of KL-Derived Linear Systems \\ \large Why Python/SymPy is Enough for 5--6 Qubits}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Problem description}
+
+In many small quantum-code constructions (especially subset-sum / diagonal constructions), the Knill--Laflamme (KL) conditions for a chosen error set reduce to constraints on \emph{probabilities}
+\[
+X_j := |x_j|^2,\qquad Y_k := |y_k|^2,
+\]
+rather than directly on complex amplitudes $x_j,y_k$. This happens when all relevant operators are diagonal in the computational basis (e.g.\ single-qubit $Z_i$), so that expectation values depend only on squared magnitudes.
+
+A typical setup looks like this (matching the user example).
+
+\subsection*{Logical states supported on two classical sets}
+We fix two sets of computational basis strings $C_0$ and $C_1$ and define
+\[
+\ket{0_L}=\sum_{x\in C_0} x_x \ket{x},\qquad
+\ket{1_L}=\sum_{y\in C_1} y_y \ket{y}.
+\]
+Introduce probabilities
+\[
+X_x = |x_x|^2\ \ (x\in C_0), \qquad Y_y = |y_y|^2\ \ (y\in C_1),
+\]
+with normalization
+\[
+\sum_{x\in C_0} X_x = 1,\qquad \sum_{y\in C_1} Y_y = 1,
+\qquad X_x\ge 0,\ Y_y\ge 0.
+\]
+
+\subsection*{KL constraints from diagonal errors}
+For diagonal errors such as $Z_i$, the KL equal-expectation condition
+\[
+\langle 0_L|Z_i|0_L\rangle=\langle 1_L|Z_i|1_L\rangle
+\]
+becomes a linear equality in $X$'s and $Y$'s because $Z_i$ only contributes $\pm 1$ phases on basis states. Concretely, each expectation value is a signed sum of the relevant probabilities.
+
+For later reference, if $\ket{\psi}=\sum_x c_x\ket{x}$ and $p_x:=|c_x|^2$, then
+\begin{equation}
+\label{eq:Zi-diagonal}
+\bra{\psi}Z_i\ket{\psi}=\sum_x p_x\,(-1)^{x_i}.
+\end{equation}
+
+
+Therefore the full system has the structure
+\[
+A\mathbf{p} = \mathbf{b},\qquad \mathbf{p}\ge 0,
+\]
+together with two normalization constraints. Here $\mathbf{p}$ is the vector of all $X$'s and $Y$'s, and $A\mathbf{p}=\mathbf{b}$ collects the KL equalities.
+
+\subsection*{What we want as an \emph{analytical general solution}}
+A single feasible point is not enough. We want a \emph{parametric description}:
+\[
+\mathbf{p} = \mathbf{p}_0 + \sum_{r=1}^d t_r\, \mathbf{v}_r
+\]
+(with exact rational coefficients whenever possible), plus explicit inequalities describing the allowed region for the free parameters $t_r$ coming from $\mathbf{p}\ge 0$.
+
+Geometrically, the solution set is a \emph{polytope}: an affine subspace cut by nonnegativity (simplex-type) inequalities.
+
+\section{What Mathematica can do, and why we do not need it here}
+
+Mathematica (Wolfram Language) is excellent at:
+\begin{itemize}
+  \item solving linear equalities symbolically (e.g.\ \texttt{Solve}),
+  \item describing full solution sets of linear inequalities and equations (e.g.\ \texttt{Reduce}),
+  \item optimizing linear objectives (e.g.\ \texttt{LinearOptimization} / \texttt{LinearProgramming}).
+\end{itemize}
+
+If you ask Mathematica for a general solution of a linear system with inequalities, \texttt{Reduce} can sometimes return a very clean description. This is especially convenient when you want projection/elimination without thinking about which variables to keep free.
+
+\medskip
+\noindent
+\textbf{Why you do not need Mathematica here (for 5--6 qubits):}
+
+\begin{itemize}
+  \item The KL-derived systems you described are small and linear, and the coefficients are integers/rationals. Python's \texttt{sympy} does exact arithmetic over $\mathbb{Q}$ and gives analytical parametric solutions directly.
+  \item The key task is not heavy optimization; it is \emph{elimination and parametrization}. For small systems we can do this explicitly: solve equalities, choose free variables, substitute, and read off inequalities.
+  \item Mathematica's big advantage (strong automatic inequality elimination) becomes critical when the number of free parameters is large or you need a provably irredundant facet description. In your regime (5--6 qubits), it is usually unnecessary.
+\end{itemize}
+
+The main caveat is conceptual, not computational: this linear-probability method works when the KL constraints depend only on $|x|^2$ and $|y|^2$ (diagonal errors, disjoint support, etc.). If you enforce KL for errors that create off-diagonal overlaps (e.g.\ $X_i$-type errors), then constraints typically become \emph{quadratic} in amplitudes/phases and you leave the linear world. In that case you need polynomial methods (or relaxations), not just this pipeline.
+
+\section{What we do in Python (the method)}
+
+The Python approach is a direct algebraic pipeline:
+
+\subsection*{Step A: Build the linear equalities}
+Write all KL equalities and the two normalization equations as linear equations in variables
+\[
+X_0,\dots,X_{|C_0|-1},\qquad Y_0,\dots,Y_{|C_1|-1}.
+\]
+
+\subsection*{Step B: Solve equalities exactly (symbolic, rational)}
+Use SymPy's linear solving (via \texttt{solve} or matrix methods) to express a set of dependent variables in terms of chosen free variables. This yields an affine parametrization.
+
+\subsection*{Step C: Impose nonnegativity by substitution}
+Nonnegativity constraints $X_j\ge 0$ and $Y_k\ge 0$ become linear inequalities in the free parameters after substitution. Collect and simplify them.
+
+\subsection*{Step D: Present as a general analytical solution}
+The output is:
+\begin{itemize}
+  \item explicit formulas for all $X$'s and $Y$'s in terms of a small number of free parameters,
+  \item explicit linear constraints on those free parameters (e.g.\ $t_1\ge0$, $t_2\ge0$, $t_1+t_2\le 2/7$),
+  \item optionally, auto-generated \LaTeX\ for both formulas and inequalities.
+\end{itemize}
+
+\section{Worked example (matching the provided system)}
+
+In your concrete example there are
+\[
+(X_0,X_1,X_2)\quad \text{and}\quad (Y_0,\dots,Y_5)
+\]
+with KL constraints from single-qubit $Z_i$ giving five linear equations, plus two normalization equations.
+
+Solving the equalities yields the affine description
+\[
+X_0 = \frac{3}{7},\quad X_1=X_2=\frac{2}{7},
+\]
+\[
+Y_0 = \frac{1}{7}+Y_5,\quad Y_1=\frac{1}{7}+Y_4,\quad
+Y_2=\frac{3}{7}-Y_4-Y_5,\quad Y_3=\frac{2}{7}-Y_4-Y_5,
+\]
+and the inequalities $Y_k\ge 0$ reduce to
+\[
+Y_4\ge 0,\quad Y_5\ge 0,\quad Y_4+Y_5\le \frac{2}{7}.
+\]
+This is exactly the kind of ``general solution'' you want, and it is obtained by linear algebra plus inequality substitution.
+
+
+\section{Five-qubit examples: Families A--E (from \texttt{lambdav2.tex})}
+
+The file \texttt{lambdav2.tex} contains five explicit five-qubit constructions (Families A--E) built from subset-sum supports.
+For the purpose of this note, the subset-sum origin is not essential: once the two supports $C_0$ and $C_{S_1}$ are fixed, the ``shared $Z$-marginal'' KL constraints become a small linear feasibility problem in the probabilities $\{X_x\}_{x\in C_0}$ and $\{Y_y\}_{y\in C_{S_1}}$.
+
+In each family we impose:
+\[
+\sum_{x\in C_0} X_x = 1,\qquad \sum_{y\in C_{S_1}} Y_y = 1,\qquad X_x\ge 0,\ Y_y\ge 0,
+\]
+and for $i=1,\dots,5$,
+\[
+\sum_{x\in C_0} (-1)^{x_i} X_x \;=\; \sum_{y\in C_{S_1}} (-1)^{y_i} Y_y,
+\]
+which is exactly the condition $\langle 0_L|Z_i|0_L\rangle=\langle 1_L|Z_i|1_L\rangle$ written at the level of squared amplitudes.
+
+For Families A--E below, the affine solution space always has dimension $1$, so the feasible set is a line segment; this explains why \texttt{lambdav2.tex} presents each family using a single parameter $\lambda\in[0,1]$.
+For comparison, the worked example in Section~4 has \emph{two} free parameters.
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|c|c|c|c|c}
+Family & $m$ & $\mathbf w$ & $(S_0,S_1)$ & $|C_0|$ & $|C_{S_1}|$ & \#free & free param range \\
+\hline
+A & 6 & $(4,5,1,2,2)$ & $(0,3)$ & 3 & 3 & 1 & $Y_{00110}\in[0,\frac{1}{2}]$ \\
+B & 6 & $(1,1,1,5,3)$ & $(0,2)$ & 4 & 4 & 1 & $Y_{11000}\in[0,\frac{1}{3}]$ \\
+C & 6 & $(3,3,1,1,1)$ & $(0,4)$ & 4 & 4 & 1 & $Y_{10100}\in[0,\frac{1}{3}]$ \\
+D & 6 & $(3,1,3,5,5)$ & $(0,4)$ & 4 & 4 & 1 & $Y_{10111}\in[0,\frac{1}{3}]$ \\
+E & 8 & $(1,6,2,5,5)$ & $(0,4)$ & 3 & 3 & 1 & $Y_{11001}\in[0,\frac{1}{2}]$ \\
+\end{tabular}
+\caption{Summary of the five-qubit families A--E: support sizes, linear-system nullity, and the resulting one-parameter feasibility interval for a convenient free probability.}
+\end{table}
+
+\subsection{Family A: $(m,\mathbf w,S_0,S_1)=(6,(4,5,1,2,2),0,3)$}
+
+\paragraph{Supports.}
+\[
+C_0 = \{10010,\ 11101,\ 01100\},\qquad C_3 = \{11000,\ 10111,\ 00110\}.
+\]
+
+\paragraph{Variables.}
+For each $x\in C_0$ let $X_x:=|x_x|^2$, and for each $y\in C_3$ let $Y_y:=|y_y|^2$.
+Normalization and nonnegativity give $\sum_{x\in C_0}X_x=1$, $\sum_{y\in C_3}Y_y=1$, and all $X_x,Y_y\ge 0$.
+
+\paragraph{KL constraints from $Z_i$.}
+For $i=1,\dots,5$ we impose the shared $Z$-marginals
+\[
+\langle 0_L|Z_i|0_L\rangle=\langle 1_L|Z_i|1_L\rangle,
+\]
+which become linear equations in $\{X_x\}$ and $\{Y_y\}$ because $Z_i\ket{x}=(-1)^{x_i}\ket{x}$.
+The resulting linear system has 6 variables and rank 5, hence a 1-parameter affine solution set. After intersecting with nonnegativity, the feasible set is a convex polytope (here a line segment).
+
+\paragraph{General analytical solution.}
+\[
+\begin{aligned}
+X_{10010} = Y_{11000} &= \frac{1}{2}\\
+X_{11101} = Y_{10111} &= \frac{1}{2} - t\\
+X_{01100} = Y_{00110} &= t\\
+\text{with }&\quad 0 \leq t \wedge t \leq \frac{1}{2}.
+\end{aligned}
+\]
+\paragraph{One convenient choice of logical states.}
+Choosing real nonnegative amplitudes (phases can be added without affecting these $Z_i$ constraints), one may take
+\[
+\ket{0_L(t)} = \sqrt{\frac{1}{2}}\ket{10010} + \sqrt{\frac{1}{2} - t}\ket{11101} + \sqrt{t}\ket{01100},\qquad \ket{1_L(t)} = \sqrt{\frac{1}{2}}\ket{11000} + \sqrt{\frac{1}{2} - t}\ket{10111} + \sqrt{t}\ket{00110}.
+\]
+\paragraph{Relation to the $\lambda$ parametrization in \texttt{lambdav2.tex}.}
+In \texttt{lambdav2.tex} the family is written with $\lambda\in[0,1]$ so that the third probability equals $\lambda/2$. This corresponds to the reparametrization $t=\lambda/2$.
+
+
+\subsection{Family B: $(m,\mathbf w,S_0,S_1)=(6,(1,1,1,5,3),0,2)$}
+
+\paragraph{Supports.}
+\[
+C_0 = \{00000,\ 00110,\ 10010,\ 11101\},\qquad C_2 = \{00011,\ 01100,\ 10100,\ 11000\}.
+\]
+
+\paragraph{Variables.}
+For each $x\in C_0$ let $X_x:=|x_x|^2$, and for each $y\in C_2$ let $Y_y:=|y_y|^2$.
+Normalization and nonnegativity give $\sum_{x\in C_0}X_x=1$, $\sum_{y\in C_2}Y_y=1$, and all $X_x,Y_y\ge 0$.
+
+\paragraph{KL constraints from $Z_i$.}
+For $i=1,\dots,5$ we impose the shared $Z$-marginals
+\[
+\langle 0_L|Z_i|0_L\rangle=\langle 1_L|Z_i|1_L\rangle,
+\]
+which become linear equations in $\{X_x\}$ and $\{Y_y\}$ because $Z_i\ket{x}=(-1)^{x_i}\ket{x}$.
+The resulting linear system has 8 variables and rank 7, hence a 1-parameter affine solution set. After intersecting with nonnegativity, the feasible set is a convex polytope (here a line segment).
+
+\paragraph{General analytical solution.}
+\[
+\begin{aligned}
+X_{00000} = X_{11101} = Y_{00011} = Y_{10100} &= \frac{1}{3}\\
+X_{00110} = Y_{01100} &= \frac{1}{3} - t\\
+X_{10010} = Y_{11000} &= t\\
+\text{with }&\quad 0 \leq t \wedge t \leq \frac{1}{3}.
+\end{aligned}
+\]
+\paragraph{One convenient choice of logical states.}
+Choosing real nonnegative amplitudes (phases can be added without affecting these $Z_i$ constraints), one may take
+\[
+\ket{0_L(t)} = \sqrt{\frac{1}{3}}\ket{00000} + \sqrt{\frac{1}{3} - t}\ket{00110} + \sqrt{t}\ket{10010} + \sqrt{\frac{1}{3}}\ket{11101},\qquad \ket{1_L(t)} = \sqrt{\frac{1}{3}}\ket{00011} + \sqrt{\frac{1}{3} - t}\ket{01100} + \sqrt{\frac{1}{3}}\ket{10100} + \sqrt{t}\ket{11000}.
+\]
+\paragraph{Relation to the $\lambda$ parametrization in \texttt{lambdav2.tex}.}
+In \texttt{lambdav2.tex} the family is written with $\lambda\in[0,1]$ so that one of the varying probabilities equals $\lambda/3$ and the complementary one equals $(1-\lambda)/3$. With the present choice of free parameter $t$ (the $(1-\lambda)/3$ branch), one has $t=(1-\lambda)/3$.
+
+
+\subsection{Family C: $(m,\mathbf w,S_0,S_1)=(6,(3,3,1,1,1),0,4)$}
+
+\paragraph{Supports.}
+\[
+C_0 = \{00000,\ 01111,\ 10111,\ 11000\},\qquad C_4 = \{01001,\ 01100,\ 10010,\ 10100\}.
+\]
+
+\paragraph{Variables.}
+For each $x\in C_0$ let $X_x:=|x_x|^2$, and for each $y\in C_4$ let $Y_y:=|y_y|^2$.
+Normalization and nonnegativity give $\sum_{x\in C_0}X_x=1$, $\sum_{y\in C_4}Y_y=1$, and all $X_x,Y_y\ge 0$.
+
+\paragraph{KL constraints from $Z_i$.}
+For $i=1,\dots,5$ we impose the shared $Z$-marginals
+\[
+\langle 0_L|Z_i|0_L\rangle=\langle 1_L|Z_i|1_L\rangle,
+\]
+which become linear equations in $\{X_x\}$ and $\{Y_y\}$ because $Z_i\ket{x}=(-1)^{x_i}\ket{x}$.
+The resulting linear system has 8 variables and rank 7, hence a 1-parameter affine solution set. After intersecting with nonnegativity, the feasible set is a convex polytope (here a line segment).
+
+\paragraph{General analytical solution.}
+\[
+\begin{aligned}
+X_{00000} = X_{11000} = Y_{01001} = Y_{10010} &= \frac{1}{3}\\
+X_{01111} = Y_{01100} &= \frac{1}{3} - t\\
+X_{10111} = Y_{10100} &= t\\
+\text{with }&\quad 0 \leq t \wedge t \leq \frac{1}{3}.
+\end{aligned}
+\]
+\paragraph{One convenient choice of logical states.}
+Choosing real nonnegative amplitudes (phases can be added without affecting these $Z_i$ constraints), one may take
+\[
+\ket{0_L(t)} = \sqrt{\frac{1}{3}}\ket{00000} + \sqrt{\frac{1}{3} - t}\ket{01111} + \sqrt{t}\ket{10111} + \sqrt{\frac{1}{3}}\ket{11000},\qquad \ket{1_L(t)} = \sqrt{\frac{1}{3}}\ket{01001} + \sqrt{\frac{1}{3} - t}\ket{01100} + \sqrt{\frac{1}{3}}\ket{10010} + \sqrt{t}\ket{10100}.
+\]
+\paragraph{Relation to the $\lambda$ parametrization in \texttt{lambdav2.tex}.}
+In \texttt{lambdav2.tex} the family is written with $\lambda\in[0,1]$ so that one of the varying probabilities equals $\lambda/3$ and the complementary one equals $(1-\lambda)/3$. With the present choice of free parameter $t$ (the $(1-\lambda)/3$ branch), one has $t=(1-\lambda)/3$.
+
+
+\subsection{Family D: $(m,\mathbf w,S_0,S_1)=(6,(3,1,3,5,5),0,4)$}
+
+\paragraph{Supports.}
+\[
+C_0 = \{00000,\ 01001,\ 11101,\ 11110\},\qquad C_4 = \{00011,\ 01100,\ 10111,\ 11000\}.
+\]
+
+\paragraph{Variables.}
+For each $x\in C_0$ let $X_x:=|x_x|^2$, and for each $y\in C_4$ let $Y_y:=|y_y|^2$.
+Normalization and nonnegativity give $\sum_{x\in C_0}X_x=1$, $\sum_{y\in C_4}Y_y=1$, and all $X_x,Y_y\ge 0$.
+
+\paragraph{KL constraints from $Z_i$.}
+For $i=1,\dots,5$ we impose the shared $Z$-marginals
+\[
+\langle 0_L|Z_i|0_L\rangle=\langle 1_L|Z_i|1_L\rangle,
+\]
+which become linear equations in $\{X_x\}$ and $\{Y_y\}$ because $Z_i\ket{x}=(-1)^{x_i}\ket{x}$.
+The resulting linear system has 8 variables and rank 7, hence a 1-parameter affine solution set. After intersecting with nonnegativity, the feasible set is a convex polytope (here a line segment).
+
+\paragraph{General analytical solution.}
+\[
+\begin{aligned}
+X_{00000} = X_{11110} = Y_{01100} = Y_{11000} &= \frac{1}{3}\\
+X_{01001} = Y_{00011} &= \frac{1}{3} - t\\
+X_{11101} = Y_{10111} &= t\\
+\text{with }&\quad 0 \leq t \wedge t \leq \frac{1}{3}.
+\end{aligned}
+\]
+\paragraph{One convenient choice of logical states.}
+Choosing real nonnegative amplitudes (phases can be added without affecting these $Z_i$ constraints), one may take
+\[
+\ket{0_L(t)} = \sqrt{\frac{1}{3}}\ket{00000} + \sqrt{\frac{1}{3} - t}\ket{01001} + \sqrt{t}\ket{11101} + \sqrt{\frac{1}{3}}\ket{11110},\qquad \ket{1_L(t)} = \sqrt{\frac{1}{3} - t}\ket{00011} + \sqrt{\frac{1}{3}}\ket{01100} + \sqrt{t}\ket{10111} + \sqrt{\frac{1}{3}}\ket{11000}.
+\]
+\paragraph{Relation to the $\lambda$ parametrization in \texttt{lambdav2.tex}.}
+In \texttt{lambdav2.tex} the family is written with $\lambda\in[0,1]$ so that one of the varying probabilities equals $\lambda/3$ and the complementary one equals $(1-\lambda)/3$. With the present choice of free parameter $t$ (the $(1-\lambda)/3$ branch), one has $t=(1-\lambda)/3$.
+
+
+\subsection{Family E: $(m,\mathbf w,S_0,S_1)=(8,(1,6,2,5,5),0,4)$}
+
+\paragraph{Supports.}
+\[
+C_0 = \{01011,\ 10110,\ 10101\},\qquad C_4 = \{00111,\ 11010,\ 11001\}.
+\]
+
+\paragraph{Variables.}
+For each $x\in C_0$ let $X_x:=|x_x|^2$, and for each $y\in C_4$ let $Y_y:=|y_y|^2$.
+Normalization and nonnegativity give $\sum_{x\in C_0}X_x=1$, $\sum_{y\in C_4}Y_y=1$, and all $X_x,Y_y\ge 0$.
+
+\paragraph{KL constraints from $Z_i$.}
+For $i=1,\dots,5$ we impose the shared $Z$-marginals
+\[
+\langle 0_L|Z_i|0_L\rangle=\langle 1_L|Z_i|1_L\rangle,
+\]
+which become linear equations in $\{X_x\}$ and $\{Y_y\}$ because $Z_i\ket{x}=(-1)^{x_i}\ket{x}$.
+The resulting linear system has 6 variables and rank 5, hence a 1-parameter affine solution set. After intersecting with nonnegativity, the feasible set is a convex polytope (here a line segment).
+
+\paragraph{General analytical solution.}
+\[
+\begin{aligned}
+X_{01011} = Y_{00111} &= \frac{1}{2}\\
+X_{10110} = Y_{11010} &= \frac{1}{2} - t\\
+X_{10101} = Y_{11001} &= t\\
+\text{with }&\quad 0 \leq t \wedge t \leq \frac{1}{2}.
+\end{aligned}
+\]
+\paragraph{One convenient choice of logical states.}
+Choosing real nonnegative amplitudes (phases can be added without affecting these $Z_i$ constraints), one may take
+\[
+\ket{0_L(t)} = \sqrt{\frac{1}{2}}\ket{01011} + \sqrt{\frac{1}{2} - t}\ket{10110} + \sqrt{t}\ket{10101},\qquad \ket{1_L(t)} = \sqrt{\frac{1}{2}}\ket{00111} + \sqrt{\frac{1}{2} - t}\ket{11010} + \sqrt{t}\ket{11001}.
+\]
+\paragraph{Relation to the $\lambda$ parametrization in \texttt{lambdav2.tex}.}
+In \texttt{lambdav2.tex} the family is written with $\lambda\in[0,1]$ so that the third probability equals $\lambda/2$. This corresponds to the reparametrization $t=\lambda/2$.
+
+
+\section{Python code (SymPy) to obtain analytical general solutions}
+
+This section contains self-contained Python code that:
+\begin{itemize}
+  \item builds the KL ``shared $Z$-marginal'' equations from two supports $C_0$ and $C_{S_1}$,
+  \item solves the linear equalities exactly (over $\mathbb{Q}$) using \texttt{sympy},
+  \item identifies the true free probability parameters (the affine nullspace),
+  \item derives the allowed parameter region coming from nonnegativity.
+\end{itemize}
+
+\noindent
+\textbf{Remark.} This code solves the \emph{linear-probability} KL constraints (diagonal errors).
+If you add KL constraints for non-diagonal errors (e.g.\ $X_i$), the constraints become quadratic in amplitudes/phases and this LP-style pipeline no longer applies.
+
+\begin{lstlisting}[language=Python]
+import sympy as sp
+from sympy.solvers.inequalities import reduce_inequalities
+
+def z_sign(bitstring, i):
+    # eigenvalue of Z_i on |bitstring> ( +1 for 0, -1 for 1 )
+    return 1 if bitstring[i] == "0" else -1
+
+def build_Z_marginal_system(C0, C1):
+    # Build linear equalities:
+    #   <0_L|Z_i|0_L> = <1_L|Z_i|1_L> for i=1..n,
+    # plus separate normalizations:
+    #   sum_{x in C0} X_x = 1,  sum_{y in C1} Y_y = 1.
+    n = len(C0[0])
+    X = sp.symbols(f"X0:{len(C0)}", real=True)
+    Y = sp.symbols(f"Y0:{len(C1)}", real=True)
+    vars_all = list(X) + list(Y)
+
+    eqs = []
+    for i in range(n):
+        lhs = sum(X[j] * z_sign(C0[j], i) for j in range(len(C0)))
+        rhs = sum(Y[k] * z_sign(C1[k], i) for k in range(len(C1)))
+        eqs.append(sp.Eq(lhs, rhs))
+
+    eqs.append(sp.Eq(sum(X), 1))
+    eqs.append(sp.Eq(sum(Y), 1))
+
+    return X, Y, vars_all, eqs
+
+def solve_general_probabilities(C0, C1):
+    # Return an exact affine solution set for probabilities, plus nonnegativity constraints.
+    # Output:
+    #   mapping   : dict var -> affine expression in free variables
+    #   free_vars : list of free variables (a subset of vars_all) left by linsolve
+    #   region    : if len(free_vars)==1, a simplified interval constraint; otherwise a list of inequalities
+
+    X, Y, vars_all, eqs = build_Z_marginal_system(C0, C1)
+
+    sol_set = sp.linsolve(eqs, vars_all)
+    if not sol_set:
+        raise ValueError("No solutions: the linear constraints are inconsistent.")
+
+    sol_tuple = list(sol_set)[0]
+    mapping = {v: sp.simplify(expr) for v, expr in zip(vars_all, sol_tuple)}
+
+    # SymPy represents free parameters either by leaving some variables unchanged
+    # (mapping[v] == v) or by introducing internal parameters.
+    free_vars = [v for v in vars_all if sp.simplify(mapping[v] - v) == 0]
+
+    # Nonnegativity constraints: all probabilities >= 0
+    ineqs = [sp.Ge(mapping[v], 0) for v in vars_all]
+    ineqs = [sp.simplify(i) for i in ineqs if i != True]
+
+    if len(free_vars) == 0:
+        # Unique solution: either feasible or infeasible (check inequalities).
+        region = True if all(sp.simplify(i) != False for i in ineqs) else False
+        return mapping, free_vars, region
+
+    if len(free_vars) == 1:
+        # In 1D, reduce to a clean interval like 0 <= t <= 1/3.
+        t = free_vars[0]
+        region = sp.simplify(reduce_inequalities(ineqs, t))
+        return mapping, free_vars, region
+
+    # For >=2 parameters, return the inequality list (still exact and linear).
+    return mapping, free_vars, ineqs
+
+def pretty_print_solution(C0, C1, mapping, free_vars, region):
+    # Print the solution in terms of codewords rather than X0,X1,... and Y0,Y1,...
+    X_syms = [s for s in mapping.keys() if str(s).startswith("X")]
+    Y_syms = [s for s in mapping.keys() if str(s).startswith("Y")]
+    X_syms = sorted(X_syms, key=lambda s: int(str(s)[1:]))  # X0,X1,...
+    Y_syms = sorted(Y_syms, key=lambda s: int(str(s)[1:]))  # Y0,Y1,...
+
+    print("Free variables:", free_vars)
+    print("Region:", region)
+    print("Probabilities on C0:")
+    for j, x in enumerate(C0):
+        print(f"  X_{{{x}}} = {mapping[X_syms[j]]}")
+    print("Probabilities on C1:")
+    for k, y in enumerate(C1):
+        print(f"  Y_{{{y}}} = {mapping[Y_syms[k]]}")
+
+# --------------------------
+# Examples: Families A--E (supports taken from lambdav2.tex)
+# --------------------------
+families = {
+    "A": (["10010","11101","01100"], ["11000","10111","00110"]),
+    "B": (["00000","00110","10010","11101"], ["00011","01100","10100","11000"]),
+    "C": (["00000","01111","10111","11000"], ["01001","01100","10010","10100"]),
+    "D": (["00000","01001","11101","11110"], ["00011","01100","10111","11000"]),
+    "E": (["01011","10110","10101"], ["00111","11010","11001"]),
+}
+
+for name, (C0, C1) in families.items():
+    print("\\n=== Family", name, "===")
+    mapping, free_vars, region = solve_general_probabilities(C0, C1)
+    pretty_print_solution(C0, C1, mapping, free_vars, region)
+\end{lstlisting}
+
+\section{How to use this at scale}
+
+For many instances (many small codes), the scalable pattern is:
+
+\begin{itemize}
+  \item Generate the KL linear equalities automatically from your classical sets $C_0,C_1$ and your error list (e.g.\ $Z_i$).
+  \item Choose free parameters in a consistent, human-readable way (for example, keep the last few $Y$'s free).
+  \item Call \texttt{affine\_polytope\_solution} to get exact formulas and constraints.
+  \item Emit \LaTeX\ by \texttt{latex\_report} and paste into your writeup, or auto-write a \texttt{.tex} snippet per code family.
+\end{itemize}
+
+In the common situation where the number of free parameters is only 1--3, the resulting inequalities are typically already as clean as the Mathematica \texttt{Reduce} output, without needing any heavier machinery.
+
+\section{Summary}
+
+When KL conditions reduce to linear constraints on probabilities, the ``general analytical solution'' is a polytope description: an affine parametrization plus linear inequalities. For 5--6 qubits, Python + SymPy is enough to derive these solutions exactly (over rationals), produce compact parametric families, and export \LaTeX. Mathematica is convenient but not necessary in this regime.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+\section{Appendix: How to solve these KL-derived LPs analytically (and why $\mathrm{conv}(V_i)$ matters)}
+\label{sec:appendix-procedure}
+
+This appendix expands on the workflow discussed in the chat: in the distance-$2$ SSLP regime, the KL constraints for single-qubit $Z_i$ errors become a \emph{linear feasibility problem} in the probability variables. The ``analytical general solution'' is obtained by (i) exact linear algebra over $\mathbb{Q}$ (Gaussian elimination / RREF) and then (ii) imposing nonnegativity, which cuts out a convex polytope in the free-parameter space.
+
+\subsection{Step-by-step analytical procedure}
+
+Fix two classical supports $C_0$ and $C_1$ (coming from subset-sum classes, or any other construction). Write
+\[
+\ket{0_L}=\sum_{x\in C_0} a_x\ket{x},\qquad
+\ket{1_L}=\sum_{y\in C_1} b_y\ket{y},
+\]
+with probabilities
+\[
+X_x:=|a_x|^2\ (x\in C_0),\qquad Y_y:=|b_y|^2\ (y\in C_1),
+\]
+subject to
+\[
+\sum_{x\in C_0}X_x=1,\qquad \sum_{y\in C_1}Y_y=1,\qquad X_x\ge 0,\ Y_y\ge 0.
+\]
+
+\paragraph{Step 1 (encode $Z_i$ by sign patterns).}
+For a bitstring $x\in\{0,1\}^n$, define its \emph{$Z$-sign vector}
+\[
+ s(x)\in\{\pm 1\}^n,\qquad s_i(x):=(-1)^{x_i}.
+\]
+This records the eigenvalues of the single-site operators $Z_i$ on $\ket{x}$.
+
+\paragraph{Step 2 (write the shared $Z$-marginal equalities).}
+Using $Z_i\ket{x}=(-1)^{x_i}\ket{x}$ and the diagonal formula \eqref{eq:Zi-diagonal}, the KL equalities
+\[
+\bra{0_L}Z_i\ket{0_L}=\bra{1_L}Z_i\ket{1_L}\qquad (i=1,\dots,n)
+\]
+become
+\[
+\sum_{x\in C_0} s_i(x)\,X_x\;=\;\sum_{y\in C_1} s_i(y)\,Y_y\qquad (i=1,\dots,n).
+\]
+Together with the two normalization equations, these are linear equalities over $\mathbb{Q}$.
+
+\paragraph{Step 3 (matrix form).}
+Order the supports as $C_0=\{x^{(1)},\dots,x^{(N_0)}\}$ and $C_1=\{y^{(1)},\dots,y^{(N_1)}\}$. Form the integer matrices
+\[
+M_0:=\big[s(x^{(1)})\ \cdots\ s(x^{(N_0)})\big]\in\mathbb{Z}^{n\times N_0},
+\qquad
+M_1:=\big[s(y^{(1)})\ \cdots\ s(y^{(N_1)})\big]\in\mathbb{Z}^{n\times N_1}.
+\]
+Let $X\in\mathbb{R}^{N_0}$ and $Y\in\mathbb{R}^{N_1}$ be the probability vectors. Then
+\[
+\big(\bra{0_L}Z_1\ket{0_L},\dots,\bra{0_L}Z_n\ket{0_L}\big)=M_0X,
+\qquad
+\big(\bra{1_L}Z_1\ket{1_L},\dots,\bra{1_L}Z_n\ket{1_L}\big)=M_1Y.
+\]
+The shared-marginal constraints are
+\begin{equation}
+\label{eq:matrix-ZKL}
+M_0X=M_1Y,
+\end{equation}
+plus
+\begin{equation}
+\label{eq:matrix-norm}
+\mathbf{1}^TX=1,\qquad \mathbf{1}^TY=1.
+\end{equation}
+Equivalently, stack $p:=(X,Y)\in\mathbb{R}^{N_0+N_1}$ and write
+\[
+A p=b
+\]
+with $A\in\mathbb{Z}^{(n+2)\times(N_0+N_1)}$.
+
+\paragraph{Step 4 (Gaussian elimination / RREF over $\mathbb{Q}$).}
+Compute the row-reduced echelon form of the augmented matrix $[A\mid b]$ over exact rationals. This yields an \emph{affine solution space}
+\[
+ p=p_{\mathrm{part}}+\sum_{r=1}^d t_r v_r,
+\]
+where $d$ is the number of free parameters (the nullity of $A$).
+
+\paragraph{Step 5 (impose nonnegativity: a polytope in parameter space).}
+Substitute the affine parametrization into the inequalities $p\ge 0$. Each coordinate inequality becomes linear in $(t_1,\dots,t_d)$:
+\[
+\alpha_0+\sum_{r=1}^d \alpha_r t_r\ge 0.
+\]
+Hence the feasible parameter set is a convex polytope
+\[
+\mathcal{P}:=\{t\in\mathbb{R}^d: Bt\le c\}.
+\]
+This is the step where ``is the convex region empty?'' is decided: the system is feasible iff $\mathcal{P}\neq\varnothing$.
+
+\paragraph{Step 6 (simplify inequalities).}
+In small dimensions ($d\le 2$ or $3$), one usually simplifies by hand:
+\begin{itemize}
+\item In $d=1$, all constraints reduce to an interval $t\in[t_{\min},t_{\max}]$.
+\item In $d=2$, the region is a polygon; redundant constraints can often be dropped by inspection.
+\item Systematically, one can use Fourier--Motzkin elimination or a vertex computation, but for $5$--$6$ qubits it is typically overkill.
+\end{itemize}
+
+\paragraph{Step 7 (lift back to amplitudes).}
+Once probabilities are fixed, one convenient normalized choice is to take real nonnegative amplitudes
+\[
+\ket{0_L(t)}=\sum_{x\in C_0} \sqrt{X_x(t)}\,\ket{x},\qquad
+\ket{1_L(t)}=\sum_{y\in C_1} \sqrt{Y_y(t)}\,\ket{y}.
+\]
+Phases $e^{i\phi_x},e^{i\theta_y}$ may be inserted if desired; they do not affect the diagonal $Z_i$ expectations.
+
+\subsection{The convex-hull viewpoint and $\mathrm{conv}(V_i)$}
+\label{subsec:convVi}
+
+The same linear feasibility problem has a very useful geometric interpretation.
+
+\paragraph{Definition of $V_0,V_1$ and their convex hulls.}
+From the supports define the finite vertex sets
+\[
+V_0:=\{s(x):x\in C_0\}\subseteq\{\pm 1\}^n,\qquad
+V_1:=\{s(y):y\in C_1\}\subseteq\{\pm 1\}^n.
+\]
+Their convex hulls are
+\[
+\mathrm{conv}(V_0)=\Big\{\sum_{x\in C_0} X_x\,s(x): X_x\ge 0,\ \sum_{x\in C_0}X_x=1\Big\},
+\]
+\[
+\mathrm{conv}(V_1)=\Big\{\sum_{y\in C_1} Y_y\,s(y): Y_y\ge 0,\ \sum_{y\in C_1}Y_y=1\Big\}.
+\]
+Thus $\mathrm{conv}(V_i)$ is exactly the set of all achievable single-site $Z$-expectation vectors from probability distributions supported on $C_i$.
+
+\paragraph{Why it is equivalent to the $Z$-KL equalities.}
+Define
+\[
+ t_0:=\big(\bra{0_L}Z_1\ket{0_L},\dots,\bra{0_L}Z_n\ket{0_L}\big)=M_0X\in\mathrm{conv}(V_0),
+\]
+\[
+ t_1:=\big(\bra{1_L}Z_1\ket{1_L},\dots,\bra{1_L}Z_n\ket{1_L}\big)=M_1Y\in\mathrm{conv}(V_1).
+\]
+The shared-marginal constraints $t_0=t_1$ are therefore equivalent to the existence of a common vector
+\[
+ t\in \mathrm{conv}(V_0)\cap \mathrm{conv}(V_1).
+\]
+
+\paragraph{When do the shared $Z$-marginals vary with LP parameters?}
+Two different phenomena can occur:
+\begin{itemize}
+\item The affine feasibility set in $(X,Y)$ can have positive dimension (free parameters), but the induced marginal vector $t$ can still be fixed.
+\item The marginal vector $t$ varies with parameters exactly when $\mathrm{conv}(V_0)\cap\mathrm{conv}(V_1)$ has positive dimension (e.g. contains a line segment).
+\end{itemize}
+The examples below illustrate both cases.
+
+\subsection{Example walk-through 1: Family A (one free parameter and \emph{varying} $Z$-marginals)}
+\label{subsec:walkthrough-familyA}
+
+Recall Family~A in Section~5:
+\[
+C_0=\{10010,11101,01100\},\qquad C_3=\{11000,10111,00110\}.
+\]
+Introduce variables
+\[
+X_1:=X_{10010},\ X_2:=X_{11101},\ X_3:=X_{01100},\qquad
+Y_1:=Y_{11000},\ Y_2:=Y_{10111},\ Y_3:=Y_{00110}.
+\]
+
+\paragraph{Step A1: write the $Z$-sign vectors.}
+Using $s_i(x)=(-1)^{x_i}$, we have
+\[
+\begin{aligned}
+ s(10010)&=(-1,+1,+1,-1,+1),\\
+ s(11101)&=(-1,-1,-1,+1,-1),\\
+ s(01100)&=(+1,-1,-1,+1,+1),
+\end{aligned}
+\qquad
+\begin{aligned}
+ s(11000)&=(-1,-1,+1,+1,+1),\\
+ s(10111)&=(-1,+1,-1,-1,-1),\\
+ s(00110)&=(+1,+1,-1,-1,+1).
+\end{aligned}
+\]
+
+\paragraph{Step A2: write the equalities and do elimination.}
+The shared-marginal equalities are
+\[
+\sum_{j=1}^3 s_i(x^{(j)})X_j=\sum_{k=1}^3 s_i(y^{(k)})Y_k\qquad (i=1,\dots,5),
+\]
+together with
+\(
+X_1+X_2+X_3=1
+\) and
+\(
+Y_1+Y_2+Y_3=1.
+\)
+A convenient elimination route is:
+\begin{itemize}
+\item From the $i=3$ and $i=4$ equations one obtains $X_1=X_2+X_3$.
+\item Using $X_1+X_2+X_3=1$ then gives $X_1=\tfrac12$ and $X_2+X_3=\tfrac12$.
+\item Similarly, combining $i=2$ and $i=3$ yields $Y_1=Y_2+Y_3$, and then $Y_1=\tfrac12$.
+\item Finally, the $i=5$ equation forces $X_3=Y_3$.
+\end{itemize}
+Thus letting the free parameter be
+\(
+ t:=X_3=Y_3
+\), we obtain the affine solution
+\[
+X_1=Y_1=\frac12,\qquad X_2=Y_2=\frac12-t,\qquad X_3=Y_3=t.
+\]
+
+\paragraph{Step A3: impose nonnegativity.}
+The constraints $X_2\ge 0$ and $X_3\ge 0$ give
+\[
+0\le t\le \frac12.
+\]
+
+\paragraph{Step A4: compute the shared $Z$-marginals and their range.}
+Using \eqref{eq:Zi-diagonal} (or directly $t=\sum p\,s$), one finds
+\[
+\bigl(\langle Z_1\rangle,\dots,\langle Z_5\rangle\bigr)=\bigl(2t-1,\ 0,\ 0,\ 0,\ 2t\bigr),
+\]
+so the common marginal vector varies with $t$.
+In particular,
+\[
+\Sigma_Z(t):=\sum_{i=1}^5\langle Z_i\rangle^2=(2t-1)^2+(2t)^2=8t^2-4t+1
+\]
+ranges over
+\[
+\Sigma_Z(t)\in\left[\frac12,\ 1\right]\quad\text{for }t\in\left[0,\frac12\right],
+\]
+with minimum at $t=\tfrac14$.
+
+\paragraph{Step A5: interpret via $\mathrm{conv}(V_0)\cap\mathrm{conv}(V_1)$.}
+Here the intersection $\mathrm{conv}(V_0)\cap\mathrm{conv}(V_1)$ contains a line segment (parameterized by $t$), which is why the shared $Z$-marginals move continuously.
+
+\subsection{Example walk-through 2: the worked $m=7$ example (two free parameters but \emph{fixed} $Z$-marginals)}
+\label{subsec:walkthrough-worked}
+
+Section~4 stated a two-parameter general solution with inequalities
+\[
+Y_4\ge 0,\quad Y_5\ge 0,\quad Y_4+Y_5\le \frac{2}{7}.
+\]
+For completeness we record the underlying supports (as in the worked $((5,2,2))$ example discussed earlier):
+\[
+C_0=\{00000,01111,10111\},
+\qquad
+C_1=\{00011,00101,00110,11001,11010,11100\}.
+\]
+The affine solution is
+\[
+X_{00000}=\frac{3}{7},\quad X_{01111}=X_{10111}=\frac{2}{7},
+\]
+\[
+\begin{aligned}
+Y_{00011}&=\frac{1}{7}+Y_{11100},\qquad
+Y_{00101}=\frac{1}{7}+Y_{11010},\\
+Y_{00110}&=\frac{3}{7}-Y_{11010}-Y_{11100},\qquad
+Y_{11001}=\frac{2}{7}-Y_{11010}-Y_{11100},
+\end{aligned}
+\]
+with $Y_{11010},Y_{11100}\ge 0$ and $Y_{11010}+Y_{11100}\le\tfrac{2}{7}$.
+
+\paragraph{Two free parameters, but the same marginal vector.}
+Let
+\(
+ u:=Y_{11010},\ v:=Y_{11100}
+\).
+A direct computation using \eqref{eq:Zi-diagonal} shows that for \emph{all} $(u,v)$ in the triangle
+\(
+ u\ge 0,\ v\ge 0,\ u+v\le \tfrac{2}{7}
+\), the shared marginals are constant:
+\[
+\bigl(\langle Z_1\rangle,\dots,\langle Z_5\rangle\bigr)=\left(\frac{3}{7},\frac{3}{7},-\frac{1}{7},-\frac{1}{7},-\frac{1}{7}\right).
+\]
+Consequently
+\[
+\Sigma_Z=\sum_{i=1}^5\langle Z_i\rangle^2
+=2\left(\frac{3}{7}\right)^2+3\left(\frac{1}{7}\right)^2
+=\frac{3}{7}
+\]
+is also fixed.
+
+\paragraph{Interpretation.}
+Although the feasible set in $(X,Y)$ has dimension $2$ (the triangle in $(u,v)$), these parameters only change \emph{how} the common marginal vector is expressed as a convex combination of vertices in $V_1$; the vector itself is fixed. Equivalently, $\mathrm{conv}(V_0)\cap\mathrm{conv}(V_1)$ is a single point, and the $(u,v)$ freedom is the ``fiber'' of decompositions realizing that point.
+
+\subsection{Practical test for ``varying marginals'' families}
+
+Given supports $C_0,C_1$, one clean way to determine whether the shared marginals can vary is:
+\begin{itemize}
+\item Solve the feasibility LP (equalities + nonnegativity). If infeasible, stop.
+\item Optimize a coordinate of the marginal vector, e.g. maximize and minimize $\langle Z_1\rangle$ subject to the same constraints. Because $\langle Z_1\rangle$ is linear in $(X,Y)$, this is an LP.
+\item If the maximum differs from the minimum, then $\mathrm{conv}(V_0)\cap\mathrm{conv}(V_1)$ has positive dimension and you can build an explicit one-parameter family by convex-combining the two extremal solutions.
+\end{itemize}
+This criterion matches the empirical distinction between the worked $m=7$ example (fixed marginals) and Family~A (varying marginals).
+
+
+\end{document}

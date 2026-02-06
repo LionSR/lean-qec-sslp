@@ -1,0 +1,601 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{braket}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+% Code formatting
+\usepackage{xcolor}
+\usepackage{listings}
+\lstdefinelanguage{Mathematica}{
+  morekeywords={Module,Table,If,Do,Join,AppendTo,Length,ConstantArray,
+    RowReduce,Simplify,Expand,Reduce,Minimize,Maximize,Complement,
+    Range,Position,Total,Sum,And,Or,Symbol,Association,Print,
+    StringLength,StringPart,True,False},
+  sensitive=true,
+  morecomment=[s]{(*}{*)},
+  morestring=[b]"
+}
+\lstset{
+  language=Mathematica,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\color{green!40!black},
+  stringstyle=\color{red!50!black},
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible
+}
+
+% shorthand
+\newcommand{\SigZ}{\Sigma_Z}
+\newcommand{\conv}{\mathrm{conv}}
+
+\title{Independent Wolfram Language Verification \\
+  of KL-Derived Linear Systems from \texttt{LPv3.tex}}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The companion note \texttt{LPv3.tex} derives parametric solutions of the Knill--Laflamme (KL) $Z$-marginal conditions for six quantum-code examples (five one-parameter families A--E and a worked $((5,2,2))$ example) using Python/SymPy.
+This document reports an independent, end-to-end re-derivation and verification of \emph{every} numerical and algebraic claim in \texttt{LPv3.tex}, carried out entirely in Wolfram Language (Mathematica).
+The accompanying script \texttt{verify\_LP.wl} (425~lines) is self-contained and can be run via
+\begin{center}
+\texttt{wolframscript -file verify\_LP.wl}
+\end{center}
+
+\medskip\noindent
+\textbf{Result.} \emph{Zero discrepancies.}
+All parametric solutions, feasibility regions, $Z$-marginal vectors, $\SigZ$ polynomials, $\SigZ$ ranges, and convex-hull dimension tests match exactly.
+
+\subsection{Scope of verification}
+
+The verification pipeline, applied to each of the six examples, checks:
+\begin{enumerate}
+  \item Build the sign matrix $s_i(x)=(-1)^{x_i}$ for each codeword.
+  \item Construct the augmented matrix $[A\mid b]$ encoding $Z$-marginal equalities and normalization.
+  \item Compute \texttt{RowReduce} (RREF over $\mathbb{Q}$) to get the affine parametric solution.
+  \item Identify pivot/free columns, extract the parametric solution.
+  \item Impose nonnegativity via \texttt{Reduce} to obtain the feasibility region.
+  \item Compute $Z$-marginal vectors from \emph{both} $C_0$ and $C_1$ sides and confirm they match.
+  \item Compute $\SigZ=\sum_i \langle Z_i\rangle^2$ and its range via \texttt{Minimize}/\texttt{Maximize}.
+  \item (Appendix A.3 test) Minimize and maximize each $\langle Z_i\rangle$ to determine whether $\conv(V_0)\cap\conv(V_1)$ is a point or has positive dimension.
+\end{enumerate}
+
+\subsection{Relationship to the Lean formalization}
+
+Families A--E and the $(5,2,2)$ example are also formalized in Lean~4 (Mathlib).
+The Lean proofs verify that the \emph{given} probability assignments satisfy the SS condition, residue-shift screen, normalization, and $Z$-type KL equalities---that is, \textbf{correctness}: ``these formulas work.''
+The Wolfram verification additionally confirms \textbf{completeness}: ``these are \emph{all} solutions,'' by deriving the parametric families from scratch via RREF and showing the feasibility regions are exactly as claimed.
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Property & Lean & Wolfram \\
+\midrule
+SS support condition & \checkmark & --- \\
+Residue-shift screen & \checkmark & --- \\
+Probability normalization & \checkmark & \checkmark \\
+$Z$-type KL ($\langle Z_i\rangle$ matches target) & \checkmark & \checkmark \\
+$\SigZ$ range & \checkmark & \checkmark \\
+Parametric solution is complete (RREF) & --- & \checkmark \\
+Feasibility region is exact & --- & \checkmark \\
+$Z$-marginals from $C_0$ and $C_1$ agree & --- & \checkmark \\
+$\conv(V_0)\cap\conv(V_1)$ dimension & --- & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary of results}
+\label{sec:summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Table~\ref{tab:summary} gives the headline numbers. Full per-family comparisons follow in Section~\ref{sec:families}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcccccl}
+\toprule
+Example & Vars & Rank & Free & Feasibility & $\SigZ$ range & $\conv$ test \\
+\midrule
+Family A & 6 & 5 & 1 & $0\le t\le\tfrac12$ & $[\tfrac12,1]$ & segment \\
+Family B & 8 & 7 & 1 & $0\le t\le\tfrac13$ & $[\tfrac13,\tfrac59]$ & segment \\
+Family C & 8 & 7 & 1 & $0\le t\le\tfrac13$ & $[\tfrac13,\tfrac59]$ & segment \\
+Family D & 8 & 7 & 1 & $0\le t\le\tfrac13$ & $[\tfrac13,\tfrac59]$ & segment \\
+Family E & 6 & 5 & 1 & $0\le t\le\tfrac12$ & $[\tfrac12,1]$ & segment \\
+Worked $(5,2,2)$ & 9 & 7 & 2 & triangle & $\{\tfrac37\}$ & point \\
+\bottomrule
+\end{tabular}
+\caption{Summary of verification results. ``Vars'' is $|C_0|+|C_1|$; ``Rank'' is the rank of the augmented system after RREF; ``Free'' is the number of free parameters. For the worked example, the feasibility region is $u\ge0, v\ge0, u+v\le\tfrac{2}{7}$. All entries match \texttt{LPv3.tex}.}
+\label{tab:summary}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Family-by-family verification}
+\label{sec:families}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+For each family we list the supports, the parametric solution obtained from \texttt{RowReduce}, the feasibility region from \texttt{Reduce}, the $Z$-marginal vector, $\SigZ$ and its range, and the comparison with \texttt{LPv3.tex}.
+In every case the results agree exactly.
+
+%% ---- Family A ----
+\subsection{Family A: $(m,\mathbf{w},S_0,S_1)=(6,(4,5,1,2,2),0,3)$}
+
+\paragraph{Supports.}
+$C_0=\{10010, 11101, 01100\}$,\quad $C_1=\{11000, 10111, 00110\}$.
+
+\paragraph{Linear system.}
+6 variables, rank~5, 1 free parameter.
+Free variable: $t:=Y_{00110}$.
+
+\paragraph{Parametric solution (Wolfram output).}
+\[
+\begin{aligned}
+X_{10010} &= \tfrac{1}{2}, & X_{11101} &= \tfrac{1}{2}-t, & X_{01100} &= t, \\
+Y_{11000} &= \tfrac{1}{2}, & Y_{10111} &= \tfrac{1}{2}-t, & Y_{00110} &= t.
+\end{aligned}
+\]
+
+\paragraph{Feasibility.} $0\le t\le \frac{1}{2}$. \checkmark
+
+\paragraph{$Z$-marginals.}
+Computed independently from both $C_0$ and $C_1$:
+\[
+(\langle Z_1\rangle,\dots,\langle Z_5\rangle)
+= (2t-1, 0, 0, 0, 2t). \quad\checkmark
+\]
+
+\paragraph{$\SigZ$.}
+$\SigZ(t)=8t^2-4t+1$, range $[\tfrac12,1]$, minimum at $t=\tfrac14$. \checkmark
+
+%% ---- Family B ----
+\subsection{Family B: $(m,\mathbf{w},S_0,S_1)=(6,(1,1,1,5,3),0,2)$}
+
+\paragraph{Supports.}
+$C_0=\{00000, 00110, 10010, 11101\}$,\quad
+$C_1=\{00011, 01100, 10100, 11000\}$.
+
+\paragraph{Linear system.}
+8 variables, rank~7, 1 free parameter.
+Free variable: $t:=Y_{11000}$.
+
+\paragraph{Parametric solution.}
+\[
+\begin{aligned}
+X_{00000}=X_{11101}=Y_{00011}=Y_{10100} &= \tfrac{1}{3},\\
+X_{00110}=Y_{01100} &= \tfrac{1}{3}-t,\\
+X_{10010}=Y_{11000} &= t.
+\end{aligned}
+\]
+
+\paragraph{Feasibility.} $0\le t\le \frac{1}{3}$. \checkmark
+
+\paragraph{$Z$-marginals.}
+\[
+(\langle Z_1\rangle,\dots,\langle Z_5\rangle)
+= (\tfrac13-2t, \tfrac13, {-}\tfrac13+2t, \tfrac13, \tfrac13). \quad\checkmark
+\]
+
+\paragraph{$\SigZ$.}
+$\SigZ(t)=8t^2-\frac{8}{3}t+\frac{5}{9}$, range $[\tfrac13,\tfrac59]$, minimum at $t=\tfrac16$. \checkmark
+
+%% ---- Family C ----
+\subsection{Family C: $(m,\mathbf{w},S_0,S_1)=(6,(3,3,1,1,1),0,4)$}
+
+\paragraph{Supports.}
+$C_0=\{00000, 01111, 10111, 11000\}$,\quad
+$C_1=\{01001, 01100, 10010, 10100\}$.
+
+\paragraph{Linear system.}
+8 variables, rank~7, 1 free parameter.
+Free variable: $t:=Y_{10100}$.
+
+\paragraph{Parametric solution.}
+\[
+\begin{aligned}
+X_{00000}=X_{11000}=Y_{01001}=Y_{10010} &= \tfrac{1}{3},\\
+X_{01111}=Y_{01100} &= \tfrac{1}{3}-t,\\
+X_{10111}=Y_{10100} &= t.
+\end{aligned}
+\]
+
+\paragraph{Feasibility.} $0\le t\le \frac{1}{3}$. \checkmark
+
+\paragraph{$Z$-marginals.}
+\[
+(\langle Z_1\rangle,\dots,\langle Z_5\rangle)
+= (\tfrac13-2t, {-}\tfrac13+2t, \tfrac13, \tfrac13, \tfrac13). \quad\checkmark
+\]
+
+\paragraph{$\SigZ$.}
+$\SigZ(t)=8t^2-\frac{8}{3}t+\frac{5}{9}$, range $[\tfrac13,\tfrac59]$, minimum at $t=\tfrac16$. \checkmark
+
+%% ---- Family D ----
+\subsection{Family D: $(m,\mathbf{w},S_0,S_1)=(6,(3,1,3,5,5),0,4)$}
+
+\paragraph{Supports.}
+$C_0=\{00000, 01001, 11101, 11110\}$,\quad
+$C_1=\{00011, 01100, 10111, 11000\}$.
+
+\paragraph{Linear system.}
+8 variables, rank~7, 1 free parameter.
+Free variable: $t:=Y_{10111}$.
+
+\paragraph{Parametric solution.}
+\[
+\begin{aligned}
+X_{00000}=X_{11110}=Y_{01100}=Y_{11000} &= \tfrac{1}{3},\\
+X_{01001}=Y_{00011} &= \tfrac{1}{3}-t,\\
+X_{11101}=Y_{10111} &= t.
+\end{aligned}
+\]
+
+\paragraph{Feasibility.} $0\le t\le \frac{1}{3}$. \checkmark
+
+\paragraph{$Z$-marginals.}
+\[
+(\langle Z_1\rangle,\dots,\langle Z_5\rangle)
+= (\tfrac13-2t, {-}\tfrac13, \tfrac13-2t, \tfrac13, \tfrac13). \quad\checkmark
+\]
+
+\paragraph{$\SigZ$.}
+$\SigZ(t)=8t^2-\frac{8}{3}t+\frac{5}{9}$, range $[\tfrac13,\tfrac59]$, minimum at $t=\tfrac16$. \checkmark
+
+%% ---- Family E ----
+\subsection{Family E: $(m,\mathbf{w},S_0,S_1)=(8,(1,6,2,5,5),0,4)$}
+
+\paragraph{Supports.}
+$C_0=\{01011, 10110, 10101\}$,\quad $C_1=\{00111, 11010, 11001\}$.
+
+\paragraph{Linear system.}
+6 variables, rank~5, 1 free parameter.
+Free variable: $t:=Y_{11001}$.
+
+\paragraph{Parametric solution.}
+\[
+\begin{aligned}
+X_{01011} = Y_{00111} &= \tfrac{1}{2}, \\
+X_{10110} = Y_{11010} &= \tfrac{1}{2}-t, \\
+X_{10101} = Y_{11001} &= t.
+\end{aligned}
+\]
+
+\paragraph{Feasibility.} $0\le t\le \frac{1}{2}$. \checkmark
+
+\paragraph{$Z$-marginals.}
+\[
+(\langle Z_1\rangle,\dots,\langle Z_5\rangle)
+= (0, 0, 0, {-}1+2t, {-}2t). \quad\checkmark
+\]
+
+\paragraph{$\SigZ$.}
+$\SigZ(t)=8t^2-4t+1$, range $[\tfrac12,1]$, minimum at $t=\tfrac14$. \checkmark
+
+%% ---- Worked example ----
+\subsection{Worked example: $((5,2,2))$, $m=7$}
+
+\paragraph{Supports.}
+$C_0=\{00000, 01111, 10111\}$,\quad
+$C_1=\{00011, 00101, 00110, 11001, 11010, 11100\}$.
+
+\paragraph{Linear system.}
+9 variables, rank~7, 2 free parameters.
+Free variables: $u:=Y_{11010}$, $v:=Y_{11100}$.
+
+\paragraph{Parametric solution.}
+\[
+X_{00000}=\tfrac{3}{7},\quad X_{01111}=X_{10111}=\tfrac{2}{7},
+\]
+\[
+\begin{aligned}
+Y_{00011}&=\tfrac{1}{7}+v,\qquad
+Y_{00101}=\tfrac{1}{7}+u,\qquad
+Y_{00110}=\tfrac{3}{7}-u-v,\\
+Y_{11001}&=\tfrac{2}{7}-u-v,\qquad
+Y_{11010}=u,\qquad
+Y_{11100}=v.
+\end{aligned}
+\]
+
+\paragraph{Feasibility.} $u\ge 0$, $v\ge 0$, $u+v\le\frac{2}{7}$. \checkmark
+
+\paragraph{$Z$-marginals.}
+Constant (independent of $u,v$):
+\[
+(\langle Z_1\rangle,\dots,\langle Z_5\rangle)
+= \left(\tfrac{3}{7}, \tfrac{3}{7}, {-}\tfrac{1}{7}, {-}\tfrac{1}{7}, {-}\tfrac{1}{7}\right). \quad\checkmark
+\]
+
+\paragraph{$\SigZ$.}
+$\SigZ = 2(\tfrac{3}{7})^2+3(\tfrac{1}{7})^2 = \tfrac{3}{7}$ (constant). \checkmark
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Convex-hull dimension test (Appendix A.3 of \texttt{LPv3.tex})}
+\label{sec:convhull}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The ``practical test for varying marginals'' from Appendix~A.3 of \texttt{LPv3.tex} is:
+for each example, minimize and maximize each $Z$-marginal coordinate $\langle Z_i\rangle$ subject to all feasibility constraints (equalities from RREF plus nonnegativity).
+If $\min\langle Z_i\rangle\neq\max\langle Z_i\rangle$ for any $i$, then $\conv(V_0)\cap\conv(V_1)$ has positive dimension (marginals vary); if all are equal, the intersection is a single point.
+
+We implemented this using \texttt{Minimize}/\texttt{Maximize} on the parametric $Z$-marginal expressions subject to the \texttt{Reduce}-derived feasibility region.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcccccl}
+\toprule
+Example & $\langle Z_1\rangle$ & $\langle Z_2\rangle$ & $\langle Z_3\rangle$ & $\langle Z_4\rangle$ & $\langle Z_5\rangle$ & Verdict \\
+\midrule
+Family A & $[-1,0]$ & $\{0\}$ & $\{0\}$ & $\{0\}$ & $[0,1]$ & \textbf{varies} \\
+Family B & $[-\frac13,\frac13]$ & $\{\frac13\}$ & $[-\frac13,\frac13]$ & $\{\frac13\}$ & $\{\frac13\}$ & \textbf{varies} \\
+Family C & $[-\frac13,\frac13]$ & $[-\frac13,\frac13]$ & $\{\frac13\}$ & $\{\frac13\}$ & $\{\frac13\}$ & \textbf{varies} \\
+Family D & $[-\frac13,\frac13]$ & $\{-\frac13\}$ & $[-\frac13,\frac13]$ & $\{\frac13\}$ & $\{\frac13\}$ & \textbf{varies} \\
+Family E & $\{0\}$ & $\{0\}$ & $\{0\}$ & $[-1,0]$ & $[-1,0]$ & \textbf{varies} \\
+Worked & $\{\frac37\}$ & $\{\frac37\}$ & $\{-\frac17\}$ & $\{-\frac17\}$ & $\{-\frac17\}$ & \textbf{fixed} \\
+\bottomrule
+\end{tabular}
+\caption{Dimension test: ranges of individual $Z$-marginal coordinates over the feasibility region. Intervals denote varying coordinates; singletons denote fixed ones. All agree with \texttt{LPv3.tex}.}
+\label{tab:dimtest}
+\end{table}
+
+\paragraph{Interpretation.}
+\begin{itemize}
+\item \textbf{Families A--E}: $\conv(V_0)\cap\conv(V_1)$ is a line segment in $\mathbb{R}^5$, parameterized by $t$.
+  Two of the five $\langle Z_i\rangle$ coordinates vary (the rest are constant);
+  the varying pair always involves the coordinates whose sign vectors differ across the free-parameter codeword pair.
+\item \textbf{Worked $((5,2,2))$}: $\conv(V_0)\cap\conv(V_1)$ is a single point $(\frac{3}{7},\frac{3}{7},-\frac{1}{7},-\frac{1}{7},-\frac{1}{7})$.
+  The two free parameters $(u,v)$ only change how this fixed point is decomposed as a convex combination of vertices in~$V_1$; they do not move the marginal vector itself.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Structural observations}
+\label{sec:observations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The Wolfram computation confirms the following structural patterns noted in \texttt{LPv3.tex} and \texttt{lambdav2.tex}.
+
+\begin{enumerate}
+\item \textbf{Families A and E} (3+3 supports) share the same $\SigZ$ polynomial
+  $8t^2-4t+1$, with range $[\frac{1}{2},1]$ over the respective feasibility interval.
+
+\item \textbf{Families B, C, and D} (4+4 supports) share the same $\SigZ$ polynomial
+  $8t^2-\frac{8}{3}t+\frac{5}{9}$, with range $[\frac{1}{3},\frac{5}{9}]$.
+
+\item For all five one-parameter families, the $Z$-marginal vector varies continuously with $t$, confirming that $\conv(V_0)\cap\conv(V_1)$ is a line segment (not a point).
+
+\item For the worked $((5,2,2))$ example, the two free parameters produce a 2-simplex (triangle) in probability space, but the $Z$-marginals are constant, so $\conv(V_0)\cap\conv(V_1)$ collapses to a single point.
+
+\item All computations are exact over $\mathbb{Q}$---no floating point is used at any stage.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Method details}
+\label{sec:method}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Core operation: \texttt{RowReduce}}
+
+The central computation is \texttt{RowReduce} on the augmented matrix $[A\mid b]$ over~$\mathbb{Q}$.
+The matrix has $n+2$ rows ($n$ shared-marginal equations plus 2 normalizations) and $|C_0|+|C_1|+1$ columns (one per probability variable, plus the RHS).
+The $(i,j)$ entry in the marginal block is $(-1)^{(x_j)_i}$ for $C_0$-columns and $-(-1)^{(y_k)_i}$ for $C_1$-columns.
+
+After RREF, pivot columns identify determined variables and free columns identify parameters.
+The parametric solution is read off directly from the reduced rows.
+
+\subsection{Feasibility via \texttt{Reduce}}
+
+Substituting the parametric expressions into $p_j\ge 0$ for every probability variable yields a conjunction of linear inequalities in the free parameters.
+Calling \texttt{Reduce[\ldots, freeParams, Reals]} produces a simplified description.
+For the one-parameter families, this is always an interval $[0,t_{\max}]$.
+For the two-parameter worked example, \texttt{Reduce} returns a case-split form; equivalence with the simpler triangle description $u\ge0$, $v\ge0$, $u+v\le\frac{2}{7}$ was confirmed using \texttt{Resolve[Exists[\ldots], Reals]}.
+
+\subsection{$Z$-marginals and cross-check}
+
+The $Z$-marginal vector is computed independently from both the $C_0$ and $C_1$ sides:
+\[
+\langle Z_i\rangle_{C_0}
+= \sum_{x\in C_0} X_x\,(-1)^{x_i},
+\qquad
+\langle Z_i\rangle_{C_1}
+= \sum_{y\in C_1} Y_y\,(-1)^{y_i}.
+\]
+In every example, \texttt{Simplify[zVec0 - zVec1]} returns the zero vector, confirming the shared-marginal equations are satisfied.
+
+\subsection{Optimization}
+
+$\SigZ$ ranges are obtained by calling \texttt{Minimize} and \texttt{Maximize} on $\sum_i \langle Z_i\rangle^2$ subject to the feasibility region.
+The same approach is used for the dimension test (Section~\ref{sec:convhull}), applied to individual $\langle Z_i\rangle$ coordinates.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+\section{Wolfram Language code listing}
+\label{sec:code}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The complete verification script is in \texttt{verify\_LP.wl} (425~lines).
+Below we reproduce the core reusable functions; the full file additionally contains the per-example invocations and the dimension test from Section~\ref{sec:convhull}.
+
+\subsection{Sign vector construction}
+
+\begin{lstlisting}
+bitToSign[s_String] := Table[
+  If[StringPart[s, i] == "0", 1, -1],
+  {i, StringLength[s]}
+]
+\end{lstlisting}
+
+\subsection{Build augmented matrix and solve via RREF}
+
+\begin{lstlisting}
+solveKL[c0Strings_List, c1Strings_List] := Module[
+  {n, n0, n1, nVars, sC0, sC1, aug, rref,
+   pivotCols, freeCols, varNames, pos, p},
+
+  n  = StringLength[c0Strings[[1]]];
+  n0 = Length[c0Strings];
+  n1 = Length[c1Strings];
+  nVars = n0 + n1;
+
+  sC0 = bitToSign /@ c0Strings;
+  sC1 = bitToSign /@ c1Strings;
+
+  (* Augmented matrix [A | b]:
+     Rows 1..n:  Z_i shared-marginal equations
+     Row n+1:    sum X_j = 1
+     Row n+2:    sum Y_k = 1  *)
+  aug = Table[
+    Join[Table[sC0[[j, i]], {j, n0}],
+         Table[-sC1[[k, i]], {k, n1}], {0}],
+    {i, n}];
+  AppendTo[aug,
+    Join[ConstantArray[1, n0], ConstantArray[0, n1], {1}]];
+  AppendTo[aug,
+    Join[ConstantArray[0, n0], ConstantArray[1, n1], {1}]];
+
+  rref = RowReduce[aug];
+
+  (* Identify pivots *)
+  pivotCols = {};
+  Do[pos = Position[rref[[row]], _?(# != 0 &)];
+    If[Length[pos] > 0,
+      p = pos[[1, 1]];
+      If[p <= nVars, AppendTo[pivotCols, p]]],
+    {row, Length[rref]}];
+  freeCols = Complement[Range[nVars], pivotCols];
+
+  varNames = Join[("X_" <> # &) /@ c0Strings,
+                  ("Y_" <> # &) /@ c1Strings];
+
+  <| "n`` -> n, ''n0`` -> n0, ''n1`` -> n1,
+     ''nVars`` -> nVars, ''rref`` -> rref,
+     ''pivotCols`` -> pivotCols, ''freeCols" -> freeCols,
+     ``varNames'' -> varNames,
+     ``rank'' -> Length[pivotCols],
+     ``nFree'' -> Length[freeCols],
+     "C0`` -> c0Strings, ''C1" -> c1Strings,
+     ``sC0'' -> sC0, ``sC1'' -> sC1 |>
+]
+\end{lstlisting}
+
+\subsection{Extract parametric solution}
+
+\begin{lstlisting}
+extractSolution[result_Association] := Module[
+  {rref, nVars, pivotCols, freeCols, varNames,
+   freeSyms, sol, row, pc, expr},
+
+  rref = result[``rref''];  nVars = result[``nVars''];
+  pivotCols = result[``pivotCols''];
+  freeCols  = result[``freeCols''];
+  varNames  = result[``varNames''];
+
+  freeSyms = Table[Symbol["t" <> ToString[k]],
+                   {k, Length[freeCols]}];
+  sol = <||>;
+
+  (* Free variables *)
+  Do[sol[varNames[[freeCols[[k]]]]] = freeSyms[[k]],
+    {k, Length[freeCols]}];
+
+  (* Pivot variables from RREF *)
+  Do[row = rref[[r]]; pc = pivotCols[[r]];
+    If[pc <= nVars,
+      expr = row[[nVars + 1]];
+      Do[expr = expr - row[[freeCols[[k]]]] * freeSyms[[k]],
+        {k, Length[freeCols]}];
+      sol[varNames[[pc]]] = Simplify[expr]],
+    {r, Length[pivotCols]}];
+
+  <| ``solution'' -> sol, ``freeSyms'' -> freeSyms,
+     ``freeNames'' -> (varNames[[#]] & /@ freeCols) |>
+]
+\end{lstlisting}
+
+\subsection{Compute $Z$-marginals and $\SigZ$}
+
+\begin{lstlisting}
+computeZMarginals[result_Association,
+                  solData_Association] := Module[
+  {n, sC0, sC1, c0, c1, sol,
+   probs0, probs1, zVec0, zVec1, sigZ},
+
+  n = result["n``]; sC0 = result[''sC0"];
+  sC1 = result[``sC1''];
+  c0 = result["C0``]; c1 = result[''C1"];
+  sol = solData[``solution''];
+
+  probs0 = Table[sol["X_" <> c0[[j]]], {j, Length[c0]}];
+  probs1 = Table[sol["Y_" <> c1[[k]]], {k, Length[c1]}];
+
+  zVec0 = Table[
+    Sum[sC0[[j, i]] * probs0[[j]], {j, Length[c0]}],
+    {i, n}] // Simplify;
+  zVec1 = Table[
+    Sum[sC1[[k, i]] * probs1[[k]], {k, Length[c1]}],
+    {i, n}] // Simplify;
+
+  sigZ = Total[zVec0^2] // Expand // Simplify;
+
+  <| ``zMargC0'' -> zVec0, ``zMargC1'' -> zVec1,
+     ``zMargMatch'' ->
+       (Simplify[zVec0 - zVec1] ===
+        ConstantArray[0, n]),
+     ``sigmaZ'' -> sigZ |>
+]
+\end{lstlisting}
+
+\subsection{Feasibility region}
+
+\begin{lstlisting}
+computeFeasibility[result_Association,
+                   solData_Association] := Module[
+  {varNames, sol, freeSyms, allExprs, ineqs},
+
+  varNames = result[``varNames''];
+  sol = solData[``solution''];
+  freeSyms = solData[``freeSyms''];
+
+  allExprs = Table[sol[vn], {vn, varNames}];
+  ineqs = And @@ ((# >= 0) & /@ allExprs);
+
+  If[Length[freeSyms] == 1,
+    Reduce[ineqs, freeSyms[[1]], Reals],
+    Reduce[ineqs, freeSyms, Reals]]
+]
+\end{lstlisting}
+
+\subsection{Example invocation (Family A)}
+
+\begin{lstlisting}
+result  = solveKL[{"10010``,``11101'',''01100"},
+                  {"11000``,``10111'',''00110"}];
+solData = extractSolution[result];
+zData   = computeZMarginals[result, solData];
+region  = computeFeasibility[result, solData];
+
+(* SigmaZ range *)
+t1 = solData[``freeSyms''][[1]];
+Minimize[{zData[``sigmaZ''], region}, t1]
+Maximize[{zData[``sigmaZ''], region}, t1]
+\end{lstlisting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Conclusion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Every algebraic and numerical claim in \texttt{LPv3.tex}---parametric solutions, feasibility regions, $Z$-marginal vectors, $\SigZ$ polynomials and their ranges, and the convex-hull dimension classification---has been independently verified using exact rational arithmetic in the Wolfram Language.
+The verification covers all six examples (Families A--E and the worked $((5,2,2))$ example).
+Zero discrepancies were found.
+
+\end{document}

@@ -1,0 +1,557 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{braket} % provides \ket{}, \bra{}, \braket{}
+\usepackage{hyperref}
+
+\title{LP-Dependent Distance-2 SSLP Families with Varying \texorpdfstring{$Z$}{Z}-Marginals}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Common conventions}
+
+We work on $n$ qubits with computational basis $\{\ket{x}:x\in\{0,1\}^n\}$.
+For $x=(x_1,\dots,x_n)$, the single-qubit Pauli $Z_i$ acts as
+\[
+Z_i\ket{x}=(-1)^{x_i}\ket{x}.
+\]
+Hence for any $\ket{\psi}=\sum_x c_x\ket{x}$ with probabilities $p_x:=|c_x|^2$,
+\begin{equation}
+\label{eq:Zi-diagonal}
+\bra{\psi}Z_i\ket{\psi}=\sum_x p_x\,(-1)^{x_i}.
+\end{equation}
+
+\subsection{Subset-sum classes and diagonal transversals}
+Fix a modulus $m$ and a weight vector $\mathbf w=(w_1,\dots,w_n)\in(\mathbb Z_m)^n$.
+Define the modular inner product
+\[
+\langle \mathbf w,x\rangle := \sum_{i=1}^n w_i x_i\quad (\mathrm{mod}\ m)
+\]
+and residue classes
+\[
+C_S(\mathbf w):=\bigl\{x\in\{0,1\}^n:\ \langle \mathbf w,x\rangle\equiv S \pmod m\bigr\}.
+\]
+The transversal diagonal gate is
+\[
+U(\mathbf w,m):=\bigotimes_{i=1}^n Z\!\left(\tfrac{2\pi w_i}{m}\right),
+\qquad
+U(\mathbf w,m)\ket{x}=\omega_m^{\langle \mathbf w,x\rangle}\ket{x},
+\quad
+\omega_m:=e^{2\pi i/m}.
+\]
+If $\mathrm{supp}(\ket{j_L})\subseteq C_{S_j}(\mathbf w)$, then $U(\mathbf w,m)$ acts diagonally:
+\[
+U(\mathbf w,m)\ket{j_L}=\omega_m^{S_j}\ket{j_L}.
+\]
+
+\subsection{Distance-2 screen and automatic $X/Y$ constraints}
+Let $C:=C_{S_0}(\mathbf w)\cup C_{S_1}(\mathbf w)$ (or any chosen subsets thereof).
+If there are \emph{no} Hamming-$1$ neighbors anywhere in $C$ (so $d(C)\ge 2$), then
+for every site $i$ and logical labels $j,k$,
+\[
+\bra{j_L}X_i\ket{k_L}=\bra{j_L}Y_i\ket{k_L}=0.
+\]
+In that regime the weight-$1$ Knill--Laflamme constraints reduce to the \emph{linear}
+equalities
+\[
+\bra{0_L}Z_i\ket{0_L}=\bra{1_L}Z_i\ket{1_L}\qquad(i=1,\dots,n).
+\]
+
+\subsection{A scalar summary: \texorpdfstring{$\sum_i \langle Z_i\rangle^2$}{sum of Zi squares}}
+For each family below, define the common single-site expectations
+\[
+\langle Z_i\rangle(\lambda):=\bra{0_L(\lambda)}Z_i\ket{0_L(\lambda)}
+=\bra{1_L(\lambda)}Z_i\ket{1_L(\lambda)},
+\]
+and the scalar
+\begin{equation}
+\label{eq:SigmaZdef}
+\Sigma_Z(\lambda):=\sum_{i=1}^5 \langle Z_i\rangle(\lambda)^2.
+\end{equation}
+We will compute the \emph{range} of $\Sigma_Z(\lambda)$ over the allowed parameter range of $\lambda$.
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Family A (the original example): $(m,\mathbf w,S_0,S_1)=(6,(4,5,1,2,2),0,3)$}
+
+\subsection{Setup}
+Fix
+\[
+n=5,\qquad m=6,\qquad \mathbf w=(4,5,1,2,2),\qquad (S_0,S_1)=(0,3),
+\]
+and choose supports
+\[
+\begin{aligned}
+C_0 &:= \{10010,\ 11101,\ 01100\}\subseteq C_{0}(\mathbf w),\\
+C_3 &:= \{11000,\ 10111,\ 00110\}\subseteq C_{3}(\mathbf w).
+\end{aligned}
+\]
+
+\subsection{Residue check}
+Compute each residue modulo $6$:
+\[
+\begin{aligned}
+\langle \mathbf w,10010\rangle &=4\cdot 1+5\cdot 0+1\cdot 0+2\cdot 1+2\cdot 0=6\equiv 0,\\
+\langle \mathbf w,11101\rangle &=4\cdot 1+5\cdot 1+1\cdot 1+2\cdot 0+2\cdot 1=12\equiv 0,\\
+\langle \mathbf w,01100\rangle &=4\cdot 0+5\cdot 1+1\cdot 1+2\cdot 0+2\cdot 0=6\equiv 0,
+\end{aligned}
+\qquad
+\begin{aligned}
+\langle \mathbf w,11000\rangle &=4\cdot 1+5\cdot 1=9\equiv 3,\\
+\langle \mathbf w,10111\rangle &=4\cdot 1+5\cdot 0+1\cdot 1+2\cdot 1+2\cdot 1=9\equiv 3,\\
+\langle \mathbf w,00110\rangle &=4\cdot 0+5\cdot 0+1\cdot 1+2\cdot 1+2\cdot 0=3\equiv 3.
+\end{aligned}
+\]
+Hence $C_0\subseteq C_0(\mathbf w)$ and $C_3\subseteq C_3(\mathbf w)$.
+
+\subsection{Distance-2 union and automatic $X/Y$ constraints}
+Let $C:=C_0\cup C_3$.
+Flipping bit $i$ changes the residue by $\pm w_i$ modulo $6$.
+Since $w_i\not\equiv 0\pmod 6$ for all $i$ and $S_1-S_0=3\not\equiv \pm w_i\pmod 6$,
+there are no Hamming-$1$ neighbors in $C$.
+Also $10010\in C_0$ and $11000\in C_3$ differ in exactly two positions, so $d(C)=2$.
+
+\subsection{One-parameter family and transversal action}
+Let $\lambda\in[0,1]$ and define
+\[
+\boxed{
+\begin{aligned}
+\ket{0_L(\lambda)}
+&=
+\sqrt{\tfrac12}\ket{10010}
++\sqrt{\tfrac{1-\lambda}{2}}\ket{11101}
++\sqrt{\tfrac{\lambda}{2}}\ket{01100},\\[2pt]
+\ket{1_L(\lambda)}
+&=
+\sqrt{\tfrac12}\ket{11000}
++\sqrt{\tfrac{1-\lambda}{2}}\ket{10111}
++\sqrt{\tfrac{\lambda}{2}}\ket{00110}.
+\end{aligned}}
+\]
+The parameter range is $\lambda\in[0,1]$ so that all squared amplitudes
+$\{\tfrac12,\tfrac{1-\lambda}{2},\tfrac{\lambda}{2}\}$ are nonnegative.
+
+Since supports lie in residues $0$ and $3$,
+\[
+U(\mathbf w,6)\ket{0_L(\lambda)}=\ket{0_L(\lambda)},\qquad
+U(\mathbf w,6)\ket{1_L(\lambda)}=\omega_6^{3}\ket{1_L(\lambda)}=-\ket{1_L(\lambda)},
+\]
+so $\overline U=\mathrm{diag}(1,-1)$.
+
+\subsection{Shared $Z$-marginals and their $\lambda$-dependence}
+Using \eqref{eq:Zi-diagonal} (and the explicit bit patterns), one finds
+\[
+\boxed{
+\bigl(\langle Z_1\rangle,\dots,\langle Z_5\rangle\bigr)
+=
+(\lambda-1,\ 0,\ 0,\ 0,\ \lambda).
+}
+\]
+In particular $\bra{0_L(\lambda)}Z_i\ket{0_L(\lambda)}=\bra{1_L(\lambda)}Z_i\ket{1_L(\lambda)}$ for all $i$.
+
+\subsection{Range of \texorpdfstring{$\Sigma_Z(\lambda)=\sum_i\langle Z_i\rangle^2$}{sum of Zi squares}}
+Here
+\[
+\Sigma_Z(\lambda)=(\lambda-1)^2+\lambda^2=2\lambda^2-2\lambda+1
+=2\Bigl(\lambda-\tfrac12\Bigr)^2+\tfrac12.
+\]
+Over $\lambda\in[0,1]$ we have
+\[
+\boxed{\Sigma_Z(\lambda)\in\left[\tfrac12,\,1\right],}
+\]
+with minimum $\tfrac12$ at $\lambda=\tfrac12$, and maximum $1$ at $\lambda\in\{0,1\}$.
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Family B: $(m,\mathbf w,S_0,S_1)=(6,(1,1,1,5,3),0,2)$ (order-3 logical phase)}
+
+\subsection{Parameters and supports}
+Fix
+\[
+n=5,\qquad m=6,\qquad \mathbf w=(1,1,1,5,3),\qquad (S_0,S_1)=(0,2),
+\]
+and choose
+\[
+\begin{aligned}
+C_0 &:=\{00000,\ 00110,\ 10010,\ 11101\}\subseteq C_0(\mathbf w),\\
+C_2 &:=\{00011,\ 01100,\ 10100,\ 11000\}\subseteq C_2(\mathbf w).
+\end{aligned}
+\]
+
+\subsection{Residue check}
+Compute residues modulo $6$:
+\[
+\begin{aligned}
+\langle \mathbf w,00000\rangle&=0,\\
+\langle \mathbf w,00110\rangle&=1\cdot 1+5\cdot 1=6\equiv 0,\\
+\langle \mathbf w,10010\rangle&=1\cdot 1+5\cdot 1=6\equiv 0,\\
+\langle \mathbf w,11101\rangle&=1+1+1+3=6\equiv 0,
+\end{aligned}
+\qquad
+\begin{aligned}
+\langle \mathbf w,00011\rangle&=5+3=8\equiv 2,\\
+\langle \mathbf w,01100\rangle&=1+1=2\equiv 2,\\
+\langle \mathbf w,10100\rangle&=1+1=2\equiv 2,\\
+\langle \mathbf w,11000\rangle&=1+1=2\equiv 2.
+\end{aligned}
+\]
+
+\subsection{Distance-2 union and $X/Y$ vanishing}
+Since each $w_i\not\equiv 0\pmod 6$ and $S_1-S_0=2\not\equiv \pm w_i\pmod 6$,
+no Hamming-$1$ neighbor can stay within a residue class or jump from residue $0$ to $2$.
+Also $00000$ and $00110$ differ in two bits, so $d(C_0\cup C_2)=2$.
+
+\subsection{One-parameter family}
+Let $\lambda\in[0,1]$ and define
+\[
+\boxed{
+\begin{aligned}
+\ket{0_L(\lambda)}
+&=
+\sqrt{\tfrac13}\ket{00000}
++\sqrt{\tfrac{\lambda}{3}}\ket{00110}
++\sqrt{\tfrac{1-\lambda}{3}}\ket{10010}
++\sqrt{\tfrac13}\ket{11101},\\[2pt]
+\ket{1_L(\lambda)}
+&=
+\sqrt{\tfrac13}\ket{00011}
++\sqrt{\tfrac{\lambda}{3}}\ket{01100}
++\sqrt{\tfrac13}\ket{10100}
++\sqrt{\tfrac{1-\lambda}{3}}\ket{11000}.
+\end{aligned}}
+\]
+The parameter range $\lambda\in[0,1]$ ensures all probabilities
+$\{1/3,\lambda/3,(1-\lambda)/3,1/3\}$ are nonnegative.
+
+\subsection{Transversal logical gate}
+Because supports lie in residues $0$ and $2$,
+\[
+U(\mathbf w,6)\ket{0_L(\lambda)}=\ket{0_L(\lambda)},\qquad
+U(\mathbf w,6)\ket{1_L(\lambda)}=\omega_6^{2}\ket{1_L(\lambda)},
+\]
+so $\overline U=\mathrm{diag}(1,\omega_6^{2})$ has order $3$.
+
+\subsection{Shared $Z$-marginals (explicit computation)}
+Using \eqref{eq:Zi-diagonal}, one obtains for $\ket{0_L(\lambda)}$:
+\[
+\begin{aligned}
+\bra{0_L(\lambda)}Z_1\ket{0_L(\lambda)}&=\tfrac13+\tfrac{\lambda}{3}-\tfrac{1-\lambda}{3}-\tfrac13=\tfrac{2\lambda-1}{3},\\
+\bra{0_L(\lambda)}Z_2\ket{0_L(\lambda)}&=\tfrac13+\tfrac{\lambda}{3}+\tfrac{1-\lambda}{3}-\tfrac13=\tfrac{1}{3},\\
+\bra{0_L(\lambda)}Z_3\ket{0_L(\lambda)}&=\tfrac13-\tfrac{\lambda}{3}+\tfrac{1-\lambda}{3}-\tfrac13=\tfrac{1-2\lambda}{3},\\
+\bra{0_L(\lambda)}Z_4\ket{0_L(\lambda)}&=\tfrac13-\tfrac{\lambda}{3}-\tfrac{1-\lambda}{3}+\tfrac13=\tfrac{1}{3},\\
+\bra{0_L(\lambda)}Z_5\ket{0_L(\lambda)}&=\tfrac13+\tfrac{\lambda}{3}+\tfrac{1-\lambda}{3}-\tfrac13=\tfrac{1}{3}.
+\end{aligned}
+\]
+A term-by-term identical calculation for $\ket{1_L(\lambda)}$ gives the same values.
+Thus
+\[
+\boxed{
+\bigl(\langle Z_1\rangle,\dots,\langle Z_5\rangle\bigr)
+=
+\left(\tfrac{2\lambda-1}{3},\ \tfrac13,\ \tfrac{1-2\lambda}{3},\ \tfrac13,\ \tfrac13\right).
+}
+\]
+
+\subsection{Range of $\Sigma_Z(\lambda)$}
+Here
+\[
+\Sigma_Z(\lambda)=2\left(\frac{2\lambda-1}{3}\right)^2+3\left(\frac13\right)^2
+=\frac{2(2\lambda-1)^2+3}{9}
+=\frac{8\left(\lambda-\tfrac12\right)^2+3}{9}.
+\]
+Over $\lambda\in[0,1]$,
+\[
+\boxed{\Sigma_Z(\lambda)\in\left[\tfrac13,\,\tfrac59\right],}
+\]
+with minimum $\tfrac13$ at $\lambda=\tfrac12$ and maximum $\tfrac59$ at $\lambda\in\{0,1\}$.
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Family C: $(m,\mathbf w,S_0,S_1)=(6,(3,3,1,1,1),0,4)$ (order-3 logical phase)}
+
+\subsection{Parameters and supports}
+Fix
+\[
+n=5,\qquad m=6,\qquad \mathbf w=(3,3,1,1,1),\qquad (S_0,S_1)=(0,4),
+\]
+and choose
+\[
+\begin{aligned}
+C_0&:=\{00000,\ 01111,\ 10111,\ 11000\}\subseteq C_0(\mathbf w),\\
+C_4&:=\{01001,\ 01100,\ 10010,\ 10100\}\subseteq C_4(\mathbf w).
+\end{aligned}
+\]
+
+\subsection{Residue check}
+Modulo $6$:
+\[
+\begin{aligned}
+\langle \mathbf w,01111\rangle&=3+1+1+1=6\equiv 0,\\
+\langle \mathbf w,10111\rangle&=3+1+1+1=6\equiv 0,\\
+\langle \mathbf w,11000\rangle&=3+3=6\equiv 0,
+\end{aligned}
+\qquad
+\begin{aligned}
+\langle \mathbf w,01001\rangle&=3+1=4,\\
+\langle \mathbf w,01100\rangle&=3+1=4,\\
+\langle \mathbf w,10010\rangle&=3+1=4,\\
+\langle \mathbf w,10100\rangle&=3+1=4.
+\end{aligned}
+\]
+
+\subsection{Distance-2 union}
+Here $w_i\not\equiv 0\pmod 6$ and $S_1-S_0=4\not\equiv \pm 1,\pm 3\pmod 6$,
+so no Hamming-$1$ neighbors exist in $C_0\cup C_4$. Also $00000$ and $11000$ differ in two bits, so $d=2$.
+
+\subsection{One-parameter family}
+For $\lambda\in[0,1]$ define
+\[
+\boxed{
+\begin{aligned}
+\ket{0_L(\lambda)}
+&=
+\sqrt{\tfrac13}\ket{00000}
++\sqrt{\tfrac{\lambda}{3}}\ket{01111}
++\sqrt{\tfrac{1-\lambda}{3}}\ket{10111}
++\sqrt{\tfrac13}\ket{11000},\\[2pt]
+\ket{1_L(\lambda)}
+&=
+\sqrt{\tfrac13}\ket{01001}
++\sqrt{\tfrac{\lambda}{3}}\ket{01100}
++\sqrt{\tfrac13}\ket{10010}
++\sqrt{\tfrac{1-\lambda}{3}}\ket{10100}.
+\end{aligned}}
+\]
+Again $\lambda\in[0,1]$ enforces nonnegativity of all probabilities.
+
+\subsection{Transversal logical gate}
+Supports lie in residues $0$ and $4$, hence
+\[
+\overline U=\mathrm{diag}(1,\omega_6^{4})
+\]
+of order $3$.
+
+\subsection{Shared $Z$-marginals and $\Sigma_Z$}
+A direct application of \eqref{eq:Zi-diagonal} yields
+\[
+\boxed{
+\bigl(\langle Z_1\rangle,\dots,\langle Z_5\rangle\bigr)
+=
+\left(\tfrac{2\lambda-1}{3},\ \tfrac{1-2\lambda}{3},\ \tfrac13,\ \tfrac13,\ \tfrac13\right),
+}
+\]
+equal for $\ket{0_L(\lambda)}$ and $\ket{1_L(\lambda)}$.
+
+Consequently
+\[
+\Sigma_Z(\lambda)=2\left(\frac{2\lambda-1}{3}\right)^2+3\left(\frac13\right)^2
+=\frac{8\left(\lambda-\tfrac12\right)^2+3}{9},
+\]
+so over $\lambda\in[0,1]$,
+\[
+\boxed{\Sigma_Z(\lambda)\in\left[\tfrac13,\,\tfrac59\right].}
+\]
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Family D: $(m,\mathbf w,S_0,S_1)=(6,(3,1,3,5,5),0,4)$ (order-3 logical phase)}
+
+\subsection{Parameters and supports}
+Fix
+\[
+n=5,\qquad m=6,\qquad \mathbf w=(3,1,3,5,5),\qquad (S_0,S_1)=(0,4),
+\]
+and choose
+\[
+\begin{aligned}
+C_0&:=\{00000,\ 01001,\ 11101,\ 11110\}\subseteq C_0(\mathbf w),\\
+C_4&:=\{00011,\ 01100,\ 10111,\ 11000\}\subseteq C_4(\mathbf w).
+\end{aligned}
+\]
+
+\subsection{Residue check}
+Modulo $6$:
+\[
+\begin{aligned}
+\langle \mathbf w,01001\rangle&=1+5=6\equiv 0,\\
+\langle \mathbf w,11101\rangle&=3+1+3+5=12\equiv 0,\\
+\langle \mathbf w,11110\rangle&=3+1+3+5=12\equiv 0,
+\end{aligned}
+\qquad
+\begin{aligned}
+\langle \mathbf w,00011\rangle&=5+5=10\equiv 4,\\
+\langle \mathbf w,01100\rangle&=1+3=4,\\
+\langle \mathbf w,10111\rangle&=3+3+5+5=16\equiv 4,\\
+\langle \mathbf w,11000\rangle&=3+1=4.
+\end{aligned}
+\]
+
+\subsection{Distance-2 union}
+We have $w_i\not\equiv 0\pmod 6$ and $4\not\equiv \pm 1,\pm 3,\pm 5\pmod 6$,
+so there are no Hamming-$1$ edges in $C_0\cup C_4$.
+Also $00000$ and $01001$ differ in two bits, so $d=2$.
+
+\subsection{One-parameter family}
+For $\lambda\in[0,1]$ define
+\[
+\boxed{
+\begin{aligned}
+\ket{0_L(\lambda)}
+&=
+\sqrt{\tfrac13}\ket{00000}
++\sqrt{\tfrac{\lambda}{3}}\ket{01001}
++\sqrt{\tfrac{1-\lambda}{3}}\ket{11101}
++\sqrt{\tfrac13}\ket{11110},\\[2pt]
+\ket{1_L(\lambda)}
+&=
+\sqrt{\tfrac{\lambda}{3}}\ket{00011}
++\sqrt{\tfrac13}\ket{01100}
++\sqrt{\tfrac{1-\lambda}{3}}\ket{10111}
++\sqrt{\tfrac13}\ket{11000}.
+\end{aligned}}
+\]
+
+\subsection{Transversal logical gate}
+Supports lie in residues $0$ and $4$, hence
+\[
+\overline U=\mathrm{diag}(1,\omega_6^{4})
+\]
+of order $3$.
+
+\subsection{Shared $Z$-marginals and $\Sigma_Z$}
+A direct computation gives
+\[
+\boxed{
+\bigl(\langle Z_1\rangle,\dots,\langle Z_5\rangle\bigr)
+=
+\left(\tfrac{2\lambda-1}{3},\ -\tfrac13,\ \tfrac{2\lambda-1}{3},\ \tfrac13,\ \tfrac13\right),
+}
+\]
+equal for both logical states.
+
+Then
+\[
+\Sigma_Z(\lambda)=2\left(\frac{2\lambda-1}{3}\right)^2+3\left(\frac13\right)^2
+=\frac{8\left(\lambda-\tfrac12\right)^2+3}{9},
+\]
+so over $\lambda\in[0,1]$,
+\[
+\boxed{\Sigma_Z(\lambda)\in\left[\tfrac13,\,\tfrac59\right].}
+\]
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Family E: $(m,\mathbf w,S_0,S_1)=(8,(1,6,2,5,5),0,4)$ (logical $\mathrm{diag}(1,-1)$)}
+
+\subsection{Parameters and supports}
+Fix
+\[
+n=5,\qquad m=8,\qquad \mathbf w=(1,6,2,5,5),\qquad (S_0,S_1)=(0,4),
+\]
+and choose
+\[
+\begin{aligned}
+C_0&:=\{01011,\ 10110,\ 10101\}\subseteq C_0(\mathbf w),\\
+C_4&:=\{00111,\ 11010,\ 11001\}\subseteq C_4(\mathbf w).
+\end{aligned}
+\]
+
+\subsection{Residue check}
+Modulo $8$:
+\[
+\begin{aligned}
+\langle \mathbf w,01011\rangle&=6+5+5=16\equiv 0,\\
+\langle \mathbf w,10110\rangle&=1+2+5=8\equiv 0,\\
+\langle \mathbf w,10101\rangle&=1+2+5=8\equiv 0,
+\end{aligned}
+\qquad
+\begin{aligned}
+\langle \mathbf w,00111\rangle&=2+5+5=12\equiv 4,\\
+\langle \mathbf w,11010\rangle&=1+6+5=12\equiv 4,\\
+\langle \mathbf w,11001\rangle&=1+6+5=12\equiv 4.
+\end{aligned}
+\]
+
+\subsection{Distance-2 union}
+Since $w_i\not\equiv 0\pmod 8$ and $4\not\equiv \pm 1,\pm 2,\pm 5,\pm 6\pmod 8$,
+there are no Hamming-$1$ neighbors in $C_0\cup C_4$.
+Also $10110$ and $10101$ differ in two bits, so $d=2$.
+
+\subsection{One-parameter family}
+For $\lambda\in[0,1]$ define
+\[
+\boxed{
+\begin{aligned}
+\ket{0_L(\lambda)}
+&=
+\sqrt{\tfrac12}\ket{01011}
++\sqrt{\tfrac{1-\lambda}{2}}\ket{10110}
++\sqrt{\tfrac{\lambda}{2}}\ket{10101},\\[2pt]
+\ket{1_L(\lambda)}
+&=
+\sqrt{\tfrac12}\ket{00111}
++\sqrt{\tfrac{1-\lambda}{2}}\ket{11010}
++\sqrt{\tfrac{\lambda}{2}}\ket{11001}.
+\end{aligned}}
+\]
+The range $\lambda\in[0,1]$ ensures $\{\tfrac12,\tfrac{1-\lambda}{2},\tfrac{\lambda}{2}\}\ge 0$.
+
+\subsection{Transversal logical gate}
+Here $\omega_8^4=-1$, so
+\[
+U(\mathbf w,8)\ket{0_L(\lambda)}=\ket{0_L(\lambda)},\qquad
+U(\mathbf w,8)\ket{1_L(\lambda)}=\omega_8^4\ket{1_L(\lambda)}=-\ket{1_L(\lambda)},
+\]
+hence $\overline U=\mathrm{diag}(1,-1)$.
+
+\subsection{Shared $Z$-marginals and $\Sigma_Z$}
+Direct computation yields
+\[
+\boxed{
+\bigl(\langle Z_1\rangle,\dots,\langle Z_5\rangle\bigr)
+=
+(0,\ 0,\ 0,\ \lambda-1,\ -\lambda),
+}
+\]
+equal for both logical states.
+
+Therefore
+\[
+\Sigma_Z(\lambda)=(\lambda-1)^2+\lambda^2
+=2\Bigl(\lambda-\tfrac12\Bigr)^2+\tfrac12,
+\]
+so over $\lambda\in[0,1]$,
+\[
+\boxed{\Sigma_Z(\lambda)\in\left[\tfrac12,\,1\right].}
+\]
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary table}
+
+For convenience, we collect the allowed parameter ranges and the resulting $\Sigma_Z$ ranges.
+
+\[
+\begin{array}{c|c|c|c}
+\text{Family} & \text{Parameter range} & (\langle Z_1\rangle,\dots,\langle Z_5\rangle) & \Sigma_Z(\lambda)\ \text{range}\\
+\hline
+\text{A} & \lambda\in[0,1] & (\lambda-1,0,0,0,\lambda) & \left[\tfrac12,1\right]\\
+\text{B} & \lambda\in[0,1] & \left(\tfrac{2\lambda-1}{3},\tfrac13,\tfrac{1-2\lambda}{3},\tfrac13,\tfrac13\right) & \left[\tfrac13,\tfrac59\right]\\
+\text{C} & \lambda\in[0,1] & \left(\tfrac{2\lambda-1}{3},\tfrac{1-2\lambda}{3},\tfrac13,\tfrac13,\tfrac13\right) & \left[\tfrac13,\tfrac59\right]\\
+\text{D} & \lambda\in[0,1] & \left(\tfrac{2\lambda-1}{3},-\tfrac13,\tfrac{2\lambda-1}{3},\tfrac13,\tfrac13\right) & \left[\tfrac13,\tfrac59\right]\\
+\text{E} & \lambda\in[0,1] & (0,0,0,\lambda-1,-\lambda) & \left[\tfrac12,1\right]
+\end{array}
+\]
+
+\end{document}
