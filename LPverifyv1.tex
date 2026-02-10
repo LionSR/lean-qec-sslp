@@ -1,0 +1,688 @@
+\documentclass[11pt]{article}
+
+% pdfLaTeX-friendly (no fontspec)
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{braket} % provides \ket{}, \bra{}, \braket{}
+\usepackage{listings}
+
+% Lean listings setup (handles Lean Unicode in code blocks)
+\lstdefinelanguage{Lean}{
+  morekeywords={import,open,scoped,namespace,section,end,variable,def,abbrev,lemma,theorem,by,fun,have,calc,refine,intro,exact,classical,simp,funext,by_cases,omit,structure,noncomputable,unfold,rcases,obtain,linarith,aesop,grind,where},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+
+\lstset{
+  language=Lean,
+  basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{black!25},
+  keywordstyle=\color{blue!70!black},
+  commentstyle=\color{green!40!black},
+  stringstyle=\color{orange!60!black},
+  showstringspaces=false,
+  keepspaces=true,
+  literate=
+    {ℕ}{{\ensuremath{\mathbb{N}}}}1
+    {ℚ}{{\ensuremath{\mathbb{Q}}}}1
+    {ℝ}{{\ensuremath{\mathbb{R}}}}1
+    {𝕜}{{\ensuremath{\mathbb{k}}}}1
+    {→}{{\ensuremath{\to}}}1
+    {↔}{{\ensuremath{\leftrightarrow}}}1
+    {∑}{{\ensuremath{\sum}}}1
+    {⊆}{{\ensuremath{\subseteq}}}1
+    {∈}{{\ensuremath{\in}}}1
+    {∀}{{\ensuremath{\forall}}}1
+    {∃}{{\ensuremath{\exists}}}1
+    {≠}{{\ensuremath{\neq}}}1
+    {↑}{{\ensuremath{\uparrow}}}1
+    {·}{{\ensuremath{\bullet}}}1
+    {⦃}{{\{} }1
+    {⦄}{{\}} }1
+    {“}{{``}}1
+    {”}{{''}}1
+    {≤}{{\ensuremath{\le}}}1
+    {≥}{{\ensuremath{\ge}}}1
+}
+
+\title{Analytic Solution of a Distance-2 SSLP Linear Program and Lean Verification (Worked $((5,2,2))$ Example)}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Big picture}
+
+In the SSLP pipeline, once we enforce the \emph{classical union distance} $d(C)=2$ for the support
+$C=C_{S_0}(\mathbf w)\cup C_{S_1}(\mathbf w)$,
+all single-qubit $X_i$ and $Y_i$ Knill--Laflamme constraints vanish automatically.
+The remaining weight-1 Knill--Laflamme conditions reduce to a system of \emph{linear equalities}
+coming from the diagonal operators $Z_i$ (``$Z$-marginal equalities'').
+
+This note has four goals:
+\begin{itemize}
+\item clearly state the resulting LP feasibility problem (in mathematical terms),
+\item solve the LP \emph{by hand} and derive the full analytic (general) solution,
+\item explain how Lean can \emph{verify} the claimed general solution without being asked to ``search'' for one,
+\item record the exact Aristotle prompt and explain the generated Lean verifier line-by-line.
+\end{itemize}
+
+\section{The mathematical problem (LP feasibility) for the worked $((5,2,2))$ example}
+
+\subsection{Parameters and supports}
+
+We consider the concrete $((5,2,2))$ SSLP example with
+\[
+n=5,\qquad m=7,\qquad \mathbf w=(1,1,2,2,2),\qquad (S_0,S_1)=(0,4).
+\]
+Let
+\[
+C_S(\mathbf w):=\{x\in\{0,1\}^5:\ \langle\mathbf w,x\rangle\equiv S \!\!\!\pmod 7\},
+\qquad
+\langle\mathbf w,x\rangle:=\sum_{i=1}^5 w_i x_i \pmod 7.
+\]
+The two residue classes used in the worked example are
+\[
+C_0=\{x_0,x_1,x_2\}=\{00000,\,01111,\,10111\},
+\qquad
+C_1=\{y_0,\dots,y_5\}=\{00011,\,00101,\,00110,\,11001,\,11010,\,11100\}.
+\]
+We work in the design regime where the classical union $C:=C_0\cup C_1$ has $d(C)=2$ (no Hamming-$1$ neighbors).
+Then for every site $i$ and logical labels $j,k$,
+\[
+\bra{j_L}X_i\ket{k_L}=\bra{j_L}Y_i\ket{k_L}=0,
+\]
+so only the diagonal $Z_i$ constraints remain.
+
+\subsection{Variables (probabilities)}
+
+Introduce probability variables for the two logical states:
+\[
+a_j := p_{0,x_j}\ \ (j=0,1,2),\qquad b_k := p_{1,y_k}\ \ (k=0,1,2,3,4,5).
+\]
+They satisfy
+\[
+a_0+a_1+a_2=1,\qquad b_0+b_1+b_2+b_3+b_4+b_5=1,
+\]
+and the nonnegativity constraints
+\[
+a_0,a_1,a_2\ge 0,\qquad b_0,\dots,b_5\ge 0.
+\]
+
+\subsection{Linear constraints from $Z$-marginals}
+
+Because $Z_i\ket{x}=(-1)^{x_i}\ket{x}$, for any state supported on basis strings
+the expectation $\bra{\psi}Z_i\ket{\psi}$ is a linear combination of the probabilities.
+The remaining Knill--Laflamme constraints are, for each site $i=1,\dots,5$,
+\[
+\bra{0_L}Z_i\ket{0_L}=\bra{1_L}Z_i\ket{1_L}.
+\]
+For the concrete supports $C_0,C_1$ above, this yields the system:
+\begin{align}
+\label{eq:LP_i1}
+(i = 1)\quad a_{0} + a_{1} - a_{2}
+&= b_{0} + b_{1} + b_{2} - b_{3} - b_{4} - b_{5}, \\
+\label{eq:LP_i2}
+(i = 2)\quad a_{0} - a_{1} + a_{2}
+&= b_{0} + b_{1} + b_{2} - b_{3} - b_{4} - b_{5}, \\
+\label{eq:LP_i3}
+(i = 3)\quad a_{0} - a_{1} - a_{2}
+&= b_{0} - b_{1} - b_{2} + b_{3} + b_{4} - b_{5}, \\
+\label{eq:LP_i4}
+(i = 4)\quad a_{0} - a_{1} - a_{2}
+&= -b_{0} + b_{1} - b_{2} + b_{3} - b_{4} + b_{5}, \\
+\label{eq:LP_i5}
+(i = 5)\quad a_{0} - a_{1} - a_{2}
+&= -b_{0} - b_{1} + b_{2} - b_{3} + b_{4} + b_{5}.
+\end{align}
+
+\subsection{LP as a feasibility problem}
+
+Over a linear ordered field $\mathbb{k}$ (typically $\mathbb{Q}$ or $\mathbb{R}$), define the feasible set
+\[
+\mathcal F
+:=
+\Bigl\{
+(a_0,a_1,a_2,b_0,\dots,b_5)\in\mathbb{k}^9:
+\ \text{\eqref{eq:LP_i1}--\eqref{eq:LP_i5} hold, both normalizations hold, and all variables are }\ge 0
+\Bigr\}.
+\]
+Equivalently, this is the standard LP form ``find $p$ such that $A p = c$ and $p\ge 0$'' (with objective $\min 0$).
+
+\section{Solving the LP equalities by hand (analytic general solution)}
+
+We now derive the full family of solutions in closed form, and then impose inequalities to obtain the parameter region.
+
+\subsection{Step A: pin the $a$-variables}
+
+Subtract \eqref{eq:LP_i2} from \eqref{eq:LP_i1}; the right-hand sides are equal, hence
+\[
+(a_0+a_1-a_2)-(a_0-a_1+a_2)=0 \quad\Longrightarrow\quad a_1=a_2.
+\]
+With $a_0+a_1+a_2=1$, we obtain
+\[
+a_1=a_2=\frac{1-a_0}{2},
+\qquad
+a_0-a_1-a_2=a_0-(1-a_0)=2a_0-1.
+\]
+
+\subsection{Step B: relations among the $b$-variables}
+
+The left-hand sides of \eqref{eq:LP_i3}, \eqref{eq:LP_i4}, \eqref{eq:LP_i5} are identical. Subtract them pairwise:
+\[
+\eqref{eq:LP_i3}-\eqref{eq:LP_i4}:\quad b_0-b_1+b_4-b_5=0,
+\]
+\[
+\eqref{eq:LP_i3}-\eqref{eq:LP_i5}:\quad b_0-b_2+b_3-b_5=0,
+\]
+\[
+\eqref{eq:LP_i4}-\eqref{eq:LP_i5}:\quad b_1-b_2+b_3-b_4=0.
+\]
+Define free parameters
+\[
+u:=b_4,\qquad v:=b_5.
+\]
+From the first relation we can already write
+\[
+b_0=b_1+v-u. \tag{B1}
+\]
+
+\subsection{Step C: solve for all $b$'s and pin $a_0$}
+
+Use \eqref{eq:LP_i1}. Since $a_1=a_2$, the left-hand side becomes $a_0$, hence
+\[
+a_0=b_0+b_1+b_2-b_3-u-v. \tag{C1}
+\]
+
+Next, use \eqref{eq:LP_i3}. Its left-hand side is $a_0-a_1-a_2=2a_0-1$, hence
+\[
+2a_0-1=b_0-b_1-b_2+b_3+u-v. \tag{C2}
+\]
+
+Now use the third relation from Step B to express $b_3$:
+\[
+b_1-b_2+b_3-u=0\quad\Longrightarrow\quad b_3=b_2+u-b_1. \tag{C3}
+\]
+
+Substitute (B1) and (C3) into (C1):
+\[
+\begin{aligned}
+a_0
+&=(b_1+v-u)+b_1+b_2-(b_2+u-b_1)-u-v\\
+&=3(b_1-u). \tag{C4}
+\end{aligned}
+\]
+Similarly, substitute (B1) and (C3) into (C2):
+\[
+\begin{aligned}
+2a_0-1
+&=(b_1+v-u)-b_1-b_2+(b_2+u-b_1)+u-v\\
+&=-b_1+u. \tag{C5}
+\end{aligned}
+\]
+Combine (C4) and (C5):
+\[
+2\cdot 3(b_1-u)-1=-b_1+u
+\quad\Longrightarrow\quad
+7(b_1-u)=1
+\quad\Longrightarrow\quad
+b_1=u+\frac{1}{7}. \tag{C6}
+\]
+Then (C4) gives
+\[
+a_0=3\cdot\frac{1}{7}=\frac{3}{7},
+\qquad
+a_1=a_2=\frac{1-a_0}{2}=\frac{2}{7}. \tag{C7}
+\]
+
+Now solve for the remaining $b$'s using normalization and (C3).
+First, from (B1) and (C6),
+\[
+b_0=b_1+v-u=\frac{1}{7}+v. \tag{C8}
+\]
+From (C3) and (C6),
+\[
+b_3=b_2+u-\Bigl(u+\frac{1}{7}\Bigr)=b_2-\frac{1}{7}. \tag{C9}
+\]
+Apply the $b$-normalization:
+\[
+b_0+b_1+b_2+b_3+u+v=1.
+\]
+Substitute (C6), (C8), (C9):
+\[
+\left(\frac{1}{7}+v\right)+\left(\frac{1}{7}+u\right)+b_2+\left(b_2-\frac{1}{7}\right)+u+v=1,
+\]
+which simplifies to
+\[
+2b_2+2u+2v=\frac{6}{7}
+\quad\Longrightarrow\quad
+b_2=\frac{3}{7}-u-v. \tag{C10}
+\]
+Then (C9) yields
+\[
+b_3=\frac{2}{7}-u-v. \tag{C11}
+\]
+
+\subsection{Step D: impose inequalities (parameter region)}
+
+Nonnegativity implies
+\[
+u=b_4\ge 0,\qquad v=b_5\ge 0,
+\qquad
+b_3=\frac{2}{7}-u-v\ge 0\ \Longrightarrow\ u+v\le \frac{2}{7}.
+\]
+This automatically implies $b_2=\frac{3}{7}-u-v\ge 0$.
+Therefore the admissible region is the triangle
+\[
+\boxed{u\ge 0,\qquad v\ge 0,\qquad u+v\le \frac{2}{7}.}
+\]
+
+\subsection{General solution (final form)}
+
+Collecting (C7), (C8), (C10), (C11) and the definitions $b_4=u$, $b_5=v$, we obtain the full analytic solution:
+\[
+\boxed{
+\begin{aligned}
+a_0&=\frac{3}{7},\qquad a_1=a_2=\frac{2}{7},\\
+b_0&=\frac{1}{7}+v,\qquad b_1=\frac{1}{7}+u,\qquad
+b_2=\frac{3}{7}-u-v,\qquad
+b_3=\frac{2}{7}-u-v,\qquad
+b_4=u,\qquad b_5=v,
+\end{aligned}}
+\qquad
+\boxed{u\ge 0,\ v\ge 0,\ u+v\le\frac{2}{7}.}
+\]
+
+\section{How Lean verifies the solution without ``solving the LP again''}
+
+\subsection{What Lean proves}
+
+Lean is asked to check that the proposed parametrization is \emph{exactly} the feasible set.
+This is the same as proving two logical implications (two containments):
+
+\paragraph{Soundness.}
+\[
+\forall u v,\ \mathrm{Region}(u,v)\Rightarrow \mathrm{Feasible}(\mathrm{sol}(u,v)).
+\]
+This is pure substitution: unfold definitions and verify all constraints.
+
+\paragraph{Completeness.}
+\[
+\forall p,\ \mathrm{Feasible}(p)\Rightarrow \mathrm{Region}(p.b4,p.b5)\wedge p=\mathrm{sol}(p.b4,p.b5).
+\]
+This is the ``hard direction,'' but crucially it involves \emph{no parameter search}:
+we simply set $u:=p.b4$ and $v:=p.b5$ and prove the remaining coordinates are forced by the linear equalities.
+
+\paragraph{Uniqueness (optional).}
+\[
+\mathrm{sol}(u,v)=\mathrm{sol}(u',v') \Rightarrow u=u'\wedge v=v'.
+\]
+This is immediate since the structure fields include $b_4=u$ and $b_5=v$.
+
+\subsection{Why this scales better than asking Lean to ``solve''}
+
+Lean never runs an LP algorithm. It checks a human-guided proof:
+\begin{itemize}
+\item derive $a_1=a_2$ from two equalities,
+\item derive the three $b$-relations by subtracting equalities,
+\item derive the closed form by combining a small number of equalities and normalizations,
+\item derive the region constraints from nonnegativity.
+\end{itemize}
+For this example, tactics like \texttt{linarith} and \texttt{ring\_nf} are sufficient.
+Automation (e.g.\ \texttt{grind}) is used as a convenience to discharge straightforward linear arithmetic goals.
+
+\section{Prompt sent to Aristotle (specification)}
+
+\noindent The exact prompt sent to Aristotle is recorded here for reproducibility.
+
+\begin{verbatim}
+% =====================================================================
+% Specification for Lean/Aristotle: verifying an analytic general solution
+% for the SSLP linear (LP) stage in the concrete ((5,2,2)) example (m=7).
+% =====================================================================
+
+\section{LP verification task for the worked $((5,2,2))$ example (distance $2$ case)}
+
+\subsection{What the problem is}
+
+We consider the concrete $((5,2,2))$ SSLP example with
+\[
+n=5,\qquad m=7,\qquad \mathbf w=(1,1,2,2,2),\qquad (S_0,S_1)=(0,4),
+\]
+and the two subset-sum residue supports
+\[
+C_0=\{x_0,x_1,x_2\}=\{00000,\,01111,\,10111\},\qquad
+C_1=\{y_0,\dots,y_5\}=\{00011,\,00101,\,00110,\,11001,\,11010,\,11100\}.
+\]
+We are in the design regime where the classical union
+\(
+C:=C_0\cup C_1
+\)
+satisfies $d(C)=2$ (no Hamming-$1$ neighbors inside $C$). Consequently, the $X_i/Y_i$ Knill--Laflamme constraints
+vanish automatically, and the SSLP linear stage reduces to the \emph{single-qubit $Z_i$ marginal equalities}.
+
+\paragraph{Variables (probabilities).}
+Introduce probability variables (nonnegative reals) for the two logical states:
+\[
+a_j := p_{0,x_j}\ \ (j=0,1,2),\qquad
+b_k := p_{1,y_k}\ \ (k=0,1,2,3,4,5).
+\]
+These must satisfy the normalizations
+\[
+a_0+a_1+a_2=1,\qquad b_0+b_1+b_2+b_3+b_4+b_5=1,
+\]
+and nonnegativity
+\[
+a_0,a_1,a_2\ge 0,\qquad b_0,\dots,b_5\ge 0.
+\]
+
+\paragraph{The linear (LP) constraints.}
+For each site $i\in\{1,2,3,4,5\}$, the KL condition for $Z_i$ is
+\[
+\bra{0_L}Z_i\ket{0_L}=\bra{1_L}Z_i\ket{1_L}.
+\]
+Since $Z_i\ket{x}=(-1)^{x_i}\ket{x}$, these are \emph{linear equalities in the probabilities}.
+For the concrete supports above, these equalities are exactly the system:
+\begin{align}
+\label{eq:LP_i1}
+(i = 1)\quad a_{0} + a_{1} - a_{2}
+&= b_{0} + b_{1} + b_{2} - b_{3} - b_{4} - b_{5}, \\
+\label{eq:LP_i2}
+(i = 2)\quad a_{0} - a_{1} + a_{2}
+&= b_{0} + b_{1} + b_{2} - b_{3} - b_{4} - b_{5}, \\
+\label{eq:LP_i3}
+(i = 3)\quad a_{0} - a_{1} - a_{2}
+&= b_{0} - b_{1} - b_{2} + b_{3} + b_{4} - b_{5}, \\
+\label{eq:LP_i4}
+(i = 4)\quad a_{0} - a_{1} - a_{2}
+&= -b_{0} + b_{1} - b_{2} + b_{3} - b_{4} + b_{5}, \\
+\label{eq:LP_i5}
+(i = 5)\quad a_{0} - a_{1} - a_{2}
+&= -b_{0} - b_{1} + b_{2} - b_{3} + b_{4} + b_{5}.
+\end{align}
+
+\paragraph{LP as a feasibility problem.}
+Over a linear ordered field $\mathbb{k}$ (typically $\mathbb{Q}$ or $\mathbb{R}$), the LP feasibility set is
+\[
+\mathcal F
+:=
+\Bigl\{
+(a_0,a_1,a_2,b_0,\dots,b_5)\in\mathbb{k}^9:
+\ \text{\eqref{eq:LP_i1}--\eqref{eq:LP_i5} hold, normalizations hold, and all variables are }\ge 0
+\Bigr\}.
+\]
+Equivalently, this is the standard LP form ``find $p$ such that $A p = c$ and $p\ge 0$''.
+
+\subsection{What the solution is (claimed analytic general solution)}
+
+Define free parameters
+\[
+u := b_4,\qquad v := b_5.
+\]
+The claimed \emph{general solution} of the LP feasibility set $\mathcal F$ is the following affine parametrization:
+\begin{equation}
+\label{eq:claimed-solution}
+\boxed{
+\begin{aligned}
+a_0&=\frac{3}{7},\qquad a_1=a_2=\frac{2}{7},\\
+b_0&=\frac{1}{7}+v,\qquad b_1=\frac{1}{7}+u,\qquad
+b_2=\frac{3}{7}-u-v,\qquad
+b_3=\frac{2}{7}-u-v,\qquad
+b_4=u,\qquad b_5=v.
+\end{aligned}}
+\end{equation}
+The admissible parameter region is the triangle
+\begin{equation}
+\label{eq:region}
+\boxed{
+u\ge 0,\qquad v\ge 0,\qquad u+v\le \frac{2}{7}.
+}
+\end{equation}
+(Indeed, $b_3\ge 0$ forces $u+v\le 2/7$, and this automatically implies $b_2\ge 0$.)
+
+Thus the claim is:
+\[
+\mathcal F
+=
+\Bigl\{
+\mathrm{sol}(u,v)\ :\ (u,v)\in\mathbb{k}^2\ \text{satisfying \eqref{eq:region}}
+\Bigr\},
+\]
+where $\mathrm{sol}(u,v)$ is the $9$-tuple given by \eqref{eq:claimed-solution}.
+
+\subsection{What we want Lean to check (prove)}
+
+Lean is \emph{not} asked to solve the LP automatically.
+Instead, Lean is asked to \emph{verify} that the proposed parametrization
+\eqref{eq:claimed-solution}--\eqref{eq:region} is exactly the feasible set.
+
+% End of specification.
+\end{verbatim}
+
+\section{Explanation of the Lean verifier (what it does step by step)}
+
+This section explains the generated Lean file in the same ``code block + meaning'' style as typical project notes.
+
+\subsection{Imports and environment}
+
+\begin{lstlisting}
+import Mathlib
+noncomputable section
+\end{lstlisting}
+
+\begin{itemize}
+\item \texttt{Mathlib} provides ordered fields (\texttt{ℚ}, \texttt{ℝ}) and automation tactics used by Aristotle.
+\item \texttt{noncomputable} signals that we are not trying to extract an algorithm; we are proving propositions.
+\end{itemize}
+
+\subsection{The variables as a record \texttt{Vars}}
+
+\begin{lstlisting}
+structure Vars (k : Type*) where
+  a0 : k
+  a1 : k
+  a2 : k
+  b0 : k
+  b1 : k
+  b2 : k
+  b3 : k
+  b4 : k
+  b5 : k
+\end{lstlisting}
+
+This is the mathematical vector $(a_0,a_1,a_2,b_0,\dots,b_5)\in k^9$, but with named fields so constraints remain readable.
+
+\subsection{Encoding feasibility: the predicate \texttt{Feasible}}
+
+\begin{lstlisting}
+def Feasible {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (p : Vars k) : Prop :=
+  p.a0 ≥ 0 ∧ p.a1 ≥ 0 ∧ p.a2 ≥ 0 ∧
+  p.b0 ≥ 0 ∧ p.b1 ≥ 0 ∧ p.b2 ≥ 0 ∧ p.b3 ≥ 0 ∧ p.b4 ≥ 0 ∧ p.b5 ≥ 0 ∧
+  p.a0 + p.a1 + p.a2 = 1 ∧
+  p.b0 + p.b1 + p.b2 + p.b3 + p.b4 + p.b5 = 1 ∧
+  p.a0 + p.a1 - p.a2 = p.b0 + p.b1 + p.b2 - p.b3 - p.b4 - p.b5 ∧
+  p.a0 - p.a1 + p.a2 = p.b0 + p.b1 + p.b2 - p.b3 - p.b4 - p.b5 ∧
+  p.a0 - p.a1 - p.a2 = p.b0 - p.b1 - p.b2 + p.b3 + p.b4 - p.b5 ∧
+  p.a0 - p.a1 - p.a2 = -p.b0 + p.b1 - p.b2 + p.b3 - p.b4 + p.b5 ∧
+  p.a0 - p.a1 - p.a2 = -p.b0 - p.b1 + p.b2 - p.b3 + p.b4 + p.b5
+\end{lstlisting}
+
+\begin{itemize}
+\item The first block encodes nonnegativity.
+\item The next two equalities are the two normalizations.
+\item The final five equalities are exactly \eqref{eq:LP_i1}--\eqref{eq:LP_i5}.
+\item The assumptions \texttt{[Field k] [LinearOrder k] [IsStrictOrderedRing k]} ensure Lean has an ordered field so it can reason about inequalities and use \texttt{linarith}.
+\end{itemize}
+
+\subsection{The parameter region and explicit solution family}
+
+\begin{lstlisting}
+def Region {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (u v : k) : Prop :=
+  u ≥ 0 ∧ v ≥ 0 ∧ u + v ≤ 2/7
+
+def sol {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (u v : k) : Vars k :=
+  { a0 := 3/7, a1 := 2/7, a2 := 2/7,
+    b0 := 1/7 + v, b1 := 1/7 + u, b2 := 3/7 - u - v,
+    b3 := 2/7 - u - v, b4 := u, b5 := v }
+\end{lstlisting}
+
+This encodes exactly the analytic general solution and the triangular region.
+
+\subsection{Soundness: \texttt{Region u v → Feasible (sol u v)}}
+
+\begin{lstlisting}
+theorem soundness (u v : k) :
+  Region u v → Feasible (sol u v) := by
+    unfold Region Feasible sol
+    grind
+\end{lstlisting}
+
+After unfolding, the goal is a list of explicit linear inequalities/equalities, and \texttt{grind} closes them.
+Mathematically, this is ``plug in the formulas and check the constraints.''
+
+\subsection{Completeness: proving no feasible point is missed}
+
+The Lean file mirrors the hand proof by providing intermediate lemmas, each corresponding to one logical step.
+
+\begin{itemize}
+\item \texttt{completeness\_step\_A}: derives $a_1=a_2$ and related rewrites from the first two equalities + normalization.
+\item \texttt{completeness\_step\_B}: derives the three $b$-relations by subtracting the last three equations.
+\item \texttt{completeness\_step\_C}: pins all coordinates in terms of $p.b4$ and $p.b5$ (i.e.\ $u:=b_4$, $v:=b_5$).
+\item \texttt{completeness\_step\_D}: derives the region constraints from nonnegativity and the formula for $b_3$.
+\end{itemize}
+
+The main completeness theorem then packages these into:
+\[
+\mathrm{Region}(p.b4,p.b5)\ \wedge\ p=\mathrm{sol}(p.b4,p.b5).
+\]
+
+\subsection{Uniqueness: parameter injectivity}
+
+\begin{lstlisting}
+theorem uniqueness (u v u' v' : k) :
+  Region u v → Region u' v' → sol u v = sol u' v' → u = u' ∧ v = v' := by
+  intro h₁ h₂ h₃
+  simp_all +decide [ sol ]
+\end{lstlisting}
+
+Since $b_4=u$ and $b_5=v$ are stored directly, equality of records forces equality of parameters.
+
+\appendix
+\section{Lean verifier file (full listing)}
+
+\begin{lstlisting}
+/-
+This file was generated by Aristotle.
+
+We verify the analytic general solution for the SSLP linear (LP) stage in the concrete ((5,2,2)) example.
+-/
+
+import Mathlib
+
+set_option linter.mathlibStandardSet false
+
+open scoped BigOperators
+open scoped Real
+open scoped Nat
+open scoped Classical
+open scoped Pointwise
+
+set_option maxHeartbeats 0
+set_option maxRecDepth 4000
+set_option synthInstance.maxHeartbeats 20000
+set_option synthInstance.maxSize 128
+
+set_option relaxedAutoImplicit false
+set_option autoImplicit false
+
+noncomputable section
+
+structure Vars (k : Type*) where
+  a0 : k
+  a1 : k
+  a2 : k
+  b0 : k
+  b1 : k
+  b2 : k
+  b3 : k
+  b4 : k
+  b5 : k
+
+def Feasible {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (p : Vars k) : Prop :=
+  p.a0 ≥ 0 ∧ p.a1 ≥ 0 ∧ p.a2 ≥ 0 ∧
+  p.b0 ≥ 0 ∧ p.b1 ≥ 0 ∧ p.b2 ≥ 0 ∧ p.b3 ≥ 0 ∧ p.b4 ≥ 0 ∧ p.b5 ≥ 0 ∧
+  p.a0 + p.a1 + p.a2 = 1 ∧
+  p.b0 + p.b1 + p.b2 + p.b3 + p.b4 + p.b5 = 1 ∧
+  p.a0 + p.a1 - p.a2 = p.b0 + p.b1 + p.b2 - p.b3 - p.b4 - p.b5 ∧
+  p.a0 - p.a1 + p.a2 = p.b0 + p.b1 + p.b2 - p.b3 - p.b4 - p.b5 ∧
+  p.a0 - p.a1 - p.a2 = p.b0 - p.b1 - p.b2 + p.b3 + p.b4 - p.b5 ∧
+  p.a0 - p.a1 - p.a2 = -p.b0 + p.b1 - p.b2 + p.b3 - p.b4 + p.b5 ∧
+  p.a0 - p.a1 - p.a2 = -p.b0 - p.b1 + p.b2 - p.b3 + p.b4 + p.b5
+
+def Region {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (u v : k) : Prop :=
+  u ≥ 0 ∧ v ≥ 0 ∧ u + v ≤ 2/7
+
+def sol {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (u v : k) : Vars k :=
+  { a0 := 3/7, a1 := 2/7, a2 := 2/7,
+    b0 := 1/7 + v, b1 := 1/7 + u, b2 := 3/7 - u - v,
+    b3 := 2/7 - u - v, b4 := u, b5 := v }
+
+theorem soundness {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (u v : k) :
+  Region u v → Feasible (sol u v) := by
+    unfold Region Feasible sol;
+    grind
+
+lemma completeness_step_A {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (p : Vars k) (h : Feasible p) :
+  p.a1 = p.a2 ∧ p.a1 = (1 - p.a0) / 2 ∧ p.a0 - p.a1 - p.a2 = 2 * p.a0 - 1 := by
+    obtain ⟨ ha1, ha2, ha3, ha4, hb ⟩ := h;
+    grind
+
+lemma completeness_step_B {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (p : Vars k) (h : Feasible p) :
+  p.b0 - p.b1 + p.b4 - p.b5 = 0 ∧
+  p.b0 - p.b2 + p.b3 - p.b5 = 0 ∧
+  p.b1 - p.b2 + p.b3 - p.b4 = 0 := by
+    exact ⟨ by linarith [ h.2.2.2.2.2.2.2.2.2.2 ], by linarith [ h.2.2.2.2.2.2.2.2.2.2 ], by linarith [ h.2.2.2.2.2.2.2.2.2.2 ] ⟩
+
+lemma completeness_step_C {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (p : Vars k) (h : Feasible p) :
+  p.a0 = 3/7 ∧ p.a1 = 2/7 ∧ p.a2 = 2/7 ∧
+  p.b0 = 1/7 + p.b5 ∧ p.b1 = 1/7 + p.b4 ∧
+  p.b2 = 3/7 - p.b4 - p.b5 ∧ p.b3 = 2/7 - p.b4 - p.b5 := by
+    obtain ⟨h_a0, h_a1, h_a2, h_b0, h_b1, h_b2, h_b3, h_b4, h_b5, h_sum_a, h_sum_b, h_eq1, h_eq2, h_eq3, h_eq4, h_eq5⟩ := h;
+    grind
+
+lemma completeness_step_D {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (p : Vars k) (h : Feasible p) :
+  Region p.b4 p.b5 := by
+    have := completeness_step_C p h;
+    exact ⟨ h.2.2.2.2.2.2.2.1, h.2.2.2.2.2.2.2.2.1, by linarith [ h.2.2.2.2.2.2.1 ] ⟩
+
+theorem completeness {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (p : Vars k) (h : Feasible p) :
+  Region p.b4 p.b5 ∧ p = sol p.b4 p.b5 := by
+    unfold sol;
+    refine' ⟨ completeness_step_D p h, _ ⟩;
+    have h_eq :
+      p.a0 = 3 / 7 ∧ p.a1 = 2 / 7 ∧ p.a2 = 2 / 7 ∧
+      p.b0 = 1 / 7 + p.b5 ∧ p.b1 = 1 / 7 + p.b4 ∧
+      p.b2 = 3 / 7 - p.b4 - p.b5 ∧ p.b3 = 2 / 7 - p.b4 - p.b5 := by
+      exact?;
+    cases p
+    aesop
+
+theorem uniqueness {k : Type*} [Field k] [LinearOrder k] [IsStrictOrderedRing k] (u v u' v' : k) :
+  Region u v → Region u' v' → sol u v = sol u' v' → u = u' ∧ v = v' := by
+    intro h₁ h₂ h₃; simp_all +decide [ sol ] ;
+\end{lstlisting}
+
+\end{document}
