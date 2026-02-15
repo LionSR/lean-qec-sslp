@@ -14,6 +14,9 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{remark}{Remark}
 
+\newcommand{\wt}{\mathrm{wt}}
+\newcommand{\supp}{\mathrm{supp}}
+
 \hypersetup{
   colorlinks=true,
   linkcolor=blue,
@@ -3600,6 +3603,444 @@ In this SS-support model for \(\vec a=(0,1,1,2,3,3,5)\), the KL loss \(\mathcal{
 (\(\sim 10^{-10}\)) as would be expected if a true full-KL \(((7,2,3))\) solution existed in the searched space.
 This provides strong numerical evidence that \((0,1,1,2,3,3,5)\) is an SS/LP false positive: it passes SS and \(Z\)-LP filters but
 does not survive the full KL stage under the SS support constraint.
+
+\subsection{Analytic no--go for full KL under the complementary ansatz:
+$\vec a=(0,1,1,2,3,3,5)$ (mod $m=8$)}
+\label{subsec:nogo-a0112335}
+
+In this subsection we consider the subset--sum support construction at modulus $m=8$ with
+\[
+\vec a=(a_1,\dots,a_7)=(0,1,1,2,3,3,5),\qquad
+b_0=0,\qquad
+b_1=\sum_{i=1}^7 a_i\equiv 7\pmod 8.
+\]
+We work with the \emph{complementary ansatz}
+\[
+\ket{0_L}=\sum_{s\in S_0} c_s \ket{s},\qquad
+\ket{1_L}=X^{\otimes 7}\ket{0_L},
+\]
+where $s=s_1\cdots s_7\in\{0,1\}^7$, $\ket{s}=\ket{s_1\cdots s_7}$, and
+$\bar s:=s\oplus 1^7$ denotes bitwise complement.
+We show that \emph{no} choice of amplitudes $(c_s)_{s\in S_0}$ can satisfy the full Knill--Laflamme
+conditions for all Pauli operators of weight $\le 2$ (equivalently, for correcting all single--qubit Pauli errors).
+
+%------------------------------------------------------------
+\paragraph{Support sets $S_0,S_1$.}
+Define
+\[
+S_0=\bigl\{s\in\{0,1\}^7:\ \vec a\cdot s\equiv 0\!\!\pmod 8\bigr\},\qquad
+S_1=\bigl\{s\in\{0,1\}^7:\ \vec a\cdot s\equiv 7\!\!\pmod 8\bigr\},
+\]
+where $\vec a\cdot s:=\sum_i a_i s_i$ is computed over $\mathbb Z$ and then reduced mod $8$.
+A direct enumeration gives
+\[
+\begin{aligned}
+S_0=\{&
+0000000,\ 0000011,\ 0000101,\ 0001110,\ 0011001,\ 0101001,\ 0110110,\\
+&1000000,\ 1000011,\ 1000101,\ 1001110,\ 1011001,\ 1101001,\ 1110110\},
+\end{aligned}
+\]
+and
+\[
+\begin{aligned}
+S_1=\{&
+0001001,\ 0010110,\ 0100110,\ 0110001,\ 0111010,\ 0111100,\ 0111111,\\
+&1001001,\ 1010110,\ 1100110,\ 1110001,\ 1111010,\ 1111100,\ 1111111\}.
+\end{aligned}
+\]
+Moreover $S_1=\overline{S_0}:=\{\bar s:\ s\in S_0\}$, so $\supp(\ket{1_L})=S_1$ automatically.
+
+%------------------------------------------------------------
+\paragraph{Pauli parametrization.}
+For $x,z\in\{0,1\}^7$, let
+\[
+P(x,z):=i^{x\cdot z}\,X^x Z^z
+\qquad\text{where}\qquad
+X^x:=\bigotimes_{i=1}^7 X_i^{x_i},\quad Z^z:=\bigotimes_{i=1}^7 Z_i^{z_i},
+\]
+and $x\cdot z:=\sum_i x_i z_i\in\{0,1,\dots,7\}$.
+Write the Pauli weight as
+\[
+\wt(x,z):=\bigl|\supp(x)\cup\supp(z)\bigr|.
+\]
+For distance $3$, it suffices to impose KL on all $P(x,z)$ with $\wt(x,z)\le 2$.
+
+%------------------------------------------------------------
+\paragraph{Intersection reduction of matrix elements.}
+For $x\in\{0,1\}^7$ define the intersection sets
+\[
+D(x):=S_0\cap(S_0\oplus x),\qquad
+C(x):=S_1\cap(S_0\oplus x).
+\]
+Here $(S_0\oplus x):=\{s\oplus x:\ s\in S_0\}$ and $\oplus$ is bitwise XOR.
+A standard computation gives the finite--sum formulas
+\begin{align}
+\bra{0_L}P(x,z)\ket{0_L}
+&= i^{x\cdot z}\!\!\sum_{s\in D(x)} (-1)^{z\cdot s}\ \overline{c_{s\oplus x}}\,c_s,
+\label{eq:diag-sum}\\
+\bra{0_L}P(x,z)\ket{1_L}
+&= i^{x\cdot z}\!\!\sum_{s\in C(x)} (-1)^{z\cdot s}\ \overline{c_{s\oplus x}}\,c_{\bar s},
+\label{eq:offdiag-sum}
+\end{align}
+where $z\cdot s:=\sum_i z_i s_i\ (\mathrm{mod}\ 2)$ in the exponent of $(-1)$.
+
+\begin{lemma}[Automatic KL constraints under complementarity]
+\label{lem:automatic-KL}
+Assume $\ket{1_L}=X^{\otimes 7}\ket{0_L}$. Then for any $P(x,z)$:
+\begin{enumerate}
+\item If $D(x)=\varnothing$ then $\bra{0_L}P(x,z)\ket{0_L}=0$ (hence also $\bra{1_L}P(x,z)\ket{1_L}=0$).
+\item If $C(x)=\varnothing$ then $\bra{0_L}P(x,z)\ket{1_L}=0$.
+\item One has the sign relation
+\[
+\bra{1_L}P(x,z)\ket{1_L}=(-1)^{\wt(z)}\,\bra{0_L}P(x,z)\ket{0_L}.
+\]
+Consequently, the diagonal KL requirement
+$\bra{0_L}P(x,z)\ket{0_L}=\bra{1_L}P(x,z)\ket{1_L}$
+is automatic whenever $\wt(z)$ is even, and reduces to
+$\bra{0_L}P(x,z)\ket{0_L}=0$ whenever $\wt(z)$ is odd.
+\end{enumerate}
+\end{lemma}
+
+%------------------------------------------------------------
+\paragraph{Which $(x,z)$ yield non-automatic equations.}
+The following proposition is the ``intersection test'' specialized to this instance.
+
+\begin{proposition}[Nonempty intersections for $\vec a=(0,1,1,2,3,3,5)$]
+\label{prop:nonempty-intersections-a0112335}
+Among all $x$ with $\wt(x)\le 2$, the only nonempty $D(x)$ are:
+\[
+x\in\{0,\ e_1,\ e_2+e_3,\ e_5+e_6,\ e_5+e_7,\ e_6+e_7\}.
+\]
+The only nonempty $C(x)$ are:
+\[
+x\in\{e_2,\ e_3,\ e_1+e_2,\ e_1+e_3,\ e_2+e_4,\ e_3+e_4,\ e_4+e_5,\ e_4+e_6,\ e_4+e_7\}.
+\]
+Consequently, among Paulis $P(x,z)$ of weight $\le 2$:
+\begin{itemize}
+\item the only \emph{diagonal-type} non-automatic constraints are those with $x$ as above and $\wt(z)$ odd;
+\item the only \emph{off-diagonal-type} non-automatic constraints are those with $x$ as above and any $z$ such that $\wt(x,z)\le 2$.
+\end{itemize}
+In total there are $22$ diagonal-type and $56$ off-diagonal-type operators to consider, i.e.\ $78$ non-automatic full--KL equations.
+\end{proposition}
+
+We now write out \emph{all} of these non-automatic equations explicitly.
+
+%------------------------------------------------------------
+\subsubsection*{All non-automatic diagonal-type KL equations}
+Let $p_s:=|c_s|^2$.
+
+\paragraph{(i) The seven $Z_i$ constraints.}
+For each $i=1,\dots,7$ the KL condition for $Z_i$ is
+\begin{equation}
+\sum_{s\in S_0} (-1)^{s_i}\,p_s =0
+\qquad\Longleftrightarrow\qquad
+\sum_{\substack{s\in S_0\\ s_i=1}} p_s=\frac12.
+\label{eq:Zi-abstract}
+\end{equation}
+Using the explicit $S_0$ above, these become
+\begin{align}
+(Z_1):\ &p_{1000000}+p_{1000011}+p_{1000101}+p_{1001110}+p_{1011001}+p_{1101001}+p_{1110110}=\tfrac12,\nonumber\\
+(Z_2):\ &p_{0101001}+p_{0110110}+p_{1101001}+p_{1110110}=\tfrac12,\nonumber\\
+(Z_3):\ &p_{0011001}+p_{0110110}+p_{1011001}+p_{1110110}=\tfrac12,\nonumber\\
+(Z_4):\ &p_{0001110}+p_{0011001}+p_{0101001}+p_{1001110}+p_{1011001}+p_{1101001}=\tfrac12,\nonumber\\
+(Z_5):\ &p_{0000101}+p_{0001110}+p_{0110110}+p_{1000101}+p_{1001110}+p_{1110110}=\tfrac12,\nonumber\\
+(Z_6):\ &p_{0000011}+p_{0001110}+p_{0110110}+p_{1000011}+p_{1001110}+p_{1110110}=\tfrac12,\nonumber\\
+(Z_7):\ &p_{0000011}+p_{0000101}+p_{0011001}+p_{0101001}+p_{1000011}+p_{1000101}+p_{1011001}+p_{1101001}=\tfrac12.
+\label{eq:Zi-explicit}
+\end{align}
+Normalization adds $\sum_{s\in S_0} p_s=1$.
+
+\paragraph{(ii) The $x=e_1$ constraints: $Y_1$ and $X_1Z_j$ ($j=2,\dots,7$).}
+Here $D(e_1)=S_0$. Group $S_0$ into pairs $(0u,1u)$ with common $6$--bit tail $u\in\{0,1\}^6$:
+\[
+u\in\{000000,\ 000011,\ 000101,\ 001110,\ 011001,\ 101001,\ 110110\}.
+\]
+Write $c_{0u}:=c_{(0,u)}$ and $c_{1u}:=c_{(1,u)}$.
+
+\begin{itemize}
+\item For $Y_1$ (i.e.\ $P(e_1,e_1)$), the KL condition $\bra{0_L}Y_1\ket{0_L}=0$ is equivalent to
+\begin{equation}
+\sum_u\Big(\overline{c_{1u}}c_{0u}-\overline{c_{0u}}c_{1u}\Big)=0
+\quad\Longleftrightarrow\quad
+\sum_u \Im\!\big(\overline{c_{0u}}c_{1u}\big)=0.
+\label{eq:Y1}
+\end{equation}
+
+\item For $X_1Z_j$ with $j=2,\dots,7$ (i.e.\ $P(e_1,e_j)$), the KL condition $\bra{0_L}X_1Z_j\ket{0_L}=0$ is equivalent to
+\begin{equation}
+\sum_u (-1)^{u_{j-1}}\Big(\overline{c_{1u}}c_{0u}+\overline{c_{0u}}c_{1u}\Big)=0
+\quad\Longleftrightarrow\quad
+\sum_u (-1)^{u_{j-1}}\Re\!\big(\overline{c_{0u}}c_{1u}\big)=0.
+\label{eq:X1Zj}
+\end{equation}
+\end{itemize}
+
+\paragraph{(iii) The remaining diagonal constraints with $|x|=2$ (four independent equations).}
+For each $x$ below, $D(x)$ has size $4$, and the two choices of $z$ supported on $\supp(x)$ give the same equation up to an overall sign.
+Explicitly:
+\begin{align}
+x=e_2+e_3:\quad&
+\overline{c_{0101001}}c_{0011001}-\overline{c_{0011001}}c_{0101001}
++\overline{c_{1101001}}c_{1011001}-\overline{c_{1011001}}c_{1101001}=0,
+\label{eq:diag-e2e3}\\[2mm]
+x=e_5+e_6:\quad&
+\overline{c_{0000101}}c_{0000011}-\overline{c_{0000011}}c_{0000101}
++\overline{c_{1000101}}c_{1000011}-\overline{c_{1000011}}c_{1000101}=0,
+\label{eq:diag-e5e6}\\[2mm]
+x=e_5+e_7:\quad&
+\overline{c_{0000101}}c_{0000000}-\overline{c_{0000000}}c_{0000101}
++\overline{c_{1000101}}c_{1000000}-\overline{c_{1000000}}c_{1000101}=0,
+\label{eq:diag-e5e7}\\[2mm]
+x=e_6+e_7:\quad&
+\overline{c_{0000011}}c_{0000000}-\overline{c_{0000000}}c_{0000011}
++\overline{c_{1000011}}c_{1000000}-\overline{c_{1000000}}c_{1000011}=0.
+\label{eq:diag-e6e7}
+\end{align}
+
+%------------------------------------------------------------
+\subsubsection*{All non-automatic off-diagonal KL equations}
+For each $x$ in Proposition~\ref{prop:nonempty-intersections-a0112335} with $C(x)\neq\varnothing$, the off-diagonal KL condition is
+\begin{equation}
+\bra{0_L}P(x,z)\ket{1_L}
+=
+i^{x\cdot z}\sum_{s\in C(x)} (-1)^{z\cdot s}\ \overline{c_{s\oplus x}}\,c_{\bar s}=0,
+\qquad
+\text{for all $z$ with $\wt(x,z)\le 2$.}
+\label{eq:offdiag-master}
+\end{equation}
+In this instance, $|C(x)|=4$ for each such $x$, so every constraint is a $4$--term sum.
+We now list the $4$ terms explicitly in each case.
+
+\paragraph{(i) $x=e_2$, $C(e_2)=\{0001001,0010110,1001001,1010110\}$.}
+For all $z$ with $\wt(e_2,z)\le 2$ (i.e.\ $z\in\{0,e_1,\dots,e_7,e_1{+}e_2,e_2{+}e_3,\dots,e_2{+}e_7\}$),
+\begin{align}
+(-1)^{z\cdot 0001001}\overline{c_{0101001}}c_{1110110}
+&+(-1)^{z\cdot 0010110}\overline{c_{0110110}}c_{1101001}\nonumber\\
+&+(-1)^{z\cdot 1001001}\overline{c_{1101001}}c_{0110110}
++(-1)^{z\cdot 1010110}\overline{c_{1110110}}c_{0101001}=0.
+\label{eq:offdiag-e2}
+\end{align}
+
+\paragraph{(ii) $x=e_3$, $C(e_3)=\{0001001,0100110,1001001,1100110\}$.}
+For all $z$ with $\wt(e_3,z)\le 2$,
+\begin{align}
+(-1)^{z\cdot 0001001}\overline{c_{0011001}}c_{1110110}
+&+(-1)^{z\cdot 0100110}\overline{c_{0110110}}c_{1011001}\nonumber\\
+&+(-1)^{z\cdot 1001001}\overline{c_{1011001}}c_{0110110}
++(-1)^{z\cdot 1100110}\overline{c_{1110110}}c_{0011001}=0.
+\label{eq:offdiag-e3}
+\end{align}
+
+\paragraph{(iii) $x=e_1+e_2$, $C(e_1{+}e_2)=\{0001001,0010110,1001001,1010110\}$.}
+For $z\subseteq\{e_1,e_2\}$ (i.e.\ $z\in\{0,e_1,e_2,e_1{+}e_2\}$),
+\begin{align}
+(-1)^{z\cdot 0001001}\overline{c_{1101001}}c_{1110110}
+&+(-1)^{z\cdot 0010110}\overline{c_{1110110}}c_{1101001}\nonumber\\
+&+(-1)^{z\cdot 1001001}\overline{c_{0101001}}c_{0110110}
++(-1)^{z\cdot 1010110}\overline{c_{0110110}}c_{0101001}=0.
+\label{eq:offdiag-e1e2}
+\end{align}
+
+\paragraph{(iv) $x=e_1+e_3$, $C(e_1{+}e_3)=\{0001001,0100110,1001001,1100110\}$.}
+For $z\subseteq\{e_1,e_3\}$,
+\begin{align}
+(-1)^{z\cdot 0001001}\overline{c_{1011001}}c_{1110110}
+&+(-1)^{z\cdot 0100110}\overline{c_{1110110}}c_{1011001}\nonumber\\
+&+(-1)^{z\cdot 1001001}\overline{c_{0011001}}c_{0110110}
++(-1)^{z\cdot 1100110}\overline{c_{0110110}}c_{0011001}=0.
+\label{eq:offdiag-e1e3}
+\end{align}
+
+\paragraph{(v) $x=e_2+e_4$, $C(e_2{+}e_4)=\{0100110,0110001,1100110,1110001\}$.}
+For $z\subseteq\{e_2,e_4\}$,
+\begin{align}
+(-1)^{z\cdot 0100110}\overline{c_{0001110}}c_{1011001}
+&+(-1)^{z\cdot 0110001}\overline{c_{0011001}}c_{1001110}\nonumber\\
+&+(-1)^{z\cdot 1100110}\overline{c_{1001110}}c_{0011001}
++(-1)^{z\cdot 1110001}\overline{c_{1011001}}c_{0001110}=0.
+\label{eq:offdiag-e2e4}
+\end{align}
+
+\paragraph{(vi) $x=e_3+e_4$, $C(e_3{+}e_4)=\{0010110,0110001,1010110,1110001\}$.}
+For $z\subseteq\{e_3,e_4\}$,
+\begin{align}
+(-1)^{z\cdot 0010110}\overline{c_{0001110}}c_{1101001}
+&+(-1)^{z\cdot 0110001}\overline{c_{0101001}}c_{1001110}\nonumber\\
+&+(-1)^{z\cdot 1010110}\overline{c_{1001110}}c_{0101001}
++(-1)^{z\cdot 1110001}\overline{c_{1101001}}c_{0001110}=0.
+\label{eq:offdiag-e3e4}
+\end{align}
+
+\paragraph{(vii) $x=e_4+e_5$, $C(e_4{+}e_5)=\{0001001,0111010,1001001,1111010\}$.}
+For $z\subseteq\{e_4,e_5\}$,
+\begin{align}
+(-1)^{z\cdot 0001001}\overline{c_{0000101}}c_{1110110}
+&+(-1)^{z\cdot 0111010}\overline{c_{0110110}}c_{1000101}\nonumber\\
+&+(-1)^{z\cdot 1001001}\overline{c_{1000101}}c_{0110110}
++(-1)^{z\cdot 1111010}\overline{c_{1110110}}c_{0000101}=0.
+\label{eq:offdiag-e4e5}
+\end{align}
+
+\paragraph{(viii) $x=e_4+e_6$, $C(e_4{+}e_6)=\{0001001,0111100,1001001,1111100\}$.}
+For $z\subseteq\{e_4,e_6\}$,
+\begin{align}
+(-1)^{z\cdot 0001001}\overline{c_{0000011}}c_{1110110}
+&+(-1)^{z\cdot 0111100}\overline{c_{0110110}}c_{1000011}\nonumber\\
+&+(-1)^{z\cdot 1001001}\overline{c_{1000011}}c_{0110110}
++(-1)^{z\cdot 1111100}\overline{c_{1110110}}c_{0000011}=0.
+\label{eq:offdiag-e4e6}
+\end{align}
+
+\paragraph{(ix) $x=e_4+e_7$, $C(e_4{+}e_7)=\{0001001,0111111,1001001,1111111\}$.}
+For $z\subseteq\{e_4,e_7\}$,
+\begin{align}
+(-1)^{z\cdot 0001001}\overline{c_{0000000}}c_{1110110}
+&+(-1)^{z\cdot 0111111}\overline{c_{0110110}}c_{1000000}\nonumber\\
+&+(-1)^{z\cdot 1001001}\overline{c_{1000000}}c_{0110110}
++(-1)^{z\cdot 1111111}\overline{c_{1110110}}c_{0000000}=0.
+\label{eq:offdiag-e4e7}
+\end{align}
+
+This completes the explicit list of all non-automatic off-diagonal constraints.
+
+%------------------------------------------------------------
+\subsubsection*{Analytic no-go for full KL (replacing numerical evidence)}
+\begin{theorem}[No complementary full--KL solution for $\vec a=(0,1,1,2,3,3,5)$]
+\label{thm:nogo-a0112335}
+There is no choice of amplitudes $(c_s)_{s\in S_0}$ such that
+\[
+\ket{0_L}=\sum_{s\in S_0} c_s\ket{s},\qquad
+\ket{1_L}=X^{\otimes 7}\ket{0_L},
+\]
+satisfies the full Knill--Laflamme conditions for all Pauli operators $P(x,z)$ of weight $\le 2$.
+\end{theorem}
+
+\begin{proof}
+We use only (a) the diagonal $Z_i$ constraints \eqref{eq:Zi-explicit} and (b) eight carefully chosen off-diagonal constraints from
+\eqref{eq:offdiag-e2} and \eqref{eq:offdiag-e3}.
+
+\paragraph{Step 1: a $4\times 4$ Hadamard trick forces products to vanish.}
+From \eqref{eq:offdiag-e2} (i.e.\ $x=e_2$), pick the four weight$\le 2$ Paulis
+\[
+X_2,\qquad X_2Z_1,\qquad X_2Z_3,\qquad X_2Z_4,
+\]
+corresponding to $z=0,e_1,e_3,e_4$.
+Define
+\[
+u_1:=\overline{c_{0101001}}c_{1110110},\quad
+u_2:=\overline{c_{0110110}}c_{1101001},\quad
+u_3:=\overline{c_{1101001}}c_{0110110},\quad
+u_4:=\overline{c_{1110110}}c_{0101001}.
+\]
+For $z\in\{0,e_1,e_3,e_4\}$ the sign patterns $((-1)^{z\cdot s})_{s\in C(e_2)}$ form the $4\times 4$ Hadamard matrix,
+so the four KL equations are exactly
+\[
+\begin{aligned}
+u_1+u_2+u_3+u_4&=0,\\
+u_1+u_2-u_3-u_4&=0,\\
+u_1-u_2+u_3-u_4&=0,\\
+-u_1+u_2-u_3+u_4&=0.
+\end{aligned}
+\]
+This system is invertible over $\mathbb C$, hence
+\[
+u_1=u_2=u_3=u_4=0.
+\]
+In particular,
+\begin{equation}
+c_{0101001}\,c_{1110110}=0,\qquad
+c_{0110110}\,c_{1101001}=0.
+\tag{A}\label{eq:A-products}
+\end{equation}
+
+Similarly, from \eqref{eq:offdiag-e3} (i.e.\ $x=e_3$), pick
+\[
+X_3,\qquad X_3Z_1,\qquad X_3Z_2,\qquad X_3Z_4,
+\]
+corresponding to $z=0,e_1,e_2,e_4$. The same Hadamard argument yields
+\begin{equation}
+c_{0011001}\,c_{1110110}=0,\qquad
+c_{0110110}\,c_{1011001}=0.
+\tag{B}\label{eq:B-products}
+\end{equation}
+
+\paragraph{Step 2: translate to forced zeros in probabilities.}
+Let $p_s:=|c_s|^2\ge 0$ with $\sum_{s\in S_0}p_s=1$.
+From \eqref{eq:A-products}--\eqref{eq:B-products} we obtain:
+\begin{itemize}
+\item either $p_{1110110}=0$, or else $p_{0101001}=p_{0011001}=0$;
+\item either $p_{0110110}=0$, or else $p_{1101001}=p_{1011001}=0$.
+\end{itemize}
+
+Now solve the linear system given by the seven $Z_i$ constraints \eqref{eq:Zi-explicit} together with normalization.
+A convenient parametrization is
+\begin{align}
+p_{0000000}&=p_{1000011}+p_{1000101}+p_{1001110}+p_{1011001}+p_{1101001}+p_{1110110}-\frac{7}{16},\nonumber\\
+p_{0000011}&=\frac{1}{16}-p_{1000011},\qquad
+p_{0000101}=\frac{1}{16}-p_{1000101},\qquad
+p_{0001110}=\frac{1}{8}-p_{1001110},\nonumber\\
+p_{0011001}&=\frac{3}{16}-p_{1011001},\qquad
+p_{0101001}=\frac{3}{16}-p_{1101001},\qquad
+p_{0110110}=\frac{5}{16}-p_{1110110},\nonumber\\
+p_{1000000}&=\frac12-\bigl(p_{1000011}+p_{1000101}+p_{1001110}+p_{1011001}+p_{1101001}+p_{1110110}\bigr),
+\label{eq:Z-soln}
+\end{align}
+with the six variables
+$p_{1000011},p_{1000101},p_{1001110},p_{1011001},p_{1101001},p_{1110110}$
+free (subject only to $p_s\ge 0$).
+
+We now split into two cases.
+
+\smallskip
+\noindent\emph{Case 1: $p_{1110110}=0$.}
+Then \eqref{eq:Z-soln} implies $p_{0110110}=\frac{5}{16}>0$, hence $c_{0110110}\neq 0$.
+By \eqref{eq:A-products}--\eqref{eq:B-products} this forces $c_{1101001}=c_{1011001}=0$, i.e.\ $p_{1101001}=p_{1011001}=0$.
+Then \eqref{eq:Z-soln} reduces
+\[
+p_{0000000}=p_{1000011}+p_{1000101}+p_{1001110}-\frac{7}{16}.
+\]
+But nonnegativity of
+\[
+p_{0000011}=\frac{1}{16}-p_{1000011}\ge0,\quad
+p_{0000101}=\frac{1}{16}-p_{1000101}\ge0,\quad
+p_{0001110}=\frac{1}{8}-p_{1001110}\ge0
+\]
+implies
+\[
+p_{1000011}\le\frac{1}{16},\quad p_{1000101}\le\frac{1}{16},\quad p_{1001110}\le\frac{1}{8}.
+\]
+Hence
+\[
+p_{0000000}\le \frac{1}{16}+\frac{1}{16}+\frac{1}{8}-\frac{7}{16}
+= -\frac{3}{16}<0,
+\]
+contradiction.
+
+\smallskip
+\noindent\emph{Case 2: $p_{1110110}>0$.}
+Then \eqref{eq:A-products}--\eqref{eq:B-products} force $p_{0011001}=p_{0101001}=0$.
+From \eqref{eq:Z-soln} we obtain $p_{1011001}=\frac{3}{16}$ and $p_{1101001}=\frac{3}{16}$, so both are positive.
+Then \eqref{eq:A-products}--\eqref{eq:B-products} force $p_{0110110}=0$, hence by \eqref{eq:Z-soln} we get $p_{1110110}=\frac{5}{16}$.
+Now \eqref{eq:Z-soln} gives
+\[
+\begin{aligned}
+p_{1000000}
+&=\frac12-\Bigl(p_{1000011}+p_{1000101}+p_{1001110}+\frac{3}{16}+\frac{3}{16}+\frac{5}{16}\Bigr)\\
+&=-\frac{3}{16}-\bigl(p_{1000011}+p_{1000101}+p_{1001110}\bigr)<0,
+\end{aligned}
+\]
+again a contradiction.
+
+\smallskip
+Both cases contradict $p_s\ge 0$. Therefore no complementary state supported on $S_0$ can satisfy full KL for all weight$\le 2$ Paulis.
+\end{proof}
+
+\begin{remark}
+The contradiction uses only:
+(i) the $Z_i$ diagonal KL constraints, and
+(ii) eight off-diagonal KL constraints (four from $x=e_2$ and four from $x=e_3$ chosen to yield Hadamard sign patterns).
+All other non-automatic equations listed above are unnecessary for the no-go.
+\end{remark}
 
 
 \end{document}
