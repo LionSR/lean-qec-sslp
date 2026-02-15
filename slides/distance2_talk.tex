@@ -542,7 +542,7 @@ A \textbf{proof assistant} based on dependent type theory:
 \item Proposition is \code{Decidable}?
   Compile to native code $\to$ run $\to$ \code{true}
 \item Kernel accepts: proof complete
-\item ``All 49,152 KL constraints hold?''
+\item ``All 210 KL constraints hold?''
   $\to$ \code{true} $\to$ QED
 \end{itemize}
 
@@ -679,16 +679,16 @@ Lean compiles to native code, executes, returns \code{true} $\Rightarrow$ kernel
 \end{itemize}
 \end{columns}
 
-\vspace{0.5em}
+\vspace{0.3em}
 \textbf{The gap}: distance-2 $=$ convex optimization over $\mathbb{R}_{\geq 0}$.\\
-Distance-3 $=$ nonlinear system over $\CC$.
-At $n{=}7$: $3\times 2^{14} = 49{,}152$ constraints.
+Distance-3 $=$ nonlinear system over $\CC$.\;
+At $n{=}7$: $210$ weight-${\leq}\,2$ Pauli constraints.
 
-\vspace{0.4em}
+\vspace{0.2em}
 \begin{center}
-\tikz\node[draw=Coral!60, fill=Coral!6, rounded corners=4pt, inner sep=5pt, text width=10cm, align=center, font=\small]{%
-  \textbf{Core challenge}: solve ${\sim}50{,}000$ nonlinear constraints
-  over $\CC$, then verify solutions with mathematical certainty.};
+\tikz\node[draw=Coral!60, fill=Coral!6, rounded corners=4pt, inner sep=4pt, text width=10cm, align=center, font=\small]{%
+  \textbf{Core challenge}: solve $210$ nonlinear constraints
+  over $\CC$, then verify with mathematical certainty.};
 \end{center}
 \end{frame}
 
@@ -704,8 +704,8 @@ At $n{=}7$: $3\times 2^{14} = 49{,}152$ constraints.
 $S_0 \cap (S_0 \oplus z_P) = \emptyset$\\
 $\Rightarrow$ sum is empty $\Rightarrow 0$.
 
-{\small BD16v1: \alert{25}\,/\,49,152}\\
-{\small $>$\,99.5\% are free.}
+{\small BD16v1: \alert{25}\,/\,210}\\
+{\small $>$\,88\% are automatic.}
 
 \column{0.31\textwidth}
 \textbf{2. Exact number field.}
@@ -718,7 +718,7 @@ $=$ 8 rational coefficients.
 \column{0.31\textwidth}
 \textbf{3. AI + Lean.}
 
-\alert{GPT-5.2} solves the $\sim$25--150 surviving constraints symbolically.
+\alert{GPT-5.2} solves the surviving constraints symbolically.
 
 Lean verifies \emph{exactly}.
 \end{columns}
@@ -727,7 +727,7 @@ Lean verifies \emph{exactly}.
 \begin{center}
 \begin{tikzpicture}
   \node[pipebox=Teal!10, text width=2.6cm, minimum height=0.7cm, font=\small]
-    (int) {Intersection test\\filters 99.5\%};
+    (int) {Intersection test\\filters ${\sim}$88\%};
   \node[pipebox=Amber!15, text width=2.6cm, minimum height=0.7cm, font=\small, right=0.4cm of int]
     (ai) {GPT-5.2 solves\\remaining system};
   \node[pipebox=Sage!15, text width=2.6cm, minimum height=0.7cm, font=\small, right=0.4cm of ai]
@@ -767,7 +767,7 @@ $S_0 \cap (S_0 \oplus z_P) = \emptyset
 \begin{exampleblock}{Why so effective}
 $S_0$ is \textbf{sparse}: $|S_0| = 7$ out of $2^7 = 128$.
 Random shifts almost never land back inside $S_0$.\;
-Only \alert{25}\,/\,49,152 survive (BD16v1).
+Only \alert{25}\,/\,210 survive (BD16v1).
 \end{exampleblock}
 
 In Lean: \code{klIsAutomatic} is \code{Decidable} --- checked by \code{native\_decide}.
@@ -778,7 +778,7 @@ In Lean: \code{klIsAutomatic} is \code{Decidable} --- checked by \code{native\_d
 % =====================================================================
 \begin{frame}{From Constraints to Solutions: GPT-5.2}
 
-After intersection test, $\sim$25--150 surviving constraints form a
+After intersection test, the surviving constraints form a
 \textbf{quadratic system} in $c_x \in \CC$.
 
 \begin{columns}[T]
@@ -928,7 +928,7 @@ theorem layer2 : AllKLSatisfied supp₀ amp₀ 2
 \midrule
 SS + BD + norm & \leanproof \\
 $Z$-balance & \leanproof \\
-Non-auto KL & 25 / 49152 \\
+Non-auto KL & 25 / 210 \\
 All 25 $= 0$ & \leanproof \\
 \bottomrule
 \end{tabular}
@@ -943,7 +943,7 @@ All 25 $= 0$ & \leanproof \\
 % =====================================================================
 % Slide: All 8 BD16 Codes
 % =====================================================================
-\begin{frame}{8 Verified BD16 $((7,2,3))$ Codes}
+\begin{frame}{8 Verified BD16 $((7,2,3))$ Codes in Lean}
 
 All codes: $n{=}7$, $K{=}2$, $m{=}8$ (transversal $T$), 
 verified \code{Layer1OK} $+$ \code{AllKLSatisfied}.
@@ -969,8 +969,8 @@ verified \code{Layer1OK} $+$ \code{AllKLSatisfied}.
 \end{center}
 
 \textcolor{Slate}{\small
-Remaining: 3 vectors need $\sqrt{10}$ (field extension); 2 proven impossible.
-12 vectors total $\Rightarrow$ 10 feasible, 8 verified.
+Remaining: 3 vectors need $\sqrt{5}/\sqrt{10}$ field extension; 2 proven impossible.
+12 vectors total $\Rightarrow$ 10 feasible, 6 verified in Lean (8 distinct codes).
 }
 \end{frame}
 
@@ -1007,7 +1007,7 @@ $\braket{0_L|P|0_L} = \displaystyle\sum_{\substack{x \in S_0 \\ x \oplus z_P \in
 Phases $\omega^{f(x,P)}$ depend on $x_P$ bits.
 \end{alertblock}
 
-\textcolor{Slate}{\small BD16v1 ($|S_0|{=}7$): 25 constraints $\to$ 7 complex unknowns with 1 normalization $+$ 7 probability values fixed.}
+\textcolor{Slate}{\small BD16v1: 7 nonzero amplitudes, 25 non-automatic constraints. Probabilities fixed by Layer~1 $\to$ only phases remain.}
 \end{columns}
 \end{frame}
 
@@ -1016,39 +1016,40 @@ Phases $\omega^{f(x,P)}$ depend on $x_P$ bits.
 % =====================================================================
 \begin{frame}{The BD$_{16}$ Solution Landscape}
 
-All 12 BD$_{16}$ $((7,2,3))$ angle vectors (up to qubit permutation, $a_i \leftrightarrow m{-}a_i$):
+All 12 SS--LP-passing BD$_{16}$ $((7,2,3))$ angle vectors:
 
-\vspace{-0.3em}
+\vspace{-0.5em}
 \begin{center}
 {\scriptsize
-\begin{tabular}{@{}lcccl@{}}
+\begin{tabular}{@{}lccccl@{}}
 \toprule
 \textbf{Angle vector $\mathbf{a}$} & $|S_0|$ & \textbf{Non-auto} & \textbf{Solution type} & \textbf{Status} \\
 \midrule
-$(1,2,2,2,2,3,3)$ & 7  & 25  & 2-param continuous & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,2,2,2,2,5)$ & 10 & 94  & discrete family    & \textcolor{Sage}{Lean \checkmark} \\
-$(0,1,2,2,3,3,4)$ & 7  & 47  & 3 isolated solutions & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,1,1,3,3,5)$ & 13 & 145 & continuous          & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,1,1,3,4,4)$ & 12 & 112 & discrete family    & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,1,2,2,4,4)$ & 16 & 149 & uniform magnitude  & \textcolor{Sage}{Lean \checkmark} \\
+$(1,2,2,2,2,3,3)$ & 18 & 83  & 2-param continuous  & \textcolor{Sage}{Lean \checkmark} \\
+$(1,1,2,2,2,2,5)$ & 14 & 97  & 192-elt discrete    & \textcolor{Sage}{Lean \checkmark} \\
+$(0,1,2,2,3,3,4)$ & 16 & 68  & 3 isolated solutions & \textcolor{Sage}{Lean \checkmark} \\
+$(1,1,1,1,3,3,5)$ & 13 & 81  & continuous           & \textcolor{Sage}{Lean \checkmark} \\
+$(1,1,1,1,3,4,4)$ & 12 & 85  & 128-elt discrete     & \textcolor{Sage}{Lean \checkmark} \\
+$(1,1,1,2,2,4,4)$ & 16 & 83  & uniform magnitude    & \textcolor{Sage}{Lean \checkmark} \\
+$(1,1,2,2,2,3,4)$ & 16 & 83  & phase-only $+$ families & \textcolor{Teal}{analytical \checkmark} \\
 \rowcolor{Amber!10}
-$(1,1,2,2,3,3,3)$ & 14 & 134 & needs $\sqrt{10}$  & \textcolor{Amber}{pending} \\
+$(1,1,2,2,3,3,3)$ & 16 & 85  & continuous, needs $\sqrt{10}$  & \textcolor{Amber}{pending} \\
 \rowcolor{Amber!10}
-$(1,1,1,2,3,3,4)$ & 12 & 103 & needs $\sqrt{10}$  & \textcolor{Amber}{pending} \\
+$(1,1,1,2,3,3,4)$ & 16 & 85  & isolated, needs $\sqrt{10}$    & \textcolor{Amber}{pending} \\
 \rowcolor{Amber!10}
-$(1,1,1,2,2,3,5)$ & 10 & 86  & needs $\sqrt{10}$  & \textcolor{Amber}{pending} \\
+$(1,1,1,2,2,3,5)$ & 14 & 99  & isolated, needs $\sqrt{5}$     & \textcolor{Amber}{pending} \\
 \rowcolor{Coral!8}
-$(1,1,2,2,2,6,1)$ & 5  & 11  & \multicolumn{2}{l}{\textcolor{Coral}{proven infeasible}} \\
+$(1,1,1,2,2,2,6)$ & 10 & 115 & \multicolumn{2}{l}{\textcolor{Coral}{proven infeasible}} \\
 \rowcolor{Coral!8}
-$(0,1,1,2,3,3,5)$ & 4  & 4   & \multicolumn{2}{l}{\textcolor{Coral}{proven infeasible}} \\
-$(0,0,1,2,3,3,6)$ & 4  & 2   & numerical only & \textcolor{Slate}{unresolved} \\
+$(0,1,1,2,3,3,5)$ & 14 & 78  & \multicolumn{2}{l}{\textcolor{Coral}{proven infeasible}} \\
 \bottomrule
 \end{tabular}
 }
 \end{center}
 
-\vspace{-0.5em}
-\textcolor{Slate}{\small 8/10 feasible vectors verified.\ 3 pending need $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$ (16-dim field).}
+\vspace{-0.7em}
+\textcolor{Slate}{\scriptsize $|S_0|$, non-auto from Lean \code{\#eval}.\;
+10 feasible, 6 in Lean; 3 pending need $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$.}
 \end{frame}
 
 % =====================================================================
@@ -1155,7 +1156,7 @@ Same pipeline; number field adapts to $\omega_m$.
 BD$_{64}$ ($m{=}32$):\\
 transversal $\pi/16$.
 
-Intersection test still filters $>99\%$ of KL.
+Intersection test still effective.
 \end{alertblock}
 
 \column{0.31\textwidth}
@@ -1206,7 +1207,7 @@ ${\sim}$4,300 lines Lean 4,\; 0 \code{sorry}\\
 \column{0.48\textwidth}
 \begin{block}{Distance 3 (new)}
 \begin{itemize}\setlength\itemsep{0pt}
-\item Intersection test filters 99.5\%
+\item Intersection test filters most of 210 KL
 \item GPT-5.2 $\to$ closed-form amplitudes
 \item Exact arithmetic in $\QQ(\sqrt{2},\sqrt{3},i)$
 \item 8 BD$_{16}$ $((7,2,3))$ codes: first\\
