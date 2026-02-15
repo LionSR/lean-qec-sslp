@@ -10,5 +10,4 @@ require mathlib from git
 @[default_target]
 lean_lib SS where
 
-lean_lib BD16example where
-  srcDir := "."
+lean_lib Examples where

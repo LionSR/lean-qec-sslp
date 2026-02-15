@@ -29,7 +29,7 @@ angle vector `a = (1,2,2,2,2,3,3)` from BD16_distance3.tex §4.
   (Proposition 5.4 in BD16_distance3.tex)
 -/
 
-namespace BD16Example
+namespace BD16v1
 
 open SS SS.Verify
 
@@ -107,4 +107,4 @@ def amp₀ : BitString 7 → SS.QSqrt23i := fun x =>
     that the BD16 code with angle vector (1,2,2,2,2,3,3) has distance 3. -/
 theorem bd16_layer2_ok : SS.AllKLSatisfied supp₀ amp₀ 2 := by native_decide
 
-end BD16Example
+end BD16v1

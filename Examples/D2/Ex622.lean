@@ -24,7 +24,7 @@ Residues:
 
 Probabilities are the closed-form rationals from Methods (lines 670–681).
 
-As in `522example.lean`, this file is *data-only*: all checks are discharged by one
+As in `Examples/D2/Ex522.lean`, this file is *data-only*: all checks are discharged by one
 `native_decide` proof of `ex.OK`.
 -/
 
