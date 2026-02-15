@@ -10,3 +10,8 @@ import SS.Combinatorics
 import SS.FixedWeightSlice
 import SS.Verify
 import SS.FamilyI
+import SS.Pauli
+import SS.FullKL
+import SS.Distance3Verify
+import SS.QSqrt23i
+import SS.FullKLEval

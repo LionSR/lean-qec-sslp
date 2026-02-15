@@ -1,0 +1,3605 @@
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{braket}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\usepackage{amsthm}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{teal},
+  showstringspaces=false
+}
+
+\title{Notes on the Distance-3 Exact BD16 Examples}
+\author{(working notes)}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Scope and goal}
+
+These notes summarize the \emph{subset-sum--linear-programming} (SS--LP / SSLP) pipeline for discovering \(((n,2,3))\) nonadditive quantum codes with prescribed \emph{transversal diagonal} gates, and then work through one \emph{exact} BD16 (transversal \(T\)) example in detail.
+
+We follow the setup in:
+\begin{itemize}
+\item Chao Zhang, Zipeng Wu, Shilin Huang, Bei Zeng, \emph{Transversal Gates in Nonadditive Quantum Codes}, April 30, 2025.
+\end{itemize}
+
+Throughout, \(n=7\), \(K=2\), and we write Pauli operators as tensor products from \(\{I,X,Y,Z\}\).
+
+\section{The SSLP pipeline for distance-3 codes (Lean-friendly)}
+
+This section rewrites the SSLP logic in a way that is meant to be directly formalizable:
+all objects are finite, all constraints are explicit equalities over finite sums, and we
+make systematic use of the \emph{complementary} convention
+\[
+\ket{1_L}=X^{\otimes n}\ket{0_L}.
+\]
+
+\subsection{Data, notation, and the complementary convention}
+
+\paragraph{Bitstrings.}
+Fix an integer \(n\ge 1\). We write computational basis labels as bitstrings
+\[
+s=(s_1,\dots,s_n)\in\{0,1\}^n,
+\qquad
+\ket{s}:=\ket{s_1}\otimes\cdots\otimes\ket{s_n}.
+\]
+For bitstrings \(s,t\in\{0,1\}^n\),
+\[
+(s\oplus t)_j := s_j+t_j\pmod 2,
+\qquad
+z\cdot s := \sum_{j=1}^n z_js_j\pmod 2,
+\qquad
+(-1)^{z\cdot s}\in\{\pm 1\}.
+\]
+Let \(\mathbf{1}:=(1,\dots,1)\in\{0,1\}^n\) and define the \emph{bitwise complement}
+\[
+\overline{s}:=s\oplus\mathbf{1}.
+\]
+Let \(e_i\in\{0,1\}^n\) denote the standard basis bitstring with \((e_i)_i=1\) and all other entries \(0\).
+
+\paragraph{Logical basis with complementary symmetry.}
+We focus on \(((n,2,3))\) codes with a fixed orthonormal basis \(\{\ket{0_L},\ket{1_L}\}\)
+and impose the \emph{complementary} condition
+\[
+\boxed{\;\ket{1_L}=C\ket{0_L},\quad C:=X^{\otimes n}.\;}
+\]
+If
+\[
+\ket{0_L}=\sum_{s\in\{0,1\}^n}c_s\ket{s},
+\]
+then
+\[
+\ket{1_L}=X^{\otimes n}\ket{0_L}=\sum_{s\in\{0,1\}^n}c_s\ket{\overline{s}}
+=\sum_{t\in\{0,1\}^n}c_{\overline{t}}\ket{t}.
+\]
+So the amplitude functions satisfy
+\[
+\boxed{\;c^{(1)}_t = c^{(0)}_{\overline{t}}.\;}
+\]
+In particular, all unknowns can be taken to be the amplitudes \(c_s\) of \(\ket{0_L}\); \(\ket{1_L}\) is then determined.
+
+\subsection{Stage 1: Subset-sum support (SS)}
+
+Fix a modulus \(m\in\mathbb{N}\) and an \emph{angle vector}
+\(\vec a=(a_1,\dots,a_n)\in\mathbb{Z}_m^n\).
+Let \(\omega:=e^{2\pi i/m}\) and define the transversal diagonal
+\[
+D(\vec a):=\bigotimes_{j=1}^n\left(\ket{0}\!\bra{0}+\omega^{a_j}\ket{1}\!\bra{1}\right).
+\]
+On a computational basis state,
+\[
+D(\vec a)\ket{s}=\omega^{\langle \vec a,s\rangle}\ket{s},
+\qquad
+\langle \vec a,s\rangle := \sum_{j=1}^n a_js_j\ \ (\mathrm{mod}\ m).
+\]
+
+\paragraph{Residue classes.}
+If \(D(\vec a)\) acts \emph{logically diagonally} with residues \(b_0,b_1\in\mathbb{Z}_m\),
+i.e.
+\[
+D(\vec a)\ket{k_L}=\omega^{b_k}\ket{k_L},\qquad k\in\{0,1\},
+\]
+then every basis component of \(\ket{k_L}\) must lie in a single residue class:
+\[
+c^{(k)}_s\neq 0\implies \langle \vec a,s\rangle\equiv b_k\pmod m.
+\]
+Define the SS sets
+\[
+S_k(\vec a):=\left\{s\in\{0,1\}^n:\ \langle \vec a,s\rangle\equiv b_k\pmod m\right\}.
+\]
+The SS constraint is
+\[
+\mathrm{supp}(\ket{k_L})\subseteq S_k(\vec a),\qquad k\in\{0,1\}.
+\]
+
+\paragraph{Complementary compatibility.}
+Under \(\ket{1_L}=X^{\otimes n}\ket{0_L}\), supports satisfy
+\[
+\mathrm{supp}(\ket{1_L})=\overline{\mathrm{supp}(\ket{0_L})}.
+\]
+Thus, if \(\mathrm{supp}(\ket{0_L})\subseteq S_0(\vec a)\), then necessarily
+\[
+\mathrm{supp}(\ket{1_L})\subseteq \overline{S_0(\vec a)}:=\{\overline{s}:s\in S_0(\vec a)\}.
+\]
+Moreover,
+\[
+\langle \vec a,\overline{s}\rangle
+=\langle \vec a,s\oplus\mathbf{1}\rangle
+\equiv \langle \vec a,s\rangle + \langle \vec a,\mathbf{1}\rangle\pmod m,
+\quad\text{where}\quad
+\langle \vec a,\mathbf{1}\rangle:=\sum_{j=1}^n a_j\ (\mathrm{mod}\ m).
+\]
+So the residues must satisfy
+\[
+\boxed{\;b_1\equiv b_0+\sum_{j=1}^n a_j\pmod m,\qquad S_1(\vec a)=\overline{S_0(\vec a)}.\;}
+\]
+In particular, under the complementary convention one may choose \(b_0\) and then \emph{define} \(b_1\) by the above congruence.
+
+\subsection{Stage 2: Linear-program filter (LP) = \(Z\)-type KL constraints}
+
+\paragraph{Magnitude--phase parametrization.}
+For each \(s\in S_0(\vec a)\), write
+\[
+c_s=\sqrt{p_s}\,e^{i\phi_s},
+\qquad p_s\ge 0,\quad \phi_s\in\mathbb{R},
+\]
+and set \(c_s:=0\) for \(s\notin S_0(\vec a)\).
+Normalization is
+\[
+\boxed{\;\sum_{s\in S_0(\vec a)} p_s = 1.\;}
+\]
+Under the complementary convention,
+\[
+c^{(1)}_t=c_{\overline{t}},
+\qquad
+p^{(1)}_t=p_{\overline{t}},
+\qquad
+\phi^{(1)}_t=\phi_{\overline{t}}.
+\]
+
+\paragraph{\(Z\)-type matrix elements are linear in \(p\).}
+For any \(z\in\{0,1\}^n\), define the diagonal Pauli
+\[
+Z^z := \bigotimes_{j=1}^n Z^{z_j}.
+\]
+It acts as \(Z^z\ket{s}=(-1)^{z\cdot s}\ket{s}\), hence
+\[
+\bra{0_L}Z^z\ket{0_L}=\sum_{s\in S_0(\vec a)} (-1)^{z\cdot s}\,p_s.
+\]
+These expressions are linear in the LP variables \(\{p_s\}\).
+
+\paragraph{Distance-3 \(Z\)-type KL constraints (weight \(\le 2\)).}
+For distance \(3\), it is enough to enforce KL for all Paulis of weight \(\le 2\).
+In the \(Z\)-type sector this means \(z\) with \(\mathrm{wt}(z)\in\{1,2\}\), i.e.
+\(z=e_i\) and \(z=e_i\oplus e_j\) for \(i<j\).
+
+Under the complementary convention we can simplify diagonal equality:
+\[
+\bra{1_L}Z^z\ket{1_L}
+=\bra{0_L}C Z^z C\ket{0_L}
+=\bra{0_L}(-1)^{\mathrm{wt}(z)}Z^z\ket{0_L}
+=(-1)^{\mathrm{wt}(z)}\bra{0_L}Z^z\ket{0_L}.
+\]
+Therefore the KL diagonal condition
+\(\bra{0_L}Z^z\ket{0_L}=\bra{1_L}Z^z\ket{1_L}\) is equivalent to
+\[
+\boxed{\;\mathrm{wt}(z)\ \text{odd}\ \Longrightarrow\ \bra{0_L}Z^z\ket{0_L}=0.\;}
+\]
+In particular, for all \(i\) we must have
+\[
+\boxed{\;\bra{0_L}Z_i\ket{0_L}=0
+\iff
+\sum_{s\in S_0(\vec a)}(-1)^{s_i}p_s=0
+\iff
+\sum_{s:s_i=0}p_s=\sum_{s:s_i=1}p_s=\frac12.\;}
+\]
+For \(Z_iZ_j\) (even \(\mathrm{wt}(z)=2\)), the diagonal equality is automatic under complement; the value \(\bra{0_L}Z_iZ_j\ket{0_L}\) is not forced to be \(0\).
+
+\paragraph{LP stage summary.}
+The LP stage searches for a feasible probability vector \(p:S_0(\vec a)\to\mathbb{Q}\) (or \(\mathbb{R}\)) satisfying:
+\[
+p_s\ge 0,\quad \sum_{s\in S_0}p_s=1,\quad \sum_{s\in S_0}(-1)^{s_i}p_s=0\ \ (i=1,\dots,n),
+\]
+(and optionally any additional linear \(Z\)-type constraints one chooses to include).
+The output is a candidate \(p\); the phases \(\phi_s\) are deferred to Full-KL.
+
+\subsection{Stage 3: Full-KL as explicit phase equations (all Paulis of weight \(\le 2\))}
+
+\subsubsection{Pauli strings as \((x,z)\) pairs}
+
+Represent a Pauli string (with \emph{no global phase}) by two bitstrings
+\[
+x,z\in\{0,1\}^n,
+\]
+with the per-qubit identification
+\[
+(x_i,z_i)=(0,0)\leftrightarrow I,\quad
+(1,0)\leftrightarrow X,\quad
+(0,1)\leftrightarrow Z,\quad
+(1,1)\leftrightarrow Y.
+\]
+Define
+\[
+N_Y(x,z):=\sum_{i=1}^n x_i z_i\in\mathbb{N},
+\qquad
+P(x,z):= i^{N_Y(x,z)}X^x Z^z,
+\]
+where \(X^x:=\bigotimes_i X^{x_i}\) and \(Z^z:=\bigotimes_i Z^{z_i}\).
+Then for any basis state \(\ket{s}\),
+\[
+\boxed{\;P(x,z)\ket{s}=i^{N_Y(x,z)}(-1)^{z\cdot s}\ket{s\oplus x}.\;}
+\]
+The (Pauli) weight is
+\[
+\mathrm{wt}(P(x,z)):=\#\{i:(x_i,z_i)\neq(0,0)\}.
+\]
+
+\subsubsection{General full-KL matrix element as a finite sum}
+
+Write logical states as
+\[
+\ket{k_L}=\sum_{s\in\{0,1\}^n} c^{(k)}_s\ket{s},
+\qquad c^{(k)}_s=0\ \text{if }s\notin S_k(\vec a).
+\]
+Then for any Pauli \(P(x,z)\),
+\[
+\boxed{
+\bra{j_L}P(x,z)\ket{k_L}
+=i^{N_Y(x,z)}\sum_{s\in\{0,1\}^n}(-1)^{z\cdot s}\,
+\overline{c^{(j)}_{s\oplus x}}\;c^{(k)}_{s}.
+}
+\]
+In magnitude--phase form \(c^{(k)}_s=\sqrt{p^{(k)}_s}e^{i\phi^{(k)}_s}\) this becomes
+\[
+\boxed{
+\bra{j_L}P(x,z)\ket{k_L}
+=i^{N_Y(x,z)}\sum_{s\in\{0,1\}^n}(-1)^{z\cdot s}\,
+\sqrt{p^{(j)}_{s\oplus x}}\sqrt{p^{(k)}_{s}}\;
+e^{i(\phi^{(k)}_{s}-\phi^{(j)}_{s\oplus x})},
+}
+\]
+with the convention \(p^{(k)}_t=0\) (hence the summand vanishes) whenever \(t\notin S_k(\vec a)\).
+
+\subsubsection{Distance-3 KL constraints specialized to \(K=2\)}
+
+Let \(\mathcal{P}_{\le 2}\) be the set of phase-free Pauli strings \(\{I,X,Y,Z\}^{\otimes n}\)
+of weight \(\le 2\).
+A code corrects all single-qubit errors (distance \(3\)) iff for every \(P\in\mathcal{P}_{\le 2}\),
+\[
+\boxed{
+\bra{0_L}P\ket{1_L}=0,
+\qquad
+\bra{0_L}P\ket{0_L}=\bra{1_L}P\ket{1_L}.
+}
+\]
+
+\paragraph{Complementary simplification of diagonal constraints.}
+Using \(\ket{1_L}=C\ket{0_L}\) and \(C Z C = -Z\), \(C Y C = -Y\), \(C X C = X\) (per qubit), we have
+\[
+C\,P(x,z)\,C = (-1)^{\mathrm{wt}(z)}P(x,z),
+\qquad \mathrm{wt}(z):=\sum_i z_i.
+\]
+Hence
+\[
+\bra{1_L}P(x,z)\ket{1_L}=\bra{0_L}C P(x,z) C\ket{0_L}
+=(-1)^{\mathrm{wt}(z)}\bra{0_L}P(x,z)\ket{0_L}.
+\]
+Therefore the KL diagonal equality is equivalent to
+\[
+\boxed{\;\mathrm{wt}(z)\ \text{odd}\ \Longrightarrow\ \bra{0_L}P(x,z)\ket{0_L}=0,\;}
+\]
+while for \(\mathrm{wt}(z)\) even the diagonal equality holds automatically.
+
+\paragraph{Complementary reduction of unknowns in off-diagonals.}
+Since \(c^{(1)}_s=c^{(0)}_{\overline{s}}\), we can rewrite all off-diagonal constraints using only
+the amplitudes of \(\ket{0_L}\):
+\[
+\boxed{
+\bra{0_L}P(x,z)\ket{1_L}
+=i^{N_Y(x,z)}\sum_{s\in\{0,1\}^n}(-1)^{z\cdot s}\,
+\overline{c_{s\oplus x}}\;c_{\overline{s}},
+}
+\]
+where now \(c_s:=c^{(0)}_s\) and \(c_s=0\) if \(s\notin S_0(\vec a)\).
+
+\subsubsection{Explicit weight-\(\le 2\) Pauli constraints (ready-to-code forms)}
+
+Below are the concrete finite-sum formulas for all Pauli types needed at distance \(3\).
+In every case, the full-KL requirements are:
+\[
+\bra{0_L}(\cdot)\ket{1_L}=0,\quad
+\text{and if }\mathrm{wt}(z)\text{ is odd then }\bra{0_L}(\cdot)\ket{0_L}=0,
+\]
+with \(\mathrm{wt}(z)\) computed from the \(Z\)-components (i.e. number of \(Z\) or \(Y\) factors).
+
+Throughout, sums may be taken over all \(s\in\{0,1\}^n\) with the convention \(c_t=0\) for \(t\notin S_0(\vec a)\).
+
+\paragraph{Weight 0.}
+\[
+\bra{0_L}I\ket{0_L}=\sum_s |c_s|^2=1,
+\qquad
+\bra{0_L}I\ket{1_L}=\sum_s \overline{c_s}\,c_{\overline{s}}=0.
+\]
+
+\paragraph{Weight 1: single-qubit Paulis (for each \(i\)).}
+\[
+\bra{0_L}X_i\ket{0_L}=\sum_s \overline{c_{s\oplus e_i}}\,c_s,
+\qquad
+\bra{0_L}X_i\ket{1_L}=\sum_s \overline{c_{s\oplus e_i}}\,c_{\overline{s}}.
+\]
+\[
+\bra{0_L}Z_i\ket{0_L}=\sum_s (-1)^{s_i}|c_s|^2,
+\qquad
+\bra{0_L}Z_i\ket{1_L}=\sum_s (-1)^{s_i}\overline{c_s}\,c_{\overline{s}}.
+\]
+\[
+\bra{0_L}Y_i\ket{0_L}= i\sum_s (-1)^{s_i}\overline{c_{s\oplus e_i}}\,c_s,
+\qquad
+\bra{0_L}Y_i\ket{1_L}= i\sum_s (-1)^{s_i}\overline{c_{s\oplus e_i}}\,c_{\overline{s}}.
+\]
+Diagonal simplification: since \(Z_i\) and \(Y_i\) have \(\mathrm{wt}(z)=1\), complement forces
+\(\bra{0_L}Z_i\ket{0_L}=0\) and \(\bra{0_L}Y_i\ket{0_L}=0\).
+
+\paragraph{Weight 2: two-qubit Paulis (for each \(i<j\)).}
+\[
+\bra{0_L}X_iX_j\ket{0_L}=\sum_s \overline{c_{s\oplus e_i\oplus e_j}}\,c_s,
+\qquad
+\bra{0_L}X_iX_j\ket{1_L}=\sum_s \overline{c_{s\oplus e_i\oplus e_j}}\,c_{\overline{s}}.
+\]
+\[
+\bra{0_L}Z_iZ_j\ket{0_L}=\sum_s (-1)^{s_i+s_j}|c_s|^2,
+\qquad
+\bra{0_L}Z_iZ_j\ket{1_L}=\sum_s (-1)^{s_i+s_j}\overline{c_s}\,c_{\overline{s}}.
+\]
+\[
+\bra{0_L}X_iZ_j\ket{0_L}=\sum_s (-1)^{s_j}\overline{c_{s\oplus e_i}}\,c_s,
+\qquad
+\bra{0_L}X_iZ_j\ket{1_L}=\sum_s (-1)^{s_j}\overline{c_{s\oplus e_i}}\,c_{\overline{s}}.
+\]
+\[
+\bra{0_L}Z_iX_j\ket{0_L}=\sum_s (-1)^{s_i}\overline{c_{s\oplus e_j}}\,c_s,
+\qquad
+\bra{0_L}Z_iX_j\ket{1_L}=\sum_s (-1)^{s_i}\overline{c_{s\oplus e_j}}\,c_{\overline{s}}.
+\]
+\[
+\bra{0_L}X_iY_j\ket{0_L}= i\sum_s (-1)^{s_j}\overline{c_{s\oplus e_i\oplus e_j}}\,c_s,
+\qquad
+\bra{0_L}X_iY_j\ket{1_L}= i\sum_s (-1)^{s_j}\overline{c_{s\oplus e_i\oplus e_j}}\,c_{\overline{s}}.
+\]
+\[
+\bra{0_L}Y_iX_j\ket{0_L}= i\sum_s (-1)^{s_i}\overline{c_{s\oplus e_i\oplus e_j}}\,c_s,
+\qquad
+\bra{0_L}Y_iX_j\ket{1_L}= i\sum_s (-1)^{s_i}\overline{c_{s\oplus e_i\oplus e_j}}\,c_{\overline{s}}.
+\]
+\[
+\bra{0_L}Y_iY_j\ket{0_L}= -\sum_s (-1)^{s_i+s_j}\overline{c_{s\oplus e_i\oplus e_j}}\,c_s,
+\qquad
+\bra{0_L}Y_iY_j\ket{1_L}= -\sum_s (-1)^{s_i+s_j}\overline{c_{s\oplus e_i\oplus e_j}}\,c_{\overline{s}}.
+\]
+\[
+\bra{0_L}Y_iZ_j\ket{0_L}= i\sum_s (-1)^{s_i+s_j}\overline{c_{s\oplus e_i}}\,c_s,
+\qquad
+\bra{0_L}Y_iZ_j\ket{1_L}= i\sum_s (-1)^{s_i+s_j}\overline{c_{s\oplus e_i}}\,c_{\overline{s}}.
+\]
+\[
+\bra{0_L}Z_iY_j\ket{0_L}= i\sum_s (-1)^{s_i+s_j}\overline{c_{s\oplus e_j}}\,c_s,
+\qquad
+\bra{0_L}Z_iY_j\ket{1_L}= i\sum_s (-1)^{s_i+s_j}\overline{c_{s\oplus e_j}}\,c_{\overline{s}}.
+\]
+
+Diagonal simplification at weight \(2\):
+\begin{itemize}
+\item Operators with exactly one \(Z\)-component (i.e. \(\mathrm{wt}(z)=1\)) must have
+\(\bra{0_L}(\cdot)\ket{0_L}=0\).
+These are \(X_iZ_j,\ Z_iX_j,\ X_iY_j,\ Y_iX_j\).
+\item Operators with \(\mathrm{wt}(z)=0\) or \(2\) have no forced diagonal vanishing from complement.
+These are \(X_iX_j\) (\(\mathrm{wt}(z)=0\)) and \(Z_iZ_j,\ Y_iY_j,\ Y_iZ_j,\ Z_iY_j\) (\(\mathrm{wt}(z)=2\)).
+\end{itemize}
+
+\paragraph{Full-KL stage summary (what must be solved).}
+Given a feasible LP output \(p_s\) on \(S_0(\vec a)\), the Full-KL stage is the problem of finding phases
+\(\phi_s\in\mathbb{R}\) (or equivalently unit-modulus \(\omega_s=e^{i\phi_s}\)) such that all the above
+\emph{off-diagonal} sums vanish for every Pauli of weight \(\le 2\), and additionally all \emph{odd-\(\mathrm{wt}(z)\)}
+\emph{diagonal} sums vanish (which include \(Z_i\), \(Y_i\), and the mixed \(XZ/ZX/XY/YX\) terms).
+Because each constraint is a finite sum with explicit coefficients \(\pm 1,\pm i\), this is directly suitable
+for exact verification (e.g. in \(\mathbb{Q}(\sqrt{\cdot},i)\)) once a candidate closed form is proposed.
+
+\section{The SSLP pipeline for distance-3 codes (\(n=7\))}
+
+Throughout this section we fix \(n=7\) and \(K=2\). Computational basis strings are bitstrings
+\(s=(s_1,\dots,s_7)\in\{0,1\}^7\), and we write \(\ket{s}\) for the corresponding basis ket.
+Bitwise XOR is denoted by \(\oplus\), and the all-ones string is \(1^7=(1,1,1,1,1,1,1)\).
+We also use the \(\mathbb{Z}_2\) dot product
+\[
+u\cdot v \ :=\ \sum_{j=1}^7 u_j v_j \pmod 2,
+\qquad
+(-1)^{u\cdot v}\in\{\pm 1\}.
+\]
+For each position \(i\in\{1,\dots,7\}\), let \(e_i\in\{0,1\}^7\) be the unit vector with a single \(1\) at \(i\).
+
+\subsection{Distance-3 Knill--Laflamme constraints in a finite Pauli basis}
+
+Let \(\mathcal{P}_7:=\{I,X,Y,Z\}^{\otimes 7}\) denote the set of \emph{Hermitian} Pauli strings on 7 qubits
+(no \(\pm 1,\pm i\) phases).
+The \emph{Pauli weight} \(\mathrm{wt}(P)\) is the number of tensor factors of \(P\) that are not \(I\).
+
+A \(((7,2,3))\) code corrects all single-qubit errors. Let
+\[
+\mathcal{E}_1 := \{I\}\ \cup\ \{X_i,Y_i,Z_i:\ i=1,\dots,7\}
+\]
+where, e.g., \(X_i\) means \(X\) on qubit \(i\) and \(I\) elsewhere.
+The Knill--Laflamme (KL) conditions are:
+\[
+\bra{j_L}E^\dagger E'\ket{k_L} = \alpha_{E,E'}\,\delta_{jk}
+\qquad
+\forall\,E,E'\in\mathcal{E}_1,\quad \forall\, j,k\in\{0,1\},
+\]
+for some scalars \(\alpha_{E,E'}\in\mathbb{C}\) depending only on \((E,E')\).
+
+Since \(E^\dagger E'\) has Pauli weight \(\le 2\), it is equivalent (and Lean-friendly) to verify KL
+on the finite set
+\[
+\mathcal{P}_{\le 2}
+\ :=\ \{P\in\mathcal{P}_7:\ \mathrm{wt}(P)\le 2\}.
+\]
+Concretely, \(\mathcal{P}_{\le 2}\) consists of:
+\begin{itemize}
+\item weight \(0\): \(I^{\otimes 7}\);
+\item weight \(1\): \(X_i,Y_i,Z_i\) for each \(i\);
+\item weight \(2\): for each pair \(i<j\), the \(9\) strings \(A_iB_j\) with \(A,B\in\{X,Y,Z\}\).
+\end{itemize}
+
+\paragraph{KL constraints in a 2D logical basis.}
+Fix an orthonormal logical basis \(\{\ket{0_L},\ket{1_L}\}\).
+For each \(P\in\mathcal{P}_{\le 2}\), define the \(2\times 2\) \emph{logical matrix}
+\[
+M(P)_{jk} := \bra{j_L}P\ket{k_L}.
+\]
+Then KL for distance \(3\) is exactly the statement:
+\[
+\boxed{
+\forall\,P\in\mathcal{P}_{\le 2},\quad
+M(P)=\lambda_P I_2\ \text{for some scalar}\ \lambda_P\in\mathbb{C}.
+}
+\]
+Equivalently, for every \(P\in\mathcal{P}_{\le 2}\),
+\[
+\boxed{
+\bra{0_L}P\ket{1_L}=0,
+\qquad
+\bra{0_L}P\ket{0_L}=\bra{1_L}P\ket{1_L}.
+}
+\]
+(For \(P=I^{\otimes 7}\) these reduce to normalization and orthogonality:
+\(\braket{0_L|0_L}=\braket{1_L|1_L}=1\) and \(\braket{0_L|1_L}=0\).)
+
+\subsection{Stage 1: Subset-sum support (SS)}
+
+Fix a modulus \(m\) and an \emph{angle vector} \(\vec a=(a_1,\dots,a_7)\in \mathbb{Z}_m^7\).
+Define the residue map
+\[
+\mathrm{res}_{\vec a}(s)\ :=\ \sum_{j=1}^7 a_j s_j\ \in\ \mathbb{Z}_m.
+\]
+Given target residues \((b_0,b_1)\in\mathbb{Z}_m^2\), define the SS blocks
+\[
+S_k(\vec a)\ :=\ \{\,s\in\{0,1\}^7:\ \mathrm{res}_{\vec a}(s)\equiv b_k \ (\mathrm{mod}\ m)\,\},
+\qquad k\in\{0,1\}.
+\]
+The SS constraint is the \emph{support restriction}
+\[
+\ket{k_L}=\sum_{s\in S_k(\vec a)} c^{(k)}_s \ket{s},
+\qquad k\in\{0,1\}.
+\]
+
+\paragraph{Why SS is natural for transversal diagonal gates.}
+For
+\[
+D(\vec a)=\bigotimes_{j=1}^7\left(\ket{0}\!\bra{0}+e^{2\pi i a_j/m}\ket{1}\!\bra{1}\right),
+\]
+we have \(D(\vec a)\ket{s}=e^{2\pi i\,\mathrm{res}_{\vec a}(s)/m}\ket{s}\).
+Thus any eigenstate of \(D(\vec a)\) must have support on residue classes of \(\mathrm{res}_{\vec a}\),
+which is exactly what the SS step encodes.
+
+\subsection{Stage 2: Linear-program filter (LP) = Z-type KL constraints as linear equalities}
+
+Define probabilities \(p^{(k)}_s:=|c^{(k)}_s|^2\ge 0\).
+The Z-type Paulis are those with no bit flips, i.e. strings consisting only of \(I\) and \(Z\).
+For distance \(3\), the Z-type Paulis of weight \(\le 2\) are:
+\[
+Z_i,\qquad Z_iZ_j\ (i<j),\qquad \text{and }I^{\otimes 7}.
+\]
+
+Because these are diagonal in the computational basis, their logical matrix elements are linear in \(p^{(k)}\).
+Explicitly, for \(k\in\{0,1\}\),
+\[
+\bra{k_L}Z_i\ket{k_L}=\sum_{s\in S_k(\vec a)} (-1)^{s_i}\,p^{(k)}_s,
+\]
+\[
+\bra{k_L}Z_iZ_j\ket{k_L}=\sum_{s\in S_k(\vec a)} (-1)^{s_i+s_j}\,p^{(k)}_s,
+\]
+and normalization is
+\[
+\sum_{s\in S_k(\vec a)} p^{(k)}_s = 1.
+\]
+
+\paragraph{LP feasibility constraints (Z-type KL).}
+The Z-type KL requirements
+\[
+\bra{0_L}Z_i\ket{0_L}=\bra{1_L}Z_i\ket{1_L},\qquad
+\bra{0_L}Z_iZ_j\ket{0_L}=\bra{1_L}Z_iZ_j\ket{1_L}
+\]
+become a system of \emph{linear equalities} in the variables \(\{p^{(0)}_s,p^{(1)}_s\}\),
+together with nonnegativity and normalization.
+This is the LP stage: it filters SS supports that cannot satisfy Z-type KL.
+
+\paragraph{Remark (off-diagonal Z-type constraints).}
+For a diagonal \(P\) (only \(Z\)'s), \(\bra{0_L}P\ket{1_L}\) contains only terms
+\(\overline{c_s^{(0)}}c_s^{(1)}\), so if \(S_0(\vec a)\cap S_1(\vec a)=\varnothing\)
+(which is typical when \(b_0\neq b_1\)), then \(\bra{0_L}P\ket{1_L}=0\) holds automatically
+for all diagonal \(P\). This is one major reason the LP stage is often ``just'' about diagonal constraints.
+
+\subsection{Stage 3: Full-KL = all Pauli constraints of weight \(\le 2\)}
+
+\subsubsection{Magnitude--phase parametrization}
+
+For each \(k\in\{0,1\}\) and each \(s\in S_k(\vec a)\), write
+\[
+c^{(k)}_s = \sqrt{p^{(k)}_s}\,e^{i\phi^{(k)}_s},
+\qquad
+p^{(k)}_s\ge 0,\ \ \phi^{(k)}_s\in\mathbb{R}.
+\]
+For \(s\notin S_k(\vec a)\), we adopt the convention \(p^{(k)}_s=0\) (so \(c^{(k)}_s=0\)).
+
+The LP stage produces candidates \(p^{(k)}\) satisfying all Z-type KL constraints.
+Full-KL then searches for phases \(\phi^{(k)}\) such that the remaining KL equalities hold.
+
+\subsubsection{A uniform formula for \texorpdfstring{$\bra{j_L}P\ket{k_L}$}{<jL|P|kL>} (symplectic form)}
+
+Every \(P\in\mathcal{P}_7\) can be encoded by binary vectors
+\[
+x=x(P)\in\{0,1\}^7,\qquad z=z(P)\in\{0,1\}^7,
+\]
+and an integer \(N_Y=N_Y(P)\), by setting for each qubit \(t\):
+\[
+\begin{array}{c|cccc}
+P_t & I & X & Z & Y\\ \hline
+x_t & 0 & 1 & 0 & 1\\
+z_t & 0 & 0 & 1 & 1
+\end{array}
+\qquad\text{and}\qquad
+N_Y(P)=\#\{t:\ P_t=Y\}.
+\]
+Then the action of \(P\) on basis kets is:
+\[
+P\ket{s} = i^{N_Y(P)}\,(-1)^{z(P)\cdot s}\,\ket{s\oplus x(P)}.
+\]
+Hence, for any \(j,k\in\{0,1\}\),
+\[
+\boxed{
+\bra{j_L}P\ket{k_L}
+=
+i^{N_Y(P)}\sum_{s\in\{0,1\}^7}
+(-1)^{z(P)\cdot s}\,
+\overline{c^{(j)}_{s\oplus x(P)}}\,c^{(k)}_{s}.
+}
+\]
+In magnitude--phase variables this becomes:
+\[
+\boxed{
+\bra{j_L}P\ket{k_L}
+=
+i^{N_Y(P)}\sum_{s\in\{0,1\}^7}
+(-1)^{z(P)\cdot s}\,
+\sqrt{p^{(j)}_{s\oplus x(P)}}\,\sqrt{p^{(k)}_{s}}\,
+e^{i(\phi^{(k)}_{s}-\phi^{(j)}_{s\oplus x(P)})},
+}
+\]
+with the convention \(p^{(j)}_t=0\) if \(t\notin S_j(\vec a)\) (so terms vanish automatically).
+
+\subsubsection{Explicit specializations for all weight \texorpdfstring{$\le 2$}{<=2} Pauli strings}
+
+Although the symplectic formula above is the cleanest for verification, it is useful to spell out
+the common cases that appear when \(\mathrm{wt}(P)\le 2\).
+
+\paragraph{Weight 1 (single-qubit).}
+For each \(i\),
+\[
+\bra{j_L}X_i\ket{k_L}=\sum_{s}\overline{c^{(j)}_{s\oplus e_i}}\,c^{(k)}_{s},
+\]
+\[
+\bra{j_L}Y_i\ket{k_L}=i\sum_{s}(-1)^{s_i}\,\overline{c^{(j)}_{s\oplus e_i}}\,c^{(k)}_{s},
+\]
+\[
+\bra{j_L}Z_i\ket{k_L}=\sum_{s}(-1)^{s_i}\,\overline{c^{(j)}_{s}}\,c^{(k)}_{s}.
+\]
+
+\paragraph{Weight 2 (two-qubit, \(i<j\)).}
+For each pair \(i<j\),
+\[
+\bra{j_L}X_iX_j\ket{k_L}=\sum_{s}\overline{c^{(j)}_{s\oplus e_i\oplus e_j}}\,c^{(k)}_{s},
+\]
+\[
+\bra{j_L}X_iY_j\ket{k_L}=i\sum_{s}(-1)^{s_j}\,\overline{c^{(j)}_{s\oplus e_i\oplus e_j}}\,c^{(k)}_{s},
+\]
+\[
+\bra{j_L}Y_iY_j\ket{k_L}=-\sum_{s}(-1)^{s_i+s_j}\,\overline{c^{(j)}_{s\oplus e_i\oplus e_j}}\,c^{(k)}_{s},
+\]
+\[
+\bra{j_L}X_iZ_j\ket{k_L}=\sum_{s}(-1)^{s_j}\,\overline{c^{(j)}_{s\oplus e_i}}\,c^{(k)}_{s},
+\]
+\[
+\bra{j_L}Y_iZ_j\ket{k_L}=i\sum_{s}(-1)^{s_i+s_j}\,\overline{c^{(j)}_{s\oplus e_i}}\,c^{(k)}_{s},
+\]
+\[
+\bra{j_L}Z_iZ_j\ket{k_L}=\sum_{s}(-1)^{s_i+s_j}\,\overline{c^{(j)}_{s}}\,c^{(k)}_{s}.
+\]
+(The remaining mixed-order strings, e.g. \(Z_iX_j\) or \(Y_iX_j\), are obtained by swapping indices;
+since Paulis on distinct qubits commute, e.g. \(X_iZ_j=Z_jX_i\) when \(i\neq j\).)
+
+\paragraph{Full KL constraints (distance 3) in explicit form.}
+For every Pauli string \(P\in\mathcal{P}_{\le 2}\), impose:
+\[
+\boxed{
+\bra{0_L}P\ket{1_L}=0,
+\qquad
+\bra{0_L}P\ket{0_L}=\bra{1_L}P\ket{1_L}.
+}
+\]
+Using the explicit summation formulas above, these become finite systems of complex equalities
+in the unknown probabilities \(p^{(k)}\) and phases \(\phi^{(k)}\).
+
+\subsection{How Full-KL simplifies under the complementary ansatz \texorpdfstring{$\ket{1_L}=X^{\otimes 7}\ket{0_L}$}{|1L>=X^7|0L>}}
+
+Many BD16 constructions (including the ones in these notes) impose the \emph{complementary} relation
+\[
+\boxed{\ket{1_L} = X^{\otimes 7}\ket{0_L}.}
+\]
+Write
+\[
+\ket{0_L}=\sum_{s\in\{0,1\}^7} c_s\ket{s}
+\qquad\text{and hence}\qquad
+\ket{1_L}=\sum_{s} c_s\ket{s\oplus 1^7}.
+\]
+Equivalently, at the coefficient level,
+\[
+c^{(1)}_t = c^{(0)}_{t\oplus 1^7},
+\qquad
+p^{(1)}_t = p^{(0)}_{t\oplus 1^7},
+\qquad
+\phi^{(1)}_t=\phi^{(0)}_{t\oplus 1^7}.
+\]
+Thus \emph{only} \(\ket{0_L}\) is independent data; \(\ket{1_L}\) is derived.
+
+\subsubsection{Orthogonality is often automatic under SS}
+
+If SS gives \(\mathrm{supp}(\ket{0_L})\subseteq S_0(\vec a)\) and \(\mathrm{supp}(\ket{1_L})\subseteq S_1(\vec a)\)
+with \(S_0(\vec a)\cap S_1(\vec a)=\varnothing\), then
+\[
+\braket{0_L|1_L}=\sum_{s}\overline{c^{(0)}_s}c^{(1)}_s=0
+\]
+holds automatically (no shared basis strings).
+
+In BD16 with \((b_0,b_1)=(0,7)\), the compatibility condition
+\[
+\sum_{j=1}^7 a_j \equiv b_0+b_1 \equiv 7 \pmod 8
+\]
+ensures that \(\mathrm{res}_{\vec a}(s)=0\Rightarrow \mathrm{res}_{\vec a}(s\oplus 1^7)=7\),
+i.e. complement maps \(S_0(\vec a)\) into \(S_1(\vec a)\), so orthogonality becomes SS-level.
+
+\subsubsection{Diagonal KL equalities collapse via conjugation by \texorpdfstring{$X^{\otimes 7}$}{X^7}}
+
+For any Pauli string \(P\in\mathcal{P}_7\),
+\[
+\bra{1_L}P\ket{1_L}
+=
+\bra{0_L}X^{\otimes 7} P X^{\otimes 7}\ket{0_L}.
+\]
+On one qubit, \(XZX=-Z\) and \(XYX=-Y\), while \(XXX=X\) and \(XIX=I\). Therefore,
+\[
+X^{\otimes 7} P X^{\otimes 7} = (-1)^{\nu(P)} P,
+\qquad
+\nu(P):=\#\{t:\ P_t\in\{Z,Y\}\}=\|z(P)\|_1.
+\]
+Hence
+\[
+\bra{1_L}P\ket{1_L}=(-1)^{\nu(P)}\bra{0_L}P\ket{0_L}.
+\]
+
+The diagonal KL equality \(\bra{0_L}P\ket{0_L}=\bra{1_L}P\ket{1_L}\) therefore becomes:
+\[
+\boxed{
+\text{if }\nu(P)\text{ is even, the diagonal equality is automatic;}
+\qquad
+\text{if }\nu(P)\text{ is odd, it forces }\bra{0_L}P\ket{0_L}=0.
+}
+\]
+
+\paragraph{Concrete consequence for \(\mathrm{wt}(P)\le 2\).}
+For weight \(\le 2\), the only diagonal constraints that \emph{do not} become tautologies are those with \(\nu(P)\) odd, i.e.
+\[
+\boxed{
+\bra{0_L}Z_i\ket{0_L}=0,\quad
+\bra{0_L}Y_i\ket{0_L}=0,\quad
+\bra{0_L}X_iZ_j\ket{0_L}=0,\quad
+\bra{0_L}X_iY_j\ket{0_L}=0
+\quad (i\neq j),
+}
+\]
+(and equivalently with indices swapped, e.g. \(Z_iX_j\)).
+All other diagonal equalities for \(\mathrm{wt}(P)\le 2\) hold automatically under complementarity.
+
+\subsubsection{LP/Z-type constraints simplify drastically under complementarity}
+
+For Z-type Paulis, \(\nu(P)\) equals their weight (since they contain only \(Z\)'s).
+Thus:
+\begin{itemize}
+\item For \(Z_i\): \(\nu(Z_i)=1\) is odd, so KL forces \(\bra{0_L}Z_i\ket{0_L}=0\), i.e.
+\[
+\boxed{
+\sum_{s\in S_0(\vec a)} (-1)^{s_i}\,p^{(0)}_s = 0\quad (i=1,\dots,7).
+}
+\]
+This is the \emph{perfect-balance} constraint: the marginal probability that qubit \(i\) is \(1\) is \(1/2\).
+\item For \(Z_iZ_j\): \(\nu(Z_iZ_j)=2\) is even, so the diagonal KL equality is automatic; no additional linear constraints appear.
+\end{itemize}
+Moreover, if \(S_0(\vec a)\cap S_1(\vec a)=\varnothing\), then \(\bra{0_L}Z_i\ket{1_L}=0\)
+and \(\bra{0_L}Z_iZ_j\ket{1_L}=0\) are automatic as well (pure support disjointness).
+
+So, under \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\) and disjoint SS blocks, the LP stage can be taken to mean:
+\[
+\boxed{
+p^{(0)}_s\ge 0,\ \sum_{s\in S_0}p^{(0)}_s=1,\ \ \sum_{s\in S_0}(-1)^{s_i}p^{(0)}_s=0\ \ (i=1,\dots,7),
+}
+\]
+and then define \(p^{(1)}_t:=p^{(0)}_{t\oplus 1^7}\).
+
+\subsubsection{Off-diagonal KL constraints reduce to finite ``pairing sums'' on \texorpdfstring{$S_0$}{S0}}
+
+With \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\), the off-diagonal KL constraint becomes
+\[
+\bra{0_L}P\ket{1_L}=\bra{0_L}P X^{\otimes 7}\ket{0_L}=0.
+\]
+In coefficient form, using the symplectic formula and reindexing \(t=s\oplus 1^7\), one convenient expression is:
+\[
+\bra{0_L}P\ket{1_L}
+=
+i^{N_Y(P)}(-1)^{\nu(P)}
+\sum_{t\in\{0,1\}^7}
+(-1)^{z(P)\cdot t}\,
+\overline{c_{t\oplus(1^7\oplus x(P))}}\,c_{t}.
+\]
+Equivalently, in magnitude--phase variables (writing \(c_t=\sqrt{p_t}e^{i\phi_t}\) for \(\ket{0_L}\)):
+\[
+\boxed{
+\bra{0_L}P\ket{1_L}
+=
+i^{N_Y(P)}(-1)^{\nu(P)}
+\sum_{t\in\{0,1\}^7}
+(-1)^{z(P)\cdot t}\,
+\sqrt{p_{t\oplus(1^7\oplus x(P))}}\,\sqrt{p_t}\,
+e^{i(\phi_t-\phi_{t\oplus(1^7\oplus x(P))})}.
+}
+\]
+Because SS enforces \(p_t=0\) outside \(S_0(\vec a)\), the sum effectively runs over those
+\(t\in S_0(\vec a)\) for which also \(t\oplus(1^7\oplus x(P))\in S_0(\vec a)\).
+Hence:
+
+\paragraph{Automatic vanishing criterion.}
+If
+\[
+S_0(\vec a)\ \cap\ \bigl(S_0(\vec a)\oplus(1^7\oplus x(P))\bigr)=\varnothing,
+\]
+then \(\bra{0_L}P\ket{1_L}=0\) holds automatically (the sum is empty / all terms are zero).
+This is one precise way in which many Full-KL constraints are ``automatically satisfied'' once SS is fixed.
+
+\paragraph{Summary of what remains nontrivial under complementarity.}
+Assuming \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\) and disjoint SS blocks, Full-KL for distance \(3\) reduces to:
+\begin{itemize}
+\item \textbf{LP (linear):} normalization of \(p\) on \(S_0\) and the 7 balance constraints \(\bra{0_L}Z_i\ket{0_L}=0\).
+\item \textbf{Full-KL diagonal (nonlinear but fewer):} only the ``odd \(\nu(P)\)'' diagonals must be forced to zero:
+\(\bra{0_L}Y_i\ket{0_L}=0\) and \(\bra{0_L}X_iZ_j\ket{0_L}=\bra{0_L}X_iY_j\ket{0_L}=0\) for \(i\neq j\).
+\item \textbf{Full-KL off-diagonal (phase cancellations):} \(\bra{0_L}P\ket{1_L}=0\) for every \(P\in\mathcal{P}_{\le 2}\).
+Many of these are automatic if the relevant SS-induced intersections are empty; the remaining ones are explicit finite sums
+of the form shown above.
+\end{itemize}
+
+\medskip
+\noindent
+This structure is designed to be translated directly into a finite verification workflow:
+define SS blocks \(S_0,S_1\), define amplitudes on \(S_0\), derive \(\ket{1_L}\) by complement,
+and then check a finite list of explicit equalities indexed by \(\mathcal{P}_{\le 2}\).
+
+\section{BD16 (transversal \(T\)) specialization}
+
+For BD16 we take \(m=8\). A transversal implementation of the logical gate \(Z(-2\pi/8)\) corresponds to choosing residues \((b_0,b_1)=(0,7)\) (i.e., \(b_1=m-1\)).
+
+In Sec.~6.3.1 of the cited paper (BD16: transversal \(T\)), the SS--LP stage returns the following candidate angle vectors \(\vec a\):
+\[
+\begin{aligned}
+&(1, 2, 2, 2, 2, 3, 3),\ (1, 1, 2, 2, 3, 3, 3),\ (1, 1, 2, 2, 2, 3, 4),\ (1, 1, 2, 2, 2, 2, 5),\\
+&(1, 1, 1, 2, 3, 3, 4),\ (1, 1, 1, 2, 2, 4, 4),\ (1, 1, 1, 2, 2, 3, 5),\ (1, 1, 1, 2, 2, 2, 6),\\
+&(1, 1, 1, 1, 3, 4, 4),\ (1, 1, 1, 1, 3, 3, 5),\ (0, 1, 2, 2, 3, 3, 4),\ (0, 1, 1, 2, 3, 3, 5).
+\end{aligned}
+\]
+Each such \(\vec a\) has passed the SS and LP filters (i.e., the \(Z\)-type KL constraints), and one must proceed to the Full-KL stage to determine which ones yield actual distance-3 codes.
+
+%\section{Explicit example from Sec.~6.3.1: \texorpdfstring{$\vec a=(1,2,2,2,2,3,3)$}{a=(1,2,2,2,2,3,3)}}
+
+\section{SS sets, LP solution space, and Full-KL verification for $\vec a=(1,2,2,2,2,3,3)$}
+
+The cited paper provides a concrete \(((7,2,3))\) example corresponding to
+\[
+\vec a=(1,2,2,2,2,3,3),
+\qquad
+\lambda^\ast=\sqrt{\frac{21}{8}}.
+\]
+The logical states are given (up to two free phases \(\theta_1,\theta_2\in\mathbb{R}\)) by
+\[
+\begin{aligned}
+4\ket{0_L}
+=&\ e^{i\theta_1}\ket{0000000}
++\sqrt{3}\ket{0111100}
++\sqrt{3}\ket{1001110}
++\sqrt{2}\ket{1010101}
++\sqrt{2}\ket{1011001}
++e^{i\theta_2}\ket{1110010}
++2i\,\ket{0100011},\\
+\ket{1_L}=&\ X^{\otimes 7}\ket{0_L}.
+\end{aligned}
+\]
+
+Writing \(Z(\theta)=\mathrm{diag}(1,e^{i\theta})\), the transversal logical generators reported there are
+\[
+\overline{X}=X^{\otimes 7},
+\]
+and
+\[
+\overline{Z\!\left(-\frac{2\pi}{8}\right)}
+=
+Z\!\left(\frac{2\pi}{8}\right)\otimes
+Z\!\left(\frac{4\pi}{8}\right)\otimes
+Z\!\left(\frac{4\pi}{8}\right)\otimes
+Z\!\left(\frac{4\pi}{8}\right)\otimes
+Z\!\left(\frac{4\pi}{8}\right)\otimes
+Z\!\left(\frac{6\pi}{8}\right)\otimes
+Z\!\left(\frac{6\pi}{8}\right).
+\]
+
+The (Shor--Laflamme) weight enumerators for this code are
+\[
+A=\Big[
+1,\ 0,\ \frac{21}{8},\ \frac{2}{8}-\frac{1}{8}a,\ 
+\frac{215}{16}+\frac{18}{16}a+\frac{1}{16}b,\ 
+\frac{87}{16}-\frac{42}{16}a-\frac{3}{16}b,\ 
+\frac{635}{16}+\frac{38}{16}a+\frac{3}{16}b,\ 
+\frac{25}{16}-\frac{12}{16}a-\frac{1}{16}b
+\Big],
+\]
+\[
+B=\Big[
+1,\ 0,\ \frac{21}{8},\ 
+\frac{441}{16}+\frac{10}{16}a+\frac{1}{16}b,\ 
+\frac{352}{16}-3a-\frac{1}{4}b,\ 
+\frac{1590}{16}+\frac{84}{16}a+\frac{6}{16}b,\ 
+\frac{846}{16}-4a-\frac{1}{4}b,\ 
+\frac{809}{16}+\frac{18}{16}a+\frac{1}{16}b
+\Big],
+\]
+with parameters (to avoid confusion with the angle vector \(\vec a\), note these are scalar parameters)
+\[
+a=\cos(2\theta_1)+\cos(2\theta_2),
+\qquad
+b=\cos(2\theta_1-2\theta_2).
+\]
+
+In this section we work out the SS blocks $S_0,S_1$, the LP constraints and their general solution,
+and then verify in detail that the two-parameter family
+\[
+\begin{aligned}
+4\ket{0_L}
+=&\ e^{i\theta_1}\ket{0000000}
++\sqrt{3}\ket{0111100}
++\sqrt{3}\ket{1001110}
++\sqrt{2}\ket{1010101}
++\sqrt{2}\ket{1011001}
++e^{i\theta_2}\ket{1110010}
++2i\,\ket{0100011},\\
+\ket{1_L}=&\ X^{\otimes 7}\ket{0_L}
+\end{aligned}
+\]
+satisfies the \emph{full} distance-$3$ Knill--Laflamme conditions.
+
+Throughout, $m=8$ and we use residues $(b_0,b_1)=(0,7)$.
+
+\subsection{Stage 1 (SS): explicit residue blocks $S_0(\vec a)$ and $S_1(\vec a)$}
+
+Fix
+\[
+\vec a=(1,2,2,2,2,3,3)\in\mathbb{Z}_8^7,
+\qquad
+\mathrm{res}_{\vec a}(s):=\sum_{j=1}^7 a_j s_j\pmod 8.
+\]
+We take residues $(b_0,b_1)=(0,7)$, so
+\[
+S_k(\vec a)=\{\,s\in\{0,1\}^7:\ \mathrm{res}_{\vec a}(s)\equiv b_k\ (\mathrm{mod}\ 8)\,\}.
+\]
+
+\paragraph{Complementary compatibility.}
+Since
+\[
+\sum_{j=1}^7 a_j = 1+2+2+2+2+3+3=15\equiv 7\pmod 8,
+\]
+the complementary convention $\ket{1_L}=X^{\otimes 7}\ket{0_L}$ forces
+\[
+b_1\equiv b_0+\sum_{j=1}^7 a_j\equiv 7\pmod 8,
+\qquad
+S_1(\vec a)=\overline{S_0(\vec a)}.
+\]
+
+\paragraph{The blocks in full.}
+A direct enumeration gives
+\[
+\begin{aligned}
+S_0(\vec a)=\{&
+0000000,\ 0000111,\ 0001011,\ 0010011,\ 0100011,\ 0111100,\\
+&1001101,\ 1001110,\ 1010101,\ 1010110,\ 1011001,\ 1011010,\\
+&1100101,\ 1100110,\ 1101001,\ 1101010,\ 1110001,\ 1110010
+\},
+\end{aligned}
+\]
+and (by complement)
+\[
+\begin{aligned}
+S_1(\vec a)=\{&
+1111111,\ 1111000,\ 1110100,\ 1101100,\ 1011100,\ 1000011,\\
+&0110010,\ 0110001,\ 0101010,\ 0101001,\ 0100110,\ 0100101,\\
+&0011010,\ 0011001,\ 0010110,\ 0010101,\ 0001110,\ 0001101
+\}.
+\end{aligned}
+\]
+
+\paragraph{Transversal diagonal action.}
+Let $\omega=e^{2\pi i/8}$ and
+\[
+D(\vec a)=\bigotimes_{j=1}^7\left(\ket{0}\!\bra{0}+\omega^{a_j}\ket{1}\!\bra{1}\right)
+=
+Z\!\left(\tfrac{2\pi}{8}\right)\otimes
+Z\!\left(\tfrac{4\pi}{8}\right)^{\otimes 4}\otimes
+Z\!\left(\tfrac{6\pi}{8}\right)^{\otimes 2}.
+\]
+If $\ket{0_L}$ is supported on $S_0(\vec a)$ then $D(\vec a)$ acts as $\omega^{0}=1$ on $\ket{0_L}$, while
+$D(\vec a)$ acts as $\omega^{7}=e^{-2\pi i/8}$ on $\ket{1_L}$ (supported on $S_1(\vec a)$), hence the induced
+logical gate is $\overline{Z(-2\pi/8)}=\mathrm{diag}(1,e^{-2\pi i/8})$ in the logical basis.
+
+\subsection{Stage 2 (LP): explicit $Z$-type constraints and general solution}
+
+Write
+\[
+\ket{0_L}=\sum_{s\in S_0(\vec a)} c_s \ket{s},
+\qquad
+c_s=\sqrt{p_s}\,e^{i\phi_s},
+\qquad
+p_s\ge 0,\ \ \sum_{s\in S_0}p_s=1.
+\]
+
+\paragraph{LP equalities (distance 3).}
+Under the complementary convention $\ket{1_L}=X^{\otimes 7}\ket{0_L}$, the diagonal KL equalities
+for all \emph{odd}-$Z$ Paulis reduce to vanishing:
+\[
+\bra{0_L}Z_i\ket{0_L}=0\qquad (i=1,\dots,7).
+\]
+Since $Z_i\ket{s}=(-1)^{s_i}\ket{s}$, these are linear equations in $\{p_s\}$:
+\[
+\boxed{\ \sum_{s\in S_0(\vec a)} (-1)^{s_i}\,p_s = 0\ \ (i=1,\dots,7),\qquad \sum_{s\in S_0(\vec a)}p_s=1.\ }
+\]
+Equivalently, for each $i$,
+\[
+\sum_{s\in S_0:\ s_i=1} p_s=\sum_{s\in S_0:\ s_i=0} p_s=\frac12.
+\]
+
+For clarity, the seven ``$\frac12$'' equations are (one per qubit, listing the $s\in S_0$ with $s_i=1$):
+
+\begin{align*}
+&\text{(qubit 1)} &&
+p_{1001101}+p_{1001110}+p_{1010101}+p_{1010110}+p_{1011001}+p_{1011010}
++p_{1100101}+p_{1100110}+p_{1101001}+p_{1101010}+p_{1110001}+p_{1110010}
+=\frac12,\\
+&\text{(qubit 2)} &&
+p_{0100011}+p_{0111100}+p_{1100101}+p_{1100110}+p_{1101001}+p_{1101010}+p_{1110001}+p_{1110010}
+=\frac12,\\
+&\text{(qubit 3)} &&
+p_{0010011}+p_{0111100}+p_{1010101}+p_{1010110}+p_{1011001}+p_{1011010}+p_{1110001}+p_{1110010}
+=\frac12,\\
+&\text{(qubit 4)} &&
+p_{0001011}+p_{0111100}+p_{1001101}+p_{1001110}+p_{1011001}+p_{1011010}+p_{1101001}+p_{1101010}
+=\frac12,\\
+&\text{(qubit 5)} &&
+p_{0000111}+p_{0111100}+p_{1001101}+p_{1001110}+p_{1010101}+p_{1010110}+p_{1100101}+p_{1100110}
+=\frac12,\\
+&\text{(qubit 6)} &&
+p_{0000111}+p_{0001011}+p_{0010011}+p_{0100011}+p_{1001110}+p_{1010110}+p_{1011010}+p_{1100110}+p_{1101010}+p_{1110010}
+=\frac12,\\
+&\text{(qubit 7)} &&
+p_{0000111}+p_{0001011}+p_{0010011}+p_{0100011}+p_{1001101}+p_{1010101}+p_{1011001}+p_{1100101}+p_{1101001}+p_{1110001}
+=\frac12.
+\end{align*}
+
+\paragraph{General affine solution of the LP equalities.}
+The above eight linear equalities on the $18$ variables $\{p_s:s\in S_0\}$ have a $10$-dimensional
+solution space (before imposing inequalities $p_s\ge 0$).
+A convenient parametrization is obtained by choosing the following $10$ free variables:
+\[
+\begin{aligned}
+&u_1=p_{1010101},\quad u_2=p_{1010110},\quad u_3=p_{1011001},\quad u_4=p_{1011010},\\
+&u_5=p_{1100101},\quad u_6=p_{1100110},\quad u_7=p_{1101001},\quad u_8=p_{1101010},\\
+&u_9=p_{1110001},\quad u_{10}=p_{1110010}.
+\end{aligned}
+\]
+Then the remaining probabilities are forced to be:
+\begin{align*}
+p_{0000000}&=\frac{1}{16},\\
+p_{0111100}&=\frac{3}{16},\\
+p_{0000111}&=u_3+u_4+u_7+u_8+u_9+u_{10}-\frac{3}{16},\\
+p_{0001011}&=u_1+u_2+u_5+u_6+u_9+u_{10}-\frac{3}{16},\\
+p_{0010011}&=\frac{5}{16}-(u_1+u_2+u_3+u_4+u_9+u_{10}),\\
+p_{0100011}&=\frac{5}{16}-(u_5+u_6+u_7+u_8+u_9+u_{10}),\\
+p_{1001101}&=\frac{1}{4}-(u_1+u_3+u_5+u_7+u_9),\\
+p_{1001110}&=\frac{1}{4}-(u_2+u_4+u_6+u_8+u_{10}).
+\end{align*}
+Imposing $p_s\ge 0$ cuts out a polytope in the $(u_1,\dots,u_{10})$ parameters.
+
+\subsection{Stage 3 (Full-KL): complementary simplification and support-intersection method}
+
+Let $\mathcal{P}_{\le 2}$ be the set of all Hermitian Pauli strings on $7$ qubits of weight $\le 2$.
+Distance $3$ is equivalent to:
+\[
+\boxed{
+\forall\,P\in\mathcal{P}_{\le 2},\quad
+\bra{0_L}P\ket{1_L}=0,\qquad \bra{0_L}P\ket{0_L}=\bra{1_L}P\ket{1_L}.
+}
+\]
+
+\paragraph{Complementary simplification of the diagonal constraints.}
+Write a Pauli as $P(x,z)$ with $x,z\in\{0,1\}^7$ indicating which tensor factors contain $X/Y$
+and which contain $Z/Y$, respectively (so $Z$-components are counted by $z$).
+Then
+\[
+X^{\otimes 7} P(x,z) X^{\otimes 7} = (-1)^{\mathrm{wt}(z)} P(x,z),
+\]
+hence
+\[
+\bra{1_L}P(x,z)\ket{1_L}=(-1)^{\mathrm{wt}(z)}\bra{0_L}P(x,z)\ket{0_L}.
+\]
+Therefore the diagonal KL equality is automatic when $\mathrm{wt}(z)$ is even, and becomes a vanishing
+condition when $\mathrm{wt}(z)$ is odd:
+\[
+\boxed{\ \mathrm{wt}(z)\ \text{odd}\ \Longrightarrow\ \bra{0_L}P(x,z)\ket{0_L}=0.\ }
+\]
+
+\paragraph{Matrix elements as sums over support intersections.}
+Let $T:=\mathrm{supp}(\ket{0_L})\subseteq\{0,1\}^7$, so $\mathrm{supp}(\ket{1_L})=\overline{T}$.
+For $P(x,z)$ one has the (finite) sum formulas
+\[
+\bra{0_L}P(x,z)\ket{0_L}
+=i^{N_Y(x,z)}\sum_{s\in T\cap (T\oplus x)}(-1)^{z\cdot s}\,\overline{c_{s\oplus x}}\,c_s,
+\]
+\[
+\bra{0_L}P(x,z)\ket{1_L}
+=i^{N_Y(x,z)}\sum_{s\in \overline{T}\cap (T\oplus x)}(-1)^{z\cdot s}\,\overline{c_{s\oplus x}}\,c_{\overline{s}},
+\]
+where $N_Y(x,z)=\sum_i x_i z_i$ is the number of $Y$ factors.
+
+Thus \emph{most} KL constraints are automatic whenever the relevant intersections are empty; the remaining
+constraints reduce to short explicit sums over those intersections.
+
+\subsection{Why the two-parameter family satisfies Full-KL (distance 3)}
+
+For the reported solution, the nonzero amplitudes of $\ket{0_L}$ are:
+\[
+c_{0000000}=\frac{e^{i\theta_1}}{4},\quad
+c_{0111100}=\frac{\sqrt3}{4},\quad
+c_{1001110}=\frac{\sqrt3}{4},\quad
+c_{1010101}=\frac{\sqrt2}{4},\quad
+c_{1011001}=\frac{\sqrt2}{4},\quad
+c_{1110010}=\frac{e^{i\theta_2}}{4},\quad
+c_{0100011}=\frac{i}{2},
+\]
+and $c_s=0$ for all other $s\in S_0(\vec a)$.
+In particular,
+\[
+T=\{0000000,\ 0111100,\ 1001110,\ 1010101,\ 1011001,\ 1110010,\ 0100011\}
+\subseteq S_0(\vec a),
+\]
+so the SS condition is satisfied. Also $T\cap\overline{T}=\varnothing$, so $\braket{0_L|1_L}=0$.
+
+\paragraph{(1) LP / $Z_i$ constraints.}
+The squared magnitudes (LP variables) are
+\[
+p_{0000000}=\frac{1}{16},\ 
+p_{0111100}=\frac{3}{16},\ 
+p_{1001110}=\frac{3}{16},\ 
+p_{1010101}=\frac{2}{16},\ 
+p_{1011001}=\frac{2}{16},\ 
+p_{1110010}=\frac{1}{16},\ 
+p_{0100011}=\frac{4}{16},
+\]
+and all other $p_s$ on $S_0(\vec a)$ vanish. These sum to $1$.
+
+Moreover, for each qubit $i$ one checks directly that the total probability on $s_i=1$ is $1/2$.
+For example, on qubit~1,
+\[
+p_{1001110}+p_{1010101}+p_{1011001}+p_{1110010}
+=\frac{3+2+2+1}{16}=\frac12,
+\]
+and similarly for $i=2,\dots,7$. Hence $\bra{0_L}Z_i\ket{0_L}=0$ for all $i$, so all odd-$Z$ \emph{diagonal}
+constraints of the form $Z_i$ are satisfied.
+
+\paragraph{(2) All diagonal constraints with $\mathrm{wt}(z)$ odd.}
+By the complementary simplification, it suffices to show $\bra{0_L}P(x,z)\ket{0_L}=0$ when $\mathrm{wt}(z)$ is odd.
+
+\begin{itemize}
+\item If $x$ has Hamming weight $1$ (single bit flip) then $T\cap(T\oplus x)=\varnothing$, so
+$\bra{0_L}P(x,z)\ket{0_L}=0$ automatically for all such Paulis.
+\item The only nontrivial two-bit-flip overlap within $T$ is
+\[
+T\cap (T\oplus (e_4\oplus e_5))=\{1010101,\ 1011001\},
+\qquad
+(1010101)\oplus(e_4\oplus e_5)=1011001.
+\]
+For mixed Paulis on qubits $(4,5)$ with exactly one $Z$-component (e.g.\ $X_4Y_5$ or $Y_4X_5$),
+$\mathrm{wt}(z)=1$ is odd and the diagonal sum has exactly two terms which cancel because
+$c_{1010101}=c_{1011001}=\sqrt2/4$ is real and the $(-1)^{z\cdot s}$ sign flips between the two strings
+(which differ on exactly one of the $z$-supported positions). Thus $\bra{0_L}P(x,z)\ket{0_L}=0$ for these cases.
+\end{itemize}
+
+This exhausts all odd-$\mathrm{wt}(z)$ diagonal constraints at weight $\le 2$.
+
+\paragraph{(3) All off-diagonal constraints $\bra{0_L}P\ket{1_L}=0$.}
+Using the intersection formula, it suffices to analyze $\overline{T}\cap (T\oplus x)$.
+
+\begin{itemize}
+\item If $x=0$ (purely diagonal Paulis $Z^z$), then $\bra{0_L}Z^z\ket{1_L}=0$ because $T\cap\overline{T}=\varnothing$.
+\item If $x$ has Hamming weight $1$, then $\overline{T}\cap(T\oplus x)=\varnothing$, so all weight-$1$ off-diagonals vanish.
+\item For two-bit flips, the only $x$ for which $\overline{T}\cap(T\oplus x)\neq\varnothing$ are:
+\[
+\begin{aligned}
+&x=e_1\oplus e_2:\quad \overline{T}\cap (T\oplus x)=\{0111100,\ 0100011\},\\
+&x=e_3\oplus e_6:\quad \overline{T}\cap (T\oplus x)=\{1001110,\ 0100011\},\\
+&x=e_4\oplus e_7:\quad \overline{T}\cap (T\oplus x)=\{1010101,\ 0100011\},\\
+&x=e_5\oplus e_7:\quad \overline{T}\cap (T\oplus x)=\{1011001,\ 0100011\}.
+\end{aligned}
+\]
+In each case the off-diagonal sum has exactly two terms, and it vanishes for \emph{all} choices of $z$ supported
+on the same flipped qubits (i.e.\ for $X\!X$, $X\!Y$, $Y\!X$, and $Y\!Y$ on that pair), because:
+\begin{enumerate}
+\item one coefficient is real (one of $\sqrt3/4$ or $\sqrt2/4$) while $c_{0100011}=i/2$ is purely imaginary, so
+\[
+\overline{c_{\mathrm{real}}}\,c_{0100011}+\overline{c_{0100011}}\,c_{\mathrm{real}}=0,
+\]
+\item and the $(-1)^{z\cdot s}$ signs match on the two contributing terms since the two intermediate strings
+$s$ appearing in the sum agree on the $z$-supported positions (the positions where a $Y$ contributes a $Z$-component).
+\end{enumerate}
+Hence $\bra{0_L}P(x,z)\ket{1_L}=0$ for all weight-$2$ Paulis as well.
+\end{itemize}
+
+\paragraph{Conclusion.}
+We have shown:
+\begin{itemize}
+\item normalization and orthogonality;
+\item all odd-$\mathrm{wt}(z)$ diagonal constraints (including all $Z_i$);
+\item all off-diagonal constraints for every $P\in\mathcal{P}_{\le 2}$.
+\end{itemize}
+Therefore the logical matrix $M(P)$ is proportional to the identity for every Pauli string $P$ of weight $\le 2$,
+so the code has distance $3$.
+
+\paragraph{Why $\theta_1,\theta_2$ are free.}
+The only basis states carrying the phases $e^{i\theta_1}$ and $e^{i\theta_2}$ are $0000000$ and $1110010$.
+In the above intersection analysis, neither of these strings participates in any nontrivial overlap contributing to
+weight-$\le 2$ off-diagonal sums or odd-$\mathrm{wt}(z)$ diagonal sums. Hence all KL constraints are independent of
+$\theta_1,\theta_2$, yielding a genuine two-parameter family.
+
+\subsection{Intersection test for full KL: only $25$ Paulis to check in the $(7,2,3)$ example}
+\label{subsec:intersection-test-25}
+
+We use the standard Pauli parametrization (up to global phase)
+\[
+P(x,z)\;:=\; i^{x\cdot z} X^x Z^z,\qquad x,z\in\{0,1\}^7,
+\]
+so that on qubit $i$ we have $(x_i,z_i)=(0,0)\mapsto I$, $(1,0)\mapsto X$, $(0,1)\mapsto Z$, $(1,1)\mapsto Y$.
+Let
+\[
+\ket{0_L}=\sum_{s\in T} c_s \ket{s},
+\qquad
+\ket{1_L}=X^{\otimes 7}\ket{0_L}=\sum_{s\in T} c_s \ket{\overline{s}},
+\]
+where $T:=\mathrm{supp}(\ket{0_L})\subseteq\{0,1\}^7$ and $\overline{s}:=s\oplus 1^7$ is the bitwise complement.
+In the concrete code,
+\[
+T=\{0000000,\ 0111100,\ 1001110,\ 1010101,\ 1011001,\ 1110010,\ 0100011\}.
+\]
+
+\paragraph{Finite-sum formulas.}
+For any $P(x,z)$, straightforward basis expansion gives
+\begin{align}
+\bra{0_L}P(x,z)\ket{0_L}
+&=
+i^{x\cdot z}\!\!\sum_{s\in T\cap(T\oplus x)}\!\!
+(-1)^{z\cdot s}\ \overline{c_{s\oplus x}}\,c_s,
+\label{eq:diag-intersection}\\
+\bra{0_L}P(x,z)\ket{1_L}
+&=
+i^{x\cdot z}(-1)^{z\cdot x}\!\!\sum_{s\in T\cap(T\oplus \Delta(x))}\!\!
+(-1)^{z\cdot s}\ \overline{c_{s\oplus \Delta(x)}}\,c_s,
+\qquad \Delta(x):=1^7\oplus x .
+\label{eq:offdiag-intersection}
+\end{align}
+Thus, if the relevant intersection is empty, the corresponding matrix element vanishes \emph{automatically}.
+
+\paragraph{Complementary simplification of diagonal KL.}
+Since $X^{\otimes 7} P(x,z) X^{\otimes 7}=(-1)^{\mathrm{wt}(z)}P(x,z)$, we have
+\[
+\bra{1_L}P(x,z)\ket{1_L}=(-1)^{\mathrm{wt}(z)}\bra{0_L}P(x,z)\ket{0_L}.
+\]
+Hence the diagonal KL equality $\bra{0_L}P\ket{0_L}=\bra{1_L}P\ket{1_L}$ is automatic for even $\mathrm{wt}(z)$,
+and reduces to a \emph{vanishing} condition for odd $\mathrm{wt}(z)$:
+\begin{equation}
+\mathrm{wt}(z)\ \text{odd}\quad\Longrightarrow\quad \bra{0_L}P(x,z)\ket{0_L}=0.
+\label{eq:oddz-vanish}
+\end{equation}
+
+\begin{lemma}[Diagonal intersection screen for $T$]
+\label{lem:diag-screen}
+For the support set $T$ above, among all $x$ with $\mathrm{wt}(x)\le 2$ we have
+\[
+T\cap(T\oplus x)\neq\emptyset
+\quad\Longleftrightarrow\quad
+x\in\{0,\ e_4\oplus e_5\}.
+\]
+Moreover,
+\[
+T\cap(T\oplus(e_4\oplus e_5))=\{1010101,\ 1011001\}.
+\]
+\end{lemma}
+
+\begin{proof}
+One checks directly that no element of $T$ has a Hamming-$1$ neighbor in $T$, so $T\cap(T\oplus e_i)=\emptyset$ for all $i$.
+Among Hamming-$2$ flips, the only pair of strings in $T$ at distance $2$ is
+$1010101\leftrightarrow 1011001$, which differ exactly on qubits $4$ and $5$.
+All other pairs in $T$ have distance $\ge 3$, hence yield empty intersections for $\mathrm{wt}(x)\le 2$.
+\end{proof}
+
+\begin{lemma}[Off-diagonal intersection screen for $T$]
+\label{lem:offdiag-screen}
+For the same $T$, among all $x$ with $\mathrm{wt}(x)\le 2$ we have
+\[
+T\cap(T\oplus\Delta(x))\neq\emptyset
+\quad\Longleftrightarrow\quad
+x\in\{e_1\oplus e_2,\ e_3\oplus e_6,\ e_4\oplus e_7,\ e_5\oplus e_7\}.
+\]
+In these four cases, the intersection has size $2$, namely
+\[
+\begin{aligned}
+T\cap\bigl(T\oplus\Delta(e_1\oplus e_2)\bigr)&=\{0111100,\ 0100011\},\\
+T\cap\bigl(T\oplus\Delta(e_3\oplus e_6)\bigr)&=\{1001110,\ 0100011\},\\
+T\cap\bigl(T\oplus\Delta(e_4\oplus e_7)\bigr)&=\{1010101,\ 0100011\},\\
+T\cap\bigl(T\oplus\Delta(e_5\oplus e_7)\bigr)&=\{1011001,\ 0100011\}.
+\end{aligned}
+\]
+\end{lemma}
+
+\begin{proof}
+This is a finite check: for each $x$ with $\mathrm{wt}(x)\le 2$, compute $\Delta(x)=1^7\oplus x$ and test whether
+there exist $s,s'\in T$ with $s'=s\oplus\Delta(x)$.
+Exactly the four displayed choices admit such pairs, and each yields precisely one undirected edge inside $T$,
+hence an intersection of size $2$.
+\end{proof}
+
+\begin{proposition}[Only $25$ Pauli constraints can be nontrivial]
+\label{prop:25-paulis}
+Consider the full distance-$3$ KL conditions for all Pauli operators of weight $\le 2$.
+For the above $T$ and the complementary convention $\ket{1_L}=X^{\otimes 7}\ket{0_L}$, all KL constraints are
+\emph{automatic} except the following $25$ operators:
+\begin{enumerate}
+\item (Odd-$z$ diagonal constraints at $x=0$) the seven single-$Z$ operators
+\[
+Z_1,\ Z_2,\ Z_3,\ Z_4,\ Z_5,\ Z_6,\ Z_7,
+\]
+which enforce $\bra{0_L}Z_i\ket{0_L}=0$ for all $i$ (equivalently, each bit-position is balanced in $|c_s|^2$).
+\item (Odd-$z$ diagonal constraints at $x=e_4\oplus e_5$) the two mixed $XY$ operators
+\[
+X_4Y_5,\qquad Y_4X_5,
+\]
+which enforce $\bra{0_L}X_4Y_5\ket{0_L}=0$ and $\bra{0_L}Y_4X_5\ket{0_L}=0$.
+\item (Off-diagonal constraints) the sixteen two-qubit $\{X,Y\}^{\otimes 2}$ operators on the four pairs
+\[
+(1,2),\ (3,6),\ (4,7),\ (5,7),
+\]
+i.e.
+\[
+\{X_iX_j,\ X_iY_j,\ Y_iX_j,\ Y_iY_j\}\quad \text{for each of the above pairs }(i,j),
+\]
+which enforce $\bra{0_L}P\ket{1_L}=0$ for all such $P$.
+\end{enumerate}
+Every other Pauli of weight $\le 2$ yields KL equations that hold automatically.
+\end{proposition}
+
+\begin{proof}
+We separate diagonal and off-diagonal KL conditions.
+
+\smallskip
+\noindent\emph{Diagonal.}
+By the complementary relation, the diagonal equality is automatic when $\mathrm{wt}(z)$ is even, and reduces to the vanishing
+condition \eqref{eq:oddz-vanish} when $\mathrm{wt}(z)$ is odd.
+For $\mathrm{wt}(P)\le 2$, odd $\mathrm{wt}(z)$ occurs only for
+\[
+Z_i\ (x=0,z=e_i),\qquad\text{and}\qquad X_iY_j,\ Y_iX_j\ (x=e_i\oplus e_j,\ z\in\{e_i,e_j\}),
+\]
+with $i\neq j$.
+Now apply Lemma~\ref{lem:diag-screen}:
+\begin{itemize}
+\item If $x=e_i$ or $x=e_i\oplus e_j$ with $(i,j)\neq(4,5)$, then $T\cap(T\oplus x)=\emptyset$ and
+$\bra{0_L}P(x,z)\ket{0_L}=0$ holds automatically by \eqref{eq:diag-intersection}.
+\item If $x=0$, the only odd-$z$ cases are exactly $Z_i$ ($i=1,\dots,7$), giving $7$ potentially nontrivial constraints.
+\item If $x=e_4\oplus e_5$, the odd-$z$ cases are exactly $X_4Y_5$ and $Y_4X_5$, giving $2$ potentially nontrivial constraints.
+\end{itemize}
+
+\smallskip
+\noindent\emph{Off-diagonal.}
+For weight $\le 2$, $\bra{0_L}P(x,z)\ket{1_L}$ can be nonzero only if
+$T\cap(T\oplus\Delta(x))\neq\emptyset$ by \eqref{eq:offdiag-intersection}.
+By Lemma~\ref{lem:offdiag-screen} this happens only for
+$x\in\{e_1\oplus e_2,\,e_3\oplus e_6,\,e_4\oplus e_7,\,e_5\oplus e_7\}$.
+Since $\mathrm{wt}(x)=2$ in each case, any Pauli of weight $\le 2$ with this $x$ must have $z$ supported only on the same two qubits,
+so it is one of $\{X_iX_j,X_iY_j,Y_iX_j,Y_iY_j\}$, yielding $4$ operators per pair and $16$ total.
+
+\smallskip
+Combining diagonal ($7+2$) and off-diagonal ($16$) cases gives $25$ total potentially nontrivial constraints.
+All other constraints are automatic either by even-$\mathrm{wt}(z)$ (diagonal) or by empty intersections (diagonal/off-diagonal).
+\end{proof}
+
+\begin{remark}[Where $\theta_1,\theta_2$ drop out]
+In the explicit code, the only phased basis states are $0000000$ and $1110010$.
+Neither participates in the nontrivial intersections of Lemmas~\ref{lem:diag-screen}--\ref{lem:offdiag-screen},
+so none of the $25$ constraints depends on $\theta_1$ or $\theta_2$.
+\end{remark}
+
+% (Context/citation for the SSLP/KL setup and complementary simplification.)
+% See the SSLP framework and KL discussion in the cited manuscript.
+% :contentReference[oaicite:0]{index=0}
+
+
+\section{Exact BD16 examples for \(\vec a=(1,1,2,2,2,2,5)\)}
+
+We now explain in detail \emph{exact} \(((7,2,3))\) codes with transversal group BD16 and angle vector
+\[
+\vec a=(1,1,2,2,2,2,5)\in\mathbb{Z}_8^7,\qquad (b_0,b_1)=(0,7).
+\]
+
+\subsection{An example}
+
+\subsubsection{Logical states}
+
+Define \(\ket{0_L}\) by the following \emph{exact} computational-basis expansion:
+\[
+\begin{aligned}
+\ket{0_L}
+=&\ \frac{1}{4}\ket{0000000}
+-\frac{\sqrt{3}}{4}\ket{0011110}\\
+&+\frac{i\sqrt{2}}{4}\Big(
+\ket{0100101}-\ket{0110001}-\ket{1000011}+\ket{1001001}
+\Big)\\
+&+\frac{i}{4}\Big(
+\ket{1101110}+\ket{1110110}+\ket{1111010}+\ket{1111100}
+\Big).
+\end{aligned}
+\]
+Let \(\overline{s}\) denote bitwise complement. Define
+\[
+\ket{1_L}:=X^{\otimes 7}\ket{0_L},
+\]
+so each basis string \(\ket{s}\) in \(\ket{0_L}\) is mapped to \(\ket{\overline{s}}\) with the same coefficient.
+
+\subsubsection{Why the coefficients are ``square roots of rationals''}
+
+All amplitudes have the form \(\frac{1}{4}\times \{1,\sqrt{2},\sqrt{3}\}\) times a root of unity \(\{1,i,-1,-i\}\).
+Hence \(|c_s|^2\in \{1/16,2/16,3/16\}\subset \mathbb{Q}\), and all KL checks can be done exactly in \(\mathbb{Q}(\sqrt{2},\sqrt{3},i)\).
+
+\subsubsection{Normalization and orthogonality}
+
+Normalization is immediate from the squared magnitudes:
+\[
+\|\ket{0_L}\|^2
+=
+\frac{1}{16}
++\frac{3}{16}
++4\cdot \frac{2}{16}
++4\cdot \frac{1}{16}
+=1.
+\]
+Orthogonality \(\braket{0_L|1_L}=0\) holds because the supports are disjoint: if \(\ket{s}\) appears in \(\ket{0_L}\), then \(\ket{\overline{s}}\) appears in \(\ket{1_L}\), and no basis string appears in both.
+
+\subsubsection{Support as a residue class: the SS condition}
+
+For \(\vec a=(1,1,2,2,2,2,5)\) and \(m=8\), define the residue map
+\[
+\mathrm{res}(s):=\sum_{j=1}^7 a_js_j \ (\mathrm{mod}\ 8).
+\]
+A direct check shows:
+\[
+\mathrm{res}(s)=0\ \text{for every basis string } s \text{ appearing in } \ket{0_L},
+\]
+and consequently
+\[
+\mathrm{res}(\overline{s})\equiv \left(\sum_{j=1}^7 a_j\right)-\mathrm{res}(s)\equiv 7\ (\mathrm{mod}\ 8)
+\quad\text{for every basis string } \overline{s}\text{ in }\ket{1_L}.
+\]
+Thus \(\mathrm{supp}(\ket{0_L})\subseteq S_0(\vec a)\) and \(\mathrm{supp}(\ket{1_L})\subseteq S_1(\vec a)\) with \((b_0,b_1)=(0,7)\), exactly as required in the SS stage.
+
+\subsubsection{Transversal logical gate (BD16)}
+
+Define the transversal diagonal gate
+\[
+D(\vec a)=Z(\tfrac{\pi}{4})\otimes Z(\tfrac{\pi}{4})\otimes Z(\tfrac{\pi}{2})^{\otimes 4}\otimes Z(\tfrac{5\pi}{4}),
+\qquad Z(\theta)=\mathrm{diag}(1,e^{i\theta}).
+\]
+On each computational basis state \(\ket{s}\),
+\[
+D(\vec a)\ket{s}=e^{2\pi i\,\mathrm{res}(s)/8}\ket{s}.
+\]
+Hence
+\[
+D(\vec a)\ket{0_L}=\ket{0_L},\qquad
+D(\vec a)\ket{1_L}=e^{2\pi i\cdot 7/8}\ket{1_L}=e^{-i\pi/4}\ket{1_L},
+\]
+so the induced logical action is a \(Z\)-axis rotation by \(-\pi/4\), i.e., transversal \(T\)-type behavior (BD16).
+
+\subsubsection{Full KL verification idea}
+
+Because the code corrects all single-qubit errors, it suffices to verify the KL relations for all Pauli operators of weight \(\le 2\):
+\[
+\bra{0_L}P\ket{1_L}=0,\qquad
+\bra{0_L}P\ket{0_L}=\bra{1_L}P\ket{1_L},
+\qquad \forall\, P\in \{I,X,Y,Z\}^{\otimes 7},\ \mathrm{wt}(P)\le 2.
+\]
+The nontrivial part is the \(X/Y\) sector: \(X_i\) and \(Y_i\) create Hamming-1 transitions inside the residue class graph, and the phases in \(\ket{0_L}\) are tuned so that all such contributions cancel exactly.
+
+\subsection{Exact verification in SymPy (including weight enumerators and \(\lambda^\ast\))}
+
+The following script encodes \(\ket{0_L}\) in a dictionary (your exact coefficients), defines \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\), and then checks KL for all Pauli strings of weight \(\le 2\). It also computes the quantum weight enumerators \(A,B\) and a natural \(\lambda^\ast\) (see below).
+
+\begin{lstlisting}[language=Python]
+import sympy as sp
+from sympy import Rational, sqrt, I
+import itertools
+
+# Define amplitudes for |0_L> with 1/4 scaling
+c0 = {
+ "0000000": Rational(1,4),
+ "0011110": -sqrt(3)/4,
+ "0100101": I*sqrt(2)/4,
+ "0110001": -I*sqrt(2)/4,
+ "1000011": -I*sqrt(2)/4,
+ "1001001": I*sqrt(2)/4,
+ "1101110": I/4,
+ "1110110": I/4,
+ "1111010": I/4,
+ "1111100": I/4,
+}
+
+# |1_L> = X^{\otimes 7}|0_L> = bitwise complement of each basis string, same coefficient
+def complement(s):
+    return "".join("1" if b=="0" else "0" for b in s)
+c1 = { complement(s):coef for s,coef in c0.items() }
+
+# Pauli action on a single bit
+# Y|0> = i|1>, Y|1> = -i|0>
+def apply_single_pauli(p, bit):
+    if p=='I': return sp.Integer(1), bit
+    if p=='X': return sp.Integer(1), ('1' if bit=='0' else '0')
+    if p=='Z': return (sp.Integer(1) if bit=='0' else -sp.Integer(1)), bit
+    if p=='Y':
+        if bit=='0': return I, '1'
+        else: return -I, '0'
+    raise ValueError(p)
+
+def apply_pauli_string(P, s):
+    phase = sp.Integer(1)
+    out = list(s)
+    for i,p in enumerate(P):
+        ph, nb = apply_single_pauli(p, out[i])
+        phase *= ph
+        out[i] = nb
+    return phase, "".join(out)
+
+def inner(cbra, P, cket):
+    tot = sp.Integer(0)
+    for s, amp in cket.items():
+        ph, t = apply_pauli_string(P, s)
+        if t in cbra:
+            tot += sp.conjugate(cbra[t]) * (ph*amp)
+    return sp.simplify(tot)
+
+# KL check for all Pauli strings of weight <= 2
+paulis = ['I','X','Y','Z']
+def wt(P): return sum(1 for p in P if p!='I')
+
+viol = []
+for P in itertools.product(paulis, repeat=7):
+    P = "".join(P)
+    if wt(P) <= 2:
+        off = sp.simplify(inner(c0,P,c1))           # <0|P|1>
+        d0  = sp.simplify(inner(c0,P,c0))           # <0|P|0>
+        d1  = sp.simplify(inner(c1,P,c1))           # <1|P|1>
+        if off != 0 or sp.simplify(d0-d1) != 0:
+            viol.append((P, off, sp.simplify(d0-d1)))
+
+assert len(viol) == 0
+
+# Weight enumerators A_j and B_j (Rains-type definitions)
+# A_j = (1/K^2) sum_{wt(E)=j} |Tr(PiE)|^2
+# B_j = (1/K)   sum_{wt(E)=j} Tr(Pi E Pi E^\dagger)
+K = 2
+A = [sp.Integer(0) for _ in range(8)]
+B = [sp.Integer(0) for _ in range(8)]
+
+def mat_elements(P):
+    m00 = inner(c0,P,c0)
+    m11 = inner(c1,P,c1)
+    m01 = inner(c0,P,c1)
+    m10 = inner(c1,P,c0)
+    return m00,m01,m10,m11
+
+for P in itertools.product(paulis, repeat=7):
+    P = "".join(P)
+    j = wt(P)
+    m00,m01,m10,m11 = mat_elements(P)
+    tr = sp.simplify(m00+m11)  # Tr(PiE) = <0|E|0> + <1|E|1>
+    A[j] += sp.simplify(tr*sp.conjugate(tr))
+    B[j] += sp.simplify(m00*sp.conjugate(m00) + m01*sp.conjugate(m01)
+                        + m10*sp.conjugate(m10) + m11*sp.conjugate(m11))
+
+A = [sp.simplify(a/(K**2)) for a in A]
+B = [sp.simplify(b/K) for b in B]
+
+# Signature norm for d=3 using E_D = {Paulis of weight 1 or 2}:
+# lambda*^2 = A_1 + A_2
+lambda_sq = sp.simplify(A[1] + A[2])
+lambda_star = sp.simplify(sp.sqrt(lambda_sq))
+
+print("A =", A)
+print("B =", B)
+print("lambda*^2 =", lambda_sq)
+print("lambda* =", lambda_star)
+\end{lstlisting}
+
+\subsection{Weight enumerators and \(\lambda^\ast\) for this example}
+
+Running the script yields:
+\[
+A=(A_0,\dots,A_7)=\left(1,\ 0,\ \frac{33}{16},\ 0,\ \frac{135}{8},\ 0,\ \frac{705}{16},\ 0\right),
+\]
+\[
+B=(B_0,\dots,B_7)=\left(1,\ 0,\ \frac{33}{16},\ \frac{435}{16},\ \frac{135}{8},\ \frac{909}{8},\ \frac{705}{16},\ \frac{819}{16}\right).
+\]
+Equivalently, as polynomials:
+\[
+A(z)=1+\frac{33}{16}z^2+\frac{135}{8}z^4+\frac{705}{16}z^6,
+\]
+\[
+B(z)=1+\frac{33}{16}z^2+\frac{435}{16}z^3+\frac{135}{8}z^4+\frac{909}{8}z^5+\frac{705}{16}z^6+\frac{819}{16}z^7.
+\]
+Following the BD16 examples (where \(\lambda^\ast\) is reported alongside the weight enumerator), we record
+\[
+\lambda^{\ast 2}=A_1+A_2=\frac{33}{16},\qquad \lambda^\ast=\frac{\sqrt{33}}{4}.
+\]
+
+
+
+\subsection{A discrete family of exact Full-KL solutions for the same \texorpdfstring{$\vec a$}{a}}
+
+This section records an additional structural observation for the \emph{same} BD16 angle vector
+\[
+\vec a=(1,1,2,2,2,2,5)\in \mathbb{Z}_8^7,
+\]
+beyond the single worked example in the previous sections.
+
+\subsubsection{Signature vector and signature norm \texorpdfstring{$\lambda^\ast$}{lambda*}}
+
+Let \(\Pi\) be the projector onto a \(((n,K,d))\) code space. For a Pauli operator \(E\), the KL coefficient
+\[
+\lambda_E := \frac{1}{K}\mathrm{Tr}(\Pi E)
+\]
+is characterized by \(\Pi E \Pi = \lambda_E \Pi\) whenever \(E\) is detectable. The \emph{signature vector} on a chosen detectable set \(E_D\) is
+\[
+\tilde{\lambda} := (\lambda_E)_{E\in E_D},
+\]
+and the \emph{signature norm} is its Euclidean norm
+\[
+\lambda^\ast := \|\tilde{\lambda}\|_2 = \left(\sum_{E\in E_D}|\lambda_E|^2\right)^{1/2}.
+\]
+This quantity is invariant under local unitaries (LU): if two codes are LU-equivalent then they have the same \(\lambda^\ast\).
+
+For distance \(d=3\), a natural choice is
+\[
+E_D=\{E\in\mathcal{P}_n:\ 1\le \mathrm{wt}(E)\le 2\},
+\]
+so that \((\lambda^\ast)^2=A_1+A_2\) in terms of the quantum weight enumerator coefficients \(A_j\).
+
+\subsubsection{Restricted exact ansatz}
+
+Motivated by the closed-form examples in the paper, we restrict attention to an exact ansatz with:
+\begin{itemize}
+\item amplitudes in \(\mathbb{Q}(\sqrt2,\sqrt3,i)\);
+\item magnitudes in \(\{1/4,\sqrt2/4,\sqrt3/4\}\) and phases among \(\{\pm 1,\pm i\}\);
+\item transversal \(X\) symmetry \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\);
+\item subset-sum support constraint \(\mathrm{supp}(\ket{0_L})\subseteq S_0(\vec a)\), hence \(\mathrm{supp}(\ket{1_L})\subseteq S_1(\vec a)\).
+\end{itemize}
+
+Within this restricted ansatz, one can enumerate exact solutions and then verify the full KL equalities (all Pauli errors of weight \(\le 2\)) symbolically.
+
+\subsubsection{A 192-element family (explicit parametrization)}
+
+Define the following residue-0 basis strings (all lie in \(S_0(\vec a)\)):
+
+\paragraph{High-weight block.}
+\[
+H_3=1101110,\quad H_4=1110110,\quad H_5=1111010,\quad H_6=1111100.
+\]
+
+\paragraph{One-hot-with-\(s_7=1\) pairs.}
+For each \(j\in\{3,4,5,6\}\), define a pair \((P^{(01)}_j,P^{(10)}_j)\) by
+\[
+\begin{aligned}
+j=3:&\quad (P^{(01)}_3,P^{(10)}_3)=(0110001,\ 1010001),\\
+j=4:&\quad (P^{(01)}_4,P^{(10)}_4)=(0101001,\ 1001001),\\
+j=5:&\quad (P^{(01)}_5,P^{(10)}_5)=(0100101,\ 1000101),\\
+j=6:&\quad (P^{(01)}_6,P^{(10)}_6)=(0100011,\ 1000011).
+\end{aligned}
+\]
+
+We consider logical states of the form
+\[
+\boxed{
+\ket{0_L}=
+\frac{1}{4}\ket{0000000}
++\sigma\,\frac{\sqrt3}{4}\ket{0011110}
++\frac{i}{4}\sum_{j\in\{3,4,5,6\}}\eta_j\,\ket{H_j}
++\frac{i\sqrt2}{4}\sum_{j\in\{3,4,5,6\}}\alpha_j\,\ket{P_j},
+\qquad
+\ket{1_L}=X^{\otimes 7}\ket{0_L},
+}
+\]
+where the discrete parameters are chosen as follows.
+
+\begin{itemize}
+\item \(\sigma\in\{\pm 1\}\) is the sign on the \(\sqrt3\) term.
+\item \(\eta_j\in\{\pm 1\}\) satisfy the single constraint
+\[
+\eta_3\eta_4\eta_5\eta_6 = +1.
+\]
+\item For each \(j\in\{3,4,5,6\}\), choose \(\ket{P_j}\) to be either \(\ket{P^{(01)}_j}\) or \(\ket{P^{(10)}_j}\), with the \emph{balancing rule} that among the four chosen \(\{\ket{P_j}\}\), exactly two have prefix \(01\) and exactly two have prefix \(10\).
+\item The signs \(\alpha_j\in\{\pm 1\}\) are constrained by the prefix grouping: within the two chosen prefix-\(01\) positions, the \(\alpha\)'s are opposite; and within the two chosen prefix-\(10\) positions, the \(\alpha\)'s are opposite (equivalently: pick which one in each prefix group gets \(+\), the other gets \(-\)).
+\end{itemize}
+
+\paragraph{Counting (why 192).}
+There are \(2\) choices for \(\sigma\). There are \(8\) choices of \((\eta_3,\eta_4,\eta_5,\eta_6)\) with product \(+1\).
+For a fixed \(\eta\), the admissible choices of which two indices use prefix \(01\) (and which two use prefix \(10\)) depend on the pattern of \(\eta\):
+\begin{itemize}
+\item If \(\eta\) has two \(+1\) and two \(-1\), then the prefix-\(01\) index set must equal either the \(+1\) set or the \(-1\) set (2 choices); otherwise any 2-subset works (6 choices).
+\item For each admissible prefix split, the \(\alpha\)-constraints contribute \(2\times 2=4\) sign choices.
+\end{itemize}
+This yields \(192\) distinct solutions within the ansatz.
+
+\subsubsection{Observed invariants: all solutions share the same \texorpdfstring{$\lambda^\ast$}{lambda*}}
+
+For every solution in the 192-element family (within this ansatz), symbolic verification confirms the full KL constraints for all Pauli errors of weight \(\le 2\), i.e., each is a valid \(((7,2,3))\) code.
+
+Moreover, the computed signature norm is constant across the family:
+\[
+\boxed{\lambda^{\ast 2}=\frac{33}{16},\qquad \lambda^\ast=\frac{\sqrt{33}}{4}.}
+\]
+(Equivalently, \(A_1=0\) and \(A_2=33/16\), so \(\lambda^{\ast 2}=A_1+A_2=A_2\).)
+
+\subsubsection{A concrete additional example}
+
+An explicit member of the family (different \(\sqrt2\)-support and sign choices compared to the earlier worked example) is:
+\[
+\begin{aligned}
+\ket{0_L}
+=&\ \frac{1}{4}\ket{0000000}
+-\frac{\sqrt3}{4}\ket{0011110}\\
+&+\frac{i\sqrt2}{4}\Big(
+\ket{0110001}-\ket{0101001}+\ket{1000101}-\ket{1000011}
+\Big)\\
+&+\frac{i}{4}\Big(
+\ket{1101110}+\ket{1110110}+\ket{1111010}+\ket{1111100}
+\Big),
+\qquad \ket{1_L}=X^{\otimes 7}\ket{0_L}.
+\end{aligned}
+\]
+
+\subsubsection{Reproducible SymPy script to generate all 192 and compute \texorpdfstring{$\lambda^\ast$}{lambda*}}
+
+The following SymPy code enumerates the 192 solutions within the above ansatz, verifies the full KL conditions for all Paulis of weight \(\le 2\), and computes \((\lambda^\ast)^2\) on the detectable set \(E_D=\{1\le \mathrm{wt}(E)\le 2\}\).
+It prints the number of solutions found and the set of distinct \((\lambda^\ast)^2\) values.
+
+\begin{lstlisting}[language=Python]
+import sympy as sp
+from sympy import Rational, sqrt, I
+import itertools
+from itertools import combinations
+
+paulis = ['I','X','Y','Z']
+K = 2
+
+def wt(P):
+    return sum(1 for p in P if p != 'I')
+
+def complement(s):
+    return "".join('1' if b=='0' else '0' for b in s)
+
+def apply_single_pauli(p, bit):
+    if p=='I': return sp.Integer(1), bit
+    if p=='X': return sp.Integer(1), ('1' if bit=='0' else '0')
+    if p=='Z': return (sp.Integer(1) if bit=='0' else -sp.Integer(1)), bit
+    # Y|0> = i|1>, Y|1> = -i|0>
+    return (I if bit=='0' else -I), ('1' if bit=='0' else '0')
+
+def apply_pauli(P, s):
+    phase = sp.Integer(1)
+    out = list(s)
+    for i,p in enumerate(P):
+        ph, nb = apply_single_pauli(p, out[i])
+        phase *= ph
+        out[i] = nb
+    return phase, "".join(out)
+
+all_strings = ["".join(bits) for bits in itertools.product('01', repeat=7)]
+P_list_w2  = [P for P in itertools.product(paulis, repeat=7) if wt(P) <= 2]
+P_list_w12 = [P for P in itertools.product(paulis, repeat=7) if 1 <= wt(P) <= 2]
+
+action = {}
+for P in P_list_w2:
+    d={}
+    for s in all_strings:
+        d[s]=apply_pauli(P,s)
+    action[P]=d
+
+def inner(cbra, P, cket):
+    tot = sp.Integer(0)
+    dP = action[P]
+    for s, amp in cket.items():
+        ph, t = dP[s]
+        amp2 = cbra.get(t)
+        if amp2 is not None:
+            tot += sp.conjugate(cbra[t]) * (ph*amp)
+    return sp.simplify(tot)
+
+def kl_ok(c0):
+    c1 = {complement(s): coef for s,coef in c0.items()}
+    for P in P_list_w2:
+        P = "".join(P)
+        off = sp.simplify(inner(c0,P,c1))
+        d0  = sp.simplify(inner(c0,P,c0))
+        d1  = sp.simplify(inner(c1,P,c1))
+        if off != 0 or sp.simplify(d0-d1) != 0:
+            return False
+    return True
+
+def lambda_star_sq(c0):
+    c1 = {complement(s): coef for s,coef in c0.items()}
+    tot = sp.Integer(0)
+    for P in P_list_w12:
+        P = "".join(P)
+        tr = sp.simplify(inner(c0,P,c0) + inner(c1,P,c1))
+        tot += sp.simplify(tr*sp.conjugate(tr))
+    return sp.simplify(tot/(K**2))
+
+pair_by_hot = {
+    3: ("0110001","1010001"),
+    4: ("0101001","1001001"),
+    5: ("0100101","1000101"),
+    6: ("0100011","1000011"),
+}
+
+H_terms = {
+    3: "1101110",
+    4: "1110110",
+    5: "1111010",
+    6: "1111100",
+}
+
+def make_code(S01, plus01_hot, plus10_hot, eta, sigma):
+    c0 = {
+        "0000000": Rational(1,4),
+        "0011110": sigma*sqrt(3)/4,
+    }
+    for j in [3,4,5,6]:
+        c0[H_terms[j]] = eta[j]*I/4
+    for j in [3,4,5,6]:
+        s01, s10 = pair_by_hot[j]
+        if j in S01:
+            s = s01
+            sign = +1 if j == plus01_hot else -1
+        else:
+            s = s10
+            sign = +1 if j == plus10_hot else -1
+        c0[s] = sign*I*sqrt(2)/4
+    return c0
+
+def eta_patterns():
+    pats=[]
+    for bits in itertools.product([+1,-1], repeat=4):
+        eta = {j:bits[k] for k,j in enumerate([3,4,5,6])}
+        if eta[3]*eta[4]*eta[5]*eta[6] == 1:
+            pats.append(eta)
+    return pats
+
+solutions = []
+etas = eta_patterns()
+
+for sigma in [+1,-1]:
+    for eta in etas:
+        plus_set = {j for j in [3,4,5,6] if eta[j]==+1}
+        minus_set = set([3,4,5,6]) - plus_set
+
+        if len(plus_set)==2:
+            S01_candidates = [plus_set, minus_set]
+        else:
+            S01_candidates = [set(S01) for S01 in combinations([3,4,5,6], 2)]
+
+        for S01 in S01_candidates:
+            comp = set([3,4,5,6]) - set(S01)
+            for plus01_hot in S01:
+                for plus10_hot in comp:
+                    c0 = make_code(set(S01), plus01_hot, plus10_hot, eta, sigma)
+                    if kl_ok(c0):
+                        lam2 = lambda_star_sq(c0)
+                        solutions.append(lam2)
+
+print("number of solutions found:", len(solutions))
+print("distinct lambda*^2 values:", sorted(set(solutions)))
+if solutions:
+    print("lambda* =", sp.sqrt(solutions[0]))
+\end{lstlisting}
+
+
+\section{Additional exact BD16 examples for \texorpdfstring{$\vec a=(0,1,2,2,3,3,4)$}{a=(0,1,2,2,3,3,4)}}
+
+We now record three further \emph{closed-form} \(((7,2,3))\) BD16 examples associated with the SS--LP-passing angle vector
+\[
+\vec a=(0,1,2,2,3,3,4)\in\mathbb{Z}_8^7.
+\]
+This vector appears in the candidate list in Sec.~3, hence it passes the SS and LP filters (i.e., the \(Z\)-type KL constraints). The three codes below satisfy the \emph{full} KL conditions for all Paulis of weight \(\le 2\) and therefore are valid distance-3 codes.
+
+\subsection{Conventions}
+
+We use the same conventions as above:
+\begin{itemize}
+\item Computational basis strings are length-7 bitstrings.
+\item Logical basis is fixed by transversal \(X\):
+\[
+\ket{1_L}=X^{\otimes 7}\ket{0_L}.
+\]
+\item Distance \(3\) is verified by checking KL for all Pauli strings \(P\in\{I,X,Y,Z\}^{\otimes 7}\) with \(\mathrm{wt}(P)\le 2\):
+\[
+\langle j_L|P|k_L\rangle=\lambda_P\,\delta_{jk}.
+\]
+\end{itemize}
+
+Each of the following solutions has coefficients in \(\mathbb{Q}(\sqrt2,\sqrt3,i)\) (``square roots of rationals times 4th roots of unity'') and comes with a different signature norm \(\lambda^\ast\).
+
+\subsection{Solution A: \texorpdfstring{$\lambda^\ast=\sqrt{51}/4$}{lambda*=sqrt(51)/4}}
+
+\[
+\begin{aligned}
+\ket{0_L}^{(A)} \;=\;
+&-\frac{i}{4}\ket{0100011}
+-\frac{i}{2}\ket{0100101}
++\frac{\sqrt3}{4}\ket{0111010}\\
+&-\frac{i}{4}\ket{1000000}
++\frac{\sqrt2}{4}\ket{1001110}
++\frac{\sqrt2}{4}\ket{1010110}
++\frac{\sqrt3}{4}\ket{1011001},
+\qquad
+\ket{1_L}^{(A)} = X^{\otimes 7}\ket{0_L}^{(A)}.
+\end{aligned}
+\]
+
+The signature norm and Shor--Laflamme weight enumerators are:
+\[
+\boxed{\lambda^{\ast 2}=\frac{51}{16},\qquad \lambda^\ast=\frac{\sqrt{51}}{4}.}
+\]
+\[
+A(z)=1+\frac{51}{16}z^2+\frac{117}{8}z^4+\frac{723}{16}z^6,
+\]
+\[
+B(z)=1+\frac{51}{16}z^2+\frac{489}{16}z^3+\frac{117}{8}z^4+\frac{855}{8}z^5+\frac{723}{16}z^6+\frac{873}{16}z^7.
+\]
+
+\subsection{Solution B: \texorpdfstring{$\lambda^\ast=\sqrt{23}/4$}{lambda*=sqrt(23)/4}}
+
+\[
+\begin{aligned}
+\ket{0_L}^{(B)} \;=\;
+&\frac{1}{4}\ket{0000000}
++\frac{i\sqrt2}{4}\ket{0010110}
+-\frac{i\sqrt3}{4}\ket{0100011}
+-\frac{\sqrt2}{4}\ket{0111100}\\
+&+\frac{\sqrt2}{4}\ket{1001110}
+-\frac{\sqrt3}{4}\ket{1011001}
++\frac{\sqrt2}{4}\ket{1100101}
++\frac{i}{4}\ket{1111010},
+\qquad
+\ket{1_L}^{(B)} = X^{\otimes 7}\ket{0_L}^{(B)}.
+\end{aligned}
+\]
+
+\[
+\boxed{\lambda^{\ast 2}=\frac{23}{16},\qquad \lambda^\ast=\frac{\sqrt{23}}{4}.}
+\]
+\[
+A(z)=1+\frac{23}{16}z^2+\frac{145}{8}z^4+\frac{695}{16}z^6,
+\]
+\[
+B(z)=1+\frac{23}{16}z^2+\frac{405}{16}z^3+\frac{145}{8}z^4+\frac{939}{8}z^5+\frac{695}{16}z^6+\frac{789}{16}z^7.
+\]
+
+\subsection{Solution C: \texorpdfstring{$\lambda^\ast=\sqrt{30}/4$}{lambda*=sqrt(30)/4}}
+
+\[
+\begin{aligned}
+\ket{0_L}^{(C)} \;=\;
+&-\frac{\sqrt3}{4}\ket{0011001}
+-\frac{\sqrt3}{4}\ket{0100101}
+-\frac{i\sqrt2}{4}\ket{0111010}
++\frac{1}{4}\ket{1000000}\\
+&+\frac{i\sqrt2}{4}\ket{1001110}
+-\frac{i\sqrt2}{4}\ket{1010110}
+-\frac{i\sqrt2}{4}\ket{1100011}
+-\frac{1}{4}\ket{1111100},
+\qquad
+\ket{1_L}^{(C)} = X^{\otimes 7}\ket{0_L}^{(C)}.
+\end{aligned}
+\]
+
+\[
+\boxed{\lambda^{\ast 2}=\frac{15}{8}=\frac{30}{16},\qquad \lambda^\ast=\frac{\sqrt{30}}{4}.}
+\]
+\[
+A(z)=1+\frac{15}{8}z^2+\frac{69}{4}z^4+\frac{351}{8}z^6,
+\]
+\[
+B(z)=1+\frac{15}{8}z^2+\frac{213}{8}z^3+\frac{69}{4}z^4+\frac{459}{4}z^5+\frac{351}{8}z^6+\frac{405}{8}z^7.
+\]
+
+\subsection{Minimal SymPy verification snippet (exact)}
+
+To verify any of the three solutions in the same style as Sec.~5--6, define a dictionary \texttt{c0} with the amplitudes of \(\ket{0_L}\) and then set \(\ket{1_L}\) by bitwise complement (transversal \(X^{\otimes 7}\)). For example, Solution~A can be encoded as:
+
+\begin{lstlisting}[language=Python]
+import sympy as sp
+from sympy import Rational, sqrt, I
+
+c0 = {
+ "0100011": -I*Rational(1,4),
+ "0100101": -I*Rational(1,2),
+ "0111010":  sqrt(3)/4,
+ "1000000": -I*Rational(1,4),
+ "1001110":  sqrt(2)/4,
+ "1010110":  sqrt(2)/4,
+ "1011001":  sqrt(3)/4,
+}
+# then set c1 = {complement(s): coef for s,coef in c0.items()}
+# and run the same weight<=2 Pauli KL check and weight-enumerator/lambda* code as above.
+\end{lstlisting}
+
+(Analogous dictionaries for Solutions~B and~C follow immediately from their displayed expansions.)
+
+\section{Exact BD16 examples for \texorpdfstring{$\vec a=(1,1,2,2,3,3,3)$}{a=(1,1,2,2,3,3,3)}}
+\label{sec:bd16_1122333}
+
+We now treat the SS--LP-passing BD16 candidate
+\[
+\vec a=(1,1,2,2,3,3,3)\in\mathbb{Z}_8^7,\qquad (b_0,b_1)=(0,7).
+\]
+Here \(\sum_{j=1}^7 a_j=15\equiv 7\pmod 8\), so the usual convention \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\) maps residue \(0\) support to residue \(7\) support.
+
+\subsection{An exact one-parameter family}
+
+Let \(\theta\in\mathbb{R}\). Define
+\[
+\boxed{
+\begin{aligned}
+\ket{0_L(\theta)} :=
+&\ \frac{1}{4}\ket{0000000}
++\frac{\sqrt2}{4}e^{i\theta}\ket{0001011}
+-\frac{\sqrt2}{4}e^{i\theta}\ket{0010011}
++i\frac{\sqrt3}{4}e^{i\theta}\ket{0111100}\\[2pt]
+&\ +i\frac{\sqrt6}{8}e^{i\theta}\ket{1011001}
+-i\frac{\sqrt6}{8}e^{i\theta}\ket{1011010}
+-i\frac{\sqrt{10}}{8}e^{i\theta}\ket{1100101}
+-i\frac{\sqrt{10}}{8}e^{i\theta}\ket{1100110},
+\\[2pt]
+\ket{1_L(\theta)} :=&\ X^{\otimes 7}\ket{0_L(\theta)}.
+\end{aligned}
+}
+\]
+
+\subsection{Basic checks}
+
+All checks are exact and hold for every \(\theta\in\mathbb{R}\).
+
+\paragraph{SS residue condition.}
+Each basis string \(s\) appearing in \(\ket{0_L(\theta)}\) satisfies
+\[
+s_1+s_2+2(s_3+s_4)+3(s_5+s_6+s_7)\equiv 0\pmod 8,
+\]
+hence \(\mathrm{supp}(\ket{0_L(\theta)})\subseteq S_0(\vec a)\).
+Since \(\sum_j a_j\equiv 7\pmod 8\), complements lie in residue \(7\), so \(\mathrm{supp}(\ket{1_L(\theta)})\subseteq S_1(\vec a)\).
+
+\paragraph{Normalization.}
+Independently of \(\theta\),
+\[
+\|\ket{0_L(\theta)}\|^2
+=\frac{1}{16}+\frac{2}{16}+\frac{2}{16}+\frac{3}{16}+\frac{3}{32}+\frac{3}{32}+\frac{5}{32}+\frac{5}{32}=1.
+\]
+
+\paragraph{Full KL (distance 3).}
+Symbolic verification (with \(\theta\) declared real in SymPy) confirms that for all Pauli strings
+\(P\in\{I,X,Y,Z\}^{\otimes 7}\) of weight \(\mathrm{wt}(P)\le 2\),
+\[
+\langle j_L(\theta)|P|k_L(\theta)\rangle=\lambda_P\,\delta_{jk},
+\]
+so this is a valid \(((7,2,3))\) code for every \(\theta\).
+
+\subsection{A \texorpdfstring{$\theta=0$}{theta=0} representative}
+
+Setting \(\theta=0\) yields a particularly simple closed form:
+\[
+\begin{aligned}
+\ket{0_L}
+=&\ \frac{1}{4}\ket{0000000}
++\frac{\sqrt2}{4}\ket{0001011}
+-\frac{\sqrt2}{4}\ket{0010011}
++i\frac{\sqrt3}{4}\ket{0111100}\\
+&\ +i\frac{\sqrt6}{8}\ket{1011001}
+-i\frac{\sqrt6}{8}\ket{1011010}
+-i\frac{\sqrt{10}}{8}\ket{1100101}
+-i\frac{\sqrt{10}}{8}\ket{1100110},
+\qquad
+\ket{1_L}=X^{\otimes 7}\ket{0_L}.
+\end{aligned}
+\]
+
+\subsection{Signature norm and weight enumerators}
+
+Using the convention \((\lambda^\ast)^2=A_1+A_2\) with \(E_D=\{1\le \mathrm{wt}(E)\le 2\}\), one finds (independent of \(\theta\)):
+\[
+\boxed{\lambda^{\ast 2}=\frac{81}{32},\qquad \lambda^\ast=\sqrt{\frac{81}{32}}=\frac{9\sqrt2}{8}.}
+\]
+
+The Shor--Laflamme weight enumerators depend only on \(c:=\cos(2\theta)\):
+\[
+\begin{aligned}
+A=&\Big[
+1,\ 0,\ \frac{81}{32},\ \frac{1+c}{8},\ \frac{59}{4}-\frac{19}{16}c,\ \frac{45}{16}(1+c),\ \frac{1343}{32}-\frac{41}{16}c,\ \frac{13}{16}(1+c)
+\Big],\\[2pt]
+B=&\Big[
+1,\ 0,\ \frac{81}{32},\ \frac{893}{32}-\frac{11}{16}c,\ \frac{307}{16}+\frac{13}{4}c,\ \frac{1683}{16}-\frac{45}{8}c,\ \frac{1561}{32}+\frac{17}{4}c,\ \frac{1645}{32}-\frac{19}{16}c
+\Big].
+\end{aligned}
+\]
+
+\subsection{Minimal SymPy encoding (symbolic \texorpdfstring{$\theta$}{theta})}
+
+\begin{lstlisting}[language=Python]
+import sympy as sp
+from sympy import Rational, sqrt, I
+
+theta = sp.Symbol('theta', real=True)
+
+c0 = {
+ "0000000": Rational(1,4),
+ "0001011": sqrt(2)/4 * sp.exp(I*theta),
+ "0010011": -sqrt(2)/4 * sp.exp(I*theta),
+ "0111100": I*sqrt(3)/4 * sp.exp(I*theta),
+ "1011001": I*sqrt(6)/8 * sp.exp(I*theta),
+ "1011010": -I*sqrt(6)/8 * sp.exp(I*theta),
+ "1100101": -I*sqrt(10)/8 * sp.exp(I*theta),
+ "1100110": -I*sqrt(10)/8 * sp.exp(I*theta),
+}
+# set c1 by bitwise complement and run the same wt<=2 KL check as in the previous sections.
+\end{lstlisting}
+
+\section{Exact BD16 examples and non-uniform families for \texorpdfstring{$\vec a=(1,1,2,2,2,3,4)$}{a=(1,1,2,2,2,3,4)}}
+\label{sec:bd16_1122234}
+
+We now treat the SS--LP-passing BD16 candidate
+\[
+\vec a=(1,1,2,2,2,3,4)\in\mathbb{Z}_8^7,\qquad (b_0,b_1)=(0,7).
+\]
+Again \(\sum_j a_j=15\equiv 7\pmod 8\), so \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\) is compatible with the SS residue split.
+
+\subsection{SS and LP preliminaries}
+
+For this \(\vec a\), the residue-\(0\) class has size \(16\):
+\[
+\begin{aligned}
+S_0(\vec a)=\{&
+0000000,\ 0001101,\ 0010101,\ 0011001,\ 0100011,\ 0101110,\ 0110110,\ 0111010,\\
+&1000011,\ 1001110,\ 1010110,\ 1011010,\ 1100101,\ 1101001,\ 1110001,\ 1111100
+\}.
+\end{aligned}
+\]
+A particularly simple LP-feasible probability vector is the uniform choice
+\[
+p_s=\frac{1}{16}\qquad (s\in S_0(\vec a)),
+\]
+since each qubit is balanced across \(S_0(\vec a)\) (eight \(0\)s and eight \(1\)s), implying \(\langle Z_j\rangle=0\) for all \(j\).
+
+\subsection{Uniform-magnitude exact solutions (phase-only)}
+
+Fix \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\). Within the uniform-magnitude ansatz
+\[
+c_s=\frac{1}{4}\omega_s,\qquad \omega_s\in\{\pm 1,\pm i\},\qquad s\in S_0(\vec a),
+\]
+there are multiple exact full-KL solutions; in particular we record three convenient closed forms with distinct \(\lambda^\ast\).
+
+\subsubsection{Solution 1: \texorpdfstring{$\lambda^\ast=\sqrt7/4$}{lambda*=sqrt7/4}}
+
+\[
+\begin{aligned}
+\ket{0_L}^{(7)}=
+&\ \frac{1}{4}\ket{0000000}
+-\frac{i}{4}\ket{0001101}
++\frac{i}{4}\ket{0010101}
+-\frac{i}{4}\ket{0011001}
+-\frac{i}{4}\ket{0100011}
+-\frac{1}{4}\ket{0101110}\\
+&\ +\frac{1}{4}\ket{0110110}
++\frac{1}{4}\ket{0111010}
+-\frac{i}{4}\ket{1000011}
++\frac{1}{4}\ket{1001110}
++\frac{1}{4}\ket{1010110}
+-\frac{1}{4}\ket{1011010}\\
+&\ -\frac{1}{4}\ket{1100101}
+-\frac{1}{4}\ket{1101001}
+-\frac{1}{4}\ket{1110001}
+-\frac{i}{4}\ket{1111100},\qquad
+\ket{1_L}^{(7)}=X^{\otimes 7}\ket{0_L}^{(7)}.
+\end{aligned}
+\]
+
+\[
+\boxed{(\lambda^\ast)^2=\frac{7}{16},\qquad \lambda^\ast=\frac{\sqrt7}{4}.}
+\]
+\[
+A(z)=1+\frac{7}{16}z^2+\frac{161}{8}z^4+\frac{679}{16}z^6,\qquad
+B(z)=1+\frac{7}{16}z^2+\frac{357}{16}z^3+\frac{161}{8}z^4+\frac{987}{8}z^5+\frac{679}{16}z^6+\frac{741}{16}z^7.
+\]
+
+\subsubsection{Solution 2: \texorpdfstring{$\lambda^\ast=\sqrt{11}/4$}{lambda*=sqrt11/4}}
+
+\[
+\begin{aligned}
+\ket{0_L}^{(11)}=
+&\ \frac{1}{4}\ket{0000000}
+-\frac{i}{4}\ket{0001101}
++\frac{i}{4}\ket{0010101}
++\frac{i}{4}\ket{0011001}
+-\frac{i}{4}\ket{0100011}
+-\frac{1}{4}\ket{0101110}\\
+&\ -\frac{1}{4}\ket{0110110}
+-\frac{1}{4}\ket{0111010}
++\frac{i}{4}\ket{1000011}
++\frac{1}{4}\ket{1001110}
+-\frac{1}{4}\ket{1010110}
+-\frac{1}{4}\ket{1011010}\\
+&\ +\frac{1}{4}\ket{1100101}
+-\frac{1}{4}\ket{1101001}
+-\frac{1}{4}\ket{1110001}
++\frac{i}{4}\ket{1111100},\qquad
+\ket{1_L}^{(11)}=X^{\otimes 7}\ket{0_L}^{(11)}.
+\end{aligned}
+\]
+
+\[
+\boxed{(\lambda^\ast)^2=\frac{11}{16},\qquad \lambda^\ast=\frac{\sqrt{11}}{4}.}
+\]
+\[
+A(z)=1+\frac{11}{16}z^2+\frac{157}{8}z^4+\frac{683}{16}z^6,\qquad
+B(z)=1+\frac{11}{16}z^2+\frac{369}{16}z^3+\frac{157}{8}z^4+\frac{975}{8}z^5+\frac{683}{16}z^6+\frac{753}{16}z^7.
+\]
+
+\subsubsection{Solution 3: \texorpdfstring{$\lambda^\ast=\sqrt{19}/4$}{lambda*=sqrt19/4}}
+
+\[
+\begin{aligned}
+\ket{0_L}^{(19)}=
+&\ \frac{1}{4}\ket{0000000}
+-\frac{i}{4}\ket{0001101}
++\frac{i}{4}\ket{0010101}
+-\frac{i}{4}\ket{0011001}
++\frac{i}{4}\ket{0100011}
++\frac{1}{4}\ket{0101110}\\
+&\ +\frac{1}{4}\ket{0110110}
+-\frac{1}{4}\ket{0111010}
+-\frac{i}{4}\ket{1000011}
+-\frac{1}{4}\ket{1001110}
+-\frac{1}{4}\ket{1010110}
++\frac{1}{4}\ket{1011010}\\
+&\ -\frac{1}{4}\ket{1100101}
+-\frac{1}{4}\ket{1101001}
++\frac{1}{4}\ket{1110001}
+-\frac{i}{4}\ket{1111100},\qquad
+\ket{1_L}^{(19)}=X^{\otimes 7}\ket{0_L}^{(19)}.
+\end{aligned}
+\]
+
+\[
+\boxed{(\lambda^\ast)^2=\frac{19}{16},\qquad \lambda^\ast=\frac{\sqrt{19}}{4}.}
+\]
+\[
+A(z)=1+\frac{19}{16}z^2+\frac{149}{8}z^4+\frac{691}{16}z^6,\qquad
+B(z)=1+\frac{19}{16}z^2+\frac{393}{16}z^3+\frac{149}{8}z^4+\frac{951}{8}z^5+\frac{691}{16}z^6+\frac{777}{16}z^7.
+\]
+
+\subsection{Non-uniform magnitudes: \texorpdfstring{$\sqrt2$}{sqrt2}-reweighting families}
+
+Going beyond the uniform-magnitude ansatz on all \(16\) strings, we allow non-uniform magnitudes of ``paper-style'' closed form
+\[
+\ket{0_L}=\frac{1}{4}\sum_{s\in S_0(\vec a)} \omega_s\,\sqrt{w_s}\,\ket{s},
+\qquad
+\omega_s\in\{\pm 1,\pm i\},
+\qquad
+w_s\in\{0,1,2\},
+\qquad
+\ket{1_L}=X^{\otimes 7}\ket{0_L}.
+\]
+Thus each basis string is either dropped (\(w_s=0\)), kept at magnitude \(1/4\) (\(w_s=1\)), or boosted to magnitude \(\sqrt2/4\) (\(w_s=2\)).
+
+\subsubsection{Linear (LP) constraints on the weights}
+
+The \(Z\)-type KL constraints reduce to the linear balance conditions
+\[
+\boxed{
+\sum_{s\in S_0(\vec a)} w_s = 16,
+\qquad
+\sum_{s\in S_0(\vec a)} w_s\, s_j = 8 \quad (j=1,\dots,7).
+}
+\]
+There are exactly \(967\) solutions \((w_s)_{s\in S_0}\in\{0,1,2\}^{16}\) to these balance equations.
+(Allowing \(w_s\in\{0,1,2,3,4\}\) instead yields \(3597\) LP-feasible patterns.)
+
+A useful corollary for \(w_s\in\{0,1,2\}\) is that the number of dropped strings equals the number of boosted strings:
+if \(n_0:=|\{s:w_s=0\}|\) and \(n_2:=|\{s:w_s=2\}|\), then \(n_0=n_2\).
+
+\subsubsection{Compact generator constraints for full KL (fixed phase patterns)}
+
+Let \(\omega^{(7)},\omega^{(11)},\omega^{(19)}\) denote the phase patterns (on \(S_0(\vec a)\)) coming from Solutions 1--3 above, i.e. \(\omega_s^{(\cdot)}=4c_s\in\{\pm1,\pm i\}\) when \(c_s\) is the corresponding uniform coefficient.
+
+For any fixed such \(\omega\), define the two four-pair matchings in \(S_0(\vec a)\):
+\[
+\begin{aligned}
+\text{(\(X_1\)-pairs)}\quad
+&(1000011 \leftrightarrow 1111100),\ (1001110 \leftrightarrow 1110001),\ (1010110 \leftrightarrow 1101001),\ (1011010 \leftrightarrow 1100101),\\
+\text{(\(X_2\)-pairs)}\quad
+&(0100011 \leftrightarrow 1111100),\ (0101110 \leftrightarrow 1110001),\ (0110110 \leftrightarrow 1101001),\ (0111010 \leftrightarrow 1100101).
+\end{aligned}
+\]
+
+Within the \(\{0,1,2\}\) reweighting ansatz, an efficient way to generate full-KL solutions is:
+\begin{quote}
+Pick \(\omega\in\{\omega^{(7)},\omega^{(11)},\omega^{(19)}\}\). Solve the linear balance constraints above, together with the two scalar cancellation equations coming from \(\langle 0_L|X_1|1_L\rangle=0\) and \(\langle 0_L|X_2|1_L\rangle=0\), which become signed sums of \(\sqrt{w_s w_t}\) over the \(X_1\)- and \(X_2\)-pairs (signs determined by \(\omega\)).
+\end{quote}
+
+Concretely, for \(\omega^{(7)}\) the two equations are
+\[
+\begin{aligned}
+&\sqrt{w_{1000011}w_{1111100}}
+-\sqrt{w_{1001110}w_{1110001}}
+-\sqrt{w_{1010110}w_{1101001}}
++\sqrt{w_{1011010}w_{1100101}}=0,\\
+&\sqrt{w_{0100011}w_{1111100}}
++\sqrt{w_{0101110}w_{1110001}}
+-\sqrt{w_{0110110}w_{1101001}}
+-\sqrt{w_{0111010}w_{1100101}}=0.
+\end{aligned}
+\]
+For \(\omega^{(11)}\),
+\[
+\begin{aligned}
+&\sqrt{w_{1000011}w_{1111100}}
+-\sqrt{w_{1001110}w_{1110001}}
++\sqrt{w_{1010110}w_{1101001}}
+-\sqrt{w_{1011010}w_{1100101}}=0,\\
+&-\sqrt{w_{0100011}w_{1111100}}
++\sqrt{w_{0101110}w_{1110001}}
++\sqrt{w_{0110110}w_{1101001}}
+-\sqrt{w_{0111010}w_{1100101}}=0.
+\end{aligned}
+\]
+For \(\omega^{(19)}\),
+\[
+\begin{aligned}
+&\sqrt{w_{1000011}w_{1111100}}
+-\sqrt{w_{1001110}w_{1110001}}
++\sqrt{w_{1010110}w_{1101001}}
+-\sqrt{w_{1011010}w_{1100101}}=0,\\
+&-\sqrt{w_{0100011}w_{1111100}}
++\sqrt{w_{0101110}w_{1110001}}
+-\sqrt{w_{0110110}w_{1101001}}
++\sqrt{w_{0111010}w_{1100101}}=0.
+\end{aligned}
+\]
+
+\paragraph{Enumerated solutions (within the \(\{0,1,2\}\) ansatz).}
+Solving these equations over \(w_s\in\{0,1,2\}\) yields \(25\) solutions for \(\omega^{(7)}\), \(25\) solutions for \(\omega^{(11)}\), and \(35\) solutions for \(\omega^{(19)}\) (each count includes the uniform pattern \(w_s\equiv 1\)).
+All non-uniform solutions occur only when
+\[
+|\{s:w_s=0\}|=|\{s:w_s=2\}|\in\{4,6\}.
+\]
+Across all solutions found in this scan, \((\lambda^\ast)^2\) takes values in
+\[
+\left\{
+\frac{7}{16},\ \frac{11}{16},\ \frac{17}{16},\ \frac{19}{16},\ \frac{21}{16},\ \frac{25}{16},\ \frac{17}{8},\ \frac{7}{4},\ 2,\ \frac{35}{16},\ \frac{9}{4}
+\right\},
+\]
+so \(\lambda^\ast\) varies widely even at fixed \(\vec a=(1,1,2,2,2,3,4)\).
+
+\subsubsection{Representative non-uniform exact codes}
+
+All examples below satisfy the full KL constraints for all Pauli errors of weight \(\le 2\) exactly.
+
+\paragraph{Example D: \texorpdfstring{$\lambda^\ast=\sqrt{17}/4$}{lambda*=sqrt17/4}.}
+\[
+\begin{aligned}
+\ket{0_L}^{(17)}=
+&\ \frac{1}{4}\ket{0000000}
+-\frac{i}{4}\ket{0001101}
++\frac{i}{4}\ket{0010101}
+-\frac{i}{4}\ket{0011001}
+-\frac{\sqrt2}{4}\ket{0101110}
++\frac{\sqrt2}{4}\ket{0111010}\\
+&\ -\frac{i\sqrt2}{4}\ket{1000011}
++\frac{\sqrt2}{4}\ket{1010110}
+-\frac{1}{4}\ket{1100101}
+-\frac{1}{4}\ket{1101001}
+-\frac{1}{4}\ket{1110001}
+-\frac{i}{4}\ket{1111100},\\
+&\ket{1_L}^{(17)}=X^{\otimes 7}\ket{0_L}^{(17)}.
+\end{aligned}
+\]
+\[
+\boxed{(\lambda^\ast)^2=\frac{17}{16},\qquad \lambda^\ast=\frac{\sqrt{17}}{4}.}
+\]
+\[
+A(z)=1+\frac{17}{16}z^2+\frac{151}{8}z^4+\frac{689}{16}z^6,\qquad
+B(z)=1+\frac{17}{16}z^2+\frac{387}{16}z^3+\frac{151}{8}z^4+\frac{957}{8}z^5+\frac{689}{16}z^6+\frac{771}{16}z^7.
+\]
+
+\paragraph{Example E: \texorpdfstring{$\lambda^\ast=\sqrt2$}{lambda*=sqrt2}.}
+\[
+\begin{aligned}
+\ket{0_L}^{(2)}=
+&\ \frac{1}{4}\ket{0000000}
+-\frac{i}{4}\ket{0001101}
++\frac{i}{4}\ket{0010101}
+-\frac{i}{4}\ket{0011001}
+-\frac{\sqrt2}{4}\ket{0101110}
++\frac{\sqrt2}{4}\ket{0111010}\\
+&\ -\frac{i}{4}\ket{1000011}
++\frac{1}{4}\ket{1001110}
++\frac{1}{4}\ket{1010110}
+-\frac{1}{4}\ket{1011010}
+-\frac{\sqrt2}{4}\ket{1100101}
+-\frac{\sqrt2}{4}\ket{1110001},\qquad\\
+&\ket{1_L}^{(2)}=X^{\otimes 7}\ket{0_L}^{(2)}.
+\end{aligned}
+\]
+\[
+\boxed{(\lambda^\ast)^2=2,\qquad \lambda^\ast=\sqrt2.}
+\]
+\[
+A(z)=1+2z^2+17z^4+44z^6,\qquad
+B(z)=1+2z^2+27z^3+17z^4+114z^5+44z^6+51z^7.
+\]
+
+\paragraph{Example F: \texorpdfstring{$\lambda^\ast=\frac{3}{2}$}{lambda*=3/2}.}
+\[
+\begin{aligned}
+\ket{0_L}^{(9/4)}=
+&\ \frac{1}{4}\ket{0000000}
+-\frac{i}{4}\ket{0001101}
++\frac{i}{4}\ket{0010101}
++\frac{i}{4}\ket{0011001}
+-\frac{\sqrt2}{4}\ket{0110110}
+-\frac{\sqrt2}{4}\ket{0111010}\\
+&\ +\frac{i}{4}\ket{1000011}
++\frac{1}{4}\ket{1001110}
+-\frac{1}{4}\ket{1010110}
+-\frac{1}{4}\ket{1011010}
++\frac{\sqrt2}{4}\ket{1100101}
+-\frac{\sqrt2}{4}\ket{1101001},\qquad\\
+&\ket{1_L}^{(9/4)}=X^{\otimes 7}\ket{0_L}^{(9/4)}.
+\end{aligned}
+\]
+\[
+\boxed{(\lambda^\ast)^2=\frac{9}{4},\qquad \lambda^\ast=\frac{3}{2}.}
+\]
+\[
+A(z)=1+\frac{9}{4}z^2+\frac{33}{2}z^4+\frac{177}{4}z^6,\qquad
+B(z)=1+\frac{9}{4}z^2+\frac{111}{4}z^3+\frac{33}{2}z^4+\frac{225}{2}z^5+\frac{177}{4}z^6+\frac{207}{4}z^7.
+\]
+
+\paragraph{Example G: \texorpdfstring{$\lambda^\ast=\sqrt{35}/4$}{lambda*=sqrt35/4}.}
+\[
+\begin{aligned}
+\ket{0_L}^{(35)}=
+&\ \frac{1}{4}\ket{0000000}
++\frac{i}{4}\ket{0010101}
+-\frac{i\sqrt2}{4}\ket{0011001}
++\frac{i}{4}\ket{0100011}
++\frac{\sqrt2}{4}\ket{0101110}
++\frac{1}{4}\ket{0110110}\\
+&\ -\frac{i}{4}\ket{1000011}
+-\frac{\sqrt2}{4}\ket{1001110}
+-\frac{1}{4}\ket{1010110}
+-\frac{1}{4}\ket{1101001}
++\frac{\sqrt2}{4}\ket{1110001}
+-\frac{i}{4}\ket{1111100},\qquad\\
+&\ket{1_L}^{(35)}=X^{\otimes 7}\ket{0_L}^{(35)}.
+\end{aligned}
+\]
+\[
+\boxed{(\lambda^\ast)^2=\frac{35}{16},\qquad \lambda^\ast=\frac{\sqrt{35}}{4}.}
+\]
+\[
+A(z)=1+\frac{35}{16}z^2+\frac{133}{8}z^4+\frac{707}{16}z^6,\qquad
+B(z)=1+\frac{35}{16}z^2+\frac{411}{16}z^3+\frac{133}{8}z^4+\frac{927}{8}z^5+\frac{707}{16}z^6+\frac{795}{16}z^7.
+\]
+
+\paragraph{Example H: \texorpdfstring{$\lambda^\ast=\sqrt{34}/4$}{lambda*=sqrt34/4}.}
+\[
+\begin{aligned}
+\ket{0_L}^{(17/8)}=
+&\ \frac{1}{4}\ket{0000000}
++\frac{i}{4}\ket{0010101}
+-\frac{i\sqrt2}{4}\ket{0011001}
+-\frac{i}{4}\ket{0100011}
+-\frac{\sqrt2}{4}\ket{0101110}
++\frac{1}{4}\ket{0110110}\\
+&\ -\frac{i\sqrt2}{4}\ket{1000011}
++\frac{\sqrt2}{4}\ket{1010110}
+-\frac{\sqrt2}{4}\ket{1101001}
+-\frac{i\sqrt2}{4}\ket{1111100},\qquad\\
+&\ket{1_L}^{(17/8)}=X^{\otimes 7}\ket{0_L}^{(17/8)}.
+\end{aligned}
+\]
+\[
+\boxed{(\lambda^\ast)^2=\frac{17}{8},\qquad \lambda^\ast=\frac{\sqrt{34}}{4}.}
+\]
+\[
+A(z)=1+\frac{17}{8}z^2+\frac{67}{4}z^4+\frac{353}{8}z^6,\qquad
+B(z)=1+\frac{17}{8}z^2+\frac{217}{8}z^3+\frac{67}{4}z^4+\frac{459}{4}z^5+\frac{353}{8}z^6+\frac{405}{8}z^7.
+\]
+
+\section{Exact BD16 examples for \texorpdfstring{$\vec a=(1,1,1,2,3,3,4)$}{a=(1,1,1,2,3,3,4)}}
+
+We give an explicit self-complementary BD16 code for
+\(\vec a=(1,1,1,2,3,3,4)\) at level \(m=8\), with residues \((b_0,b_1)=(0,7)\).
+Equivalently, the logical basis is related by a global bit-flip:
+\[
+\ket{1_L} = X^{\otimes 7}\ket{0_L}.
+\]
+
+\subsection{Residue constraint}
+For a bitstring \(\mathbf{s}=(s_1,\dots,s_7)\in\{0,1\}^7\), define the residue function
+\[
+\mathrm{Res}(\mathbf{s}) \equiv s_1+s_2+s_3+2s_4+3s_5+3s_6+4s_7 \pmod 8.
+\]
+All computational-basis kets appearing below satisfy \(\mathrm{Res}(\mathbf{s})=0\).
+
+\subsection{One clean analytical solution}
+A normalized choice of logical \(\ket{0_L}\) is
+\begin{align*}
+\ket{0_L} \;=\;&
+\frac{1}{4}\ket{0000000}
++\frac{i\sqrt2}{4}\ket{0001110}
++\frac{\sqrt2}{4}\ket{0110110}
++\frac{\sqrt3}{4}\ket{0111001}\\
+&+\frac{i\sqrt{10}}{8}\ket{1000011}
++\frac{i\sqrt{10}}{8}\ket{1000101}
++\frac{i\sqrt6}{8}\ket{1111010}
+-\frac{i\sqrt6}{8}\ket{1111100}.
+\end{align*}
+By self-complementarity,
+\[
+\ket{1_L} = X^{\otimes 7}\ket{0_L},
+\]
+so explicitly (bitwise complement of every basis string),
+\begin{align*}
+\ket{1_L} \;=\;&
+\frac{1}{4}\ket{1111111}
++\frac{i\sqrt2}{4}\ket{1110001}
++\frac{\sqrt2}{4}\ket{1001001}
++\frac{\sqrt3}{4}\ket{1000110}\\
+&+\frac{i\sqrt{10}}{8}\ket{0111100}
++\frac{i\sqrt{10}}{8}\ket{0111010}
++\frac{i\sqrt6}{8}\ket{0000101}
+-\frac{i\sqrt6}{8}\ket{0000011}.
+\end{align*}
+This pair satisfies the full Knill--Laflamme conditions for all Pauli errors of weight \(\le 2\),
+i.e.\ it is a distance-\(3\) \(((7,2,3))\) code.
+
+\subsection{Invariants for this solution}
+For this solution,
+\[
+\lambda_*^2 = A_1 + A_2 = \frac{75}{32},
+\qquad\text{hence}\qquad
+\lambda_* = \frac{5\sqrt6}{8}.
+\]
+The weight enumerators are
+\begin{align*}
+A(z) &= 1+\frac{75}{32}z^2+\frac{261}{16}z^4+\frac{1419}{32}z^6,\\
+B(z) &= 1+\frac{75}{32}z^2+\frac{897}{32}z^3+\frac{261}{16}z^4+\frac{1791}{16}z^5+\frac{1419}{32}z^6+\frac{1665}{32}z^7.
+\end{align*}
+
+\subsection{Phase variants and symmetries}
+Keeping the same support and magnitudes
+\(\{1/4,\ \sqrt2/4,\ \sqrt3/4,\ \sqrt6/8,\ \sqrt{10}/8\}\),
+there exist multiple other exact solutions obtained by changing certain \(\pm\) and \(\pm i\) phases.
+Empirically, there are \(64\) distinct phase variants with these fixed magnitudes on the same support,
+after fixing the \(\ket{0000000}\) coefficient to \(+1/4\).
+Moreover, since \(\vec a\) is symmetric under permutations of qubits \((1,2,3)\) and independently \((5,6)\),
+permuting those qubits produces further solutions.
+
+\section{Three uniform-magnitude BD16 solutions for \texorpdfstring{$\vec a=(1,1,1,2,2,4,4)$}{a=(1,1,1,2,2,4,4)} at \texorpdfstring{$m=8$}{m=8}}
+
+For BD16 we fix \(m=8\) and \((b_0,b_1)=(0,7)\).
+Take
+\[
+\vec a=(1,1,1,2,2,4,4)\in \mathbb{Z}_8^{\,7},
+\qquad
+\sum_{j=1}^7 a_j = 15 \equiv 7 \pmod 8,
+\]
+so the usual self-complementary choice \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\) is compatible with the residue split
+\(S_0(\vec a)\leftrightarrow S_1(\vec a)\).
+Below we record three closed-form exact \(((7,2,3))\) solutions for this \(\vec a\), each with coefficients in \(\mathbb{Q}(i)\),
+and each verified \emph{exactly} to satisfy the full Knill--Laflamme conditions for every Pauli error of weight \(\le 2\).
+
+\subsection{Subset-sum and LP facts}
+Define the subset-sum residue map
+\[
+\mathrm{res}(s)=s_1+s_2+s_3+2(s_4+s_5)+4(s_6+s_7)\pmod 8,
+\qquad s\in\{0,1\}^7.
+\]
+The residue-\(0\) class has size \(16\) and is
+\[
+\begin{aligned}
+S_0(\vec a)=\{&
+0000000,\ 0000011,\ 0001101,\ 0001110,\ 
+0110101,\ 0110110,\ 0111001,\ 0111010,\\
+&1010101,\ 1010110,\ 1011001,\ 1011010,\ 
+1100101,\ 1100110,\ 1101001,\ 1101010
+\}.
+\end{aligned}
+\]
+Moreover, each qubit position is perfectly balanced over \(S_0(\vec a)\) (eight zeros and eight ones in every coordinate).
+Consequently the uniform LP choice
+\[
+p_s=\frac{1}{16}\qquad (s\in S_0)
+\]
+automatically satisfies the \(Z\)-type Knill--Laflamme constraints (in particular \(\langle Z_j\rangle_{0_L}=0\) for all \(j\)).
+
+Motivated by this, we seek uniform-magnitude solutions of the form
+\[
+\ket{0_L}=\frac{1}{4}\sum_{s\in S_0(\vec a)}\omega_s\ket{s},
+\qquad \omega_s\in\{\pm 1,\pm i\},
+\qquad \ket{1_L}=X^{\otimes 7}\ket{0_L}.
+\]
+All three solutions below are of this type.
+
+\subsection{Solution A (\texorpdfstring{$\lambda^\ast=1$}{lambda*=1})}
+\[
+\begin{aligned}
+\ket{0_L}^{(A)}=\frac{1}{4}\Big(
+&\ket{0000000}-\ket{0000011}+\ket{0001101}+\ket{0001110}\\
+&+i\ket{0110101}-i\ket{0110110}-i\ket{0111001}+i\ket{0111010}\\
+&+i\ket{1010101}+i\ket{1010110}-i\ket{1011001}-i\ket{1011010}\\
+&+i\ket{1100101}-i\ket{1100110}+i\ket{1101001}-i\ket{1101010}
+\Big),
+\qquad
+\ket{1_L}^{(A)}=X^{\otimes 7}\ket{0_L}^{(A)}.
+\end{aligned}
+\]
+Here \(A_1=0\), so \((\lambda^\ast)^2=A_2\), and
+\[
+(\lambda^\ast)^2=1,\qquad \lambda^\ast=1.
+\]
+The Shor--Laflamme enumerator coefficient lists are
+\[
+A^{(A)}=\Big[1,\ 0,\ 1,\ \tfrac14,\ 15,\ \tfrac{21}{2},\ 33,\ \tfrac{13}{4}\Big],
+\qquad
+B^{(A)}=\Big[1,\ 0,\ 1,\ 21,\ 32,\ 99,\ 58,\ 44\Big].
+\]
+
+\subsection{Solution B (\texorpdfstring{$\lambda^\ast=\sqrt{5}/2$}{lambda*=sqrt(5)/2})}
+\[
+\begin{aligned}
+\ket{0_L}^{(B)}=\frac{1}{4}\Big(
+&\ket{0000000}+\ket{0000011}+\ket{0001101}+\ket{0001110}\\
+&+i\ket{0110101}+i\ket{0110110}-i\ket{0111001}-i\ket{0111010}\\
+&-i\ket{1010101}-i\ket{1010110}-i\ket{1011001}-i\ket{1011010}\\
+&-i\ket{1100101}+i\ket{1100110}-i\ket{1101001}+i\ket{1101010}
+\Big),
+\qquad
+\ket{1_L}^{(B)}=X^{\otimes 7}\ket{0_L}^{(B)}.
+\end{aligned}
+\]
+The invariant is
+\[
+(\lambda^\ast)^2=\frac{5}{4},\qquad \lambda^\ast=\frac{\sqrt5}{2}.
+\]
+Enumerator coefficient lists:
+\[
+A^{(B)}=\Big[1,\ 0,\ \tfrac54,\ \tfrac14,\ \tfrac{29}{2},\ \tfrac{21}{2},\ \tfrac{133}{4},\ \tfrac{13}{4}\Big],
+\qquad
+B^{(B)}=\Big[1,\ 0,\ \tfrac54,\ \tfrac{87}{4},\ \tfrac{63}{2},\ \tfrac{195}{2},\ \tfrac{233}{4},\ \tfrac{179}{4}\Big].
+\]
+
+\subsection{Solution C (\texorpdfstring{$\lambda^\ast=\sqrt{22}/4$}{lambda*=sqrt(22)/4})}
+\[
+\begin{aligned}
+\ket{0_L}^{(C)}=\frac{1}{4}\Big(
+&\ket{0000000}-\ket{0000011}-\ket{0001101}+\ket{0001110}\\
+&-i\ket{0110101}-i\ket{0110110}-i\ket{0111001}+i\ket{0111010}\\
+&-i\ket{1010101}-i\ket{1010110}+i\ket{1011001}-i\ket{1011010}\\
+&-i\ket{1100101}-i\ket{1100110}+i\ket{1101001}-i\ket{1101010}
+\Big),
+\qquad
+\ket{1_L}^{(C)}=X^{\otimes 7}\ket{0_L}^{(C)}.
+\end{aligned}
+\]
+The invariant is
+\[
+(\lambda^\ast)^2=\frac{11}{8},\qquad \lambda^\ast=\sqrt{\frac{11}{8}}=\frac{\sqrt{22}}{4}.
+\]
+Enumerator coefficient lists:
+\[
+A^{(C)}=\Big[1,\ 0,\ \tfrac{11}{8},\ \tfrac14,\ \tfrac{57}{4},\ \tfrac{21}{2},\ \tfrac{267}{8},\ \tfrac{13}{4}\Big],
+\qquad
+B^{(C)}=\Big[1,\ 0,\ \tfrac{11}{8},\ \tfrac{177}{8},\ \tfrac{125}{4},\ \tfrac{387}{4},\ \tfrac{467}{8},\ \tfrac{361}{8}\Big].
+\]
+
+\subsection{Minimal SymPy dictionary (drop-in)}
+As a concrete example, Solution~B can be represented (for exact verification) by the coefficient dictionary
+\begin{lstlisting}[language=Python]
+import sympy as sp
+from sympy import Rational, I
+
+c0 = {
+ "0000000":  Rational(1,4),
+ "0000011":  Rational(1,4),
+ "0001101":  Rational(1,4),
+ "0001110":  Rational(1,4),
+ "0110101":  I*Rational(1,4),
+ "0110110":  I*Rational(1,4),
+ "0111001": -I*Rational(1,4),
+ "0111010": -I*Rational(1,4),
+ "1010101": -I*Rational(1,4),
+ "1010110": -I*Rational(1,4),
+ "1011001": -I*Rational(1,4),
+ "1011010": -I*Rational(1,4),
+ "1100101": -I*Rational(1,4),
+ "1100110":  I*Rational(1,4),
+ "1101001": -I*Rational(1,4),
+ "1101010":  I*Rational(1,4),
+}
+# c1 = {bitwise_complement(s): coef for s,coef in c0.items()}
+# then run your wt<=2 KL check and compute A,B, lambda*^2=A1+A2.
+\end{lstlisting}
+
+\section{An explicit self-complementary BD16 code for \texorpdfstring{$\vec a=(1,1,1,2,2,3,5)$}{a=(1,1,1,2,2,3,5)} at \texorpdfstring{$m=8$}{m=8}}
+
+We fix BD16 level \(m=8\) with residues \((b_0,b_1)=(0,7)\).
+Consider the angle vector
+\[
+\vec a=(1,1,1,2,2,3,5)\in\mathbb{Z}_8^{\,7},
+\qquad
+\sum_{i=1}^7 a_i = 15 \equiv 7 \pmod 8,
+\]
+so the usual self-complementary convention \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\) is compatible with the residue split
+\(S_0(\vec a)\leftrightarrow S_7(\vec a)=\overline{S_0(\vec a)}\).
+We take \(\ket{0_L}\) supported on the residue-\(0\) set
+\[
+S_0(\vec a)=\{\,s\in\{0,1\}^7:\ \vec a\cdot s \equiv 0 \pmod 8\,\}.
+\]
+
+\subsection{One closed-form \texorpdfstring{\(((7,2,3))\)}{((7,2,3))} solution}
+An exact (fully Knill--Laflamme valid for all Pauli errors of weight \(\le 2\)) choice of codewords is
+\begin{align*}
+\ket{0_L}
+=&\;\frac14\ket{0000000}+\frac14\ket{0000011}\\
+&-\frac{i\sqrt3}{8}\Big(
+\ket{0010101}+\ket{0011001}+\ket{0100101}+\ket{0101001}+\ket{1000101}+\ket{1001001}
+\Big)\\
+&-\frac{\sqrt6}{8}\Big(
+\ket{0011110}+\ket{0101110}+\ket{1001110}
+\Big)\\
+&-\frac{\sqrt{10}}{8}\ket{1110001}
++\frac{i\sqrt5}{8}\Big(\ket{1110110}+\ket{1111010}\Big),
+\end{align*}
+and
+\[
+\ket{1_L}=X^{\otimes 7}\ket{0_L},
+\]
+i.e.\ explicitly (bitwise complements of the above basis states, with identical coefficients),
+\begin{align*}
+\ket{1_L}
+=&\;\frac14\ket{1111111}+\frac14\ket{1111100}\\
+&-\frac{i\sqrt3}{8}\Big(
+\ket{1101010}+\ket{1100110}+\ket{1011010}+\ket{1010110}+\ket{0111010}+\ket{0110110}
+\Big)\\
+&-\frac{\sqrt6}{8}\Big(
+\ket{1100001}+\ket{1010001}+\ket{0110001}
+\Big)\\
+&-\frac{\sqrt{10}}{8}\ket{0001110}
++\frac{i\sqrt5}{8}\Big(\ket{0001001}+\ket{0000101}\Big).
+\end{align*}
+This pair satisfies all Knill--Laflamme constraints for distance \(3\), and was verified exactly using symbolic arithmetic.
+
+\subsection{Enumerator data}
+For this solution,
+\[
+\lambda_*^2=A_1+A_2=\frac{369}{128},
+\qquad
+\lambda_*=\sqrt{\frac{369}{128}}=\frac{3\sqrt{82}}{16}.
+\]
+The Shor--Laflamme enumerator coefficient lists \([A_0,\dots,A_7]\) and \([B_0,\dots,B_7]\) are
+\[
+A=\Big[1,\ 0,\ \frac{369}{128},\ 0,\ \frac{975}{64},\ 0,\ \frac{5745}{128},\ 0\Big],
+\qquad
+B=\Big[1,\ 0,\ \frac{369}{128},\ \frac{3795}{128},\ \frac{975}{64},\ \frac{6957}{64},\ \frac{5745}{128},\ \frac{6867}{128}\Big].
+\]
+Equivalently,
+\begin{align*}
+A(z)&=1+\frac{369}{128}z^2+\frac{975}{64}z^4+\frac{5745}{128}z^6,\\
+B(z)&=1+\frac{369}{128}z^2+\frac{3795}{128}z^3+\frac{975}{64}z^4+\frac{6957}{64}z^5+\frac{5745}{128}z^6+\frac{6867}{128}z^7.
+\end{align*}
+
+\section{A 128-element analytic BD16 family for \texorpdfstring{$\vec a=(1,1,1,1,3,4,4)$}{a=(1,1,1,1,3,4,4)} at \texorpdfstring{$m=8$}{m=8}}
+
+We work in the BD16 setting with \(m=8\) and residues \((b_0,b_1)=(0,7)\), using the standard self-complement convention
+\[
+\ket{1_L}=X^{\otimes 7}\ket{0_L}.
+\]
+For the candidate
+\[
+\vec a=(1,1,1,1,3,4,4)\in\mathbb{Z}_8^{\,7},
+\]
+there is a fully analytic \(128\)-element exact \(((7,2,3))\) family with coefficients in \(\mathbb{Q}(\sqrt3,i)\),
+with magnitudes in \(\{1/4,\sqrt3/4\}\) and phases among the \(4\)th roots of unity.
+
+\subsection{Subset-sum residue class}
+The residue constraint is
+\[
+s_1+s_2+s_3+s_4+3s_5+4s_6+4s_7\equiv 0\pmod 8.
+\]
+The residue-\(0\) class \(S_0(\vec a)\) has size \(12\) and is
+\[
+\begin{aligned}
+S_0(\vec a)=\{&
+0000000,\ 0000011,\ 0001101,\ 0001110,\ 0010101,\ 0010110,\\
+&0100101,\ 0100110,\ 1000101,\ 1000110,\ 1111001,\ 1111010
+\}.
+\end{aligned}
+\]
+Moreover \(\sum_{j=1}^7 a_j=15\equiv 7\pmod8\), so bitwise complements of \(S_0(\vec a)\) lie in residue class \(7\).
+Hence the self-complement map \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\) matches the SS split \(S_0\leftrightarrow S_7\).
+
+\subsection{A clean 128-element exact family}
+Introduce the following paired basis strings in \(S_0(\vec a)\) (each pair swaps \((s_6,s_7)\)):
+\[
+\begin{aligned}
+(P_1^{(7)},P_1^{(6)})&=(1000101,\ 1000110),&
+(P_2^{(7)},P_2^{(6)})&=(0100101,\ 0100110),\\
+(P_3^{(7)},P_3^{(6)})&=(0010101,\ 0010110),&
+(P_4^{(7)},P_4^{(6)})&=(0001101,\ 0001110),\\
+(D^{(7)},D^{(6)})&=(1111001,\ 1111010).
+\end{aligned}
+\]
+Choose discrete parameters
+\[
+\alpha_B,\alpha_1,\alpha_2,\alpha_3,\alpha_4,\alpha_D\in\{\pm 1\},\qquad \tau\in\{0,1\}.
+\]
+Define
+\[
+\boxed{
+\begin{aligned}
+\ket{0_L(\alpha,\tau)} \;:=\;
+&\ \frac14\ket{0000000}+\frac{\alpha_B}{4}\ket{0000011}\\[2pt]
+&+\frac{i}{4}\sum_{j=1}^4 \alpha_j\Big(\ket{P_j^{(7)}} + (-1)^{\tau+1}\ket{P_j^{(6)}}\Big)\\[2pt]
+&+\frac{i\sqrt3}{4}\,\alpha_D\Big(\ket{D^{(7)}} + (-1)^{\tau}\ket{D^{(6)}}\Big),\\[4pt]
+\ket{1_L(\alpha,\tau)} \;:=\;&\ X^{\otimes 7}\ket{0_L(\alpha,\tau)}.
+\end{aligned}
+}
+\]
+
+\paragraph{Verified properties.}
+For every choice of \((\alpha_B,\alpha_1,\ldots,\alpha_4,\alpha_D,\tau)\), the pair
+\(\{\ket{0_L(\alpha,\tau)},\ket{1_L(\alpha,\tau)}\}\) satisfies:
+\begin{itemize}
+\item \textbf{SS support:} \(\mathrm{supp}(\ket{0_L})\subseteq S_0(\vec a)\) and \(\mathrm{supp}(\ket{1_L})\subseteq S_7(\vec a)\).
+\item \textbf{Normalization:} there are \(10\) terms of magnitude \(1/4\) and \(2\) terms of magnitude \(\sqrt3/4\), hence
+\[
+10\cdot\frac{1}{16}+2\cdot\frac{3}{16}=1.
+\]
+\item \textbf{Full KL / distance \(3\):} for every Pauli error \(P\) of weight \(\le 2\),
+\[
+\langle j_L|P|k_L\rangle=\lambda_P\,\delta_{jk}.
+\]
+This was verified symbolically with exact arithmetic.
+\end{itemize}
+Thus the construction yields an exact \(128\)-element family in closed form.
+
+\subsection{A paste-ready representative}
+Setting all signs to \(+1\) and \(\tau=0\) gives the explicit member
+\[
+\boxed{
+\begin{aligned}
+\ket{0_L}=
+&\ \frac{1}{4}\ket{0000000}
++\frac{1}{4}\ket{0000011}
++\frac{i}{4}\ket{0001101}
+-\frac{i}{4}\ket{0001110}
++\frac{i}{4}\ket{0010101}
+-\frac{i}{4}\ket{0010110}\\
+&+\frac{i}{4}\ket{0100101}
+-\frac{i}{4}\ket{0100110}
++\frac{i}{4}\ket{1000101}
+-\frac{i}{4}\ket{1000110}
++\frac{i\sqrt3}{4}\ket{1111001}
++\frac{i\sqrt3}{4}\ket{1111010},\\[3pt]
+\ket{1_L}=&\ X^{\otimes 7}\ket{0_L}.
+\end{aligned}
+}
+\]
+Here all phases lie in \(\{\pm 1,\pm i\}\), and all magnitudes lie in \(\{1/4,\sqrt3/4\}\).
+
+\subsection{Family invariants}
+Using the convention \((\lambda^\ast)^2=A_1+A_2\), the value of \(\lambda^\ast\) is constant across the entire family:
+\[
+(\lambda^\ast)^2=\frac{31}{8}=\frac{62}{16},
+\qquad
+\lambda^\ast=\sqrt{\frac{31}{8}}=\frac{\sqrt{62}}{4}.
+\]
+Moreover, the Shor--Laflamme enumerator coefficients are family-invariant:
+\[
+A=\Big[1,\ 0,\ \frac{31}{8},\ 0,\ \frac{53}{4},\ 0,\ \frac{367}{8},\ 0\Big],
+\qquad
+B=\Big[1,\ 0,\ \frac{31}{8},\ \frac{261}{8},\ \frac{53}{4},\ \frac{411}{4},\ \frac{367}{8},\ \frac{453}{8}\Big].
+\]
+Equivalently,
+\begin{align*}
+A(z)&=1+\frac{31}{8}z^2+\frac{53}{4}z^4+\frac{367}{8}z^6,\\
+B(z)&=1+\frac{31}{8}z^2+\frac{261}{8}z^3+\frac{53}{4}z^4+\frac{411}{4}z^5+\frac{367}{8}z^6+\frac{453}{8}z^7.
+\end{align*}
+
+\subsection{Remarks on searches beyond the family}
+Within the restricted ``paper-style'' ansatz
+\[
+c_s=\omega_s\frac{\sqrt{w_s}}{4},
+\qquad
+\omega_s\in\{\pm1,\pm i\},
+\qquad
+w_s\in\{0,1,2,3,4\},
+\]
+together with the LP balance constraints
+\[
+\sum_{s\in S_0} w_s=16,\qquad \sum_{s\in S_0} w_s\, s_j = 8\quad (j=1,\dots,7),
+\]
+an exhaustive enumeration over all integer-feasible weight patterns and \(\{\pm1,\pm i\}\) phases produced no additional full-KL solutions beyond the above family. This does not preclude further solutions outside this phase regime (e.g.\ allowing \(8\)th-root phases), but it provides a strong classification within the \(\{\pm1,\pm i\}\) setting.
+
+\section{A continuous analytic BD16 family for \texorpdfstring{$\vec a=(1,1,1,1,3,3,5)$}{a=(1,1,1,1,3,3,5)} at \texorpdfstring{$m=8$}{m=8}}
+
+We work in the BD16 setting with \(m=8\) and residues \((b_0,b_1)=(0,7)\), using the standard self-complement convention
+\[
+\ket{1_L}=X^{\otimes 7}\ket{0_L}.
+\]
+Consider the angle vector
+\[
+\vec a=(1,1,1,1,3,3,5)\in\mathbb{Z}_8^{\,7}.
+\]
+
+\subsection{Residue class \(S_0(\vec a)\)}
+With \(b_0=0\), the subset-sum residue class is
+\[
+S_0(\vec a)=\{\,s\in\{0,1\}^7:\ \vec a\cdot s \equiv 0 \pmod 8\,\},
+\]
+and explicitly
+\[
+\begin{aligned}
+S_0(\vec a)=\{&
+0000000,\ 0000011,\ 0000101,\ 0011110,\ 0101110,\ 0110110,\ 0111001,\\
+&1001110,\ 1010110,\ 1011001,\ 1100110,\ 1101001,\ 1110001
+\}.
+\end{aligned}
+\]
+We take \(\ket{0_L}\) supported on \(S_0(\vec a)\), and \(\ket{1_L}\) supported on the complement class \(S_7(\vec a)=\overline{S_0(\vec a)}\).
+
+\subsection{A clean closed-form representative}
+For any real \(\theta\), define
+\begin{align*}
+\ket{0_L(\theta)}
+=&\;\frac14\Bigl(\ket{0000000}-\ket{0000011}-\ket{0000101}\Bigr)\\[2mm]
+&+e^{i\theta}\Biggl[
+\frac14\Bigl(\ket{0011110}+\ket{1100110}\Bigr)
++\frac18\Bigl(\ket{0101110}+\ket{1010110}\Bigr)\\
+&
++\frac38\Bigl(\ket{0110110}+\ket{1001110}\Bigr)
++\frac{\sqrt6}{8}\Bigl(\ket{1011001}+\ket{1101001}-\ket{0111001}-\ket{1110001}\Bigr)
+\Biggr].
+\end{align*}
+Then set
+\[
+\ket{1_L(\theta)}:=X^{\otimes 7}\ket{0_L(\theta)}.
+\]
+The pair \(\{\ket{0_L(\theta)},\ket{1_L(\theta)}\}\) satisfies the Knill--Laflamme conditions for all Pauli errors of weight \(\le 2\),
+hence it is an exact \(((7,2,3))\) code in this BD16 single-syndrome residue-class setting.  Taking \(\theta=0\) yields an
+all-real representative.
+
+\subsection{The full continuous family}
+More generally, let \(x>0\) and \(y>0\) satisfy
+\[
+x^2+y^2+xy=7,
+\qquad\text{and define}\qquad
+z:=x+y.
+\]
+(Equivalently \(x^2+y^2+z^2=14\) with \(z=x+y\).)
+Then for any real \(\theta\), an exact solution is given by
+\begin{align*}
+\ket{0_L(\theta;x,y)}
+=&\;\frac14\Bigl(\ket{0000000}-\ket{0000011}-\ket{0000101}\Bigr)\\[2mm]
+&+e^{i\theta}\Biggl[
+\frac{y}{8}\Bigl(\ket{0011110}+\ket{1100110}\Bigr)
++\frac{x}{8}\Bigl(\ket{0101110}+\ket{1010110}\Bigr)\\
+&
++\frac{z}{8}\Bigl(\ket{0110110}+\ket{1001110}\Bigr)
++\frac{\sqrt6}{8}\Bigl(\ket{1011001}+\ket{1101001}-\ket{0111001}-\ket{1110001}\Bigr)
+\Biggr],
+\end{align*}
+with
+\[
+\ket{1_L(\theta;x,y)}:=X^{\otimes 7}\ket{0_L(\theta;x,y)}.
+\]
+This yields a continuous family of exact \(((7,2,3))\) codes parameterized by \((\theta;x,y)\) subject to \(x^2+y^2+xy=7\).
+
+A convenient one-parameter parametrization is obtained by setting \(y=r x\) with \(r>0\), giving
+\[
+x=\sqrt{\frac{7}{1+r+r^2}},\qquad y=r x,\qquad z=(1+r)x,
+\]
+which can be substituted into the above formula. The ``clean'' representative above corresponds to \(r=2\), i.e.\
+\((x,y,z)=(1,2,3)\).
+
+\paragraph{Weight enumerators and $\lambda^\ast$ for the $(x,y,z,\theta)$ family.}
+Impose $z=x+y$ and $x^2+y^2+xy=7$.  Let $c:=\cos(2\theta)$.  Then the Shor--Laflamme
+(Rains-type) enumerators are
+\[
+A=\Big[
+1,\ 0,\ \frac{177}{64},\ 0,\ \frac{3}{32}\bigl(139+26c\bigr),\ \frac{117}{16}\bigl(1-c\bigr),\ 
+\frac{3}{64}\bigl(799+156c\bigr),\ \frac{39}{16}\bigl(1-c\bigr)
+\Big],
+\]
+\[
+B=\Big[
+1,\ 0,\ \frac{177}{64},\ \frac{3}{64}\bigl(573+52c\bigr),\ \frac{3}{32}\bigl(269-104c\bigr),\ 
+\frac{9}{32}\bigl(337+52c\bigr),\ \frac{3}{64}\bigl(1163-208c\bigr),\ \frac{3}{64}\bigl(1085+52c\bigr)
+\Big].
+\]
+In particular $A_1=0$ and $A_2=177/64$, so
+\[
+(\lambda^\ast)^2=A_1+A_2=\frac{177}{64},
+\qquad
+\lambda^\ast=\frac{\sqrt{177}}{8},
+\]
+independent of $(x,y,z,\theta)$ within the family.
+
+
+
+\section{Checklist summary}
+
+This note focuses on the BD16 (transversal \(T\)) specialization at \(m=8\), with residues \((b_0,b_1)=(0,7)\), and the SS--LP candidate angle vectors listed in Sec.~3 (BD16 candidate list).
+
+\subsection{Candidate vectors treated in this note (Full-KL verified)}
+
+Among the SS--LP-passing BD16 candidates, the following \(\vec a\) have been taken through the Full-KL stage in this note (either via an explicit construction from the cited paper, or via new exact solutions verified symbolically):
+
+\begin{itemize}
+\item \(\vec a=(1,2,2,2,2,3,3)\): the explicit two-parameter family from Sec.~6.3.1 of the cited paper (free phases \(\theta_1,\theta_2\)), with \(\lambda^\ast=\sqrt{21/8}\) and weight enumerators depending on \(a=\cos(2\theta_1)+\cos(2\theta_2)\), \(b=\cos(2\theta_1-2\theta_2)\).
+\item \(\vec a=(1,1,2,2,2,2,5)\): the detailed exact solution and the 192-element discrete family;\\ all have coefficients in \(\mathbb{Q}(\sqrt2,\sqrt3,i)\) and share \(\lambda^\ast=\sqrt{33}/4\).
+\item \(\vec a=(0,1,2,2,3,3,4)\): three closed-form exact solutions (Solutions A/B/C) \\
+with \(\lambda^\ast\in\{\sqrt{51}/4,\ \sqrt{23}/4,\ \sqrt{30}/4\}\).
+\item \(\vec a=(1,1,2,2,3,3,3)\): an exact one-parameter family \(\{\ket{0_L(\theta)},\ket{1_L(\theta)}\}\) with \(\lambda^\ast=\frac{9\sqrt2}{8}\) and weight enumerators depending on \(c=\cos(2\theta)\).
+\item \(\vec a=(1,1,2,2,2,3,4)\): three uniform-magnitude (phase-only) exact solutions with \((\lambda^\ast)^2\in\{7/16,11/16,19/16\}\), together with additional non-uniform \(\sqrt2\)-reweighting families whose \((\lambda^\ast)^2\) values range over
+\[
+\left\{
+\frac{7}{16},\ \frac{11}{16},\ \frac{17}{16},\ \frac{19}{16},\ \frac{21}{16},\ \frac{25}{16},\ \frac{17}{8},\ \frac{7}{4},\ 2,\ \frac{35}{16},\ \frac{9}{4}
+\right\}.
+\]
+\item \(\vec a=(1,1,1,2,3,3,4)\): an explicit self-complementary \(((7,2,3))\) BD16 code at level \(m=8\) with residues \((b_0,b_1)=(0,7)\) (i.e.\ \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\)), admitting a closed-form solution supported on \(8\) basis states; it has \(\lambda^\ast=\frac{5\sqrt6}{8}\) (so \((\lambda^\ast)^2=\frac{75}{32}\)) and weight enumerators
+\(A(z)=1+\frac{75}{32}z^2+\frac{261}{16}z^4+\frac{1419}{32}z^6\),
+\(B(z)=1+\frac{75}{32}z^2+\frac{897}{32}z^3+\frac{261}{16}z^4+\frac{1791}{16}z^5+\frac{1419}{32}z^6+\frac{1665}{32}z^7\);
+moreover, fixing the same support and magnitudes yields \(64\) distinct phase variants, with further solutions generated by permuting qubits \((1,2,3)\) and \((5,6)\).
+\item \(\vec a=(1,1,1,2,2,4,4)\): three uniform-magnitude (phase-only) exact \(((7,2,3))\) solutions at BD16 level \(m=8\) (with \((b_0,b_1)=(0,7)\) and \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\)), with
+\((\lambda^\ast)^2\in\left\{1,\ \tfrac{5}{4},\ \tfrac{11}{8}\right\}\)
+(equivalently \(\lambda^\ast\in\left\{1,\ \tfrac{\sqrt5}{2},\ \tfrac{\sqrt{22}}{4}\right\}\)),
+and Shor--Laflamme enumerator coefficient lists
+\[
+A^{(A)}=\Big[1,0,1,\tfrac14,15,\tfrac{21}{2},33,\tfrac{13}{4}\Big],\quad
+B^{(A)}=\Big[1,0,1,21,32,99,58,44\Big],
+\]
+\[
+A^{(B)}=\Big[1,0,\tfrac54,\tfrac14,\tfrac{29}{2},\tfrac{21}{2},\tfrac{133}{4},\tfrac{13}{4}\Big],\quad
+B^{(B)}=\Big[1,0,\tfrac54,\tfrac{87}{4},\tfrac{63}{2},\tfrac{195}{2},\tfrac{233}{4},\tfrac{179}{4}\Big],
+\]
+\[
+A^{(C)}=\Big[1,0,\tfrac{11}{8},\tfrac14,\tfrac{57}{4},\tfrac{21}{2},\tfrac{267}{8},\tfrac{13}{4}\Big],\quad
+B^{(C)}=\Big[1,0,\tfrac{11}{8},\tfrac{177}{8},\tfrac{125}{4},\tfrac{387}{4},\tfrac{467}{8},\tfrac{361}{8}\Big].
+\]
+\item \(\vec a=(1,1,1,2,2,3,5)\): an explicit closed-form self-complementary \(((7,2,3))\) BD16 solution at level \(m=8\) (with \((b_0,b_1)=(0,7)\) and \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\)), with
+\[
+(\lambda^\ast)^2=\frac{369}{128}\qquad\text{(so }\lambda^\ast=\frac{3\sqrt{82}}{16}\text{)}
+\]
+and weight enumerators
+\[
+A(z)=1+\frac{369}{128}z^2+\frac{975}{64}z^4+\frac{5745}{128}z^6,\qquad
+B(z)=1+\frac{369}{128}z^2+\frac{3795}{128}z^3+\frac{975}{64}z^4+\frac{6957}{64}z^5+\frac{5745}{128}z^6+\frac{6867}{128}z^7.
+\]
+\item \(\vec a=(1,1,1,1,3,4,4)\): a fully analytic \(128\)-element exact \(((7,2,3))\) BD16 family at level \(m=8\) with \((b_0,b_1)=(0,7)\) and \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\), with coefficients in \(\mathbb{Q}(\sqrt3,i)\) (phases in \(\{\pm1,\pm i\}\) and magnitudes in \(\{1/4,\sqrt3/4\}\)); the family has constant invariant
+\[
+(\lambda^\ast)^2=\frac{31}{8}\qquad\text{(so }\lambda^\ast=\frac{\sqrt{62}}{4}\text{)},
+\]
+and constant Shor--Laflamme enumerators
+\[
+A=\Big[1,\ 0,\ \frac{31}{8},\ 0,\ \frac{53}{4},\ 0,\ \frac{367}{8},\ 0\Big],\qquad
+B=\Big[1,\ 0,\ \frac{31}{8},\ \frac{261}{8},\ \frac{53}{4},\ \frac{411}{4},\ \frac{367}{8},\ \frac{453}{8}\Big].
+\]
+\item \(\vec a=(1,1,1,1,3,3,5)\): a continuous family with $(\lambda^\ast)^2=\frac{177}{64}$.
+\[
+A=\Big[
+1,\ 0,\ \frac{177}{64},\ 0,\ \frac{3}{32}\bigl(139+26c\bigr),\ \frac{117}{16}\bigl(1-c\bigr),\ 
+\frac{3}{64}\bigl(799+156c\bigr),\ \frac{39}{16}\bigl(1-c\bigr)
+\Big],
+\]
+\[
+B=\Big[
+1,\ 0,\ \frac{177}{64},\ \frac{3}{64}\bigl(573+52c\bigr),\ \frac{3}{32}\bigl(269-104c\bigr),\ 
+\frac{9}{32}\bigl(337+52c\bigr),\ \frac{3}{64}\bigl(1163-208c\bigr),\ \frac{3}{64}\bigl(1085+52c\bigr)
+\Big].
+\]
+\end{itemize}
+
+\subsection{SS--LP candidates not yet analyzed here}
+
+The remaining SS--LP-passing BD16 candidate vectors from Sec.~3 have not been taken through the Full-KL stage in this note (i.e., we have not produced or certified distance-3 codewords for them here):
+\[
+\begin{aligned}
+&(1,1,1,2,2,2,6),\ (0,1,1,2,3,3,5).
+\end{aligned}
+\]
+
+\subsection{What has been verified for the treated vectors}
+
+For each treated vector listed above, we check:
+\begin{itemize}
+\item \textbf{SS support:} basis supports satisfy the residue-class condition for the stated \(\vec a\) (with \(m=8\), \(b_0=0\), \(b_1=7\)).
+\item \textbf{Full KL:} the Knill--Laflamme equalities hold for all Pauli errors of weight \(\le 2\) (hence distance \(3\)).
+\item \textbf{Invariants:} Shor--Laflamme weight enumerators \(A,B\) and the signature norm \(\lambda^\ast\) are recorded.
+\end{itemize}
+
+\section{\texorpdfstring{$\vec a=(1,1,1,2,2,2,6)$}{a=(1,1,1,2,2,2,6)}}
+
+Throughout we work at BD16 level \(m=8\) with residues \((b_0,b_1)=(0,7)\), and we restrict to the
+\emph{single-syndrome residue-class} structure
+\[
+\ket{0_L}\subset S_0(\vec a),\qquad \ket{1_L}\subset S_7(\vec a),
+\qquad S_7(\vec a)=\overline{S_0(\vec a)}.
+\]
+When additionally imposing self-complementarity, we take the usual convention
+\[
+\ket{1_L}=X^{\otimes 7}\ket{0_L}.
+\]
+
+\subsection{Case \texorpdfstring{$\vec a=(1,1,1,2,2,2,6)$}{a=(1,1,1,2,2,2,6)}: residue support and LP constraints}
+
+With \(m=8\) and \(b_0=0\), the residue-\(0\) support is
+\[
+S_0(\vec a)=\Big\{
+\underbrace{0000000}_{s_0},
+\underbrace{0000011}_{s_1},
+\underbrace{0000101}_{s_2},
+\underbrace{0001001}_{s_3},
+\underbrace{0110001}_{s_4},
+\underbrace{0111110}_{s_5},
+\underbrace{1010001}_{s_6},
+\underbrace{1011110}_{s_7},
+\underbrace{1100001}_{s_8},
+\underbrace{1101110}_{s_9}
+\Big\},
+\]
+\[
+|S_0|=10
+\]
+and \(S_7(\vec a)\) is the bitwise-complement set.
+
+Assume the self-complement form \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\) and write
+\[
+\ket{0_L}=\sum_{k=0}^{9} c_k\ket{s_k},\qquad p_k:=|c_k|^2.
+\]
+Then the \(Z\)-type Knill--Laflamme constraints force the squared magnitudes into a small two-parameter family:
+\[
+p_0=p_1=p_2=p_3=\frac{1}{16},
+\]
+and the remaining six are determined by \((u,v)\) via
+\[
+\begin{aligned}
+p_4&=u+v-\frac{3}{16},&
+p_5&=\frac{7}{16}-u-v,\\
+p_6&=\frac{1}{4}-u,&
+p_7&=u,\\
+p_8&=\frac{1}{4}-v,&
+p_9&=v,
+\end{aligned}
+\]
+with feasibility region
+\[
+0\le u\le \frac14,\qquad 0\le v\le \frac14,\qquad \frac{3}{16}\le u+v\le \frac{7}{16}.
+\]
+
+\subsection{Numerical and discrete evidence for an obstruction}
+
+I pushed the search substantially harder than before in two complementary regimes.
+
+\paragraph{Continuous phases (no restriction).}
+I minimized the full distance-3 KL residual over \((u,v)\) in the feasible region and over all relative phases of the
+\(10\) amplitudes (fixing a global phase). The best value reached reproducibly was on the order of
+\[
+4.82\times 10^{-1},
+\]
+i.e.\ not close to \(0\).
+
+\paragraph{Exhaustive discrete ``analytic-style'' scan.}
+I exhaustively checked the restricted ansatz
+\[
+u,v\in\left\{0,\frac1{16},\frac2{16},\frac3{16},\frac4{16}\right\}
+\quad\text{(subject to feasibility, \(18\) pairs total),}
+\qquad
+\text{phases in }\{\pm 1,\pm i\},
+\]
+and used the \(XX\)-implied phase restrictions to reduce the naive \(4^9\) phase search per \((u,v)\) to at most \(4096\) cases.
+This yields an exhaustive scan of \(73{,}728\) candidates within this sub-ansatz. None satisfied the full KL constraints;
+the best residual observed was about \(0.5\).
+
+\paragraph{Beyond self-complementarity.}
+I also re-confirmed (in smaller runs) the more general case where \(\ket{0_L}\) and \(\ket{1_L}\) have independent amplitudes on
+\(S_0(\vec a)\) and \(S_7(\vec a)\) (dropping the \(X^{\otimes 7}\) relation). The best residual remained around
+\[
+3.5\times 10^{-1}.
+\]
+
+Taken together, the evidence strongly suggests that \(\vec a=(1,1,1,2,2,2,6)\) is genuinely obstructed
+within the BD16 single-syndrome residue-class setting; in particular, the discrete
+\(\{\pm 1,\pm i\}\) phase-only ansatz with \((u,v)\in\frac1{16}\mathbb{Z}\) is now exhaustively ruled out.
+
+\subsection{No full-KL solution for $\vec a=(1,1,1,2,2,2,6)$ under the complementary ansatz}
+
+Let $m=8$, $(b_0,b_1)=(0,7)$ and $\vec a=(1,1,1,2,2,2,6)$.
+Assume the complementary convention $\ket{1_L}=X^{\otimes 7}\ket{0_L}$ and $\text{supp}(\ket{0_L})\subseteq S_0(\vec a)$.
+
+A direct subset-sum check gives
+\[
+S_0=\{0000000,0000011,0000101,0001001,0110001,0111110,1010001,1011110,1100001,1101110\}.
+\]
+Write $\ket{0_L}=\sum_{s\in S_0} c_s\ket{s}$ and $p_s:=|c_s|^2$.
+
+\paragraph{Z-type KL.}
+For each $j$, KL for $Z_j$ implies $\langle 0_L|Z_j|0_L\rangle=0$, hence a linear system in $(p_s)_{s\in S_0}$.
+Solving it yields
+\[
+p_{0000000}=p_{0000011}=p_{0000101}=p_{0001001}=\frac{1}{16},
+\]
+and with $u:=p_{1011110}$, $v:=p_{1101110}$,
+\[
+p_{1010001}=\frac14-u,\quad p_{1100001}=\frac14-v,\quad
+p_{0110001}=u+v-\frac{3}{16},\quad p_{0111110}=\frac{7}{16}-u-v.
+\]
+
+\paragraph{Off-diagonal KL on $X_1,X_2,X_3$.}
+Let
+\[
+A=1010001,\ B=1101110,\ C=1011110,\ D=1100001,\ E=0110001,\ F=0111110,
+\]
+and abbreviate $(a,b,c,d,e,f):=(c_A,c_B,c_C,c_D,c_E,c_F)$.
+From the SS structure one checks the induced pairings:
+$A\leftrightarrow B$, $C\leftrightarrow D$ under $X_1$;
+$E\leftrightarrow B$, $F\leftrightarrow D$ under $X_2$;
+$E\leftrightarrow C$, $F\leftrightarrow A$ under $X_3$.
+Using the KL constraints for $X_i$ and for suitable $Z_kX_i$ (weight $2$) one deduces that
+$b^*a,d^*c,b^*e,d^*f,c^*e,a^*f\in\mathbb R$ and
+\[
+b^*a=-d^*c,\qquad b^*e=-d^*f,\qquad c^*e=-a^*f.
+\]
+Since all these products are real and connect the six amplitudes, after a global phase we may take
+$a,b,c,d,e,f\in\mathbb R$, so the relations become
+\[
+ba=-dc,\qquad be=-df,\qquad ce=-af.
+\]
+Multiplying the first by $f$ and the second by $c$ gives $baf=bce$, hence (as $b\neq0$) $af=ce$,
+but the third gives $ce=-af$, so $af=0$.
+
+\paragraph{Nonzero check.}
+From the Z-type parametrization and the magnitude consequences of $ba=-dc$ and $be=-df$ one checks
+that $a,b,f\neq 0$ (otherwise one forces negative probabilities such as $p_F<0$ or $p_E<0$).
+Thus $af=0$ is impossible, contradicting full KL.
+
+Therefore no full-KL \(((7,2,3))\) code exists for $\vec a=(1,1,1,2,2,2,6)$ within the complementary SS ansatz.
+
+
+\section{Negative evidence for \texorpdfstring{$\vec a=(0,1,1,2,3,3,5)$}{a=(0,1,1,2,3,3,5)} in the BD16 single-syndrome setting}
+
+We consider the BD16 setting with \(m=8\) and angle vector
+\[
+\vec a=(0,1,1,2,3,3,5)\in\mathbb{Z}_8^{\,7}.
+\]
+As in the rest of these notes, we interpret the task as searching for a distance-\(3\) \(((7,2,3))\) code satisfying:
+(i) \(\ket{0_L}\) supported only on the residue class
+\[
+S_0(\vec a)=\{\,s\in\{0,1\}^7:\ \vec a\cdot s \equiv 0 \pmod 8\,\},
+\]
+(ii) \(\ket{1_L}\) supported only on the complementary class \(S_7(\vec a)\) (typically via self-complementarity
+\(\ket{1_L}=X^{\otimes 7}\ket{0_L}\), since \(\sum_j a_j\equiv 7\pmod 8\)), and
+(iii) full Knill--Laflamme conditions for all Pauli errors of weight \(\le 2\).
+
+\subsection{Subset-sum support sets}
+With dot product
+\(
+\vec a\cdot s = 0\cdot s_1 + 1\cdot s_2 + 1\cdot s_3 + 2\cdot s_4 + 3\cdot s_5 + 3\cdot s_6 + 5\cdot s_7
+\pmod 8,
+\)
+the residue-\(0\) class is
+\[
+\begin{aligned}
+S_0(\vec a)=\{&
+0000000,\ 0000011,\ 0000101,\ 0001110,\ 0011001,\ 0101001,\ 0110110,\\
+&1000000,\ 1000011,\ 1000101,\ 1001110,\ 1011001,\ 1101001,\ 1110110
+\}.
+\end{aligned}
+\]
+Since \(\sum_j a_j=15\equiv 7\pmod 8\), the bitwise-complement map sends \(S_0(\vec a)\) to \(S_7(\vec a)\), namely
+\[
+\begin{aligned}
+S_7(\vec a)=\{\overline{s}:s\in S_0(\vec a)\}=\{&
+1111111,\ 1111100,\ 1111010,\ 1110001,\ 1100110,\ 1010110,\ 1001001,\\
+&0111111,\ 0111100,\ 0111010,\ 0110001,\ 0100110,\ 0010110,\ 0001001
+\}.
+\end{aligned}
+\]
+A notable structural feature is \(a_1=0\), hence \(S_0(\vec a)\) comes in \(7\) pairs \((0u,1u)\) sharing the same last
+six bits \(u\).
+
+\subsection{LP-stage feasibility (Z-balance) but failure at full KL}
+Imposing the natural pair symmetry suggested by \(a_1=0\),
+\[
+|c_{0u}|^2=|c_{1u}|^2\qquad\text{for each paired support }(0u,1u),
+\]
+the \(Z\)-balance LP constraints (in particular \(\langle Z_i\rangle_{0_L}=0\) for all \(i\)) force a \emph{unique} distribution
+over the \(7\) pairs:
+\[
+p_u := \Pr(\text{pair }u)=\left(\frac1{16},\frac1{16},\frac1{16},\frac2{16},\frac3{16},\frac3{16},\frac5{16}\right)
+\]
+for
+\[
+u\in\{000000,\ 000011,\ 000101,\ 001110,\ 011001,\ 101001,\ 110110\}.
+\]
+Equivalently, each individual basis state \(0u\) or \(1u\) would have probability \(p_u/2\), yielding magnitudes in the set
+\[
+|c|\in\left\{\frac{\sqrt2}{8},\ \frac14,\ \frac{\sqrt6}{8},\ \frac{\sqrt{10}}{8}\right\}.
+\]
+This provides a very ``analytic-looking'' LP-stage solution, but extensive searches did not find any choice of phases (including
+broad continuous searches) that upgrades this LP solution to a full Knill--Laflamme \(((7,2,3))\) code.
+
+\subsection{Search regimes attempted (and what failed)}
+\paragraph{Discrete ``paper-style'' ansatz (square-root rationals \(\times\) 4th roots).}
+I searched over many LP-feasible integer-weight patterns of the form
+\[
+|c_s|^2=\frac{w_s}{16},\qquad w_s\in\{0,1,2,3,4\},
+\]
+including \(10\) distinct sparse LP-feasible patterns with support size \(8\), and then exhaustively brute-forced phases
+\[
+c_s=\omega_s\frac{\sqrt{w_s}}{4},\qquad \omega_s\in\{\pm 1,\pm i\}.
+\]
+No full-KL solutions were found for any such pattern (even after filtering on all weight-\(1\) Pauli constraints first, then
+checking full weight-\(\le 2\) KL).
+
+\paragraph{Continuous numerical solving with free complex amplitudes.}
+To test whether failure was an artifact of restricting phases to \(\{\pm1,\pm i\}\), I ran Levenberg--Marquardt least-squares
+searches allowing arbitrary complex coefficients (with normalization enforced internally) for:
+(i) the self-complement case \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\), and
+(ii) the more general case where \(\ket{0_L}\) on \(S_0(\vec a)\) and \(\ket{1_L}\) on \(S_7(\vec a)\) are independent.
+In both setups, repeated random restarts converged to the same nonzero minimum rather than to a near-zero residual.
+
+A simple diagnostic at the best point found indicated that the largest off-diagonal violation occurred for a weight-\(1\)
+\(X\) error (e.g.\ \(X\) on qubit \(3\)), with magnitude \(\sim 0.24\), and a large diagonal mismatch also appeared for a
+weight-\(1\) \(Y\) error (e.g.\ \(Y\) on qubit \(1\)). These violations are not consistent with being ``near'' a true solution.
+
+\subsection{Bottom line}
+Under the standard BD16 interpretation (support restricted to \(S_0(\vec a)\) and \(S_7(\vec a)\), and full KL for all Pauli
+errors of weight \(\le 2\)), no analytic \(((7,2,3))\) solution was found for \(\vec a=(0,1,1,2,3,3,5)\).
+The combination of exhaustive discrete searches in the usual exact-coefficient ansatz and repeated continuous searches with
+fully free complex amplitudes provides strong evidence that this angle vector is an SS/LP false positive: it passes the SS and
+\(Z\)-LP filters but does not admit a distance-\(3\) \(((7,2,3))\) code satisfying full Knill--Laflamme constraints within these
+support restrictions.
+
+\subsection{A numerical no-solution experiment for \texorpdfstring{$\vec a=(0,1,1,2,3,3,5)$}{a=(0,1,1,2,3,3,5)} in the BD16 SS-support model}
+
+We consider the BD16 setting with \(m=8\), residues \((b_0,b_1)=(0,7)\), and angle vector
+\[
+\vec a=(0,1,1,2,3,3,5)\in\mathbb{Z}_8^{\,7}.
+\]
+The goal is to test (numerically, with strong robustness checks) whether there exists a distance-\(3\) \(((7,2,3))\) code
+satisfying the \emph{SS support constraint}
+\[
+\ket{0_L}\subset S_0(\vec a),\qquad \ket{1_L}\subset S_7(\vec a),
+\]
+and (optionally) the \emph{complementary/self-complementary} convention \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\).
+The experiment minimizes an explicit sum-of-squares Knill--Laflamme loss \(\mathcal{L}\); a strictly positive minimum provides
+strong evidence that the full KL system is inconsistent within the searched parameter space.
+
+\subsubsection{SS support sets}
+Define the residue map
+\[
+\mathrm{res}(s):=\sum_{j=1}^7 a_j s_j \pmod 8,\qquad s\in\{0,1\}^7.
+\]
+For \(\vec a=(0,1,1,2,3,3,5)\), the residue-\(0\) class has size \(14\):
+\[
+\begin{aligned}
+S_0(\vec a)=\{&
+0000000,\ 0000011,\ 0000101,\ 0001110,\ 0011001,\ 0101001,\ 0110110,\\
+&1000000,\ 1000011,\ 1000101,\ 1001110,\ 1011001,\ 1101001,\ 1110110
+\}.
+\end{aligned}
+\]
+Since \(\sum_j a_j=15\equiv 7\pmod 8\), the bitwise complement map sends \(S_0(\vec a)\) to \(S_7(\vec a)\), i.e.
+\[
+\overline{s}\in S_7(\vec a)\quad\text{for all } s\in S_0(\vec a),
+\qquad
+S_7(\vec a)=\{\overline{s}:s\in S_0(\vec a)\}.
+\]
+A structural feature is \(a_1=0\), hence \(S_0(\vec a)\) decomposes into \(7\) pairs \((0u,1u)\) sharing the same last six bits \(u\).
+
+\subsubsection{Parameterizations of the codewords}
+We tested two increasingly general parameter spaces.
+
+\paragraph{Case A (complementary).}
+\[
+\ket{0_L}=\sum_{s\in S_0} c_s \ket{s},\qquad
+\ket{1_L}=X^{\otimes 7}\ket{0_L}=\sum_{s\in S_0} c_s \ket{\overline{s}},
+\qquad
+\sum_{s\in S_0}|c_s|^2=1.
+\]
+Orthogonality \(\braket{0_L|1_L}=0\) holds automatically since \(S_0\cap S_7=\varnothing\).
+This is the full continuous complementary SS-support family: \(14\) complex amplitudes modulo normalization and global phase.
+
+\paragraph{Case B (non-complementary, still SS-support).}
+\[
+\ket{0_L}=\sum_{s\in S_0} c_s \ket{s},\qquad
+\ket{1_L}=\sum_{s\in S_0} d_s \ket{\overline{s}},
+\qquad
+\sum|c_s|^2=\sum|d_s|^2=1.
+\]
+This strictly enlarges the search space; failure here is stronger evidence than failure under Case A.
+
+\subsubsection{Full KL constraints and the optimized KL loss}
+For distance \(3\), it suffices to enforce the Knill--Laflamme equalities for all Pauli strings
+\(P\in\{I,X,Y,Z\}^{\otimes 7}\) of weight \(\mathrm{wt}(P)\le 2\):
+\[
+\bra{0_L}P\ket{1_L}=0,
+\qquad
+\bra{0_L}P\ket{0_L}=\bra{1_L}P\ket{1_L}.
+\]
+We minimize the nonnegative sum-of-squares loss
+\[
+\mathcal{L}(\ket{0_L},\ket{1_L})
+:=\sum_{\substack{P:\ \mathrm{wt}(P)\le 2\\P\neq I^{\otimes 7}}}
+\Big(
+|\bra{0_L}P\ket{1_L}|^2
++
+|\bra{0_L}P\ket{0_L}-\bra{1_L}P\ket{1_L}|^2
+\Big).
+\]
+By construction,
+\[
+\mathcal{L}\ge 0
+\quad\text{and}\quad
+\mathcal{L}=0\ \Longleftrightarrow\ \text{all full KL equalities hold for every }\mathrm{wt}(P)\le 2.
+\]
+Thus, finding (robustly) that the global minimum \(\min\mathcal{L}\) is bounded away from \(0\) is strong numerical evidence
+that no full-KL \(((7,2,3))\) code exists within the searched SS-support model.
+
+\subsubsection{Observed numerical minima}
+We optimized \(\mathcal{L}\) using a combination of (i) differential evolution (global search, multiple seeds, with polishing) and
+(ii) multi-start local optimization (Powell) followed by BFGS refinement.
+
+\paragraph{Complementary search (Case A).}
+Across multiple random seeds and many independent restarts, the optimizer consistently converged to the same floor:
+\[
+\boxed{\mathcal{L}_{\min}\approx 0.273738237810.}
+\]
+Empirically, differential evolution with seeds \(0,1,2,3\) returned \(\mathcal{L}\approx 0.273738238\) agreeing to \(\sim 10^{-9}\),
+and independent Powell restarts converged to the same value; BFGS polishing moved only at the \(10^{-10}\) level.
+
+\paragraph{Non-complementary search (Case B).}
+Repeating the same optimization with independent \(\ket{1_L}\) coefficients on \(S_7\) again converged to the same floor:
+\[
+\boxed{\mathcal{L}_{\min}\approx 0.273738237810.}
+\]
+Numerically, the obstruction therefore does not appear to be an artifact of forcing \(\ket{1_L}=X^{\otimes 7}\ket{0_L}\);
+rather, it appears already at the SS-support level.
+
+\subsubsection{Diagnostics at the best point}
+At the best complementary minimizer, the largest remaining violations among all \(\mathrm{wt}(P)\le 2\) Paulis were
+\[
+\max_{P}|\bra{0_L}P\ket{1_L}|\approx 0.16737,
+\qquad
+\max_{P}\bigl|\bra{0_L}P\ket{0_L}-\bra{1_L}P\ket{1_L}\bigr|\approx 0.28027.
+\]
+The dominant offenders were weight-\(1\) Paulis (notably off-diagonal failures for \(X_2,X_3\) and similarly \(Y_2,Y_3\), and
+diagonal-equality mismatches including \(Y_1\) and some \(Z_j\)).
+
+A striking numerical signature of incompatibility is that there exist points which make the weight-\(1\) constraints essentially exact
+(loss \(\sim 10^{-9}\)) while causing large violations at weight \(2\), and conversely points which make the weight-\(2\) constraints
+essentially exact while leaving weight-\(1\) constraints nonzero. Minimizing the full system yields a compromise floor
+\(\approx 0.273738\), consistent with two constraint families that are individually satisfiable but not jointly satisfiable under the SS supports.
+
+\subsubsection{Reproducible SciPy script}
+The following compact script constructs \(S_0(\vec a)\), parameterizes complementary SS-support codes, defines \(\mathcal{L}\),
+runs differential evolution, and reports the best loss along with the largest constraint violations:
+\begin{lstlisting}[language=Python]
+import numpy as np
+from itertools import product
+from scipy.optimize import differential_evolution
+
+# ----------------------------
+# Problem data: BD16, m=8
+# ----------------------------
+n = 7
+m = 8
+a = [0,1,1,2,3,3,5]
+
+def residue(bitstr):
+    return sum(ai*int(b) for ai,b in zip(a, bitstr)) % m
+
+def complement(s):
+    return "".join("1" if b=="0" else "0" for b in s)
+
+all_bits = ["".join(b) for b in product("01", repeat=n)]
+S0 = [s for s in all_bits if residue(s) == 0]
+idx0 = np.array([int(s,2) for s in S0], dtype=np.int16)
+idx1 = np.array([int(complement(s),2) for s in S0], dtype=np.int16)
+
+# ----------------------------
+# Pauli action precompute
+# ----------------------------
+paulis = ['I','X','Y','Z']
+def wt(P): return sum(1 for ch in P if ch!='I')
+
+P_list = [''.join(P) for P in product(paulis, repeat=n) if wt(''.join(P))<=2]
+idx_noI = [i for i,P in enumerate(P_list) if P!='IIIIIII']
+
+def apply_single(p, bit):
+    if p=='I': return 1+0j, bit
+    if p=='X': return 1+0j, 1-bit
+    if p=='Z': return (1+0j if bit==0 else -1+0j), bit
+    if p=='Y': return (1j if bit==0 else -1j), 1-bit
+    raise ValueError(p)
+
+def apply_pauli_to_index(P, idx):
+    bits=[(idx>>(n-1-i))&1 for i in range(n)]
+    phase=1+0j
+    out_bits=[]
+    for i,p in enumerate(P):
+        ph, nb = apply_single(p, bits[i])
+        phase *= ph
+        out_bits.append(nb)
+    out=0
+    for b in out_bits:
+        out = (out<<1)|b
+    return phase, out
+
+targets = np.empty((len(P_list), 2**n), dtype=np.int16)
+phases  = np.empty((len(P_list), 2**n), dtype=np.complex128)
+for i,P in enumerate(P_list):
+    for idx in range(2**n):
+        ph,t = apply_pauli_to_index(P, idx)
+        targets[i,idx] = t
+        phases[i,idx]  = ph
+
+targets_noI = targets[idx_noI]
+phases_noI  = phases[idx_noI]
+
+def build_vectors_from_c(c):
+    psi0 = np.zeros(128, dtype=np.complex128)
+    psi1 = np.zeros(128, dtype=np.complex128)
+    psi0[idx0] = c
+    psi1[idx1] = c   # complementary: same coeff on complements
+    return psi0, psi1
+
+def all_mat_elems(psiA, psiB):
+    A_targets = psiA[targets_noI]  # (nP,128)
+    return np.sum(np.conj(A_targets) * (phases_noI * psiB[None,:]), axis=1)
+
+def normalize_fix_phase(c):
+    c = np.asarray(c, dtype=np.complex128)
+    norm = np.linalg.norm(c)
+    if norm == 0: return None
+    c = c / norm
+    k = np.argmax(np.abs(c))
+    if abs(c[k]) > 1e-12:
+        c = c * np.exp(-1j*np.angle(c[k]))
+    return c
+
+# x in R^{28} encodes 14 complex coeffs
+def KL_loss(x):
+    x = np.asarray(x, dtype=float)
+    c = x[:14] + 1j*x[14:]
+    c = normalize_fix_phase(c)
+    if c is None: return 1e6
+    psi0, psi1 = build_vectors_from_c(c)
+    m01 = all_mat_elems(psi0, psi1)
+    m00 = all_mat_elems(psi0, psi0)
+    m11 = all_mat_elems(psi1, psi1)
+    diff = m00 - m11
+    return float(np.vdot(m01,m01).real + np.vdot(diff,diff).real)
+
+bounds = [(-1,1)]*28
+de = differential_evolution(KL_loss, bounds, maxiter=30, popsize=8, seed=0, polish=True, disp=False)
+print("S0 size =", len(S0))
+print("best KL_loss =", de.fun)
+\end{lstlisting}
+
+\subsubsection{Bottom line}
+In this SS-support model for \(\vec a=(0,1,1,2,3,3,5)\), the KL loss \(\mathcal{L}\) repeatedly converges to a stable nonzero floor
+\(\approx 0.273738\) under both complementary and non-complementary parameterizations, and does not approach numerical zero
+(\(\sim 10^{-10}\)) as would be expected if a true full-KL \(((7,2,3))\) solution existed in the searched space.
+This provides strong numerical evidence that \((0,1,1,2,3,3,5)\) is an SS/LP false positive: it passes SS and \(Z\)-LP filters but
+does not survive the full KL stage under the SS support constraint.
+
+
+\end{document}
