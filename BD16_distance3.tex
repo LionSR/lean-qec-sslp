@@ -1,4 +1,3 @@
-
 \documentclass[11pt]{article}
 
 \usepackage[margin=1in]{geometry}
@@ -13,9 +12,11 @@
 \newtheorem{proposition}{Proposition}
 \newtheorem{theorem}{Theorem}
 \newtheorem{remark}{Remark}
+\newtheorem{corollary}{Corollary}
 
 \newcommand{\wt}{\mathrm{wt}}
 \newcommand{\supp}{\mathrm{supp}}
+\newcommand{\Bit}{\mathrm{Bit}}
 
 \hypersetup{
   colorlinks=true,
@@ -3274,6 +3275,1206 @@ Thus $af=0$ is impossible, contradicting full KL.
 
 Therefore no full-KL \(((7,2,3))\) code exists for $\vec a=(1,1,1,2,2,2,6)$ within the complementary SS ansatz.
 
+\subsection{Lean-friendly no--go for full Knill--Laflamme under the complementary ansatz:
+$\vec a=(1,1,1,2,2,2,6)$ (mod $8$)}
+\label{subsec:lean-nogo-1112226}
+
+\paragraph{Goal (pure finite-dimensional linear algebra).}
+Let $\Bit7:=\{0,1\}^7$ and write a bitstring as $s=s_1\cdots s_7\in\Bit7$.
+Define bitwise XOR by $(s\oplus t)_i := s_i+t_i \pmod 2$ and bitwise complement $\bar s:=s\oplus 1^7$.
+
+Fix the following \emph{explicit} finite set (a list of $10$ bitstrings):
+\[
+S_0:=\{s_0,\dots,s_9\}\subset\Bit7,
+\]
+where
+\[
+\begin{aligned}
+&s_0=0000000,\ s_1=0000011,\ s_2=0000101,\ s_3=0001001,\ s_4=0110001,\\
+&s_5=0111110,\ s_6=1010001,\ s_7=1011110,\ s_8=1100001,\ s_9=1101110.
+\end{aligned}
+\]
+Let $S_7:=\overline{S_0}:=\{\bar s:\ s\in S_0\}$.
+
+Let $(c_0,\dots,c_9)\in\mathbb C^{10}$ be unknown amplitudes and define two vectors in
+$\mathbb C^{\Bit7}$ by their coordinates in the standard basis $\{\ket{s}:s\in\Bit7\}$:
+\begin{equation}
+\ket{0_L}:=\sum_{k=0}^9 c_k\,\ket{s_k},
+\qquad
+\ket{1_L}:=\sum_{k=0}^9 c_k\,\ket{\overline{s_k}}.
+\label{eq:lean-def-01}
+\end{equation}
+Equivalently, $\ket{1_L}=X^{\otimes 7}\ket{0_L}$, i.e.\ $\ket{1_L}$ is obtained by complementing every bit.
+Assume normalization $\braket{0_L}{0_L}=1$, i.e.
+\begin{equation}
+\sum_{k=0}^9 |c_k|^2=1.
+\label{eq:lean-normalization}
+\end{equation}
+
+\paragraph{Pauli operators as explicit signed permutations.}
+For $x,z\in\Bit7$, define a linear operator $P(x,z):\mathbb C^{\Bit7}\to\mathbb C^{\Bit7}$ by its action on basis vectors
+\begin{equation}
+P(x,z)\ket{s} := i^{x\cdot z}\,(-1)^{z\cdot s}\,\ket{s\oplus x},
+\label{eq:lean-pauli-action}
+\end{equation}
+where $x\cdot z:=\sum_i x_i z_i\in\{0,\dots,7\}$ (in $\mathbb Z$) and $z\cdot s:=\sum_i z_i s_i\pmod 2$.
+Define the Pauli weight
+\[
+\wt(x,z):=\bigl|\supp(x)\cup\supp(z)\bigr|
+\quad\text{where}\quad
+\supp(x):=\{i:\ x_i=1\}.
+\]
+
+\paragraph{Full distance-$3$ Knill--Laflamme system.}
+The \emph{full} KL system we want to solve is:
+\begin{equation}
+\boxed{
+\begin{aligned}
+&\forall\, x,z\in\{0,1\}^7,\ \mathrm{wt}(x,z)\le 2:\quad
+\bra{0_L}P(x,z)\ket{1_L}=0,\\
+&\hspace{4.1cm}
+\bra{0_L}P(x,z)\ket{0_L}=\bra{1_L}P(x,z)\ket{1_L}.
+\end{aligned}}
+\label{eq:lean-full-KL}
+\end{equation}
+Everything here is standard finite-dimensional linear algebra over $\mathbb C$ with an explicit basis.
+
+\paragraph{What we prove.}
+We prove that the finite system \eqref{eq:lean-full-KL} has \emph{no} solution $(c_0,\dots,c_9)\in\mathbb C^{10}$.
+Since \eqref{eq:lean-full-KL} implies every \emph{subsystem}, it suffices to derive a contradiction from a small subset of
+the equations in \eqref{eq:lean-full-KL}.
+
+%------------------------------------------------------------
+\subsubsection*{Step 1: the $Z_j$ diagonal equations force a 2-parameter family of probabilities}
+
+Define $p_k:=|c_k|^2\in\mathbb R_{\ge 0}$.
+
+\begin{lemma}[Diagonal $Z$-constraints]
+\label{lem:lean-Z-system}
+Assume \eqref{eq:lean-full-KL}. Then for each $j\in\{1,\dots,7\}$ one has
+\begin{equation}
+\bra{0_L}Z_j\ket{0_L}=0
+\qquad\Longleftrightarrow\qquad
+\sum_{\substack{0\le k\le 9\\ (s_k)_j=1}} p_k=\frac12,
+\label{eq:lean-Zj}
+\end{equation}
+together with normalization $\sum_{k=0}^9 p_k=1$.
+Solving these eight linear equations yields
+\begin{equation}
+p_0=p_1=p_2=p_3=\frac{1}{16},
+\label{eq:lean-four-fixed}
+\end{equation}
+and, writing
+\[
+u:=p_7=p_{1011110},\qquad v:=p_9=p_{1101110},
+\]
+the remaining six probabilities are
+\begin{equation}
+p_6=\frac14-u,\quad p_8=\frac14-v,\quad
+p_4=u+v-\frac{3}{16},\quad p_5=\frac{7}{16}-u-v.
+\label{eq:lean-Z-solution}
+\end{equation}
+In particular $p_k\ge 0$ forces
+\[
+0\le u\le \frac14,\qquad 0\le v\le \frac14,\qquad \frac{3}{16}\le u+v\le \frac{7}{16}.
+\]
+\end{lemma}
+
+\begin{proof}
+For $Z_j=P(0,e_j)$, one has $Z_j\ket{s}=(-1)^{s_j}\ket{s}$, so
+$\bra{0_L}Z_j\ket{0_L}=\sum_{k=0}^9 (-1)^{(s_k)_j}p_k$ and $\bra{1_L}Z_j\ket{1_L}=-\bra{0_L}Z_j\ket{0_L}$ because complementation flips the parity in the exponent.
+Thus $\bra{0_L}Z_j\ket{0_L}=\bra{1_L}Z_j\ket{1_L}$ forces $\bra{0_L}Z_j\ket{0_L}=0$, giving \eqref{eq:lean-Zj}.
+The linear solve \eqref{eq:lean-four-fixed}--\eqref{eq:lean-Z-solution} is a routine elimination (Lean target: \texttt{linarith} after expanding \eqref{eq:lean-Zj} for $j=1,\dots,7$ and \eqref{eq:lean-normalization}). 
+\end{proof}
+
+%------------------------------------------------------------
+\subsubsection*{Step 2: nine explicit off-diagonal equations force three ``real product'' relations}
+
+We now name the six amplitudes that appear in the chosen off-diagonal equations:
+\[
+\begin{aligned}
+&a:=c_{1010001}=c_6,\qquad b:=c_{1101110}=c_9,\qquad c:=c_{1011110}=c_7,\\
+&d:=c_{1100001}=c_8,\qquad e:=c_{0110001}=c_4,\qquad f:=c_{0111110}=c_5.
+\end{aligned}
+\]
+
+\begin{lemma}[The $x=e_1$ subsystem]
+\label{lem:lean-x1}
+Assume \eqref{eq:lean-full-KL}. Consider the three weight$\le 2$ operators
+\[
+X_1,\qquad Z_2X_1,\qquad Z_4X_1.
+\]
+Then their off-diagonal KL constraints $\bra{0_L}(\cdot)\ket{1_L}=0$ expand to the three equations
+\begin{align}
+&\overline b\,a+\overline c\,d+\overline a\,b+\overline d\,c=0,
+\label{eq:lean-x1-0}\\
+&-\overline b\,a+\overline c\,d+\overline a\,b-\overline d\,c=0,
+\label{eq:lean-x1-2}\\
+&-\overline b\,a-\overline c\,d+\overline a\,b+\overline d\,c=0.
+\label{eq:lean-x1-4}
+\end{align}
+Consequently, defining $u_1:=\overline b\,a$ and $v_1:=\overline d\,c$, one deduces
+\begin{equation}
+u_1\in\mathbb R,\qquad v_1\in\mathbb R,\qquad v_1=-u_1,
+\quad\text{i.e.}\quad
+\overline b\,a=-\overline d\,c\in\mathbb R.
+\label{eq:lean-prod1}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The expansion is a direct finite sum computation using \eqref{eq:lean-pauli-action} and \eqref{eq:lean-def-01}.
+(Lean implementation: expand $\bra{0_L}P(x,z)\ket{1_L}$ using the orthonormal basis; only terms with matching basis vectors survive.)
+
+To solve the three equations, note that $\overline a\,b=\overline{(\overline b\,a)}=\overline{u_1}$
+and $\overline c\,d=\overline{(\overline d\,c)}=\overline{v_1}$. Then \eqref{eq:lean-x1-0} becomes
+$u_1+\overline{u_1}+v_1+\overline{v_1}=0$, i.e.\ $\Re(u_1+v_1)=0$.
+Equation \eqref{eq:lean-x1-2} is $-(u_1+v_1)+\overline{(u_1+v_1)}=0$, i.e.\ $u_1+v_1\in\mathbb R$.
+Hence $u_1+v_1=0$ so $v_1=-u_1$.
+Finally \eqref{eq:lean-x1-4} becomes $(\overline{u_1}-u_1)+ (v_1-\overline{v_1})=0$,
+so $\Im(u_1)=\Im(v_1)$. With $v_1=-u_1$ this forces $\Im(u_1)=0$, hence $u_1\in\mathbb R$ and $v_1=-u_1\in\mathbb R$.
+\end{proof}
+
+\begin{lemma}[The $x=e_2$ subsystem]
+\label{lem:lean-x2}
+Assume \eqref{eq:lean-full-KL}. Consider
+\[
+X_2,\qquad Z_1X_2,\qquad Z_4X_2.
+\]
+Their off-diagonal KL constraints expand to
+\begin{align}
+&\overline f\,d+\overline d\,f+\overline b\,e+\overline e\,b=0,
+\label{eq:lean-x2-0}\\
+&\overline f\,d-\overline d\,f-\overline b\,e+\overline e\,b=0,
+\label{eq:lean-x2-1}\\
+&-\overline f\,d+\overline d\,f-\overline b\,e+\overline e\,b=0.
+\label{eq:lean-x2-4}
+\end{align}
+Consequently,
+\begin{equation}
+\overline b\,e=-\overline d\,f\in\mathbb R.
+\label{eq:lean-prod2}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Same proof pattern as Lemma~\ref{lem:lean-x1}, with $u_2:=\overline b\,e$ and $v_2:=\overline d\,f$.
+\end{proof}
+
+\begin{lemma}[The $x=e_3$ subsystem]
+\label{lem:lean-x3}
+Assume \eqref{eq:lean-full-KL}. Consider
+\[
+X_3,\qquad Z_1X_3,\qquad Z_4X_3.
+\]
+Their off-diagonal KL constraints expand to
+\begin{align}
+&\overline f\,a+\overline a\,f+\overline c\,e+\overline e\,c=0,
+\label{eq:lean-x3-0}\\
+&\overline f\,a-\overline a\,f-\overline c\,e+\overline e\,c=0,
+\label{eq:lean-x3-1}\\
+&-\overline f\,a+\overline a\,f-\overline c\,e+\overline e\,c=0.
+\label{eq:lean-x3-4}
+\end{align}
+Consequently,
+\begin{equation}
+\overline c\,e=-\overline a\,f\in\mathbb R.
+\label{eq:lean-prod3}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Same pattern, with $u_3:=\overline c\,e$ and $v_3:=\overline a\,f$.
+\end{proof}
+
+%------------------------------------------------------------
+\subsubsection*{Step 3: the product relations force a phase alignment and then an algebraic contradiction}
+
+\begin{lemma}[Nonzero amplitudes forced by \eqref{eq:lean-Z-solution} and \eqref{eq:lean-prod1}--\eqref{eq:lean-prod3}]
+\label{lem:lean-nonzero}
+Assume \eqref{eq:lean-full-KL}. Then
+\[
+a\neq 0,\qquad b\neq 0,\qquad c\neq 0,\qquad d\neq 0,\qquad e\neq 0,\qquad f\neq 0.
+\]
+\end{lemma}
+
+\begin{proof}
+We use Lemma~\ref{lem:lean-Z-system} and Lemmas~\ref{lem:lean-x1}--\ref{lem:lean-x3}.
+
+\emph{(1) $b\neq 0$.}
+If $b=0$ then $p_9=|b|^2=v=0$, so by \eqref{eq:lean-Z-solution} we get $p_8=\frac14-v=\frac14$, hence $d\neq 0$.
+But \eqref{eq:lean-prod1} gives $0=\overline b\,a=-\overline d\,c$, so $c=0$ and thus $u=p_7=|c|^2=0$.
+Then \eqref{eq:lean-Z-solution} gives $p_4=u+v-\frac{3}{16}=-\frac{3}{16}<0$, contradicting $p_4=|e|^2\ge 0$.
+
+\emph{(2) $e\neq 0$.}
+If $e=0$ then $p_4=0$, so \eqref{eq:lean-Z-solution} gives $u+v=\frac{3}{16}$ and hence
+$p_5=\frac{7}{16}-u-v=\frac14$, so $f\neq 0$.
+Now \eqref{eq:lean-prod2} gives $0=\overline b\,e=-\overline d\,f$, so $d=0$, i.e.\ $p_8=0$ and thus $v=\frac14$.
+But then $u=\frac{3}{16}-v=-\frac{1}{16}<0$, impossible since $u=p_7=|c|^2\ge 0$.
+
+\emph{(3) $c\neq 0$.}
+If $c=0$ then $u=p_7=0$. By \eqref{eq:lean-prod1}, $\overline b\,a=0$, and since $b\neq 0$ we get $a=0$.
+But $a=0$ means $p_6=|a|^2=0$, so \eqref{eq:lean-Z-solution} gives $\frac14-u=0$, i.e.\ $u=\frac14$, contradicting $u=0$.
+
+\emph{(4) $d\neq 0$.}
+If $d=0$ then $v=\frac14$ and \eqref{eq:lean-prod2} gives $\overline b\,e=0$, hence $e=0$ since $b\neq 0$,
+contradicting (2).
+
+\emph{(5) $a\neq 0$.}
+If $a=0$ then $p_6=0$, so \eqref{eq:lean-Z-solution} gives $u=\frac14$ and thus $c\neq 0$.
+But \eqref{eq:lean-prod3} gives $0=\overline a\,f=-\overline c\,e$, hence $e=0$, contradicting (2).
+
+\emph{(6) $f\neq 0$.}
+If $f=0$ then $p_5=0$ so \eqref{eq:lean-Z-solution} gives $u+v=\frac{7}{16}$ and hence $p_4=\frac14$, so $e\neq 0$.
+But \eqref{eq:lean-prod2} gives $0=-\overline d\,f=\overline b\,e$, so $e=0$ since $b\neq 0$, contradiction.
+\end{proof}
+
+\begin{lemma}[Phase-fixing and reduction to real variables]
+\label{lem:lean-phase-fix}
+Assume \eqref{eq:lean-full-KL}. Then, after multiplying all $c_k$ by a single complex scalar $\omega$ with $|\omega|=1$
+(global phase), we may assume
+\[
+a,b,c,d,e,f\in\mathbb R
+\]
+while preserving all equations in Lemmas~\ref{lem:lean-Z-system}--\ref{lem:lean-x3}.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:lean-nonzero}, $b\neq 0$. Let $\omega:=\overline b/|b|$, so $|\omega|=1$ and $\omega b=|b|\in\mathbb R_{>0}$.
+Replacing each $c_k$ by $\omega c_k$ preserves:
+(i) each $p_k=|c_k|^2$ (hence Lemma~\ref{lem:lean-Z-system}),
+and (ii) each bilinear form $\overline{c_\alpha}c_\beta$ (hence Lemmas~\ref{lem:lean-x1}--\ref{lem:lean-x3}),
+because $\overline{\omega c_\alpha}\,(\omega c_\beta)=\overline\omega\,\omega\,\overline{c_\alpha}c_\beta=\overline{c_\alpha}c_\beta$.
+
+Now assume $b\in\mathbb R_{>0}$. From \eqref{eq:lean-prod1}, $\overline b\,a=ba\in\mathbb R$ and $b\neq 0$, so $a\in\mathbb R$.
+From \eqref{eq:lean-prod2}, $\overline b\,e=be\in\mathbb R$ and $b\neq 0$, so $e\in\mathbb R$.
+From \eqref{eq:lean-prod3}, $\overline c\,e\in\mathbb R$ and $e\neq 0$ (Lemma~\ref{lem:lean-nonzero}), so $\overline c\in\mathbb R$ hence $c\in\mathbb R$.
+From \eqref{eq:lean-prod1}, $\overline d\,c\in\mathbb R$ and $c\neq 0$, so $d\in\mathbb R$.
+From \eqref{eq:lean-prod2}, $\overline d\,f\in\mathbb R$ and $d\neq 0$, so $f\in\mathbb R$.
+\end{proof}
+
+\begin{lemma}[Final algebraic contradiction]
+\label{lem:lean-final-contradiction}
+Assume \eqref{eq:lean-full-KL}. Then $af=0$, contradicting Lemma~\ref{lem:lean-nonzero}.
+\end{lemma}
+
+\begin{proof}
+Apply Lemma~\ref{lem:lean-phase-fix} and work in the phase where $a,b,c,d,e,f\in\mathbb R$.
+Then \eqref{eq:lean-prod1}--\eqref{eq:lean-prod3} become
+\begin{equation}
+ba=-dc,\qquad be=-df,\qquad ce=-af.
+\label{eq:lean-real-relations}
+\end{equation}
+Multiply $ba=-dc$ by $f$ and $be=-df$ by $c$:
+\[
+baf=-dcf,\qquad bce=-dfc=-dcf.
+\]
+Hence $baf=bce$, and since $b\neq 0$ we obtain $af=ce$.
+But $ce=-af$ from \eqref{eq:lean-real-relations}, so $af=-af$ and therefore $af=0$.
+This contradicts $a\neq 0$ and $f\neq 0$ from Lemma~\ref{lem:lean-nonzero}.
+\end{proof}
+
+\begin{theorem}[No solution to the full KL system for $S_0$ above]
+\label{thm:lean-nogo-1112226}
+There is no choice of amplitudes $(c_0,\dots,c_9)\in\mathbb C^{10}$ such that
+$\ket{0_L},\ket{1_L}$ defined by \eqref{eq:lean-def-01} satisfy the full system \eqref{eq:lean-full-KL}.
+\end{theorem}
+
+\begin{proof}
+Assume a solution exists. Then Lemma~\ref{lem:lean-Z-system} holds, as do Lemmas~\ref{lem:lean-x1}--\ref{lem:lean-x3}.
+Lemma~\ref{lem:lean-nonzero} shows $a,f\neq 0$.
+Lemma~\ref{lem:lean-final-contradiction} then yields $af=0$, a contradiction.
+\end{proof}
+
+\begin{remark}[Minimal KL subset used]
+The no-go uses only:
+(i) the seven diagonal constraints for $Z_1,\dots,Z_7$ plus normalization,
+and (ii) nine off-diagonal constraints for
+$X_1,Z_2X_1,Z_4X_1$, $X_2,Z_1X_2,Z_4X_2$, $X_3,Z_1X_3,Z_4X_3$.
+All are weight $\le 2$ Paulis, hence are part of \eqref{eq:lean-full-KL}.
+\end{remark}
+
+%============================================================
+\subsection{A purely algebraic no--go for the complementary residue support
+($S_0$ of size $10$ for $\vec a=(1,1,1,2,2,2,6)$ mod $8$)}
+\label{subsec:pure-math-nogo-1112226}
+
+\paragraph{Goal.}
+This subsection is written in \emph{pure finite-dimensional linear algebra}:
+we define an explicit finite-dimensional complex inner product space, an explicit finite list of
+basis vectors, an explicit family of \emph{signed permutation} operators, and an explicit finite system
+of bilinear equations (a subsystem of the full distance-$3$ Knill--Laflamme constraints).
+We prove that this subsystem has no solution, hence the full distance-$3$ system has no solution either.
+
+%------------------------------------------------------------
+\subsubsection*{Data, variables, and vectors}
+
+\paragraph{The ambient space.}
+Let $B:=\{0,1\}^7$ (equivalently $\mathbb F_2^7$).
+Let $V:=\mathbb C^{B}$, i.e.\ the vector space of functions $B\to\mathbb C$.
+Write the standard orthonormal basis as $\{e_s:s\in B\}$ where $e_s(t)=\mathbf 1_{t=s}$, and
+use the standard inner product
+\[
+\langle u,v\rangle:=\sum_{s\in B}\overline{u(s)}\,v(s).
+\]
+Define bitwise XOR $s\oplus t\in B$ by $(s\oplus t)_i=s_i+t_i\pmod 2$ and complement $\bar s:=s\oplus 1^7$.
+
+\paragraph{The fixed support set.}
+Fix the explicit subset $S_0=\{s_0,\dots,s_9\}\subset B$:
+\[
+\begin{aligned}
+&s_0=0000000,\quad s_1=0000011,\quad s_2=0000101,\quad s_3=0001001,\quad s_4=0110001,\\
+&s_5=0111110,\quad s_6=1010001,\quad s_7=1011110,\quad s_8=1100001,\quad s_9=1101110.
+\end{aligned}
+\]
+Let $S_7:=\overline{S_0}:=\{\bar s:\ s\in S_0\}$.
+
+\paragraph{Unknown coefficients and the two vectors.}
+Let $c_0,\dots,c_9\in\mathbb C$ be unknown scalars and define
+\begin{equation}
+\psi_0 := \sum_{k=0}^9 c_k\, e_{s_k}\in V,
+\qquad
+\psi_1 := \sum_{k=0}^9 c_k\, e_{\overline{s_k}}\in V.
+\label{eq:pure-def-psi01}
+\end{equation}
+Define the \emph{squared magnitudes} (nonnegative reals)
+\[
+p_k:=|c_k|^2\in\mathbb R_{\ge 0}\qquad (k=0,\dots,9).
+\]
+
+%------------------------------------------------------------
+\subsubsection*{The signed-permutation operators and the equation system}
+
+\paragraph{Two families of basic operators.}
+For each coordinate index $i\in\{1,\dots,7\}$ define:
+\begin{itemize}
+\item The \emph{sign operator} $D_i:V\to V$ by
+\[
+D_i(e_s):=(-1)^{s_i}\,e_s.
+\]
+This is diagonal in the basis $\{e_s\}$ with entries $\pm 1$.
+\item The \emph{flip operator} $F_i:V\to V$ by
+\[
+F_i(e_s):=e_{s\oplus e_i},
+\]
+where $e_i\in B$ is the standard basis vector with a single $1$ in position $i$.
+This is a permutation matrix in the basis $\{e_s\}$.
+\end{itemize}
+We also consider their compositions $D_j\circ F_i$, which are again signed permutation operators.
+
+\paragraph{The equation system (a subsystem implied by full distance-$3$ constraints).}
+We consider the following finite system of equations in the unknowns $c_0,\dots,c_9$:
+\begin{equation}
+\label{eq:pure-eq-system}
+\boxed{
+\begin{aligned}
+&\text{(Norm)}\quad &&\langle \psi_0,\psi_0\rangle=1.\\[1mm]
+&\text{(Seven diagonal equations)}\quad &&\forall i\in\{1,\dots,7\}:\ \ \langle \psi_0,D_i\psi_0\rangle=\langle \psi_1,D_i\psi_1\rangle.\\[1mm]
+&\text{(Nine off-diagonal equations)}\quad
+&&\langle \psi_0, F_1\psi_1\rangle=\langle \psi_0, (D_2\!\circ F_1)\psi_1\rangle=\langle \psi_0,(D_4\!\circ F_1)\psi_1\rangle=0,\\
+&&&\langle \psi_0, F_2\psi_1\rangle=\langle \psi_0, (D_1\!\circ F_2)\psi_1\rangle=\langle \psi_0,(D_4\!\circ F_2)\psi_1\rangle=0,\\
+&&&\langle \psi_0, F_3\psi_1\rangle=\langle \psi_0, (D_1\!\circ F_3)\psi_1\rangle=\langle \psi_0,(D_4\!\circ F_3)\psi_1\rangle=0.
+\end{aligned}}
+\end{equation}
+Every operator appearing in \eqref{eq:pure-eq-system} is a signed permutation matrix and each equation is a polynomial
+constraint of degree $2$ in the real and imaginary parts of $(c_0,\dots,c_9)$.
+
+\paragraph{What we prove.}
+\begin{theorem}[Unsatisfiability of the subsystem]
+\label{thm:pure-nogo-subsystem}
+There do not exist complex numbers $c_0,\dots,c_9\in\mathbb C$ such that the vectors
+$\psi_0,\psi_1$ from \eqref{eq:pure-def-psi01} satisfy all equations in \eqref{eq:pure-eq-system}.
+\end{theorem}
+
+Since the \emph{full} distance-$3$ condition implies \eqref{eq:pure-eq-system}, this already rules out
+any full distance-$3$ solution in the complementary support model.
+
+%------------------------------------------------------------
+\subsubsection*{Proof of Theorem~\ref{thm:pure-nogo-subsystem}}
+
+\begin{proof}
+Assume for contradiction that $c_0,\dots,c_9$ satisfy \eqref{eq:pure-eq-system}.
+
+%------------------------------------------------------------
+\paragraph{Step 1: the seven diagonal equations reduce to a linear system in $p_k=|c_k|^2$.}
+
+\begin{lemma}[Diagonal sign equations become linear constraints on $p_k$]
+\label{lem:pure-diag-linear}
+For each $i\in\{1,\dots,7\}$ one has
+\[
+\langle \psi_0,D_i\psi_0\rangle=\sum_{k=0}^9 (-1)^{(s_k)_i}\,p_k,
+\qquad
+\langle \psi_1,D_i\psi_1\rangle=-\sum_{k=0}^9 (-1)^{(s_k)_i}\,p_k,
+\]
+hence the diagonal equation $\langle \psi_0,D_i\psi_0\rangle=\langle \psi_1,D_i\psi_1\rangle$ is equivalent to
+\begin{equation}
+\sum_{k=0}^9 (-1)^{(s_k)_i}\,p_k = 0.
+\label{eq:pure-diag-eq}
+\end{equation}
+Together with $\sum_{k=0}^9 p_k=1$ (normalization), this is an $8\times 10$ linear system in the $p_k$.
+\end{lemma}
+
+\begin{proof}
+The first identity is immediate from $D_i(e_{s_k})=(-1)^{(s_k)_i}e_{s_k}$ and orthonormality of the basis.
+For the second identity, note that $(\overline{s_k})_i = 1-(s_k)_i$, hence $(-1)^{(\overline{s_k})_i}=-(-1)^{(s_k)_i}$,
+so the diagonal expectation changes sign when we pass from $S_0$ to its complement $S_7$.
+\end{proof}
+
+\begin{lemma}[Explicit solution of the diagonal linear system]
+\label{lem:pure-diag-solve}
+Assuming the $7$ diagonal equations \eqref{eq:pure-diag-eq} for $i=1,\dots,7$ and $\sum_{k=0}^9 p_k=1$,
+one obtains
+\begin{equation}
+p_0=p_1=p_2=p_3=\frac{1}{16}.
+\label{eq:pure-four-fixed}
+\end{equation}
+Moreover, if we set
+\[
+U:=p_7\quad\text{and}\quad V:=p_9,
+\]
+then the remaining $p_k$ are determined by
+\begin{equation}
+p_6=\frac14-U,\quad p_8=\frac14-V,\quad
+p_4=U+V-\frac{3}{16},\quad p_5=\frac{7}{16}-U-V,
+\label{eq:pure-diag-param}
+\end{equation}
+together with $p_7=U$ and $p_9=V$.
+In particular, $p_k\ge 0$ forces
+\[
+0\le U\le\frac14,\qquad 0\le V\le\frac14,\qquad \frac{3}{16}\le U+V\le\frac{7}{16}.
+\]
+\end{lemma}
+
+\begin{proof}
+This is routine linear elimination on the explicit $8$ equations.
+(It is a good target for computer-checked linear arithmetic: after expanding the $7$ equations
+$\sum_k (-1)^{(s_k)_i}p_k=0$ using the explicit list of $s_k$, one can eliminate variables and obtain
+\eqref{eq:pure-four-fixed}--\eqref{eq:pure-diag-param} by $\texttt{linarith}$.)
+\end{proof}
+
+%------------------------------------------------------------
+\paragraph{Step 2: the nine off-diagonal equations yield three ``real product'' relations among six coefficients.}
+
+\paragraph{Naming the six coefficients that appear.}
+Let
+\[
+a:=c_6\ (s_6=1010001),\quad
+c:=c_7\ (s_7=1011110),\quad
+d:=c_8\ (s_8=1100001),\quad
+b:=c_9\ (s_9=1101110),\quad
+e:=c_4\ (s_4=0110001),\quad
+f:=c_5\ (s_5=0111110).
+\]
+(So $p_6=|a|^2$, $p_7=|c|^2$, $p_8=|d|^2$, $p_9=|b|^2$, $p_4=|e|^2$, $p_5=|f|^2$.)
+
+\begin{lemma}[The three $F_1$-equations imply $\overline{b}a=-\overline{d}c\in\mathbb R$]
+\label{lem:pure-prod1}
+Assume the three off-diagonal equations
+\[
+\langle \psi_0,F_1\psi_1\rangle=\langle \psi_0,(D_2\!\circ F_1)\psi_1\rangle=\langle \psi_0,(D_4\!\circ F_1)\psi_1\rangle=0.
+\]
+Then
+\begin{equation}
+\overline{b}\,a=-\overline{d}\,c\in\mathbb R.
+\label{eq:pure-prod1}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+A direct basis expansion shows that only the pairings
+\[
+s_6\leftrightarrow s_9
+\quad\text{and}\quad
+s_7\leftrightarrow s_8
+\]
+contribute to $\langle \psi_0,F_1\psi_1\rangle$ (this is a finite check using the explicit $S_0$).
+Concretely one finds
+\[
+\langle \psi_0,F_1\psi_1\rangle
+=
+\overline{b}a+\overline{c}d+\overline{a}b+\overline{d}c.
+\]
+Similarly, the sign operator $D_2$ flips the sign of exactly those terms whose \emph{row index} in $S_0$ has second bit $1$,
+and $D_4$ flips the sign of those whose row index has fourth bit $1$; with the explicit bit patterns of $s_6,s_7,s_8,s_9$ this yields:
+\begin{align*}
+0&=\langle \psi_0,F_1\psi_1\rangle
+=\overline{b}a+\overline{c}d+\overline{a}b+\overline{d}c,\\
+0&=\langle \psi_0,(D_2\!\circ F_1)\psi_1\rangle
+=-\overline{b}a+\overline{c}d+\overline{a}b-\overline{d}c,\\
+0&=\langle \psi_0,(D_4\!\circ F_1)\psi_1\rangle
+=-\overline{b}a-\overline{c}d+\overline{a}b+\overline{d}c.
+\end{align*}
+Now set $u_1:=\overline{b}a$ and $v_1:=\overline{d}c$. Note that $\overline{a}b=\overline{u_1}$ and
+$\overline{c}d=\overline{v_1}$. The first equation becomes
+$u_1+\overline{u_1}+v_1+\overline{v_1}=0$, i.e.\ $\Re(u_1+v_1)=0$.
+The second equation becomes $-(u_1+v_1)+\overline{(u_1+v_1)}=0$, i.e.\ $u_1+v_1\in\mathbb R$.
+Hence $u_1+v_1=0$ and $v_1=-u_1$.
+Substitute into the third equation to obtain $\Im(u_1)=0$, hence $u_1\in\mathbb R$ and $v_1=-u_1\in\mathbb R$.
+\end{proof}
+
+\begin{lemma}[The three $F_2$-equations imply $\overline{b}e=-\overline{d}f\in\mathbb R$]
+\label{lem:pure-prod2}
+Assume the three off-diagonal equations
+\[
+\langle \psi_0,F_2\psi_1\rangle=\langle \psi_0,(D_1\!\circ F_2)\psi_1\rangle=\langle \psi_0,(D_4\!\circ F_2)\psi_1\rangle=0.
+\]
+Then
+\begin{equation}
+\overline{b}\,e=-\overline{d}\,f\in\mathbb R.
+\label{eq:pure-prod2}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Exactly the same algebra as Lemma~\ref{lem:pure-prod1}, after checking (by finite enumeration using $S_0$)
+that the only contributing pairings are $s_4\leftrightarrow s_9$ and $s_5\leftrightarrow s_8$.
+\end{proof}
+
+\begin{lemma}[The three $F_3$-equations imply $\overline{c}e=-\overline{a}f\in\mathbb R$]
+\label{lem:pure-prod3}
+Assume the three off-diagonal equations
+\[
+\langle \psi_0,F_3\psi_1\rangle=\langle \psi_0,(D_1\!\circ F_3)\psi_1\rangle=\langle \psi_0,(D_4\!\circ F_3)\psi_1\rangle=0.
+\]
+Then
+\begin{equation}
+\overline{c}\,e=-\overline{a}\,f\in\mathbb R.
+\label{eq:pure-prod3}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Same proof pattern, with the (finite) pairing check giving the contributing pairs $s_4\leftrightarrow s_7$ and $s_5\leftrightarrow s_6$.
+\end{proof}
+
+%------------------------------------------------------------
+\paragraph{Step 3: show $a,b,c,d,e,f$ are all nonzero.}
+
+\begin{lemma}[Forced nonvanishing]
+\label{lem:pure-nonzero}
+Under the diagonal parametrization of Lemma~\ref{lem:pure-diag-solve} and the product relations
+\eqref{eq:pure-prod1}--\eqref{eq:pure-prod3}, one has
+\[
+a\neq 0,\quad b\neq 0,\quad c\neq 0,\quad d\neq 0,\quad e\neq 0,\quad f\neq 0.
+\]
+\end{lemma}
+
+\begin{proof}
+We use only: (i) $p_k=|c_k|^2\ge 0$, (ii) Lemma~\ref{lem:pure-diag-solve}, and (iii) Lemmas~\ref{lem:pure-prod1}--\ref{lem:pure-prod3}.
+
+\emph{(1) $b\neq 0$.}
+If $b=0$ then $p_9=0$, so $V=0$.
+Then \eqref{eq:pure-diag-param} gives $p_8=\frac14$, so $d\neq 0$.
+From \eqref{eq:pure-prod1}, $\overline{d}c=-\overline{b}a=0$, so $c=0$ hence $U=p_7=0$.
+Then \eqref{eq:pure-diag-param} gives $p_4=U+V-\frac{3}{16}=-\frac{3}{16}<0$, impossible.
+
+\emph{(2) $e\neq 0$.}
+If $e=0$ then $p_4=0$, hence $U+V=\frac{3}{16}$ and $p_5=\frac{7}{16}-U-V=\frac14$, so $f\neq 0$.
+From \eqref{eq:pure-prod2}, $\overline{d}f=-\overline{b}e=0$, so $d=0$ hence $p_8=0$.
+But $p_8=\frac14-V$ gives $V=\frac14$, then $U=\frac{3}{16}-V=-\frac{1}{16}<0$, impossible.
+
+\emph{(3) $c\neq 0$.}
+If $c=0$ then $U=0$. From \eqref{eq:pure-prod1}, $\overline{b}a=0$ and since $b\neq 0$ by (1), we get $a=0$.
+Then $p_6=|a|^2=0$, but $p_6=\frac14-U=\frac14$, contradiction.
+
+\emph{(4) $d\neq 0$.}
+If $d=0$ then $p_8=0$ so $V=\frac14$.
+Then \eqref{eq:pure-prod2} gives $\overline{b}e=0$, hence $e=0$ since $b\neq 0$, contradicting (2).
+
+\emph{(5) $a\neq 0$.}
+If $a=0$ then $p_6=0$ so $U=\frac14$ and thus $c\neq 0$ (since $p_7=U$).
+From \eqref{eq:pure-prod3}, $\overline{c}e=-\overline{a}f=0$, hence $e=0$, contradicting (2).
+
+\emph{(6) $f\neq 0$.}
+If $f=0$ then $p_5=0$, so $U+V=\frac{7}{16}$ and $p_4=\frac14$, hence $e\neq 0$.
+From \eqref{eq:pure-prod2}, $\overline{b}e=-\overline{d}f=0$, forcing $e=0$ (since $b\neq 0$), contradiction.
+\end{proof}
+
+%------------------------------------------------------------
+\paragraph{Step 4: a global phase normalization makes $a,b,c,d,e,f$ real.}
+
+\begin{lemma}[Global phase reduction]
+\label{lem:pure-phase}
+Multiplying all coefficients $(c_0,\dots,c_9)$ by a fixed scalar $\omega\in\mathbb C$ with $|\omega|=1$
+preserves \eqref{eq:pure-eq-system}. Hence, we may assume (without loss of generality) that
+\[
+b\in\mathbb R_{>0}.
+\]
+Under this assumption, the product relations \eqref{eq:pure-prod1}--\eqref{eq:pure-prod3} and Lemma~\ref{lem:pure-nonzero}
+imply
+\[
+a,b,c,d,e,f\in\mathbb R.
+\]
+\end{lemma}
+
+\begin{proof}
+If $c_k'=\omega c_k$ with $|\omega|=1$, then $|c_k'|^2=|c_k|^2$, so the normalization and diagonal equations are preserved.
+Also $\overline{c_i'}c_j'=\overline{\omega c_i}\,(\omega c_j)=\overline\omega\,\omega\,\overline{c_i}c_j=\overline{c_i}c_j$,
+so every off-diagonal equation of the form $\langle \psi_0,(\text{signed permutation})\psi_1\rangle=0$ is preserved.
+Thus we may choose $\omega:=\overline{b}/|b|$ to make $b$ real and positive.
+
+Assume $b\in\mathbb R_{>0}$. From \eqref{eq:pure-prod1}, $\overline{b}a=ba\in\mathbb R$ and $b\neq 0$, hence $a\in\mathbb R$.
+From \eqref{eq:pure-prod2}, $\overline{b}e=be\in\mathbb R$ and $b\neq 0$, hence $e\in\mathbb R$.
+From \eqref{eq:pure-prod3}, $\overline{c}e\in\mathbb R$ and $e\neq 0$ (Lemma~\ref{lem:pure-nonzero}), hence $\overline{c}\in\mathbb R$ so $c\in\mathbb R$.
+Then \eqref{eq:pure-prod1} gives $\overline{d}c\in\mathbb R$ and $c\neq 0$, hence $d\in\mathbb R$.
+Finally \eqref{eq:pure-prod2} gives $\overline{d}f\in\mathbb R$ and $d\neq 0$, hence $f\in\mathbb R$.
+\end{proof}
+
+%------------------------------------------------------------
+\paragraph{Step 5: the real relations force a contradiction.}
+
+\begin{lemma}[Final contradiction]
+\label{lem:pure-final}
+Under the conclusions of Lemma~\ref{lem:pure-phase}, the relations \eqref{eq:pure-prod1}--\eqref{eq:pure-prod3} imply
+\[
+af=0.
+\]
+This contradicts Lemma~\ref{lem:pure-nonzero}.
+\end{lemma}
+
+\begin{proof}
+In the phase where $a,b,c,d,e,f\in\mathbb R$, the relations
+$\overline{b}a=-\overline{d}c$, $\overline{b}e=-\overline{d}f$, $\overline{c}e=-\overline{a}f$
+become
+\begin{equation}
+ba=-dc,\qquad be=-df,\qquad ce=-af.
+\label{eq:pure-real-rel}
+\end{equation}
+Multiply $ba=-dc$ by $f$ and $be=-df$ by $c$:
+\[
+baf=-dcf,\qquad bce=-dfc=-dcf.
+\]
+Thus $baf=bce$. Since $b\neq 0$ (Lemma~\ref{lem:pure-nonzero}), we get $af=ce$.
+But the third equation in \eqref{eq:pure-real-rel} says $ce=-af$. Hence $af=-af$, so $af=0$.
+\end{proof}
+
+\paragraph{Conclusion.}
+By Lemma~\ref{lem:pure-final} we obtain a contradiction, so the assumed solution to \eqref{eq:pure-eq-system} cannot exist.
+This proves Theorem~\ref{thm:pure-nogo-subsystem}.
+\end{proof}
+
+\begin{remark}[What is (and is not) used]
+The proof is purely algebraic and uses only:
+\begin{itemize}
+\item the explicit finite set $S_0\subset\{0,1\}^7$,
+\item the definitions \eqref{eq:pure-def-psi01} of $\psi_0,\psi_1$,
+\item the signed-permutation operators $D_i$, $F_i$, and $D_j\circ F_i$,
+\item the $17$ bilinear equations in \eqref{eq:pure-eq-system}.
+\end{itemize}
+No other structure (subset-sum, codes, or ``quantum'' interpretation) is required for the contradiction.
+\end{remark}
+
+%============================================================
+\subsection{A completely real-coordinate no--go certificate for the
+\texorpdfstring{$(1+7+9)$}{(1+7+9)}-equation subsystem
+(norm + 7 diagonal + 9 off-diagonal)}
+\label{subsec:real-coordinate-nogo-1112226-subsystem}
+
+This subsection rewrites the subsystem \emph{purely over $\mathbb R$} by expanding the
+$10$ complex amplitudes into $20$ real variables and then showing that the resulting
+finite system of \emph{real quadratic} equations is unsatisfiable.
+
+%------------------------------------------------------------
+\paragraph{Fixed data (support set).}
+Let $S_0=\{s_0,\dots,s_9\}\subset\{0,1\}^7$ be the explicit list
+\[
+\begin{aligned}
+&s_0=0000000,\ s_1=0000011,\ s_2=0000101,\ s_3=0001001,\ s_4=0110001,\\
+&s_5=0111110,\ s_6=1010001,\ s_7=1011110,\ s_8=1100001,\ s_9=1101110,
+\end{aligned}
+\]
+and let $S_7:=\overline{S_0}=\{\bar s:\ s\in S_0\}$ where $\bar s$ is bitwise complement.
+
+%------------------------------------------------------------
+\paragraph{Real unknowns and their complex packaging.}
+Introduce $20$ real variables
+\[
+(v_1,\dots,v_{20})\in\mathbb R^{20}.
+\]
+Define $10$ complex amplitudes $c_0,\dots,c_9\in\mathbb C$ by
+\begin{align}
+c_0&:=v_1+i v_2, &
+c_1&:=v_3+i v_4, &
+c_2&:=v_5+i v_6, &
+c_3&:=v_7+i v_8, \label{eq:real-coords-ck-1}\\
+c_4&:=v_9+i v_{10}, &
+c_5&:=v_{11}+i v_{12}, &
+c_6&:=v_{13}+i v_{14}, &
+c_7&:=v_{15}+i v_{16}, \label{eq:real-coords-ck-2}\\
+c_8&:=v_{17}+i v_{18}, &
+c_9&:=v_{19}+i v_{20}. &&
+\label{eq:real-coords-ck-3}
+\end{align}
+Define the squared magnitudes (nonnegative reals)
+\begin{equation}
+p_k:=|c_k|^2=v_{2k+1}^2+v_{2k+2}^2\qquad (k=0,\dots,9).
+\label{eq:real-coords-pk}
+\end{equation}
+Equivalently,
+\[
+\begin{aligned}
+&p_0=v_1^2+v_2^2,\quad p_1=v_3^2+v_4^2,\quad p_2=v_5^2+v_6^2,\quad p_3=v_7^2+v_8^2,\\
+&p_4=v_9^2+v_{10}^2,\quad p_5=v_{11}^2+v_{12}^2,\quad p_6=v_{13}^2+v_{14}^2,\quad p_7=v_{15}^2+v_{16}^2,\\
+&p_8=v_{17}^2+v_{18}^2,\quad p_9=v_{19}^2+v_{20}^2.
+\end{aligned}
+\]
+
+It will be convenient to name the six amplitudes that appear in the off-diagonal subsystem:
+\begin{equation}
+a:=c_6=v_{13}+i v_{14},\quad
+b:=c_9=v_{19}+i v_{20},\quad
+c:=c_7=v_{15}+i v_{16},\quad
+d:=c_8=v_{17}+i v_{18},\quad
+e:=c_4=v_{9}+i v_{10},\quad
+f:=c_5=v_{11}+i v_{12}.
+\label{eq:real-coords-abcdef}
+\end{equation}
+
+%------------------------------------------------------------
+\paragraph{Counting variables and equations.}
+The unknowns are the $20$ real variables $v_1,\dots,v_{20}$.
+The subsystem consists of $1$ normalization equation, $7$ diagonal equations, and $9$ off-diagonal equations,
+for a total of
+\[
+\boxed{\text{$20$ real variables and $17$ real quadratic equations.}}
+\]
+
+%------------------------------------------------------------
+\paragraph{The explicit real quadratic system (17 equations).}
+We now list the full system as explicit real polynomial equations in the $v_i$.
+
+\smallskip
+\noindent\textbf{(N) Normalization (1 equation).}
+\begin{equation}
+\boxed{
+(v_1^2+v_2^2)+(v_3^2+v_4^2)+\cdots+(v_{19}^2+v_{20}^2)=1.
+}
+\tag{N}\label{eq:real:N}
+\end{equation}
+
+\smallskip
+\noindent\textbf{(D1)--(D7) Seven diagonal equations (7 equations).}
+Using the explicit $S_0$ above, the diagonal constraints are exactly:
+\begin{align}
+&(v_{13}^2+v_{14}^2)+(v_{15}^2+v_{16}^2)+(v_{17}^2+v_{18}^2)+(v_{19}^2+v_{20}^2)=\tfrac12,
+\tag{D1}\label{eq:real:D1}\\
+&(v_{9}^2+v_{10}^2)+(v_{11}^2+v_{12}^2)+(v_{17}^2+v_{18}^2)+(v_{19}^2+v_{20}^2)=\tfrac12,
+\tag{D2}\label{eq:real:D2}\\
+&(v_{9}^2+v_{10}^2)+(v_{11}^2+v_{12}^2)+(v_{13}^2+v_{14}^2)+(v_{15}^2+v_{16}^2)=\tfrac12,
+\tag{D3}\label{eq:real:D3}\\
+&(v_{7}^2+v_{8}^2)+(v_{11}^2+v_{12}^2)+(v_{15}^2+v_{16}^2)+(v_{19}^2+v_{20}^2)=\tfrac12,
+\tag{D4}\label{eq:real:D4}\\
+&(v_{5}^2+v_{6}^2)+(v_{11}^2+v_{12}^2)+(v_{15}^2+v_{16}^2)+(v_{19}^2+v_{20}^2)=\tfrac12,
+\tag{D5}\label{eq:real:D5}\\
+&(v_{3}^2+v_{4}^2)+(v_{11}^2+v_{12}^2)+(v_{15}^2+v_{16}^2)+(v_{19}^2+v_{20}^2)=\tfrac12,
+\tag{D6}\label{eq:real:D6}\\
+&(v_{3}^2+v_{4}^2)+(v_{5}^2+v_{6}^2)+(v_{7}^2+v_{8}^2)
++(v_{9}^2+v_{10}^2)+(v_{13}^2+v_{14}^2)+(v_{17}^2+v_{18}^2)=\tfrac12.
+\tag{D7}\label{eq:real:D7}
+\end{align}
+
+\smallskip
+\noindent\textbf{(X1--X3) Nine off-diagonal equations (9 equations).}
+These are the real-coordinate expansions of the chosen off-diagonal constraints:
+\begin{align}
+&v_{13}v_{19}+v_{14}v_{20}+v_{15}v_{17}+v_{16}v_{18}=0,
+\tag{X1-0}\label{eq:real:X1-0}\\
+&v_{13}v_{20}-v_{14}v_{19}+v_{15}v_{18}-v_{16}v_{17}=0,
+\tag{X1-2}\label{eq:real:X1-2}\\
+&v_{13}v_{20}-v_{14}v_{19}-v_{15}v_{18}+v_{16}v_{17}=0,
+\tag{X1-4}\label{eq:real:X1-4}\\[1mm]
+&v_{11}v_{17}+v_{12}v_{18}+v_{19}v_{9}+v_{20}v_{10}=0,
+\tag{X2-0}\label{eq:real:X2-0}\\
+&v_{11}v_{18}-v_{12}v_{17}-v_{19}v_{10}+v_{20}v_{9}=0,
+\tag{X2-1}\label{eq:real:X2-1}\\
+&-v_{11}v_{18}+v_{12}v_{17}-v_{19}v_{10}+v_{20}v_{9}=0,
+\tag{X2-4}\label{eq:real:X2-4}\\[1mm]
+&v_{11}v_{13}+v_{12}v_{14}+v_{15}v_{9}+v_{16}v_{10}=0,
+\tag{X3-0}\label{eq:real:X3-0}\\
+&v_{11}v_{14}-v_{12}v_{13}-v_{15}v_{10}+v_{16}v_{9}=0,
+\tag{X3-1}\label{eq:real:X3-1}\\
+&-v_{11}v_{14}+v_{12}v_{13}-v_{15}v_{10}+v_{16}v_{9}=0.
+\tag{X3-4}\label{eq:real:X3-4}
+\end{align}
+
+%------------------------------------------------------------
+\paragraph{No-go statement.}
+\begin{proposition}[Unsatisfiability over $\mathbb R$]
+\label{prop:real-unsat-subsystem}
+There is no real vector $(v_1,\dots,v_{20})\in\mathbb R^{20}$ satisfying simultaneously
+\eqref{eq:real:N}, \eqref{eq:real:D1}--\eqref{eq:real:D7}, and \eqref{eq:real:X1-0}--\eqref{eq:real:X3-4}.
+\end{proposition}
+
+\begin{proof}
+Assume for contradiction that $(v_1,\dots,v_{20})\in\mathbb R^{20}$ satisfies all $17$ equations.
+Define $p_k$ by \eqref{eq:real-coords-pk}, so $p_k\ge 0$ for all $k$.
+
+%------------------------------------------------------------
+\paragraph{Step 1: Solve the diagonal subsystem as a linear system in the $p_k$.}
+We rewrite \eqref{eq:real:N} and \eqref{eq:real:D1}--\eqref{eq:real:D7} using the shorthand $p_k=|c_k|^2$.
+
+\smallskip
+\noindent\emph{(i) First deduce $p_1=p_2=p_3$.}
+Subtract \eqref{eq:real:D5} from \eqref{eq:real:D4} to get $p_3-p_2=0$, so $p_3=p_2$.
+Subtract \eqref{eq:real:D6} from \eqref{eq:real:D5} to get $p_2-p_1=0$, so $p_2=p_1$.
+Hence
+\begin{equation}
+p_1=p_2=p_3=:t.
+\label{eq:real-step1-t}
+\end{equation}
+
+\smallskip
+\noindent\emph{(ii) Deduce $p_6+p_7=p_8+p_9=\tfrac14$.}
+Subtract \eqref{eq:real:D3} from \eqref{eq:real:D2} to obtain
+\[
+(p_4+p_5+p_8+p_9)-(p_4+p_5+p_6+p_7)=0
+\quad\Longrightarrow\quad
+p_8+p_9=p_6+p_7.
+\]
+Together with \eqref{eq:real:D1}, which says $p_6+p_7+p_8+p_9=\tfrac12$, we conclude
+\begin{equation}
+p_6+p_7=\tfrac14,
+\qquad
+p_8+p_9=\tfrac14.
+\label{eq:real-step1-halves}
+\end{equation}
+
+\smallskip
+\noindent\emph{(iii) Deduce $p_4+p_5=\tfrac14$.}
+Plug \eqref{eq:real-step1-halves} into \eqref{eq:real:D2}:
+\[
+p_4+p_5+(p_8+p_9)=\tfrac12
+\quad\Longrightarrow\quad
+p_4+p_5+\tfrac14=\tfrac12,
+\]
+so
+\begin{equation}
+p_4+p_5=\tfrac14.
+\label{eq:real-step1-p4p5}
+\end{equation}
+
+\smallskip
+\noindent\emph{(iv) Use normalization to deduce $p_0+3t=\tfrac14$.}
+From \eqref{eq:real:N} and \eqref{eq:real-step1-t}--\eqref{eq:real-step1-p4p5} we have
+\[
+1
+=p_0+(p_1+p_2+p_3)+(p_4+p_5)+(p_6+p_7)+(p_8+p_9)
+=p_0+3t+\tfrac14+\tfrac14+\tfrac14,
+\]
+hence
+\begin{equation}
+p_0+3t=\tfrac14.
+\label{eq:real-step1-p0t}
+\end{equation}
+
+\smallskip
+\noindent\emph{(v) Determine $t$ (and hence $p_0$).}
+Equation \eqref{eq:real:D6} is $t+p_5+p_7+p_9=\tfrac12$.
+Using \eqref{eq:real-step1-halves} and \eqref{eq:real-step1-p4p5}, write
+\[
+p_5=\tfrac14-p_4,\qquad p_7=\tfrac14-p_6,\qquad p_9=\tfrac14-p_8.
+\]
+Then \eqref{eq:real:D6} becomes
+\[
+t+\Bigl(\tfrac14-p_4\Bigr)+\Bigl(\tfrac14-p_6\Bigr)+\Bigl(\tfrac14-p_8\Bigr)=\tfrac12
+\quad\Longrightarrow\quad
+t=(p_4+p_6+p_8)-\tfrac14.
+\]
+Meanwhile \eqref{eq:real:D7} reads
+\[
+p_1+p_2+p_3+p_4+p_6+p_8=\tfrac12
+\quad\Longleftrightarrow\quad
+3t+(p_4+p_6+p_8)=\tfrac12.
+\]
+Substitute $t=(p_4+p_6+p_8)-\tfrac14$ into the latter:
+\[
+3\Bigl((p_4+p_6+p_8)-\tfrac14\Bigr)+(p_4+p_6+p_8)=\tfrac12
+\quad\Longrightarrow\quad
+4(p_4+p_6+p_8)=\tfrac54.
+\]
+So $p_4+p_6+p_8=\tfrac{5}{16}$ and therefore $t=\tfrac{5}{16}-\tfrac14=\tfrac{1}{16}$.
+Thus
+\begin{equation}
+p_1=p_2=p_3=\tfrac{1}{16}.
+\label{eq:real-step1-p123}
+\end{equation}
+Finally, \eqref{eq:real-step1-p0t} gives $p_0=\tfrac14-3\cdot \tfrac{1}{16}=\tfrac{1}{16}$:
+\begin{equation}
+p_0=p_1=p_2=p_3=\tfrac{1}{16}.
+\label{eq:real-step1-fourfixed}
+\end{equation}
+
+\smallskip
+\noindent\emph{(vi) Parametrize the remaining $p_k$.}
+Set
+\begin{equation}
+U:=p_7=v_{15}^2+v_{16}^2,
+\qquad
+V:=p_9=v_{19}^2+v_{20}^2.
+\label{eq:real-step1-UV}
+\end{equation}
+Then \eqref{eq:real-step1-halves} implies
+\[
+p_6=\tfrac14-U,\qquad p_8=\tfrac14-V.
+\]
+Using \eqref{eq:real:D6} together with \eqref{eq:real-step1-p123}, we get
+\[
+\tfrac{1}{16}+p_5+U+V=\tfrac12
+\quad\Longrightarrow\quad
+p_5=\tfrac{7}{16}-U-V.
+\]
+Finally \eqref{eq:real-step1-p4p5} yields
+\[
+p_4=\tfrac14-p_5=U+V-\tfrac{3}{16}.
+\]
+Summarizing,
+\begin{equation}
+\boxed{
+\begin{aligned}
+&p_0=p_1=p_2=p_3=\tfrac{1}{16},\qquad p_7=U,\qquad p_9=V,\\
+&p_6=\tfrac14-U,\qquad p_8=\tfrac14-V,\qquad
+p_4=U+V-\tfrac{3}{16},\qquad p_5=\tfrac{7}{16}-U-V.
+\end{aligned}}
+\label{eq:real-step1-param}
+\end{equation}
+Since each $p_k$ is a sum of squares, $p_k\ge 0$ forces
+\begin{equation}
+0\le U\le \tfrac14,\qquad 0\le V\le \tfrac14,\qquad \tfrac{3}{16}\le U+V\le \tfrac{7}{16}.
+\label{eq:real-step1-constraints}
+\end{equation}
+
+%------------------------------------------------------------
+\paragraph{Step 2: The nine off-diagonal equations force six ``dot/cross'' relations.}
+From the paired equations in each $(X1)$, $(X2)$, $(X3)$ block, we extract the following consequences.
+
+\smallskip
+\noindent\emph{(a) From \eqref{eq:real:X1-2} and \eqref{eq:real:X1-4}.}
+Adding and subtracting these two equations gives:
+\begin{align}
+v_{13}v_{20}-v_{14}v_{19}&=0,
+\tag{X1-cross-$ba$}\label{eq:real:X1-cross-ba}\\
+v_{15}v_{18}-v_{16}v_{17}&=0.
+\tag{X1-cross-$cd$}\label{eq:real:X1-cross-cd}
+\end{align}
+We keep \eqref{eq:real:X1-0} as the corresponding ``dot'' equation.
+
+\smallskip
+\noindent\emph{(b) From \eqref{eq:real:X2-1} and \eqref{eq:real:X2-4}.}
+Adding and subtracting gives:
+\begin{align}
+v_{20}v_{9}-v_{19}v_{10}&=0,
+\tag{X2-cross-$be$}\label{eq:real:X2-cross-be}\\
+v_{11}v_{18}-v_{12}v_{17}&=0.
+\tag{X2-cross-$df$}\label{eq:real:X2-cross-df}
+\end{align}
+We keep \eqref{eq:real:X2-0} as the corresponding ``dot'' equation.
+
+\smallskip
+\noindent\emph{(c) From \eqref{eq:real:X3-1} and \eqref{eq:real:X3-4}.}
+Adding and subtracting gives:
+\begin{align}
+v_{16}v_{9}-v_{15}v_{10}&=0,
+\tag{X3-cross-$ce$}\label{eq:real:X3-cross-ce}\\
+v_{11}v_{14}-v_{12}v_{13}&=0.
+\tag{X3-cross-$af$}\label{eq:real:X3-cross-af}
+\end{align}
+We keep \eqref{eq:real:X3-0} as the corresponding ``dot'' equation.
+
+%------------------------------------------------------------
+\paragraph{Step 3: The diagonal parametrization plus the off-diagonal relations force $a,b,c,d,e,f\neq 0$.}
+Recall $a,b,c,d,e,f$ from \eqref{eq:real-coords-abcdef}.  We show that none of the corresponding pairs
+\[
+(v_{13},v_{14}),\ (v_{19},v_{20}),\ (v_{15},v_{16}),\ (v_{17},v_{18}),\ (v_9,v_{10}),\ (v_{11},v_{12})
+\]
+can be $(0,0)$.
+
+\smallskip
+\noindent\emph{(1) $b\neq 0$.}
+Assume $b=0$, i.e.\ $v_{19}=v_{20}=0$. Then $V=p_9=0$.
+By \eqref{eq:real-step1-param}, $p_8=\tfrac14-V=\tfrac14$, so $(v_{17},v_{18})\neq (0,0)$.
+With $v_{19}=v_{20}=0$, equation \eqref{eq:real:X1-0} becomes
+\[
+v_{15}v_{17}+v_{16}v_{18}=0
+\]
+and \eqref{eq:real:X1-cross-cd} becomes
+\[
+v_{15}v_{18}-v_{16}v_{17}=0.
+\]
+Thus the vector $(v_{15},v_{16})$ is simultaneously orthogonal and parallel to $(v_{17},v_{18})\neq(0,0)$, forcing
+$(v_{15},v_{16})=(0,0)$, i.e.\ $c=0$ and $U=p_7=0$.
+Then \eqref{eq:real-step1-param} gives
+\[
+p_4=U+V-\tfrac{3}{16}=-\tfrac{3}{16}<0,
+\]
+contradicting $p_4=v_9^2+v_{10}^2\ge 0$. Hence $b\neq 0$.
+
+\smallskip
+\noindent\emph{(2) $e\neq 0$.}
+Assume $e=0$, i.e.\ $v_9=v_{10}=0$ so $p_4=0$.
+Then \eqref{eq:real-step1-param} gives $U+V=\tfrac{3}{16}$ and hence
+\[
+p_5=\tfrac{7}{16}-U-V=\tfrac14,
+\]
+so $(v_{11},v_{12})\neq (0,0)$ (i.e.\ $f\neq 0$).
+With $v_9=v_{10}=0$, equation \eqref{eq:real:X2-0} becomes
+\[
+v_{11}v_{17}+v_{12}v_{18}=0
+\]
+and \eqref{eq:real:X2-cross-df} becomes
+\[
+v_{11}v_{18}-v_{12}v_{17}=0.
+\]
+Thus $(v_{17},v_{18})$ is simultaneously orthogonal and parallel to the nonzero vector $(v_{11},v_{12})$, forcing
+$(v_{17},v_{18})=(0,0)$, i.e.\ $d=0$ and $p_8=0$.
+But $p_8=\tfrac14-V$ then gives $V=\tfrac14$, so $U=\tfrac{3}{16}-\tfrac14=-\tfrac{1}{16}<0$,
+contradicting $U=p_7\ge 0$. Hence $e\neq 0$.
+
+\smallskip
+\noindent\emph{(3) $c\neq 0$.}
+Assume $c=0$, i.e.\ $v_{15}=v_{16}=0$ so $U=p_7=0$.
+Then \eqref{eq:real-step1-param} gives $p_6=\tfrac14-U=\tfrac14$, so $(v_{13},v_{14})\neq (0,0)$ (i.e.\ $a\neq 0$).
+But with $v_{15}=v_{16}=0$, equations \eqref{eq:real:X1-0} and \eqref{eq:real:X1-cross-ba} become
+\[
+v_{13}v_{19}+v_{14}v_{20}=0,\qquad
+v_{13}v_{20}-v_{14}v_{19}=0,
+\]
+so $(v_{13},v_{14})$ is orthogonal and parallel to $(v_{19},v_{20})$.
+Since $b\neq 0$ from (1), $(v_{19},v_{20})\neq (0,0)$ and hence $(v_{13},v_{14})=(0,0)$,
+contradicting $p_6=\tfrac14$. Hence $c\neq 0$.
+
+\smallskip
+\noindent\emph{(4) $d\neq 0$.}
+Assume $d=0$, i.e.\ $v_{17}=v_{18}=0$ so $p_8=0$ and $V=\tfrac14$ by \eqref{eq:real-step1-param}.
+With $v_{17}=v_{18}=0$, equations \eqref{eq:real:X2-0} and \eqref{eq:real:X2-cross-be} become
+\[
+v_{19}v_{9}+v_{20}v_{10}=0,\qquad
+v_{20}v_{9}-v_{19}v_{10}=0,
+\]
+so $(v_9,v_{10})$ is orthogonal and parallel to $(v_{19},v_{20})$.
+Since $b\neq 0$, this forces $(v_9,v_{10})=(0,0)$, i.e.\ $e=0$, contradicting (2).
+Hence $d\neq 0$.
+
+\smallskip
+\noindent\emph{(5) $a\neq 0$.}
+Assume $a=0$, i.e.\ $v_{13}=v_{14}=0$ so $p_6=0$.
+Then \eqref{eq:real-step1-param} gives $U=\tfrac14$, so $c\neq 0$ (since $p_7=U=\tfrac14$).
+With $v_{13}=v_{14}=0$, equations \eqref{eq:real:X3-0} and \eqref{eq:real:X3-cross-ce} become
+\[
+v_{15}v_{9}+v_{16}v_{10}=0,\qquad
+v_{16}v_{9}-v_{15}v_{10}=0,
+\]
+so $(v_9,v_{10})$ is orthogonal and parallel to $(v_{15},v_{16})$.
+Since $c\neq 0$, this forces $(v_9,v_{10})=(0,0)$, i.e.\ $e=0$, contradicting (2).
+Hence $a\neq 0$.
+
+\smallskip
+\noindent\emph{(6) $f\neq 0$.}
+Assume $f=0$, i.e.\ $v_{11}=v_{12}=0$ so $p_5=0$.
+Then \eqref{eq:real-step1-param} gives $U+V=\tfrac{7}{16}$ and hence $p_4=\tfrac14$,
+so $e\neq 0$ (i.e.\ $(v_9,v_{10})\neq(0,0)$).
+With $v_{11}=v_{12}=0$, equations \eqref{eq:real:X2-0} and \eqref{eq:real:X2-cross-be} again become
+\[
+v_{19}v_{9}+v_{20}v_{10}=0,\qquad
+v_{20}v_{9}-v_{19}v_{10}=0,
+\]
+forcing $(v_9,v_{10})=(0,0)$ since $b\neq 0$, contradiction.
+Hence $f\neq 0$.
+
+Therefore,
+\begin{equation}
+a\neq 0,\quad b\neq 0,\quad c\neq 0,\quad d\neq 0,\quad e\neq 0,\quad f\neq 0.
+\label{eq:real-step3-nonzero}
+\end{equation}
+
+%------------------------------------------------------------
+\paragraph{Step 4: Global phase symmetry lets us impose $b\in\mathbb R_{>0}$ and forces $a,c,d,e,f\in\mathbb R$.}
+The system \eqref{eq:real:N}--\eqref{eq:real:X3-4} is invariant under a \emph{common rotation} of each pair
+$(v_{2k+1},v_{2k+2})$ by the same angle $\theta$:
+\begin{equation}
+(v_{2k+1},v_{2k+2})\longmapsto
+(v_{2k+1}',v_{2k+2}')
+:=
+\bigl(v_{2k+1}\cos\theta - v_{2k+2}\sin\theta,\ \ v_{2k+1}\sin\theta + v_{2k+2}\cos\theta\bigr).
+\label{eq:real-global-rotation}
+\end{equation}
+Indeed, \eqref{eq:real-global-rotation} is exactly the change induced by multiplying every complex $c_k$
+by the same unit scalar $e^{i\theta}$.
+It preserves each $p_k=v_{2k+1}^2+v_{2k+2}^2$ and preserves all bilinear combinations
+appearing in \eqref{eq:real:X1-0}--\eqref{eq:real:X3-4}.
+Since $b\neq 0$ by \eqref{eq:real-step3-nonzero}, choose $\theta$ so that
+\begin{equation}
+b=v_{19}+i v_{20}\ \ \text{is real and positive, i.e.}\ \ v_{20}=0,\ v_{19}>0.
+\label{eq:real-b-real-positive}
+\end{equation}
+
+Now use the ``cross'' equations from Step 2:
+\begin{itemize}
+\item From \eqref{eq:real:X1-cross-ba} and \eqref{eq:real-b-real-positive}:
+$0=v_{13}v_{20}-v_{14}v_{19}=-v_{14}v_{19}$, hence $v_{14}=0$ and $a=v_{13}\in\mathbb R$.
+\item From \eqref{eq:real:X2-cross-be} and \eqref{eq:real-b-real-positive}:
+$0=v_{20}v_{9}-v_{19}v_{10}=-v_{19}v_{10}$, hence $v_{10}=0$ and $e=v_{9}\in\mathbb R$.
+Moreover $e\neq 0$ implies $v_9\neq 0$.
+\item From \eqref{eq:real:X3-cross-ce} with $v_{10}=0$ and $v_9\neq 0$:
+$0=v_{16}v_{9}-v_{15}v_{10}=v_{16}v_{9}$, hence $v_{16}=0$ and $c=v_{15}\in\mathbb R$.
+Moreover $c\neq 0$ implies $v_{15}\neq 0$.
+\item From \eqref{eq:real:X1-cross-cd} with $v_{16}=0$ and $v_{15}\neq 0$:
+$0=v_{15}v_{18}-v_{16}v_{17}=v_{15}v_{18}$, hence $v_{18}=0$ and $d=v_{17}\in\mathbb R$.
+Moreover $d\neq 0$ implies $v_{17}\neq 0$.
+\item From \eqref{eq:real:X2-cross-df} with $v_{18}=0$ and $v_{17}\neq 0$:
+$0=v_{11}v_{18}-v_{12}v_{17}=-v_{12}v_{17}$, hence $v_{12}=0$ and $f=v_{11}\in\mathbb R$.
+\end{itemize}
+Therefore, after the global rotation we may assume
+\begin{equation}
+a=v_{13},\quad b=v_{19},\quad c=v_{15},\quad d=v_{17},\quad e=v_9,\quad f=v_{11}
+\quad\in\mathbb R\setminus\{0\}.
+\label{eq:real-step4-all-real}
+\end{equation}
+
+%------------------------------------------------------------
+\paragraph{Step 5: The remaining dot equations force $af=0$, contradiction.}
+Under \eqref{eq:real-step4-all-real}, the dot equations simplify:
+
+\smallskip
+\noindent From \eqref{eq:real:X1-0} with $v_{14}=v_{20}=v_{16}=v_{18}=0$ we get
+\[
+v_{13}v_{19}+v_{15}v_{17}=0
+\quad\Longleftrightarrow\quad
+ba=-dc.
+\]
+From \eqref{eq:real:X2-0} with $v_{12}=v_{18}=v_{20}=v_{10}=0$ we get
+\[
+v_{11}v_{17}+v_{19}v_{9}=0
+\quad\Longleftrightarrow\quad
+be=-df.
+\]
+From \eqref{eq:real:X3-0} with $v_{12}=v_{14}=v_{16}=v_{10}=0$ we get
+\[
+v_{11}v_{13}+v_{15}v_{9}=0
+\quad\Longleftrightarrow\quad
+ce=-af.
+\]
+Thus
+\begin{equation}
+ba=-dc,\qquad be=-df,\qquad ce=-af,
+\qquad\text{with }a,b,c,d,e,f\in\mathbb R\setminus\{0\}.
+\label{eq:real-step5-relations}
+\end{equation}
+
+Multiply $ba=-dc$ by $f$ and $be=-df$ by $c$:
+\[
+baf=-dcf,\qquad bce=-dfc=-dcf,
+\]
+hence $baf=bce$. Since $b\neq 0$, cancel $b$ to obtain $af=ce$.
+But the third relation in \eqref{eq:real-step5-relations} says $ce=-af$.
+Therefore $af=-af$, so
+\[
+af=0,
+\]
+contradicting $a\neq 0$ and $f\neq 0$ from \eqref{eq:real-step4-all-real}.
+
+This contradiction shows the assumed real solution $(v_1,\dots,v_{20})$ cannot exist.
+\end{proof}
+
 
 \section{Negative evidence for \texorpdfstring{$\vec a=(0,1,1,2,3,3,5)$}{a=(0,1,1,2,3,3,5)} in the BD16 single-syndrome setting}
 
@@ -3604,34 +4805,22 @@ In this SS-support model for \(\vec a=(0,1,1,2,3,3,5)\), the KL loss \(\mathcal{
 This provides strong numerical evidence that \((0,1,1,2,3,3,5)\) is an SS/LP false positive: it passes SS and \(Z\)-LP filters but
 does not survive the full KL stage under the SS support constraint.
 
-\subsection{Analytic no--go for full KL under the complementary ansatz:
-$\vec a=(0,1,1,2,3,3,5)$ (mod $m=8$)}
-\label{subsec:nogo-a0112335}
+\subsection{A Lean-friendly analytic no--go (in $28$ real variables) for full KL under the complementary ansatz:
+$\vec a=(0,1,1,2,3,3,5)$ (mod $8$)}
+\label{subsec:lean-nogo-19eq}
 
-In this subsection we consider the subset--sum support construction at modulus $m=8$ with
+\paragraph{Support sets and complementary code states.}
+Fix $m=8$ and
 \[
-\vec a=(a_1,\dots,a_7)=(0,1,1,2,3,3,5),\qquad
-b_0=0,\qquad
-b_1=\sum_{i=1}^7 a_i\equiv 7\pmod 8.
+\vec a=(0,1,1,2,3,3,5),\qquad b_0=0,\qquad b_1=\sum_{i=1}^7 a_i\equiv 7\pmod 8.
 \]
-We work with the \emph{complementary ansatz}
+For $s=s_1\cdots s_7\in\{0,1\}^7$ define $\vec a\cdot s:=\sum_i a_i s_i$ (over $\mathbb Z$, reduced mod $8$),
+and let $\bar s:=s\oplus 1^7$ be the bitwise complement.
+Set
 \[
-\ket{0_L}=\sum_{s\in S_0} c_s \ket{s},\qquad
-\ket{1_L}=X^{\otimes 7}\ket{0_L},
+S_0:=\{s:\ \vec a\cdot s\equiv 0\pmod 8\},\qquad
+S_1:=\{s:\ \vec a\cdot s\equiv 7\pmod 8\}.
 \]
-where $s=s_1\cdots s_7\in\{0,1\}^7$, $\ket{s}=\ket{s_1\cdots s_7}$, and
-$\bar s:=s\oplus 1^7$ denotes bitwise complement.
-We show that \emph{no} choice of amplitudes $(c_s)_{s\in S_0}$ can satisfy the full Knill--Laflamme
-conditions for all Pauli operators of weight $\le 2$ (equivalently, for correcting all single--qubit Pauli errors).
-
-%------------------------------------------------------------
-\paragraph{Support sets $S_0,S_1$.}
-Define
-\[
-S_0=\bigl\{s\in\{0,1\}^7:\ \vec a\cdot s\equiv 0\!\!\pmod 8\bigr\},\qquad
-S_1=\bigl\{s\in\{0,1\}^7:\ \vec a\cdot s\equiv 7\!\!\pmod 8\bigr\},
-\]
-where $\vec a\cdot s:=\sum_i a_i s_i$ is computed over $\mathbb Z$ and then reduced mod $8$.
 A direct enumeration gives
 \[
 \begin{aligned}
@@ -3640,407 +4829,437 @@ S_0=\{&
 &1000000,\ 1000011,\ 1000101,\ 1001110,\ 1011001,\ 1101001,\ 1110110\},
 \end{aligned}
 \]
-and
+and $S_1=\overline{S_0}$.
+We work with the \emph{complementary ansatz}
 \[
-\begin{aligned}
-S_1=\{&
-0001001,\ 0010110,\ 0100110,\ 0110001,\ 0111010,\ 0111100,\ 0111111,\\
-&1001001,\ 1010110,\ 1100110,\ 1110001,\ 1111010,\ 1111100,\ 1111111\}.
-\end{aligned}
+\ket{0_L}=\sum_{s\in S_0} c_s\ket{s},\qquad
+\ket{1_L}=X^{\otimes 7}\ket{0_L}=\sum_{s\in S_0} c_s\ket{\bar s}.
 \]
-Moreover $S_1=\overline{S_0}:=\{\bar s:\ s\in S_0\}$, so $\supp(\ket{1_L})=S_1$ automatically.
 
-%------------------------------------------------------------
-\paragraph{Pauli parametrization.}
-For $x,z\in\{0,1\}^7$, let
+\paragraph{Paulis, weight, and the KL conditions.}
+For $x,z\in\{0,1\}^7$, write
 \[
-P(x,z):=i^{x\cdot z}\,X^x Z^z
-\qquad\text{where}\qquad
-X^x:=\bigotimes_{i=1}^7 X_i^{x_i},\quad Z^z:=\bigotimes_{i=1}^7 Z_i^{z_i},
-\]
-and $x\cdot z:=\sum_i x_i z_i\in\{0,1,\dots,7\}$.
-Write the Pauli weight as
-\[
+P(x,z):=i^{x\cdot z}X^x Z^z,\qquad
 \wt(x,z):=\bigl|\supp(x)\cup\supp(z)\bigr|.
 \]
-For distance $3$, it suffices to impose KL on all $P(x,z)$ with $\wt(x,z)\le 2$.
-
-%------------------------------------------------------------
-\paragraph{Intersection reduction of matrix elements.}
-For $x\in\{0,1\}^7$ define the intersection sets
+Distance $3$ requires the Knill--Laflamme (KL) conditions for all Paulis with $\wt(x,z)\le 2$:
 \[
-D(x):=S_0\cap(S_0\oplus x),\qquad
-C(x):=S_1\cap(S_0\oplus x).
+\bra{i_L}P(x,z)\ket{j_L}=\lambda_{x,z}\,\delta_{ij}\qquad(i,j\in\{0,1\}).
 \]
-Here $(S_0\oplus x):=\{s\oplus x:\ s\in S_0\}$ and $\oplus$ is bitwise XOR.
-A standard computation gives the finite--sum formulas
-\begin{align}
-\bra{0_L}P(x,z)\ket{0_L}
-&= i^{x\cdot z}\!\!\sum_{s\in D(x)} (-1)^{z\cdot s}\ \overline{c_{s\oplus x}}\,c_s,
-\label{eq:diag-sum}\\
-\bra{0_L}P(x,z)\ket{1_L}
-&= i^{x\cdot z}\!\!\sum_{s\in C(x)} (-1)^{z\cdot s}\ \overline{c_{s\oplus x}}\,c_{\bar s},
-\label{eq:offdiag-sum}
-\end{align}
-where $z\cdot s:=\sum_i z_i s_i\ (\mathrm{mod}\ 2)$ in the exponent of $(-1)$.
-
-\begin{lemma}[Automatic KL constraints under complementarity]
-\label{lem:automatic-KL}
-Assume $\ket{1_L}=X^{\otimes 7}\ket{0_L}$. Then for any $P(x,z)$:
-\begin{enumerate}
-\item If $D(x)=\varnothing$ then $\bra{0_L}P(x,z)\ket{0_L}=0$ (hence also $\bra{1_L}P(x,z)\ket{1_L}=0$).
-\item If $C(x)=\varnothing$ then $\bra{0_L}P(x,z)\ket{1_L}=0$.
-\item One has the sign relation
-\[
-\bra{1_L}P(x,z)\ket{1_L}=(-1)^{\wt(z)}\,\bra{0_L}P(x,z)\ket{0_L}.
-\]
-Consequently, the diagonal KL requirement
-$\bra{0_L}P(x,z)\ket{0_L}=\bra{1_L}P(x,z)\ket{1_L}$
-is automatic whenever $\wt(z)$ is even, and reduces to
-$\bra{0_L}P(x,z)\ket{0_L}=0$ whenever $\wt(z)$ is odd.
-\end{enumerate}
-\end{lemma}
-
-%------------------------------------------------------------
-\paragraph{Which $(x,z)$ yield non-automatic equations.}
-The following proposition is the ``intersection test'' specialized to this instance.
-
-\begin{proposition}[Nonempty intersections for $\vec a=(0,1,1,2,3,3,5)$]
-\label{prop:nonempty-intersections-a0112335}
-Among all $x$ with $\wt(x)\le 2$, the only nonempty $D(x)$ are:
-\[
-x\in\{0,\ e_1,\ e_2+e_3,\ e_5+e_6,\ e_5+e_7,\ e_6+e_7\}.
-\]
-The only nonempty $C(x)$ are:
-\[
-x\in\{e_2,\ e_3,\ e_1+e_2,\ e_1+e_3,\ e_2+e_4,\ e_3+e_4,\ e_4+e_5,\ e_4+e_6,\ e_4+e_7\}.
-\]
-Consequently, among Paulis $P(x,z)$ of weight $\le 2$:
+In particular:
 \begin{itemize}
-\item the only \emph{diagonal-type} non-automatic constraints are those with $x$ as above and $\wt(z)$ odd;
-\item the only \emph{off-diagonal-type} non-automatic constraints are those with $x$ as above and any $z$ such that $\wt(x,z)\le 2$.
+\item for each weight-$\le2$ Pauli, the \emph{off-diagonal} condition $\bra{0_L}P(x,z)\ket{1_L}=0$ must hold;
+\item for each \emph{diagonal} Pauli, $\bra{0_L}P(x,z)\ket{0_L}=\bra{1_L}P(x,z)\ket{1_L}$ must hold.
 \end{itemize}
-In total there are $22$ diagonal-type and $56$ off-diagonal-type operators to consider, i.e.\ $78$ non-automatic full--KL equations.
-\end{proposition}
+Under the complementary ansatz, diagonal equality forces $\bra{0_L}Z_i\ket{0_L}=0$ for each $Z_i$
+(since $Z_i$ has odd $Z$-weight), and similarly forces $\bra{0_L}Y_1\ket{0_L}=0$.
 
-We now write out \emph{all} of these non-automatic equations explicitly.
-
-%------------------------------------------------------------
-\subsubsection*{All non-automatic diagonal-type KL equations}
-Let $p_s:=|c_s|^2$.
-
-\paragraph{(i) The seven $Z_i$ constraints.}
-For each $i=1,\dots,7$ the KL condition for $Z_i$ is
-\begin{equation}
-\sum_{s\in S_0} (-1)^{s_i}\,p_s =0
-\qquad\Longleftrightarrow\qquad
-\sum_{\substack{s\in S_0\\ s_i=1}} p_s=\frac12.
-\label{eq:Zi-abstract}
-\end{equation}
-Using the explicit $S_0$ above, these become
-\begin{align}
-(Z_1):\ &p_{1000000}+p_{1000011}+p_{1000101}+p_{1001110}+p_{1011001}+p_{1101001}+p_{1110110}=\tfrac12,\nonumber\\
-(Z_2):\ &p_{0101001}+p_{0110110}+p_{1101001}+p_{1110110}=\tfrac12,\nonumber\\
-(Z_3):\ &p_{0011001}+p_{0110110}+p_{1011001}+p_{1110110}=\tfrac12,\nonumber\\
-(Z_4):\ &p_{0001110}+p_{0011001}+p_{0101001}+p_{1001110}+p_{1011001}+p_{1101001}=\tfrac12,\nonumber\\
-(Z_5):\ &p_{0000101}+p_{0001110}+p_{0110110}+p_{1000101}+p_{1001110}+p_{1110110}=\tfrac12,\nonumber\\
-(Z_6):\ &p_{0000011}+p_{0001110}+p_{0110110}+p_{1000011}+p_{1001110}+p_{1110110}=\tfrac12,\nonumber\\
-(Z_7):\ &p_{0000011}+p_{0000101}+p_{0011001}+p_{0101001}+p_{1000011}+p_{1000101}+p_{1011001}+p_{1101001}=\tfrac12.
-\label{eq:Zi-explicit}
-\end{align}
-Normalization adds $\sum_{s\in S_0} p_s=1$.
-
-\paragraph{(ii) The $x=e_1$ constraints: $Y_1$ and $X_1Z_j$ ($j=2,\dots,7$).}
-Here $D(e_1)=S_0$. Group $S_0$ into pairs $(0u,1u)$ with common $6$--bit tail $u\in\{0,1\}^6$:
+\paragraph{A small (but sufficient) KL subsystem.}
+A full-KL solution must satisfy \emph{all} weight-$\le2$ KL equations, hence in particular it must satisfy
+the KL equations for the following explicit weight-$\le2$ Paulis:
 \[
-u\in\{000000,\ 000011,\ 000101,\ 001110,\ 011001,\ 101001,\ 110110\}.
+Z_i\ (i=1,\dots,7),\quad Y_1,\quad
+X_2,\ X_2Z_1,\ X_2Z_3,\quad
+X_3,\ X_3Z_1,\ X_3Z_2,\quad
+X_1X_2,\ X_1X_2Z_1,\quad
+X_1X_3,\ X_1X_3Z_1.
 \]
-Write $c_{0u}:=c_{(0,u)}$ and $c_{1u}:=c_{(1,u)}$.
+We now rewrite \emph{exactly} these KL constraints as $19$ explicit quadratic equations
+in $28$ real variables $v_1,\dots,v_{28}$, and prove that system has no real solution.
+This is the formulation used directly in Lean.
 
-\begin{itemize}
-\item For $Y_1$ (i.e.\ $P(e_1,e_1)$), the KL condition $\bra{0_L}Y_1\ket{0_L}=0$ is equivalent to
+%============================================================
+\subsubsection*{The $28$ real variables and the $19$ explicit quadratic equations}
+
+\paragraph{Real variables and amplitudes.}
+Introduce $28$ real variables $v_1,\dots,v_{28}\in\mathbb R$, and define the $14$ amplitudes
+(corresponding to the $14$ strings in $S_0$ in the order listed above) by
+\begin{align*}
+c_{0000000}&:=v_1+i v_2,&
+c_{0000011}&:=v_3+i v_4,&
+c_{0000101}&:=v_5+i v_6,&
+c_{0001110}&:=v_7+i v_8,\\
+c_{0011001}&:=v_9+i v_{10},&
+c_{0101001}&:=v_{11}+i v_{12},&
+c_{0110110}&:=v_{13}+i v_{14},&
+c_{1000000}&:=v_{15}+i v_{16},\\
+c_{1000011}&:=v_{17}+i v_{18},&
+c_{1000101}&:=v_{19}+i v_{20},&
+c_{1001110}&:=v_{21}+i v_{22},&
+c_{1011001}&:=v_{23}+i v_{24},\\
+c_{1101001}&:=v_{25}+i v_{26},&
+c_{1110110}&:=v_{27}+i v_{28}.&&
+\end{align*}
+Define the nonnegative quadratic forms (``probabilities'')
+\[
+p_s:=|c_s|^2=(\Re c_s)^2+(\Im c_s)^2\in\mathbb R_{\ge 0}.
+\]
+Equivalently:
+\[
+\begin{aligned}
+&p_{0000000}=v_1^2+v_2^2,\quad p_{0000011}=v_3^2+v_4^2,\quad p_{0000101}=v_5^2+v_6^2,\quad p_{0001110}=v_7^2+v_8^2,\\
+&p_{0011001}=v_9^2+v_{10}^2,\quad p_{0101001}=v_{11}^2+v_{12}^2,\quad p_{0110110}=v_{13}^2+v_{14}^2,\quad p_{1000000}=v_{15}^2+v_{16}^2,\\
+&p_{1000011}=v_{17}^2+v_{18}^2,\quad p_{1000101}=v_{19}^2+v_{20}^2,\quad p_{1001110}=v_{21}^2+v_{22}^2,\quad p_{1011001}=v_{23}^2+v_{24}^2,\\
+&p_{1101001}=v_{25}^2+v_{26}^2,\quad p_{1110110}=v_{27}^2+v_{28}^2.
+\end{aligned}
+\]
+
+\paragraph{(E1) Normalization.}
+KL requires $\langle 0_L\mid 0_L\rangle=1$, i.e.
 \begin{equation}
-\sum_u\Big(\overline{c_{1u}}c_{0u}-\overline{c_{0u}}c_{1u}\Big)=0
-\quad\Longleftrightarrow\quad
-\sum_u \Im\!\big(\overline{c_{0u}}c_{1u}\big)=0.
-\label{eq:Y1}
+\label{eq:poly-norm}
+v_1^2+v_2^2+\cdots+v_{27}^2+v_{28}^2 \;=\; 1.
+\tag{E1}
 \end{equation}
 
-\item For $X_1Z_j$ with $j=2,\dots,7$ (i.e.\ $P(e_1,e_j)$), the KL condition $\bra{0_L}X_1Z_j\ket{0_L}=0$ is equivalent to
-\begin{equation}
-\sum_u (-1)^{u_{j-1}}\Big(\overline{c_{1u}}c_{0u}+\overline{c_{0u}}c_{1u}\Big)=0
-\quad\Longleftrightarrow\quad
-\sum_u (-1)^{u_{j-1}}\Re\!\big(\overline{c_{0u}}c_{1u}\big)=0.
-\label{eq:X1Zj}
-\end{equation}
-\end{itemize}
-
-\paragraph{(iii) The remaining diagonal constraints with $|x|=2$ (four independent equations).}
-For each $x$ below, $D(x)$ has size $4$, and the two choices of $z$ supported on $\supp(x)$ give the same equation up to an overall sign.
-Explicitly:
+\paragraph{(E2)--(E8) The seven $Z_i$ constraints.}
+For each $i$, diagonal KL forces $\bra{0_L}Z_i\ket{0_L}=0$.
+Since $Z_i\ket{s}=(-1)^{s_i}\ket{s}$, this yields a linear equation in the $p_s$.
+Substituting $p_s=v_{\Re}^2+v_{\Im}^2$ and multiplying by $2$ (to clear $\tfrac12$) gives:
 \begin{align}
-x=e_2+e_3:\quad&
-\overline{c_{0101001}}c_{0011001}-\overline{c_{0011001}}c_{0101001}
-+\overline{c_{1101001}}c_{1011001}-\overline{c_{1011001}}c_{1101001}=0,
-\label{eq:diag-e2e3}\\[2mm]
-x=e_5+e_6:\quad&
-\overline{c_{0000101}}c_{0000011}-\overline{c_{0000011}}c_{0000101}
-+\overline{c_{1000101}}c_{1000011}-\overline{c_{1000011}}c_{1000101}=0,
-\label{eq:diag-e5e6}\\[2mm]
-x=e_5+e_7:\quad&
-\overline{c_{0000101}}c_{0000000}-\overline{c_{0000000}}c_{0000101}
-+\overline{c_{1000101}}c_{1000000}-\overline{c_{1000000}}c_{1000101}=0,
-\label{eq:diag-e5e7}\\[2mm]
-x=e_6+e_7:\quad&
-\overline{c_{0000011}}c_{0000000}-\overline{c_{0000000}}c_{0000011}
-+\overline{c_{1000011}}c_{1000000}-\overline{c_{1000000}}c_{1000011}=0.
-\label{eq:diag-e6e7}
+\label{eq:poly-Z1}
+&2\Big((v_{15}^2+v_{16}^2)+(v_{17}^2+v_{18}^2)+(v_{19}^2+v_{20}^2)+(v_{21}^2+v_{22}^2)+(v_{23}^2+v_{24}^2)+(v_{25}^2+v_{26}^2)+(v_{27}^2+v_{28}^2)\Big)=1,\tag{E2}\\
+\label{eq:poly-Z2}
+&2\Big((v_{11}^2+v_{12}^2)+(v_{13}^2+v_{14}^2)+(v_{25}^2+v_{26}^2)+(v_{27}^2+v_{28}^2)\Big)=1,\tag{E3}\\
+\label{eq:poly-Z3}
+&2\Big((v_{9}^2+v_{10}^2)+(v_{13}^2+v_{14}^2)+(v_{23}^2+v_{24}^2)+(v_{27}^2+v_{28}^2)\Big)=1,\tag{E4}\\
+\label{eq:poly-Z4}
+&2\Big((v_{7}^2+v_{8}^2)+(v_{9}^2+v_{10}^2)+(v_{11}^2+v_{12}^2)+(v_{21}^2+v_{22}^2)+(v_{23}^2+v_{24}^2)+(v_{25}^2+v_{26}^2)\Big)=1,\tag{E5}\\
+\label{eq:poly-Z5}
+&2\Big((v_{5}^2+v_{6}^2)+(v_{7}^2+v_{8}^2)+(v_{13}^2+v_{14}^2)+(v_{19}^2+v_{20}^2)+(v_{21}^2+v_{22}^2)+(v_{27}^2+v_{28}^2)\Big)=1,\tag{E6}\\
+\label{eq:poly-Z6}
+&2\Big((v_{3}^2+v_{4}^2)+(v_{7}^2+v_{8}^2)+(v_{13}^2+v_{14}^2)+(v_{17}^2+v_{18}^2)+(v_{21}^2+v_{22}^2)+(v_{27}^2+v_{28}^2)\Big)=1,\tag{E7}\\
+\label{eq:poly-Z7}
+&2\Big((v_{3}^2+v_{4}^2)+(v_{5}^2+v_{6}^2)+(v_{9}^2+v_{10}^2)+(v_{11}^2+v_{12}^2)+(v_{17}^2+v_{18}^2)+(v_{19}^2+v_{20}^2)+(v_{23}^2+v_{24}^2)+(v_{25}^2+v_{26}^2)\Big)=1.\tag{E8}
 \end{align}
 
-%------------------------------------------------------------
-\subsubsection*{All non-automatic off-diagonal KL equations}
-For each $x$ in Proposition~\ref{prop:nonempty-intersections-a0112335} with $C(x)\neq\varnothing$, the off-diagonal KL condition is
+\paragraph{(E9) The $Y_1$ diagonal constraint.}
+Diagonal KL forces $\bra{0_L}Y_1\ket{0_L}=0$.
+Pairing $(0u,1u)$ strings in $S_0$ yields
+\[
+0=\bra{0_L}Y_1\ket{0_L}=2\sum_u \Im\!\bigl(\overline{c_{0u}}c_{1u}\bigr),
+\]
+and rewriting each $\Im(\overline{(a+ib)}(c+id))$ as $ad-bc$ gives:
 \begin{equation}
-\bra{0_L}P(x,z)\ket{1_L}
-=
-i^{x\cdot z}\sum_{s\in C(x)} (-1)^{z\cdot s}\ \overline{c_{s\oplus x}}\,c_{\bar s}=0,
+\label{eq:poly-Y1}
+(v_1v_{16}-v_2v_{15})+(v_3v_{18}-v_4v_{17})+(v_5v_{20}-v_6v_{19})+(v_7v_{22}-v_8v_{21})
++(v_9v_{24}-v_{10}v_{23})+(v_{11}v_{26}-v_{12}v_{25})+(v_{13}v_{28}-v_{14}v_{27})=0.
+\tag{E9}
+\end{equation}
+
+\paragraph{(E10)--(E12) Off-diagonal KL from $X_2$, $X_2Z_1$, $X_2Z_3$.}
+For each listed weight-$\le2$ Pauli, KL requires $\bra{0_L}P\ket{1_L}=0$.
+For $P\in\{X_2,\ X_2Z_1,\ X_2Z_3\}$ (i.e.\ $x=e_2$ and $z\in\{0,e_1,e_3\}$),
+the four-term intersection sum collapses to bilinear constraints on
+$\overline{c_{0101001}}c_{1110110}$ and $\overline{c_{0110110}}c_{1101001}$.
+Splitting into real/imaginary parts and writing in the $v_i$ gives:
+\begin{align}
+\label{eq:poly-e2-z0}
+&(v_{11}v_{27}+v_{12}v_{28})+(v_{13}v_{25}+v_{14}v_{26})=0,\tag{E10}\\
+\label{eq:poly-e2-ze1}
+&(v_{11}v_{28}-v_{12}v_{27})+(v_{13}v_{26}-v_{14}v_{25})=0,\tag{E11}\\
+\label{eq:poly-e2-ze3}
+&(v_{11}v_{28}-v_{12}v_{27})-(v_{13}v_{26}-v_{14}v_{25})=0.\tag{E12}
+\end{align}
+
+\paragraph{(E13)--(E15) Off-diagonal KL from $X_3$, $X_3Z_1$, $X_3Z_2$.}
+Likewise, for $P\in\{X_3,\ X_3Z_1,\ X_3Z_2\}$ (i.e.\ $x=e_3$ and $z\in\{0,e_1,e_2\}$),
+the off-diagonal sums collapse to bilinear constraints on
+$\overline{c_{0011001}}c_{1110110}$ and $\overline{c_{0110110}}c_{1011001}$, giving:
+\begin{align}
+\label{eq:poly-e3-z0}
+&(v_{9}v_{27}+v_{10}v_{28})+(v_{13}v_{23}+v_{14}v_{24})=0,\tag{E13}\\
+\label{eq:poly-e3-ze1}
+&(v_{9}v_{28}-v_{10}v_{27})+(v_{13}v_{24}-v_{14}v_{23})=0,\tag{E14}\\
+\label{eq:poly-e3-ze2}
+&(v_{9}v_{28}-v_{10}v_{27})-(v_{13}v_{24}-v_{14}v_{23})=0.\tag{E15}
+\end{align}
+
+\paragraph{(E16)--(E17) Off-diagonal KL from $X_1X_2$, $X_1X_2Z_1$.}
+For $P\in\{X_1X_2,\ X_1X_2Z_1\}$ (i.e.\ $x=e_1+e_2$ and $z\in\{0,e_1\}$),
+the off-diagonal sums reduce to real-part constraints on
+$\overline{c_{1101001}}c_{1110110}$ and $\overline{c_{0101001}}c_{0110110}$, giving:
+\begin{align}
+\label{eq:poly-e1e2-z0}
+&(v_{25}v_{27}+v_{26}v_{28})+(v_{11}v_{13}+v_{12}v_{14})=0,\tag{E16}\\
+\label{eq:poly-e1e2-ze1}
+&(v_{25}v_{27}+v_{26}v_{28})-(v_{11}v_{13}+v_{12}v_{14})=0.\tag{E17}
+\end{align}
+
+\paragraph{(E18)--(E19) Off-diagonal KL from $X_1X_3$, $X_1X_3Z_1$.}
+Similarly, for $P\in\{X_1X_3,\ X_1X_3Z_1\}$ (i.e.\ $x=e_1+e_3$ and $z\in\{0,e_1\}$),
+we obtain:
+\begin{align}
+\label{eq:poly-e1e3-z0}
+&(v_{23}v_{27}+v_{24}v_{28})+(v_{9}v_{13}+v_{10}v_{14})=0,\tag{E18}\\
+\label{eq:poly-e1e3-ze1}
+&(v_{23}v_{27}+v_{24}v_{28})-(v_{9}v_{13}+v_{10}v_{14})=0.\tag{E19}
+\end{align}
+
+\paragraph{Summary.}
+Equations \eqref{eq:poly-norm}--\eqref{eq:poly-e1e3-ze1} are $19$ explicit real polynomial equations,
+each of total degree $2$, in the $28$ real unknowns $(v_1,\dots,v_{28})$.
+Every full-KL complementary solution must satisfy them.
+
+%============================================================
+\subsubsection*{No-solution proof (purely in the $v_i$ equations)}
+
+\begin{theorem}[The $19$ quadratic equations have no real solution]
+\label{thm:no-solution-19eq}
+There do not exist real numbers $v_1,\dots,v_{28}$ satisfying
+\eqref{eq:poly-norm}--\eqref{eq:poly-e1e3-ze1}.
+\end{theorem}
+
+\begin{proof}
+Assume for contradiction that $(v_1,\dots,v_{28})$ satisfies all $19$ equations.
+Let the quadratic forms $p_s$ be as defined above, so $p_s\ge 0$.
+
+\paragraph{Step 1: Linear elimination of the $Z$-system (pair sums).}
+Equations \eqref{eq:poly-norm} and \eqref{eq:poly-Z1}--\eqref{eq:poly-Z7} are linear in the $p_s$.
+A routine linear elimination (Lean: \texttt{linarith}) yields the \emph{pair-sum} identities
+\begin{equation}
+\label{eq:pairsums-v}
+\begin{aligned}
+&p_{0000000}+p_{1000000}=\frac{1}{16},\quad
+p_{0000011}+p_{1000011}=\frac{1}{16},\quad
+p_{0000101}+p_{1000101}=\frac{1}{16},\quad
+p_{0001110}+p_{1001110}=\frac{1}{8},\\
+&p_{0011001}+p_{1011001}=\frac{3}{16},\quad
+p_{0101001}+p_{1101001}=\frac{3}{16},\quad
+p_{0110110}+p_{1110110}=\frac{5}{16}.
+\end{aligned}
+\end{equation}
+Equivalently, with the shorthand
+\[
+p_0:=p_{0000000},\ p_1:=p_{0000011},\dots,\ p_{13}:=p_{1110110},
+\]
+we have
+\begin{equation}
+\label{eq:pairsums-short}
+p_0+p_7=\frac{1}{16},\quad p_1+p_8=\frac{1}{16},\quad p_2+p_9=\frac{1}{16},\quad p_3+p_{10}=\frac{1}{8},\quad
+p_4+p_{11}=\frac{3}{16},\quad p_5+p_{12}=\frac{3}{16},\quad p_6+p_{13}=\frac{5}{16}.
+\end{equation}
+
+\paragraph{Step 2: The $x=e_2$ block forces a multiplicative identity.}
+From \eqref{eq:poly-e2-ze1} and \eqref{eq:poly-e2-ze3}, adding and subtracting gives
+\[
+(v_{11}v_{28}-v_{12}v_{27})=0,\qquad (v_{13}v_{26}-v_{14}v_{25})=0.
+\]
+From \eqref{eq:poly-e2-z0} we also have
+\[
+(v_{11}v_{27}+v_{12}v_{28})=-(v_{13}v_{25}+v_{14}v_{26}).
+\]
+Now use the real identity
+\[
+(ac+bd)^2+(ad-bc)^2=(a^2+b^2)(c^2+d^2)
+\]
+(with $a=v_{11},b=v_{12},c=v_{27},d=v_{28}$ and similarly for $(v_{13},v_{14},v_{25},v_{26}$)).
+Squaring and adding the ``real-part'' and ``imag-part'' equations yields
+\[
+(v_{11}^2+v_{12}^2)(v_{27}^2+v_{28}^2)=(v_{13}^2+v_{14}^2)(v_{25}^2+v_{26}^2),
+\]
+i.e.
+\begin{equation}
+\label{eq:mult-e2-v}
+p_5\,p_{13}=p_6\,p_{12}.
+\end{equation}
+
+\paragraph{Step 3: The $x=e_3$ block forces a second multiplicative identity.}
+Exactly the same argument applied to \eqref{eq:poly-e3-z0}--\eqref{eq:poly-e3-ze2} gives
+\begin{equation}
+\label{eq:mult-e3-v}
+p_4\,p_{13}=p_6\,p_{11}.
+\end{equation}
+
+\paragraph{Step 4: Linearize \eqref{eq:mult-e2-v}--\eqref{eq:mult-e3-v} using the pair sums.}
+From \eqref{eq:pairsums-short}, $p_5=\frac{3}{16}-p_{12}$ and $p_6=\frac{5}{16}-p_{13}$.
+Substitute into \eqref{eq:mult-e2-v}:
+\[
+\Bigl(\frac{3}{16}-p_{12}\Bigr)p_{13}=\Bigl(\frac{5}{16}-p_{13}\Bigr)p_{12}
+\ \Longrightarrow\
+\frac{3}{16}p_{13}=\frac{5}{16}p_{12}
+\ \Longrightarrow\
+p_{12}=\frac35\,p_{13}.
+\]
+Similarly, using $p_4=\frac{3}{16}-p_{11}$ in \eqref{eq:mult-e3-v} gives $p_{11}=\frac35\,p_{13}$.
+Hence
+\begin{equation}
+\label{eq:linearized-v}
+p_{11}=p_{12}=\frac35\,p_{13},
 \qquad
-\text{for all $z$ with $\wt(x,z)\le 2$.}
-\label{eq:offdiag-master}
+p_4=p_5=\frac35\,p_6.
 \end{equation}
-In this instance, $|C(x)|=4$ for each such $x$, so every constraint is a $4$--term sum.
-We now list the $4$ terms explicitly in each case.
 
-\paragraph{(i) $x=e_2$, $C(e_2)=\{0001001,0010110,1001001,1010110\}$.}
-For all $z$ with $\wt(e_2,z)\le 2$ (i.e.\ $z\in\{0,e_1,\dots,e_7,e_1{+}e_2,e_2{+}e_3,\dots,e_2{+}e_7\}$),
-\begin{align}
-(-1)^{z\cdot 0001001}\overline{c_{0101001}}c_{1110110}
-&+(-1)^{z\cdot 0010110}\overline{c_{0110110}}c_{1101001}\nonumber\\
-&+(-1)^{z\cdot 1001001}\overline{c_{1101001}}c_{0110110}
-+(-1)^{z\cdot 1010110}\overline{c_{1110110}}c_{0101001}=0.
-\label{eq:offdiag-e2}
-\end{align}
+\paragraph{Step 5: Uniform lower bounds on $p_{13}$ and $p_6$.}
+Let $t:=p_{13}\ge 0$.
+Then $p_{11}+p_{12}+p_{13}=\frac{11}{5}t$ by \eqref{eq:linearized-v}.
+Using $p_7\ge 0$ and $p_7=\frac12-(p_8+p_9+p_{10}+p_{11}+p_{12}+p_{13})$ (from the linear system),
+we get
+\[
+\frac{11}{5}t\le \frac12\quad\Longrightarrow\quad t\le \frac{5}{22},
+\]
+and hence from $p_6+p_{13}=\frac{5}{16}$ in \eqref{eq:pairsums-short},
+\[
+p_6=\frac{5}{16}-t\ge \frac{5}{16}-\frac{5}{22}=\frac{15}{176}.
+\]
+For the lower bound on $t$, use $p_0\ge 0$ and
+$p_0=(p_8+p_9+p_{10}+p_{11}+p_{12}+p_{13})-\frac{7}{16}$:
+since $p_8\le\frac{1}{16}$, $p_9\le\frac{1}{16}$, $p_{10}\le\frac18$ by \eqref{eq:pairsums-short} and nonnegativity,
+we have $p_8+p_9+p_{10}\le\frac14$, so
+\[
+0\le \frac14+\frac{11}{5}t-\frac{7}{16}
+\quad\Longrightarrow\quad
+t\ge \frac{15}{176}.
+\]
+Therefore
+\begin{equation}
+\label{eq:bounds-v}
+p_{13}\ge \frac{15}{176}>0,
+\qquad
+p_6\ge \frac{15}{176}>0.
+\end{equation}
 
-\paragraph{(ii) $x=e_3$, $C(e_3)=\{0001001,0100110,1001001,1100110\}$.}
-For all $z$ with $\wt(e_3,z)\le 2$,
-\begin{align}
-(-1)^{z\cdot 0001001}\overline{c_{0011001}}c_{1110110}
-&+(-1)^{z\cdot 0100110}\overline{c_{0110110}}c_{1011001}\nonumber\\
-&+(-1)^{z\cdot 1001001}\overline{c_{1011001}}c_{0110110}
-+(-1)^{z\cdot 1100110}\overline{c_{1110110}}c_{0011001}=0.
-\label{eq:offdiag-e3}
-\end{align}
+\paragraph{Step 6: Real-part vanishings from \eqref{eq:poly-e1e2-z0}--\eqref{eq:poly-e1e3-ze1}.}
+Adding and subtracting \eqref{eq:poly-e1e2-z0} and \eqref{eq:poly-e1e2-ze1} gives
+\begin{equation}
+\label{eq:re-vanish-1}
+(v_{25}v_{27}+v_{26}v_{28})=0,\qquad (v_{11}v_{13}+v_{12}v_{14})=0.
+\end{equation}
+Similarly, adding/subtracting \eqref{eq:poly-e1e3-z0} and \eqref{eq:poly-e1e3-ze1} gives
+\begin{equation}
+\label{eq:re-vanish-2}
+(v_{23}v_{27}+v_{24}v_{28})=0,\qquad (v_{9}v_{13}+v_{10}v_{14})=0.
+\end{equation}
 
-\paragraph{(iii) $x=e_1+e_2$, $C(e_1{+}e_2)=\{0001001,0010110,1001001,1010110\}$.}
-For $z\subseteq\{e_1,e_2\}$ (i.e.\ $z\in\{0,e_1,e_2,e_1{+}e_2\}$),
-\begin{align}
-(-1)^{z\cdot 0001001}\overline{c_{1101001}}c_{1110110}
-&+(-1)^{z\cdot 0010110}\overline{c_{1110110}}c_{1101001}\nonumber\\
-&+(-1)^{z\cdot 1001001}\overline{c_{0101001}}c_{0110110}
-+(-1)^{z\cdot 1010110}\overline{c_{0110110}}c_{0101001}=0.
-\label{eq:offdiag-e1e2}
-\end{align}
+\paragraph{Step 7: A global phase rotation (a simultaneous planar rotation) fixes $v_{28}=0$.}
+Since $p_{13}=v_{27}^2+v_{28}^2>0$ by \eqref{eq:bounds-v}, we have $(v_{27},v_{28})\neq (0,0)$.
+All $19$ equations are invariant under multiplying every amplitude $c_s$ by a common phase $e^{i\theta}$,
+which in real coordinates is the simultaneous rotation
+\[
+(v_{2k+1},v_{2k+2})\mapsto (v_{2k+1}\cos\theta-v_{2k+2}\sin\theta,\ v_{2k+1}\sin\theta+v_{2k+2}\cos\theta)
+\quad(k=0,\dots,13).
+\]
+Choosing $\theta$ so that $(v_{27},v_{28})$ rotates to $(\sqrt{p_{13}},0)$, we may assume \emph{without loss of generality} that
+\begin{equation}
+\label{eq:gauge-v}
+v_{28}=0,\qquad v_{27}>0.
+\end{equation}
 
-\paragraph{(iv) $x=e_1+e_3$, $C(e_1{+}e_3)=\{0001001,0100110,1001001,1100110\}$.}
-For $z\subseteq\{e_1,e_3\}$,
-\begin{align}
-(-1)^{z\cdot 0001001}\overline{c_{1011001}}c_{1110110}
-&+(-1)^{z\cdot 0100110}\overline{c_{1110110}}c_{1011001}\nonumber\\
-&+(-1)^{z\cdot 1001001}\overline{c_{0011001}}c_{0110110}
-+(-1)^{z\cdot 1100110}\overline{c_{0110110}}c_{0011001}=0.
-\label{eq:offdiag-e1e3}
-\end{align}
+Under the gauge \eqref{eq:gauge-v}, equations \eqref{eq:poly-e2-ze1}, \eqref{eq:poly-e3-ze1},
+\eqref{eq:re-vanish-1}, and \eqref{eq:re-vanish-2} immediately force
+\[
+v_{12}=0,\qquad v_{10}=0,\qquad v_{25}=0,\qquad v_{23}=0,\qquad v_{13}=0.
+\]
+Also $p_6=v_{13}^2+v_{14}^2=v_{14}^2>0$ by \eqref{eq:bounds-v}, hence
+\begin{equation}
+\label{eq:v14-nonzero}
+v_{14}\neq 0.
+\end{equation}
+Finally, since $p_4=\frac35 p_6>0$ and $p_5=\frac35 p_6>0$ by \eqref{eq:linearized-v},
+we have $v_9\neq 0$ and $v_{11}\neq 0$ (because $p_4=v_9^2+v_{10}^2=v_9^2$ and $p_5=v_{11}^2+v_{12}^2=v_{11}^2$ under the gauge).
 
-\paragraph{(v) $x=e_2+e_4$, $C(e_2{+}e_4)=\{0100110,0110001,1100110,1110001\}$.}
-For $z\subseteq\{e_2,e_4\}$,
-\begin{align}
-(-1)^{z\cdot 0100110}\overline{c_{0001110}}c_{1011001}
-&+(-1)^{z\cdot 0110001}\overline{c_{0011001}}c_{1001110}\nonumber\\
-&+(-1)^{z\cdot 1100110}\overline{c_{1001110}}c_{0011001}
-+(-1)^{z\cdot 1110001}\overline{c_{1011001}}c_{0001110}=0.
-\label{eq:offdiag-e2e4}
-\end{align}
+\paragraph{Step 8: Split the $Y_1$ equation into a small part $U$ and a large part $T$.}
+Write the $Y_1$ equation \eqref{eq:poly-Y1} as
+\[
+U+T=0
+\]
+where
+\[
+\begin{aligned}
+U&:=(v_1v_{16}-v_2v_{15})+(v_3v_{18}-v_4v_{17})+(v_5v_{20}-v_6v_{19})+(v_7v_{22}-v_8v_{21}),\\
+T&:=(v_9v_{24}-v_{10}v_{23})+(v_{11}v_{26}-v_{12}v_{25})+(v_{13}v_{28}-v_{14}v_{27}).
+\end{aligned}
+\]
+Under the gauge consequences above ($v_{10}=v_{12}=v_{13}=v_{23}=v_{25}=v_{28}=0$), this simplifies to
+\[
+T=v_9v_{24}+v_{11}v_{26}-v_{14}v_{27}.
+\]
+Now use \eqref{eq:poly-e2-z0} and \eqref{eq:poly-e3-z0} in the gauge:
+\[
+\eqref{eq:poly-e2-z0}:\quad v_{11}v_{27}+v_{14}v_{26}=0
+\ \Longrightarrow\ 
+v_{26}=-\frac{v_{11}v_{27}}{v_{14}},
+\qquad
+\eqref{eq:poly-e3-z0}:\quad v_{9}v_{27}+v_{14}v_{24}=0
+\ \Longrightarrow\ 
+v_{24}=-\frac{v_{9}v_{27}}{v_{14}},
+\]
+where division by $v_{14}$ is valid by \eqref{eq:v14-nonzero}.
+Substituting into $T$ gives the \emph{exact} identity
+\[
+T=-\frac{v_{27}}{v_{14}}\,(v_9^2+v_{11}^2+v_{14}^2),
+\]
+hence
+\begin{equation}
+\label{eq:T-exact-v}
+|T|=\frac{|v_{27}|}{|v_{14}|}\,(v_9^2+v_{11}^2+v_{14}^2).
+\end{equation}
+Rewrite in terms of $p$'s under the gauge:
+\[
+|v_{27}|=\sqrt{p_{13}},\quad |v_{14}|=\sqrt{p_6},\quad v_9^2=p_4,\quad v_{11}^2=p_5,\quad v_{14}^2=p_6,
+\]
+so \eqref{eq:T-exact-v} becomes
+\[
+|T|=\frac{\sqrt{p_{13}}}{\sqrt{p_6}}\,(p_4+p_5+p_6).
+\]
+Using \eqref{eq:linearized-v}, $p_4=p_5=\frac35 p_6$, so $p_4+p_5+p_6=\frac{11}{5}p_6$, and therefore
+\begin{equation}
+\label{eq:T-sqrt-v}
+|T|=\frac{11}{5}\sqrt{p_6p_{13}}.
+\end{equation}
+With \eqref{eq:bounds-v}, $\sqrt{p_6p_{13}}\ge \frac{15}{176}$, hence
+\begin{equation}
+\label{eq:T-lower-v}
+|T|\ge \frac{11}{5}\cdot \frac{15}{176}=\frac{3}{16}.
+\end{equation}
 
-\paragraph{(vi) $x=e_3+e_4$, $C(e_3{+}e_4)=\{0010110,0110001,1010110,1110001\}$.}
-For $z\subseteq\{e_3,e_4\}$,
-\begin{align}
-(-1)^{z\cdot 0010110}\overline{c_{0001110}}c_{1101001}
-&+(-1)^{z\cdot 0110001}\overline{c_{0101001}}c_{1001110}\nonumber\\
-&+(-1)^{z\cdot 1010110}\overline{c_{1001110}}c_{0101001}
-+(-1)^{z\cdot 1110001}\overline{c_{1101001}}c_{0001110}=0.
-\label{eq:offdiag-e3e4}
-\end{align}
+\paragraph{Step 9: A uniform upper bound for $|U|$.}
+Each summand of $U$ has the form $ad-bc$ and satisfies
+\[
+|ad-bc|\le \sqrt{(a^2+b^2)(c^2+d^2)}\le \frac{(a^2+b^2)+(c^2+d^2)}{2}.
+\]
+Apply this to the four pairs $(v_1,v_2)$ with $(v_{15},v_{16})$, $(v_3,v_4)$ with $(v_{17},v_{18})$, etc.
+Using the pair sums \eqref{eq:pairsums-short}:
+\[
+p_0+p_7=\frac{1}{16},\quad p_1+p_8=\frac{1}{16},\quad p_2+p_9=\frac{1}{16},\quad p_3+p_{10}=\frac18,
+\]
+we obtain
+\[
+|v_1v_{16}-v_2v_{15}|\le \frac{p_0+p_7}{2}=\frac{1}{32},\quad
+|v_3v_{18}-v_4v_{17}|\le \frac{1}{32},\quad
+|v_5v_{20}-v_6v_{19}|\le \frac{1}{32},\quad
+|v_7v_{22}-v_8v_{21}|\le \frac{1}{16}.
+\]
+By the triangle inequality,
+\begin{equation}
+\label{eq:U-upper-v}
+|U|\le \frac{1}{32}+\frac{1}{32}+\frac{1}{32}+\frac{1}{16}=\frac{5}{32}.
+\end{equation}
 
-\paragraph{(vii) $x=e_4+e_5$, $C(e_4{+}e_5)=\{0001001,0111010,1001001,1111010\}$.}
-For $z\subseteq\{e_4,e_5\}$,
-\begin{align}
-(-1)^{z\cdot 0001001}\overline{c_{0000101}}c_{1110110}
-&+(-1)^{z\cdot 0111010}\overline{c_{0110110}}c_{1000101}\nonumber\\
-&+(-1)^{z\cdot 1001001}\overline{c_{1000101}}c_{0110110}
-+(-1)^{z\cdot 1111010}\overline{c_{1110110}}c_{0000101}=0.
-\label{eq:offdiag-e4e5}
-\end{align}
+\paragraph{Step 10: Contradiction.}
+From $U+T=0$ we have $|T|=|U|$.
+But \eqref{eq:T-lower-v} gives $|T|\ge \frac{3}{16}=\frac{6}{32}$ while \eqref{eq:U-upper-v} gives $|U|\le \frac{5}{32}$.
+This is impossible. Hence no real solution to \eqref{eq:poly-norm}--\eqref{eq:poly-e1e3-ze1} exists.
+\end{proof}
 
-\paragraph{(viii) $x=e_4+e_6$, $C(e_4{+}e_6)=\{0001001,0111100,1001001,1111100\}$.}
-For $z\subseteq\{e_4,e_6\}$,
-\begin{align}
-(-1)^{z\cdot 0001001}\overline{c_{0000011}}c_{1110110}
-&+(-1)^{z\cdot 0111100}\overline{c_{0110110}}c_{1000011}\nonumber\\
-&+(-1)^{z\cdot 1001001}\overline{c_{1000011}}c_{0110110}
-+(-1)^{z\cdot 1111100}\overline{c_{1110110}}c_{0000011}=0.
-\label{eq:offdiag-e4e6}
-\end{align}
+%============================================================
+\subsubsection*{Conclusion: no complementary full-KL solution}
 
-\paragraph{(ix) $x=e_4+e_7$, $C(e_4{+}e_7)=\{0001001,0111111,1001001,1111111\}$.}
-For $z\subseteq\{e_4,e_7\}$,
-\begin{align}
-(-1)^{z\cdot 0001001}\overline{c_{0000000}}c_{1110110}
-&+(-1)^{z\cdot 0111111}\overline{c_{0110110}}c_{1000000}\nonumber\\
-&+(-1)^{z\cdot 1001001}\overline{c_{1000000}}c_{0110110}
-+(-1)^{z\cdot 1111111}\overline{c_{1110110}}c_{0000000}=0.
-\label{eq:offdiag-e4e7}
-\end{align}
-
-This completes the explicit list of all non-automatic off-diagonal constraints.
-
-%------------------------------------------------------------
-\subsubsection*{Analytic no-go for full KL (replacing numerical evidence)}
-\begin{theorem}[No complementary full--KL solution for $\vec a=(0,1,1,2,3,3,5)$]
-\label{thm:nogo-a0112335}
+\begin{corollary}[No complementary full--KL solution for $\vec a=(0,1,1,2,3,3,5)$]
+\label{cor:nogo-fullKL-a0112335}
 There is no choice of amplitudes $(c_s)_{s\in S_0}$ such that
 \[
 \ket{0_L}=\sum_{s\in S_0} c_s\ket{s},\qquad
 \ket{1_L}=X^{\otimes 7}\ket{0_L},
 \]
 satisfies the full Knill--Laflamme conditions for all Pauli operators $P(x,z)$ of weight $\le 2$.
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
-We use only (a) the diagonal $Z_i$ constraints \eqref{eq:Zi-explicit} and (b) eight carefully chosen off-diagonal constraints from
-\eqref{eq:offdiag-e2} and \eqref{eq:offdiag-e3}.
-
-\paragraph{Step 1: a $4\times 4$ Hadamard trick forces products to vanish.}
-From \eqref{eq:offdiag-e2} (i.e.\ $x=e_2$), pick the four weight$\le 2$ Paulis
-\[
-X_2,\qquad X_2Z_1,\qquad X_2Z_3,\qquad X_2Z_4,
-\]
-corresponding to $z=0,e_1,e_3,e_4$.
-Define
-\[
-u_1:=\overline{c_{0101001}}c_{1110110},\quad
-u_2:=\overline{c_{0110110}}c_{1101001},\quad
-u_3:=\overline{c_{1101001}}c_{0110110},\quad
-u_4:=\overline{c_{1110110}}c_{0101001}.
-\]
-For $z\in\{0,e_1,e_3,e_4\}$ the sign patterns $((-1)^{z\cdot s})_{s\in C(e_2)}$ form the $4\times 4$ Hadamard matrix,
-so the four KL equations are exactly
-\[
-\begin{aligned}
-u_1+u_2+u_3+u_4&=0,\\
-u_1+u_2-u_3-u_4&=0,\\
-u_1-u_2+u_3-u_4&=0,\\
--u_1+u_2-u_3+u_4&=0.
-\end{aligned}
-\]
-This system is invertible over $\mathbb C$, hence
-\[
-u_1=u_2=u_3=u_4=0.
-\]
-In particular,
-\begin{equation}
-c_{0101001}\,c_{1110110}=0,\qquad
-c_{0110110}\,c_{1101001}=0.
-\tag{A}\label{eq:A-products}
-\end{equation}
-
-Similarly, from \eqref{eq:offdiag-e3} (i.e.\ $x=e_3$), pick
-\[
-X_3,\qquad X_3Z_1,\qquad X_3Z_2,\qquad X_3Z_4,
-\]
-corresponding to $z=0,e_1,e_2,e_4$. The same Hadamard argument yields
-\begin{equation}
-c_{0011001}\,c_{1110110}=0,\qquad
-c_{0110110}\,c_{1011001}=0.
-\tag{B}\label{eq:B-products}
-\end{equation}
-
-\paragraph{Step 2: translate to forced zeros in probabilities.}
-Let $p_s:=|c_s|^2\ge 0$ with $\sum_{s\in S_0}p_s=1$.
-From \eqref{eq:A-products}--\eqref{eq:B-products} we obtain:
-\begin{itemize}
-\item either $p_{1110110}=0$, or else $p_{0101001}=p_{0011001}=0$;
-\item either $p_{0110110}=0$, or else $p_{1101001}=p_{1011001}=0$.
-\end{itemize}
-
-Now solve the linear system given by the seven $Z_i$ constraints \eqref{eq:Zi-explicit} together with normalization.
-A convenient parametrization is
-\begin{align}
-p_{0000000}&=p_{1000011}+p_{1000101}+p_{1001110}+p_{1011001}+p_{1101001}+p_{1110110}-\frac{7}{16},\nonumber\\
-p_{0000011}&=\frac{1}{16}-p_{1000011},\qquad
-p_{0000101}=\frac{1}{16}-p_{1000101},\qquad
-p_{0001110}=\frac{1}{8}-p_{1001110},\nonumber\\
-p_{0011001}&=\frac{3}{16}-p_{1011001},\qquad
-p_{0101001}=\frac{3}{16}-p_{1101001},\qquad
-p_{0110110}=\frac{5}{16}-p_{1110110},\nonumber\\
-p_{1000000}&=\frac12-\bigl(p_{1000011}+p_{1000101}+p_{1001110}+p_{1011001}+p_{1101001}+p_{1110110}\bigr),
-\label{eq:Z-soln}
-\end{align}
-with the six variables
-$p_{1000011},p_{1000101},p_{1001110},p_{1011001},p_{1101001},p_{1110110}$
-free (subject only to $p_s\ge 0$).
-
-We now split into two cases.
-
-\smallskip
-\noindent\emph{Case 1: $p_{1110110}=0$.}
-Then \eqref{eq:Z-soln} implies $p_{0110110}=\frac{5}{16}>0$, hence $c_{0110110}\neq 0$.
-By \eqref{eq:A-products}--\eqref{eq:B-products} this forces $c_{1101001}=c_{1011001}=0$, i.e.\ $p_{1101001}=p_{1011001}=0$.
-Then \eqref{eq:Z-soln} reduces
-\[
-p_{0000000}=p_{1000011}+p_{1000101}+p_{1001110}-\frac{7}{16}.
-\]
-But nonnegativity of
-\[
-p_{0000011}=\frac{1}{16}-p_{1000011}\ge0,\quad
-p_{0000101}=\frac{1}{16}-p_{1000101}\ge0,\quad
-p_{0001110}=\frac{1}{8}-p_{1001110}\ge0
-\]
-implies
-\[
-p_{1000011}\le\frac{1}{16},\quad p_{1000101}\le\frac{1}{16},\quad p_{1001110}\le\frac{1}{8}.
-\]
-Hence
-\[
-p_{0000000}\le \frac{1}{16}+\frac{1}{16}+\frac{1}{8}-\frac{7}{16}
-= -\frac{3}{16}<0,
-\]
-contradiction.
-
-\smallskip
-\noindent\emph{Case 2: $p_{1110110}>0$.}
-Then \eqref{eq:A-products}--\eqref{eq:B-products} force $p_{0011001}=p_{0101001}=0$.
-From \eqref{eq:Z-soln} we obtain $p_{1011001}=\frac{3}{16}$ and $p_{1101001}=\frac{3}{16}$, so both are positive.
-Then \eqref{eq:A-products}--\eqref{eq:B-products} force $p_{0110110}=0$, hence by \eqref{eq:Z-soln} we get $p_{1110110}=\frac{5}{16}$.
-Now \eqref{eq:Z-soln} gives
-\[
-\begin{aligned}
-p_{1000000}
-&=\frac12-\Bigl(p_{1000011}+p_{1000101}+p_{1001110}+\frac{3}{16}+\frac{3}{16}+\frac{5}{16}\Bigr)\\
-&=-\frac{3}{16}-\bigl(p_{1000011}+p_{1000101}+p_{1001110}\bigr)<0,
-\end{aligned}
-\]
-again a contradiction.
-
-\smallskip
-Both cases contradict $p_s\ge 0$. Therefore no complementary state supported on $S_0$ can satisfy full KL for all weight$\le 2$ Paulis.
+Any full-KL complementary solution must satisfy the KL constraints for each of the specific weight-$\le2$ Paulis
+used to derive \eqref{eq:poly-norm}--\eqref{eq:poly-e1e3-ze1}; hence it would give a real solution
+to the $19$ quadratic equations. This contradicts Theorem~\ref{thm:no-solution-19eq}.
 \end{proof}
-
-\begin{remark}
-The contradiction uses only:
-(i) the $Z_i$ diagonal KL constraints, and
-(ii) eight off-diagonal KL constraints (four from $x=e_2$ and four from $x=e_3$ chosen to yield Hadamard sign patterns).
-All other non-automatic equations listed above are unnecessary for the no-go.
-\end{remark}
 
 
 \end{document}
