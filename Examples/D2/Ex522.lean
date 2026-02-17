@@ -1,10 +1,11 @@
 import SS
 import Mathlib.Tactic  -- `native_decide`
 
-namespace SS
+namespace Examples.D2.Ex522
 
 open scoped BigOperators
-open Verify
+open SS
+open SS.Verify
 
 section WorkedExample_5_2_2
 
@@ -87,4 +88,4 @@ theorem ex522_ok : ex522.OK := by
 
 end WorkedExample_5_2_2
 
-end SS
+end Examples.D2.Ex522
