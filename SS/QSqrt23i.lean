@@ -9,9 +9,10 @@ An element of ℚ(√2, √3, i) is represented as an 8-tuple of rationals:
 
 where aₖ, bₖ ∈ ℚ.
 
-This field is large enough for all BD₁₆ (m = 8) transversal T-gate codes,
-since the 8th roots of unity involve √2 and i, and the analytical solutions
-in BD16_distance3.tex have amplitudes in ℚ(√2, √3, i).
+This field is large enough for many BD₁₆ (m = 8) transversal T-gate codes,
+since the 8th roots of unity involve √2 and i.
+Some distance-3 BD16 examples also involve √5 (via √10); those are handled
+in `SS.QSqrt235i`.
 
 The module provides computable ring operations and decidable equality, enabling
 `native_decide` verification of Knill–Laflamme matrix element identities.

@@ -6,3 +6,7 @@ import Examples.D3.BD16v3c
 import Examples.D3.BD16v4
 import Examples.D3.BD16v5
 import Examples.D3.BD16v6a
+import Examples.D3.BD16v7
+import Examples.D3.BD16v8
+import Examples.D3.BD16v9
+import Examples.D3.BD16v10

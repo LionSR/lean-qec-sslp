@@ -11,13 +11,15 @@ All BD16 codes share:
 - `n = 7` qubits, `m = 8`, `K = 2` logical states
 - Residues `(b₀, b₁) = (0, 7)` (since ∑aᵢ ≡ 7 mod 8 for all vectors)
 - Complementary convention: `|1_L⟩ = X^⊗7 |0_L⟩`
-- Amplitudes in ℚ(√2, √3, i) (for most vectors)
+
+For full distance-3 verification (Layer 2), we work over the exact number field
+`ℚ(√2, √3, √5, i)` implemented as `SS.QSqrt235i`.
 
 Each concrete example supplies:
 - Angle vector `a : Fin 7 → ZMod 8`
 - Support `T : Finset (BitString 7)` (support of |0_L⟩)
 - Probabilities `p : BitString 7 → ℚ` (|cₛ|² for each s ∈ T)
-- Amplitudes `c : BitString 7 → QSqrt23i` (exact complex amplitudes)
+- Amplitudes `c : BitString 7 → QSqrt235i` (exact complex amplitudes)
 -/
 
 namespace SS
@@ -34,8 +36,8 @@ structure BD16Code where
   supp : Finset (BitString 7)
   /-- Probability distribution (|cₛ|²) on the support. -/
   prob : BitString 7 → ℚ
-  /-- Exact amplitudes in ℚ(√2, √3, i). -/
-  amp : BitString 7 → QSqrt23i
+  /-- Exact amplitudes in ℚ(√2, √3, √5, i). -/
+  amp : BitString 7 → QSqrt235i
 
 /-- Extract the Layer 1 (combinatorial) data from a BD16 code. -/
 def BD16Code.toD3Data (code : BD16Code) : Distance3Data 7 8 where
@@ -79,34 +81,46 @@ def bs (b₀ b₁ b₂ b₃ b₄ b₅ b₆ : Bool) : BitString 7 :=
 -- Common shorthands for writing amplitudes
 namespace Amp
 
-open QSqrt23i
+open QSqrt23i QSqrt235i
 
 /-- Rational amplitude: q (real, no surds). -/
-def rat (q : ℚ) : QSqrt23i := ofRat q
+def rat (q : ℚ) : QSqrt235i := QSqrt235i.ofRat q
 
 /-- √2 · q -/
-def r2 (q : ℚ) : QSqrt23i := ⟨0, q, 0, 0, 0, 0, 0, 0⟩
+def r2 (q : ℚ) : QSqrt235i := ⟨⟨0, q, 0, 0, 0, 0, 0, 0⟩, 0⟩
 
 /-- √3 · q -/
-def r3 (q : ℚ) : QSqrt23i := ⟨0, 0, q, 0, 0, 0, 0, 0⟩
+def r3 (q : ℚ) : QSqrt235i := ⟨⟨0, 0, q, 0, 0, 0, 0, 0⟩, 0⟩
 
 /-- √6 · q -/
-def r6 (q : ℚ) : QSqrt23i := ⟨0, 0, 0, q, 0, 0, 0, 0⟩
+def r6 (q : ℚ) : QSqrt235i := ⟨⟨0, 0, 0, q, 0, 0, 0, 0⟩, 0⟩
+
+/-- √5 · q -/
+def r5 (q : ℚ) : QSqrt235i := ⟨0, QSqrt23i.ofRat q⟩
+
+/-- √10 · q -/
+def r10 (q : ℚ) : QSqrt235i := ⟨0, ⟨0, q, 0, 0, 0, 0, 0, 0⟩⟩
 
 /-- i · q -/
-def im (q : ℚ) : QSqrt23i := ⟨0, 0, 0, 0, q, 0, 0, 0⟩
+def im (q : ℚ) : QSqrt235i := ⟨⟨0, 0, 0, 0, q, 0, 0, 0⟩, 0⟩
 
 /-- i√2 · q -/
-def ir2 (q : ℚ) : QSqrt23i := ⟨0, 0, 0, 0, 0, q, 0, 0⟩
+def ir2 (q : ℚ) : QSqrt235i := ⟨⟨0, 0, 0, 0, 0, q, 0, 0⟩, 0⟩
 
 /-- i√3 · q -/
-def ir3 (q : ℚ) : QSqrt23i := ⟨0, 0, 0, 0, 0, 0, q, 0⟩
+def ir3 (q : ℚ) : QSqrt235i := ⟨⟨0, 0, 0, 0, 0, 0, q, 0⟩, 0⟩
 
 /-- i√6 · q -/
-def ir6 (q : ℚ) : QSqrt23i := ⟨0, 0, 0, 0, 0, 0, 0, q⟩
+def ir6 (q : ℚ) : QSqrt235i := ⟨⟨0, 0, 0, 0, 0, 0, 0, q⟩, 0⟩
+
+/-- i√5 · q -/
+def ir5 (q : ℚ) : QSqrt235i := ⟨0, ⟨0, 0, 0, 0, q, 0, 0, 0⟩⟩
+
+/-- i√10 · q -/
+def ir10 (q : ℚ) : QSqrt235i := ⟨0, ⟨0, 0, 0, 0, 0, q, 0, 0⟩⟩
 
 /-- Zero amplitude (for non-support strings). -/
-def z : QSqrt23i := QSqrt23i.zero
+def z : QSqrt235i := 0
 
 end Amp
 
