@@ -85,9 +85,9 @@
   belowskip=4pt,
   breaklines=true,
   columns=fullflexible,
-  literate={→}{{$\to$}}1 {∀}{{$\forall$}}1 {∈}{{$\in$}}1 {≤}{{$\leq$}}1
-           {≥}{{$\geq$}}1 {≠}{{$\neq$}}1 {∑}{{$\sum$}}1 {ψ}{{$\psi$}}1
-           {₀}{{$_0$}}1 {₁}{{$_1$}}1 {ℚ}{{$\mathbb{Q}$}}1
+  literate={→}{{$\to$}}1 {∀}{{$\forall$}}1 {∃}{{$\exists$}}1 {∈}{{$\in$}}1 {≤}{{$\leq$}}1
+           {≥}{{$\geq$}}1 {≠}{{$\neq$}}1 {¬}{{$\neg$}}1 {∑}{{$\sum$}}1 {ψ}{{$\psi$}}1
+           {₀}{{$_0$}}1 {₁}{{$_1$}}1 {ℚ}{{$\mathbb{Q}$}}1 {ℂ}{{$\mathbb{C}$}}1
            {:=}{{$\,:=\,$}}2 {=>}{{$\Rightarrow$}}1,
 }
 
@@ -587,6 +587,7 @@ Formal proof $=$ \textbf{certainty}.
 \code{Pauli.lean}\\
 \code{FullKL.lean}\\
 \code{QSqrt23i.lean}\\
+\code{QSqrt235i.lean}\\
 \code{FullKLEval.lean}\\
 \code{Distance3Verify.lean}\\
 \code{BD16Defs.lean}
@@ -603,9 +604,10 @@ ${\sim}$4,300 lines, ${\sim}$30 modules\\
 \quad\code{Ex622.lean} \textcolor{Slate}{\scriptsize $((6,2,2))$}\\
 \code{Examples/D3/}\\
 \quad\code{BD16v1.lean} \textcolor{Slate}{\scriptsize through}\\
-\quad\code{BD16v6a.lean} \textcolor{Slate}{\scriptsize (8 codes)}\\
+\quad\code{BD16v10.lean} \textcolor{Slate}{\scriptsize (12 instances)}\\
+\quad\code{NoGo/} \textcolor{Slate}{\scriptsize (2 no-go proofs)}\\
 {\small\textbf{Build}}\\
-3,091 jobs\\
+3,092 jobs\\
 \textcolor{Sage}{\textbf{0 errors $\cdot$ 0 warnings}}
 \end{columns}
 \end{frame}
@@ -710,8 +712,8 @@ $\Rightarrow$ sum is empty $\Rightarrow 0$.
 \column{0.31\textwidth}
 \textbf{2. Exact number field.}
 
-Amplitudes in $\QQ(\sqrt{2},\sqrt{3},i)$\\
-$=$ 8 rational coefficients.
+Amplitudes in $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$\\
+$=$ 16 rational coefficients.
 
 \code{DecidableEq}, no floats.
 
@@ -796,7 +798,7 @@ After intersection test, the surviving constraints form a
 \item Given $S_0$, probabilities, constraint eqns
 \item Exploits symmetries, groups terms
 \item Returns \textbf{closed-form} amplitudes
-  in $\QQ(\sqrt{2},\sqrt{3},i)$
+  in $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$
 \end{itemize}
 \end{columns}
 
@@ -819,19 +821,17 @@ After intersection test, the surviving constraints form a
 % =====================================================================
 % Slide: Exact Arithmetic
 % =====================================================================
-\begin{frame}{Exact Arithmetic in $\QQ(\sqrt{2},\sqrt{3},\,i)$}
+\begin{frame}{Exact Arithmetic in $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},\,i)$}
 
 $m{=}8 \Rightarrow \omega_8 = \tfrac{1+i}{\sqrt{2}}$.\;
-Amplitudes involve $\sqrt{2}$, $\sqrt{3}$ from normalization.
+Amplitudes involve $\sqrt{2}$, $\sqrt{3}$ from normalization,
+and $\sqrt{5}$ appears in remaining BD$_{16}$ solutions (via $\sqrt{10}$).
 
 \begin{columns}[T]
 \column{0.48\textwidth}
-\begin{block}{Representation (\code{QSqrt23i})}
-Each element $= (q_0,\ldots,q_7)\in\QQ^8$:
-{\small\[
-  (q_0 {+} q_1\sqrt{2} {+} q_2\sqrt{3} {+} q_3\sqrt{6})
-  + (\cdots)\,i
-\]}
+\begin{block}{Representation (\code{QSqrt235i})}
+Each element is $u + v\sqrt{5}$ with $u,v \in \QQ(\sqrt{2},\sqrt{3},i)$\\
+(16 rational coefficients total).
 \end{block}
 
 Multiplication closed.\\
@@ -871,7 +871,7 @@ In Lean: $c_1 = (0,0,\tfrac{1}{4},0,\;0,0,0,0)$\;\chk
      SS $+$ BD angle $+$ normalization $+$
      $Z$-balance: $\sum(-1)^{x_i}p_x = 0\;\forall\,i$};
   \node[lbox, fill=Coral!10] (l2) at (0,-2.4)
-    {\textbf{Layer 2} \textcolor{Slate}{(amplitude-level, on $c_x \in \QQ(\sqrt{2},\sqrt{3},i)$)}\\[2pt]
+    {\textbf{Layer 2} \textcolor{Slate}{(amplitude-level, on $c_x \in \QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$)}\\[2pt]
      All weight-${\leq}\,2$ KL matrix elements $= 0$\\
      (non-automatic only; rest filtered by intersection test)};
 
@@ -941,36 +941,56 @@ All 25 $= 0$ & \leanproof \\
 \end{frame}
 
 % =====================================================================
-% Slide: All 8 BD16 Codes
+% Slide: Verified BD16 Instances (distance 3)
 % =====================================================================
-\begin{frame}{8 Verified BD16 $((7,2,3))$ Codes in Lean}
+\begin{frame}{12 Verified BD16 $((7,2,3))$ Instances in Lean}
 
-All codes: $n{=}7$, $K{=}2$, $m{=}8$ (transversal $T$), 
-verified \code{Layer1OK} $+$ \code{AllKLSatisfied}.
+All instances: $n{=}7$, $K{=}2$, $m{=}8$ (transversal $T$),
+verified \code{Layer1OK} $+$ \code{AllKLSatisfied} (weight-${\leq}\,2$).
 
 \vspace{0.2em}
+\begin{columns}[T]
+\column{0.49\textwidth}
 \begin{center}
-{\footnotesize
-\begin{tabular}{@{}llccll@{}}
+{\scriptsize
+\begin{tabular}{@{}lll@{}}
 \toprule
-\textbf{File} & \textbf{Angle vector $\mathbf{a}$} & $|S_0|$ & $\lambda^*$ & \textbf{Solution type} & \textbf{Status} \\
+\textbf{File} & \textbf{$\mathbf{a}$} & \textbf{Lean} \\
 \midrule
-\code{BD16v1}  & $(1,2,2,2,2,3,3)$ & 7  & $\sqrt{21/8}$ & 2-param continuous  & \leanproof \\
-\code{BD16v2}  & $(1,1,2,2,2,2,5)$ & 10 & $\sqrt{33}/4$ & 192-elt discrete & \leanproof \\
-\code{BD16v3a} & $(0,1,2,2,3,3,4)$ & 7  & $\sqrt{51}/4$ & Solution A (of 3)   & \leanproof \\
-\code{BD16v3b} & $(0,1,2,2,3,3,4)$ & 8  & $\sqrt{23}/4$ & Solution B (of 3)   & \leanproof \\
-\code{BD16v3c} & $(0,1,2,2,3,3,4)$ & 8  & $\sqrt{30}/4$ & Solution C (of 3)   & \leanproof \\
-\code{BD16v4}  & $(1,1,1,1,3,3,5)$ & 13 & $\sqrt{177}/8$ & continuous          & \leanproof \\
-\code{BD16v5}  & $(1,1,1,1,3,4,4)$ & 12 & $\sqrt{62}/4$ & 128-elt discrete & \leanproof \\
-\code{BD16v6a} & $(1,1,1,2,2,4,4)$ & 16 & $1$           & uniform magnitude   & \leanproof \\
+\code{BD16v1}  & $(1,2,2,2,2,3,3)$ & \chk \\
+\code{BD16v2}  & $(1,1,2,2,2,2,5)$ & \chk \\
+\code{BD16v3a} & $(0,1,2,2,3,3,4)$ & \chk \\
+\code{BD16v3b} & $(0,1,2,2,3,3,4)$ & \chk \\
+\code{BD16v3c} & $(0,1,2,2,3,3,4)$ & \chk \\
+\code{BD16v4}  & $(1,1,1,1,3,3,5)$ & \chk \\
 \bottomrule
 \end{tabular}
 }
 \end{center}
 
+\column{0.49\textwidth}
+\begin{center}
+{\scriptsize
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{File} & \textbf{$\mathbf{a}$} & \textbf{Lean} \\
+\midrule
+\code{BD16v5}   & $(1,1,1,1,3,4,4)$ & \chk \\
+\code{BD16v6a}  & $(1,1,1,2,2,4,4)$ & \chk \\
+\code{BD16v7}   & $(1,1,2,2,2,3,4)$ & \chk \\
+\code{BD16v8}   & $(1,1,2,2,3,3,3)$ & \chk \\
+\code{BD16v9}   & $(1,1,1,2,3,3,4)$ & \chk \\
+\code{BD16v10}  & $(1,1,1,2,2,3,5)$ & \chk \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+\end{columns}
+
+\vspace{-0.3em}
 \textcolor{Slate}{\small
-Remaining: 3 vectors need $\sqrt{5}/\sqrt{10}$ field extension; 2 proven impossible.
-12 vectors total $\Rightarrow$ 10 feasible, 6 verified in Lean (8 distinct codes).
+These 12 Lean files cover all 10 feasible BD16 angle vectors
+(\code{v3} has three isolated solutions). Continuous families are verified at fixed representative parameters.
 }
 \end{frame}
 
@@ -1047,6 +1067,203 @@ $(0,1,1,2,3,3,5)$ & 14 & 78  & \multicolumn{2}{l}{\textcolor{Coral}{proven infea
 \vspace{-0.7em}
 \textcolor{Slate}{\scriptsize $|S_0|$, non-auto from Lean \code{\#eval}.\;
 10 feasible, all 10 in Lean (exact arithmetic in $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$).}
+\end{frame}
+
+% =====================================================================
+% Slide: Lean no-go proofs (overview)
+% =====================================================================
+\begin{frame}[fragile]{Lean No-Go Proofs for the Remaining 2 BD$_{16}$ Vectors}
+
+Two angle vectors pass SS--LP but admit \alert{no} complementary full-KL solution.
+We formalize \textbf{infeasibility} by proving a small KL subsystem already contradicts.
+
+\begin{columns}[T]
+\column{0.55\textwidth}
+\begin{itemize}\setlength\itemsep{2pt}
+\item Work under $\ket{1_L}=X^{\otimes 7}\ket{0_L}$ and amplitudes $c_s\in\CC$.
+\item Prove \textbf{non-existence} statements (not just numerical optimization).
+\item Split the job:
+  \begin{enumerate}\setlength\itemsep{0pt}
+  \item KL subsystem $\Rightarrow$ explicit polynomial equations
+  \item equations $\Rightarrow$ contradiction by algebra/inequalities
+  \end{enumerate}
+\end{itemize}
+
+\begin{exampleblock}{Lean files}
+\code{Examples/D3/NoGo/BD16\_1112226.lean}\\
+\code{Examples/D3/NoGo/BD16\_0112335.lean}
+\end{exampleblock}
+
+\column{0.43\textwidth}
+\begin{lstlisting}[style=lean,basicstyle=\ttfamily\scriptsize]
+-- Sec 16
+ theorem no_solution :
+   Not (Exists fun c : Fin 10 -> Complex => System c) := ...
+
+-- Sec 17.6
+ theorem no_KLSubsys :
+   Not (Exists fun c : Fin 14 -> Complex => KLSubsys c) := ...
+\end{lstlisting}
+\end{columns}
+
+\textcolor{Slate}{\small No floating point, no axioms, no \code{sorry}. (All proofs in $\CC$ = \code{Complex}.)}
+\end{frame}
+
+% =====================================================================
+% Slide: No-go 1112226
+% =====================================================================
+\begin{frame}{No-go \#1: $\mathbf{a}=(1,1,1,2,2,2,6)$ (Sec.~16)}
+
+\begin{columns}[T]
+\column{0.52\textwidth}
+\begin{block}{A tiny KL subsystem suffices}
+Unknowns: $c_0,\dots,c_9\in\CC$ on a $|S_0|=10$ residue support.
+
+Subsystem: \textbf{17 equations} = norm $+$ 7 diagonal ($Z_i$) $+$ 9 off-diagonal.
+\end{block}
+
+\begin{exampleblock}{Step 1: solve the diagonal system}
+Let $p_k:=|c_k|^2$ and set $u:=p_7$, $v:=p_9$. The diagonal equations force
+{\small
+\[
+p_0=p_1=p_2=p_3=\tfrac{1}{16},\quad
+p_6=\tfrac14-u,\; p_8=\tfrac14-v,\;
+p_4=u+v-\tfrac{3}{16},\;
+p_5=\tfrac{7}{16}-u-v.
+\]
+}
+\end{exampleblock}
+
+\column{0.46\textwidth}
+\begin{alertblock}{Step 2: phase-gauge contradiction}
+Off-diagonal equations imply three product relations, e.g.
+{\small\[
+\overline b\,a = -\overline d\,c,\qquad
+\Im(\overline b\,a)=0.
+\]}
+These force $a,b,c,d,e,f \neq 0$.
+
+Global phase invariance lets us fix a gauge with $b\in\mathbb{R}_{>0}$.
+Then all six special amplitudes become real, and the subsystem reduces to
+an inconsistent real algebraic system.
+\end{alertblock}
+
+\textcolor{Slate}{\small Lean: \code{Examples/D3/NoGo/BD16\_1112226.lean}.}
+\end{columns}
+\end{frame}
+
+% =====================================================================
+% Slide: No-go 0112335 (19 equations)
+% =====================================================================
+\begin{frame}{No-go \#2: $\mathbf{a}=(0,1,1,2,3,3,5)$ --- 19 quadratic equations}
+
+Here $|S_0|=14$. We encode a sufficient KL subsystem as \textbf{19 explicit equations}
+(E1)--(E19) in $c_0,\dots,c_{13}\in\CC$.
+
+\begin{columns}[T]
+\column{0.52\textwidth}
+\begin{block}{Diagonal part}
+\begin{itemize}\setlength\itemsep{2pt}
+\item (E1) normalization: $\sum_k |c_k|^2 = 1$
+\item (E2)--(E8) seven $Z_i$ constraints
+\item (E9) one $Y_1$ diagonal constraint (imaginary parts)
+\end{itemize}
+\end{block}
+
+\column{0.46\textwidth}
+\begin{alertblock}{Off-diagonal part}
+\begin{itemize}\setlength\itemsep{2pt}
+\item (E10)--(E12): $X_2$, $X_2Z_1$, $X_2Z_3$
+\item (E13)--(E15): $X_3$, $X_3Z_1$, $X_3Z_2$
+\item (E16)--(E17): $X_1X_2$, $X_1X_2Z_1$
+\item (E18)--(E19): $X_1X_3$, $X_1X_3Z_1$
+\end{itemize}
+\end{alertblock}
+\end{columns}
+
+\textcolor{Slate}{\small Lean: \code{Examples/D3/NoGo/BD16\_0112335\_Equations.lean} proves \code{System.no\_solution}.}
+\end{frame}
+
+% =====================================================================
+% Slide: KL ⇒ equations (formalization)
+% =====================================================================
+\begin{frame}[fragile]{Formalizing the missing step: KL $\Rightarrow$ (E1)--(E19)}
+
+We do \emph{not} assume (E1)--(E19) magically: we derive them from a KL subsystem
+on the explicit SS support $S_0$.
+
+\begin{columns}[T]
+\column{0.54\textwidth}
+\begin{block}{Mechanization idea}
+\begin{itemize}\setlength\itemsep{1pt}
+\item Hard part in Lean is bookkeeping: which pairs $(x,x\oplus z_P)$ contribute?
+\item We precompute intersections like $S_0\cap(S_0\oplus z_P)$ by \code{native\_decide}
+and register them as simp lemmas.
+\item Then each KL matrix element reduces to a short explicit sum in the $c_k$.
+\end{itemize}
+\end{block}
+
+\column{0.44\textwidth}
+\begin{lstlisting}[style=lean,basicstyle=\ttfamily\scriptsize]
+structure KLSubsys (c : Fin 14 -> Complex) : Prop where
+  norm : ...
+  z1   : diagMatElt S0 (coeff c) b0 e1 = 0
+  ...
+  x13_ze1 : offdiagMatElt S0 (coeff c) x13 e1 = 0
+
+theorem KLSubsys.toSystem (h : KLSubsys c) :
+  System c := by
+  -- simp + linarith
+\end{lstlisting}
+\end{columns}
+
+\textcolor{Slate}{\small Lean: \code{Examples/D3/NoGo/BD16\_0112335\_FromKL.lean}.}
+\end{frame}
+
+% =====================================================================
+% Slide: Core contradiction (bounds)
+% =====================================================================
+\begin{frame}{Core contradiction in the 19-eq no-go (Sec.~17.6)}
+
+From the $Z$-system we get \textbf{pair sums}:
+{\small
+\[
+p_0+p_7=\tfrac{1}{16},\;
+p_1+p_8=\tfrac{1}{16},\;
+p_2+p_9=\tfrac{1}{16},\;
+p_3+p_{10}=\tfrac{1}{8},\;
+p_4+p_{11}=\tfrac{3}{16},\;
+p_5+p_{12}=\tfrac{3}{16},\;
+p_6+p_{13}=\tfrac{5}{16}.
+\]
+}
+
+Off-diagonal equations force $p_{11}=p_{12}=\tfrac35\,p_{13}$ and bounds
+$\tau:=p_{13}\in[\tfrac{15}{176},\,\tfrac{5}{22}]$.
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Split the $Y_1$ equation}
+Write (E9) as $U+T=0$:
+\[
+U:=\sum_{k=0}^3 \Im(\overline{c_k}c_{k+7}),\qquad
+T:=\sum_{k=4}^6 \Im(\overline{c_k}c_{k+7}).
+\]
+\end{block}
+
+\column{0.48\textwidth}
+\begin{alertblock}{Upper vs lower bounds}
+Using
+\[
+|\Im(\overline{x}y)| \le \frac{\|x\|^2+\|y\|^2}{2},
+\]
+pair sums give $|U|\le \tfrac{5}{32}$.
+
+But $\tau\ge \tfrac{15}{176}$ forces $|T|\ge \tfrac{3}{16}=\tfrac{6}{32}$.
+
+Contradiction: $|T|=|U|$ is impossible.
+\end{alertblock}
+\end{columns}
 \end{frame}
 
 % =====================================================================
@@ -1206,17 +1423,17 @@ ${\sim}$4,300 lines Lean 4,\; 0 \code{sorry}\\
 \begin{itemize}\setlength\itemsep{0pt}
 \item Intersection test filters most of 210 KL
 \item GPT-5.2 $\to$ closed-form amplitudes
-\item Exact arithmetic in $\QQ(\sqrt{2},\sqrt{3},i)$
-\item 8 BD$_{16}$ $((7,2,3))$ codes: first\\
-  machine-checked $d{=}3$ proofs
+\item Exact arithmetic in $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$
+\item All 10 feasible BD$_{16}$ vectors verified; 2 Lean no-go proofs
 \end{itemize}
 \end{block}
-
-\begin{alertblock}{What's next}
-Batch 14K codes\; $\cdot$\; $\QQ(\sqrt{5})$ extension\; $\cdot$\;
-BD$_{12}$--BD$_{36}$\; $\cdot$\; $n{=}8$\; $\cdot$\; 2I/2T/2O
-\end{alertblock}
 \end{columns}
+
+\vspace{0.2em}
+\begin{alertblock}{What's next}
+{\scriptsize Batch 14K codes\; $\cdot$\; distance-3 automation\; $\cdot$\;
+BD$_{12}$--BD$_{36}$\; $\cdot$\; $n{=}8$\; $\cdot$\; 2I/2T/2O}
+\end{alertblock}
 \end{frame}
 
 % =====================================================================

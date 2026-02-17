@@ -42,6 +42,7 @@ _minted*/
 # Generated PDFs for SS writeups
 /SSv*.pdf
 /522example.pdf
+/distance2_talk.pdf
 
 # TeXPad
 .texpadtmp/
