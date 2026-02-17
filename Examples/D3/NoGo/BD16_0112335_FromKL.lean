@@ -2,6 +2,8 @@ import Mathlib
 
 import SS.FullKL  -- combinatorial intersection machinery
 
+import Examples.D3.NoGo.Common
+
 import Examples.D3.NoGo.BD16_0112335_Equations
 
 /-!
@@ -101,37 +103,9 @@ def coeff (c : Fin 14 → ℂ) (s : SS.BitString 7) : ℂ :=
 /-!
 ## KL matrix-element sums over `ℂ`
 
-These are the same intersection-restricted sums as in `SS.FullKLEval`, but evaluated in `ℂ`.
-We drop the global nonzero prefactors (powers of `i` and `(-1)`) since the KL condition is
-"matrix element = 0".
+We use the shared definitions from `Examples.D3.NoGo.Common`:
+`signMul`, `diagTerm`, `diagMatElt`, `offdiagTerm`, `offdiagMatElt`.
 -/
-
-/-- Multiply by the sign `(-1)` if the boolean is `true`. -/
-def signMul (b : Bool) (t : ℂ) : ℂ :=
-  if b then -t else t
-
-@[simp] lemma signMul_true  (t : ℂ) : signMul true t = -t := by simp [signMul]
-@[simp] lemma signMul_false (t : ℂ) : signMul false t = t := by simp [signMul]
-
-/-- One term of the diagonal matrix element:
-`(-1)^{z·s} · conj(c_{s⊕x}) · c_s`. -/
-def diagTerm (c : SS.BitString 7 → ℂ) (x z s : SS.BitString 7) : ℂ :=
-  signMul (SS.bdot z s) (star (c (SS.bxor s x)) * c s)
-
-/-- Diagonal matrix element sum (dropping the nonzero prefactor `i^{x·z}`). -/
-def diagMatElt (S₀ : Finset (SS.BitString 7)) (c : SS.BitString 7 → ℂ)
-    (x z : SS.BitString 7) : ℂ :=
-  ∑ s in SS.diagIntersection S₀ x, diagTerm c x z s
-
-/-- One term of the off-diagonal matrix element:
-`(-1)^{z·s} · conj(c_{s⊕Δ(x)}) · c_s`. -/
-def offdiagTerm (c : SS.BitString 7 → ℂ) (x z s : SS.BitString 7) : ℂ :=
-  signMul (SS.bdot z s) (star (c (SS.bxor s (SS.delta x))) * c s)
-
-/-- Off-diagonal matrix element sum (dropping the nonzero prefactor `i^{x·z}·(-1)^{z·x}`). -/
-def offdiagMatElt (S₀ : Finset (SS.BitString 7)) (c : SS.BitString 7 → ℂ)
-    (x z : SS.BitString 7) : ℂ :=
-  ∑ s in SS.offdiagIntersection S₀ x, offdiagTerm c x z s
 
 /-!
 ## The Pauli bitstrings used in the subsystem
@@ -327,9 +301,7 @@ namespace KLSubsys
 
 variable {c : Fin 14 → ℂ}
 
-/-- Self-product as a real scalar: `conj z * z = ‖z‖^2`. -/
-@[simp] lemma star_mul_self (z : ℂ) : star z * z = (Complex.normSq z : ℂ) := by
-  simpa [Complex.star_def] using (Complex.normSq_eq_conj_mul_self (z := z)).symm
+-- `star_mul_self` is provided by `Examples.D3.NoGo.Common`.
 
 /-- From the KL subsystem, derive the explicit 19-equation system `System` (E1–E19). -/
 theorem toSystem (h : KLSubsys c) : System c := by
