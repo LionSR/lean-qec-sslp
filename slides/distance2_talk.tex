@@ -749,11 +749,11 @@ $x$ and $x \oplus z_P$ are \emph{both} in $S_0$.
 \begin{center}
 \begin{tikzpicture}[
   sset/.style={draw=Navy!50, rounded corners=3pt, minimum width=1.8cm,
-    minimum height=0.9cm, fill=#1},
+    minimum height=0.9cm, fill=Teal!10},
 ]
-  \node[sset=Teal!10] (s0) at (0,0) {};
+  \node[sset] (s0) at (0,0) {};
   \node[above=-1pt] at (s0.north) {\small $S_0$};
-  \node[sset=Teal!10] (s0x) at (3.8,0) {};
+  \node[sset] (s0x) at (3.8,0) {};
   \node[above=-1pt] at (s0x.north) {\small $S_0 \oplus z_P$};
   \draw[fatarr, Coral] (s0.east) -- node[above, font=\small]{$\oplus\; z_P$} (s0x.west);
   \node[font=\small, text=Slate] at (1.9,-0.9) {Disjoint $\Rightarrow$ empty sum $\Rightarrow$ automatically $0$};
@@ -1031,13 +1031,10 @@ $(0,1,2,2,3,3,4)$ & 16 & 68  & 3 isolated solutions & \textcolor{Sage}{Lean \che
 $(1,1,1,1,3,3,5)$ & 13 & 81  & continuous           & \textcolor{Sage}{Lean \checkmark} \\
 $(1,1,1,1,3,4,4)$ & 12 & 85  & 128-elt discrete     & \textcolor{Sage}{Lean \checkmark} \\
 $(1,1,1,2,2,4,4)$ & 16 & 83  & uniform magnitude    & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,2,2,2,3,4)$ & 16 & 83  & phase-only $+$ families & \textcolor{Teal}{analytical \checkmark} \\
-\rowcolor{Amber!10}
-$(1,1,2,2,3,3,3)$ & 16 & 85  & continuous, needs $\sqrt{10}$  & \textcolor{Amber}{pending} \\
-\rowcolor{Amber!10}
-$(1,1,1,2,3,3,4)$ & 16 & 85  & isolated, needs $\sqrt{10}$    & \textcolor{Amber}{pending} \\
-\rowcolor{Amber!10}
-$(1,1,1,2,2,3,5)$ & 14 & 99  & isolated, needs $\sqrt{5}$     & \textcolor{Amber}{pending} \\
+$(1,1,2,2,2,3,4)$ & 16 & 83  & phase-only $+$ families & \textcolor{Sage}{Lean \checkmark} \\
+$(1,1,2,2,3,3,3)$ & 16 & 85  & continuous ($\sqrt{10}$ coeffs)  & \textcolor{Sage}{Lean \checkmark} \\
+$(1,1,1,2,3,3,4)$ & 16 & 85  & isolated ($\sqrt{10}$ coeffs)    & \textcolor{Sage}{Lean \checkmark} \\
+$(1,1,1,2,2,3,5)$ & 14 & 99  & isolated ($\sqrt{5}$ coeffs)     & \textcolor{Sage}{Lean \checkmark} \\
 \rowcolor{Coral!8}
 $(1,1,1,2,2,2,6)$ & 10 & 115 & \multicolumn{2}{l}{\textcolor{Coral}{proven infeasible}} \\
 \rowcolor{Coral!8}
@@ -1049,7 +1046,7 @@ $(0,1,1,2,3,3,5)$ & 14 & 78  & \multicolumn{2}{l}{\textcolor{Coral}{proven infea
 
 \vspace{-0.7em}
 \textcolor{Slate}{\scriptsize $|S_0|$, non-auto from Lean \code{\#eval}.\;
-10 feasible, 6 in Lean; 3 pending need $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$.}
+10 feasible, all 10 in Lean (exact arithmetic in $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$).}
 \end{frame}
 
 % =====================================================================
