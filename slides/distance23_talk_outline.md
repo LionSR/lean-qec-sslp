@@ -1,8 +1,8 @@
-# Distance-2 Presentation Outline — Reference for Presenter Agent
+# Distance-2/3 Presentation Outline — Reference for Presenter Agent
 
 ## Talk Overview
 - **Title**: Formal Verification of Quantum Codes with Transversal Diagonal Gates in Lean 4
-- **Context**: Seminar-style talk (~20 slides) about OUR Lean 4 formalization work
+- **Context**: Seminar-style talk (~40 slides) about OUR Lean 4 formalization work
 - **Our repo**: lean-qec (Lean 4 project)
 - **Background papers**: 
   - Zhang+Zeng et al. (arXiv:2504.20847) — proposed the SSLP framework
@@ -52,7 +52,7 @@ The Lean 4 codebase (lean-qec) formalizes:
 - Decidable instances for all verification predicates
 - native_decide for one-line proofs
 - ExampleData.OK bundles all checks (SS + screen + normalization + Z-KL)
-- QSqrt23i: exact arithmetic in ℚ(√2,√3,i) for distance-3
+- QSqrt235i: exact arithmetic in ℚ(√2,√3,√5,i) for distance-3
 
 ### 8. Codebase Stats
 - ~4254 lines across ~30 Lean files
