@@ -222,12 +222,13 @@ private lemma normSq_eq_p (c : Fin 10 → ℂ) (k : Fin 10) : Complex.normSq (c 
 lemma b_ne_zero (h : System c) : b c ≠ 0 := by
   intro hb
   -- Then `p9 = 0`.
-  have hp9 : p c 9 = 0 := by simp [p, b, hb]
+  have hp9 : p c 9 = 0 := by simp [p, hb]
   -- So `p8 = 1/4` hence `d ≠ 0`.
   have hp8 : p c 8 = (1 / 4 : ℝ) := by simpa [hp9] using (p8_eq h)
   have hd : d c ≠ 0 := by
     -- `0 < p8` hence `d ≠ 0`.
-    have : (0 : ℝ) < p c 8 := by simpa [hp8] using (by norm_num : (0 : ℝ) < (1 / 4 : ℝ))
+    have : (0 : ℝ) < p c 8 := by
+      simp [hp8]
     exact (Complex.normSq_pos).1 (by simpa [p, d] using this)
   -- From prod1: `0 = -star d * c'` hence `c' = 0`.
   have hprod1 : star (b c) * a c = -(star (d c) * c' c) := (prod1 h).1
@@ -240,7 +241,7 @@ lemma b_ne_zero (h : System c) : b c ≠ 0 := by
       intro hsd
       have : d c = 0 := (star_eq_zero).1 hsd
       exact hd this)
-  have hp7 : p c 7 = 0 := by simp [p, c', hc0]
+  have hp7 : p c 7 = 0 := by simp [p, hc0]
   -- Now `p4 = -3/16 < 0`, contradiction.
   have hp4 : p c 4 = -(3 / 16 : ℝ) := by
     -- From the diagonal solve: `p4 = p7 + p9 - 3/16`.
@@ -251,7 +252,7 @@ lemma b_ne_zero (h : System c) : b c ≠ 0 := by
 
 lemma e_ne_zero (h : System c) : e c ≠ 0 := by
   intro he0
-  have hp4 : p c 4 = 0 := by simp [p, e, he0]
+  have hp4 : p c 4 = 0 := by simp [p, he0]
   -- From the diagonal solve: `u+v = 3/16` and hence `p5 = 1/4`, so `f ≠ 0`.
   have huv : p c 7 + p c 9 = (3 / 16 : ℝ) := by
     have := p4_eq h
@@ -261,7 +262,8 @@ lemma e_ne_zero (h : System c) : e c ≠ 0 := by
     have := p5_eq h
     linarith [huv]
   have hf : f c ≠ 0 := by
-    have : (0 : ℝ) < p c 5 := by simpa [hp5] using (by norm_num : (0 : ℝ) < (1 / 4 : ℝ))
+    have : (0 : ℝ) < p c 5 := by
+      simp [hp5]
     exact (Complex.normSq_pos).1 (by simpa [p, f] using this)
 
   -- From prod2: `0 = -star d * f`, so `d = 0`.
@@ -275,7 +277,7 @@ lemma e_ne_zero (h : System c) : e c ≠ 0 := by
     exact (star_eq_zero).1 hsd0
 
   -- Then `p8 = 0` so `v = 1/4`.
-  have hp8 : p c 8 = 0 := by simp [p, d, hd0]
+  have hp8 : p c 8 = 0 := by simp [p, hd0]
   have hv : p c 9 = (1 / 4 : ℝ) := by
     have := p8_eq h
     linarith [hp8]
@@ -287,7 +289,7 @@ lemma e_ne_zero (h : System c) : e c ≠ 0 := by
 
 lemma c'_ne_zero (h : System c) : c' c ≠ 0 := by
   intro hc0
-  have hu : p c 7 = 0 := by simp [p, c', hc0]
+  have hu : p c 7 = 0 := by simp [p, hc0]
   -- From prod1: `star b * a = 0` so `a = 0` since `b ≠ 0`.
   have hb0 : b c ≠ 0 := b_ne_zero h
   have hprod1 : star (b c) * a c = -(star (d c) * c' c) := (prod1 h).1
@@ -298,14 +300,14 @@ lemma c'_ne_zero (h : System c) : c' c ≠ 0 := by
       intro hsb
       have : b c = 0 := (star_eq_zero).1 hsb
       exact hb0 this)
-  have hp6 : p c 6 = 0 := by simp [p, a, ha0]
+  have hp6 : p c 6 = 0 := by simp [p, ha0]
   -- But diagonal solve gives `p6 = 1/4 - u = 1/4`, contradiction.
   have hp6' : p c 6 = (1 / 4 : ℝ) := by simpa [hu] using (p6_eq h)
   linarith [hp6, hp6']
 
 lemma d_ne_zero (h : System c) : d c ≠ 0 := by
   intro hd0
-  have hp8 : p c 8 = 0 := by simp [p, d, hd0]
+  have hp8 : p c 8 = 0 := by simp [p, hd0]
   -- Then `v = 1/4`.
   have hv : p c 9 = (1 / 4 : ℝ) := by
     have := p8_eq h
@@ -324,13 +326,14 @@ lemma d_ne_zero (h : System c) : d c ≠ 0 := by
 
 lemma a_ne_zero (h : System c) : a c ≠ 0 := by
   intro ha0
-  have hp6 : p c 6 = 0 := by simp [p, a, ha0]
+  have hp6 : p c 6 = 0 := by simp [p, ha0]
   -- Then `u = 1/4` and so `c' ≠ 0`.
   have hu : p c 7 = (1 / 4 : ℝ) := by
     have := p6_eq h
     linarith [hp6]
   have hc0 : c' c ≠ 0 := by
-    have : (0 : ℝ) < p c 7 := by simpa [hu] using (by norm_num : (0 : ℝ) < (1 / 4 : ℝ))
+    have : (0 : ℝ) < p c 7 := by
+      simp [hu]
     exact (Complex.normSq_pos).1 (by simpa [p, c'] using this)
   -- From prod3: `0 = -star c' * e`, hence `e = 0`, contradiction.
   have hprod3 : star (c' c) * e c = -(star (a c) * f c) := (prod3 h).1
@@ -345,7 +348,7 @@ lemma a_ne_zero (h : System c) : a c ≠ 0 := by
 
 lemma f_ne_zero (h : System c) : f c ≠ 0 := by
   intro hf0
-  have hp5 : p c 5 = 0 := by simp [p, f, hf0]
+  have hp5 : p c 5 = 0 := by simp [p, hf0]
   -- Then `u+v = 7/16`, so `p4 = 1/4` hence `e ≠ 0`.
   have huv : p c 7 + p c 9 = (7 / 16 : ℝ) := by
     have := p5_eq h
@@ -354,7 +357,8 @@ lemma f_ne_zero (h : System c) : f c ≠ 0 := by
     have := p4_eq h
     linarith [huv]
   have he0 : e c ≠ 0 := by
-    have : (0 : ℝ) < p c 4 := by simpa [hp4] using (by norm_num : (0 : ℝ) < (1 / 4 : ℝ))
+    have : (0 : ℝ) < p c 4 := by
+      simp [hp4]
     exact (Complex.normSq_pos).1 (by simpa [p, e] using this)
 
   -- But prod2 gives `star b * e = 0`, contradiction since `b ≠ 0` and `e ≠ 0`.
@@ -381,7 +385,7 @@ lemma six_ne_zero (h : System c) :
 def scale (ω : ℂ) (c : Fin 10 → ℂ) : Fin 10 → ℂ := fun k => ω * c k
 
 lemma p_scale (ω : ℂ) (c : Fin 10 → ℂ) (k : Fin 10) : p (scale ω c) k = Complex.normSq ω * p c k := by
-  simp [p, scale, Complex.normSq_mul, mul_assoc]
+  simp [p, scale, Complex.normSq_mul]
 
 lemma star_mul_mul (ω x y : ℂ) : star (ω * x) * (ω * y) = (star ω * ω) * (star x * y) := by
   -- Expand `star (ω * x)` and then use commutativity.
@@ -492,13 +496,13 @@ lemma normSq_phaseFix {b : ℂ} (hb : b ≠ 0) : Complex.normSq (phaseFix b) = 1
   calc
     Complex.normSq (star b / (Real.sqrt (Complex.normSq b)))
         = Complex.normSq (star b) / Complex.normSq (Real.sqrt (Complex.normSq b) : ℂ) := by
-            simpa using (Complex.normSq_div (star b) (Real.sqrt (Complex.normSq b) : ℂ))
+            simp
     _ = Complex.normSq b / ((Real.sqrt (Complex.normSq b)) * (Real.sqrt (Complex.normSq b))) := by
           simp [Complex.normSq_conj, Complex.normSq_ofReal]
     _ = Complex.normSq b / Complex.normSq b := by
           simp [Real.mul_self_sqrt (Complex.normSq_nonneg b)]
     _ = 1 := by
-          simpa [div_self hb']
+          simp [div_self hb']
 
 lemma phaseFix_mul_self (b : ℂ) : phaseFix b * b = (Real.sqrt (Complex.normSq b) : ℂ) := by
   classical
@@ -516,13 +520,13 @@ lemma phaseFix_mul_self (b : ℂ) : phaseFix b * b = (Real.sqrt (Complex.normSq 
   calc
     (star b / (Real.sqrt (Complex.normSq b))) * b
         = (star b * b) / (Real.sqrt (Complex.normSq b)) := by
-            simp [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm]
+            simp [div_eq_mul_inv, mul_assoc, mul_comm]
     _ = (Complex.normSq b : ℂ) / (Real.sqrt (Complex.normSq b) : ℂ) := by
-          simpa [hnorm]
+          simp [hnorm]
     _ = (Real.sqrt (Complex.normSq b) : ℂ) := by
           have hreal :
               (Complex.normSq b) / Real.sqrt (Complex.normSq b) = Real.sqrt (Complex.normSq b) := by
-            simpa using (Real.div_sqrt (x := Complex.normSq b))
+            simp
           have hcast :
               ((Complex.normSq b / Real.sqrt (Complex.normSq b) : ℝ) : ℂ) =
                 (Complex.normSq b : ℂ) / (Real.sqrt (Complex.normSq b) : ℂ) :=
@@ -544,9 +548,9 @@ lemma im_eq_zero_of_mul_im_eq_zero_left {r z : ℂ} (hr : r.im = 0) (hr0 : r ≠
   have hre : r.re ≠ 0 := by
     intro hre0
     apply hr0
-    ext <;> simp [hre0, hr]
+    apply Complex.ext <;> simp [hre0, hr]
   have him : (r * z).im = r.re * z.im := by
-    simp [Complex.mul_im, hr, add_comm, add_left_comm, add_assoc]
+    simp [Complex.mul_im, hr]
   have : r.re * z.im = 0 := by simpa [him] using h
   have : r.re = 0 ∨ z.im = 0 := (mul_eq_zero).1 this
   exact this.resolve_left hre
@@ -590,50 +594,59 @@ lemma six_im_eq_zero_of_b_real (h : System c) (hb_im : (b c).im = 0) (hb0 : b c 
     have : (e c * star (c' c)).im = 0 := by simpa [mul_comm, mul_assoc] using hc_mul_im
     exact im_eq_zero_of_mul_im_eq_zero_left (r := e c) (z := star (c' c)) he_im he0 this
   have hc_im : (c' c).im = 0 := by
-    -- `(star z).im = - z.im`.
-    have : (star (c' c)).im = -(c' c).im := by
-      -- use `Complex.conj_im` via `star_def`
-      simpa [Complex.star_def] using (Complex.conj_im (c' c))
-    have : -(c' c).im = 0 := by simpa [this] using hcstar_im
-    exact (neg_eq_zero).1 this
+    have hstar_im : (star (c' c)).im = -(c' c).im := by
+      simp
+    have hneg : -(c' c).im = 0 := by
+      have htmp : (star (c' c)).im = 0 := hcstar_im
+      rw [hstar_im] at htmp
+      exact htmp
+    exact (neg_eq_zero).1 hneg
 
   have hc0 : c' c ≠ 0 := (six_ne_zero h).2.2.1
 
   -- Use `prod1` relation: `star b * a = - star d * c'`.
   have hrel1 : star (b c) * a c = -(star (d c) * c' c) := (prod1 h).1
   have hd_mul_im : (star (d c) * c' c).im = 0 := by
-    -- RHS is the negation of a real number.
-    have : (-(star (d c) * c' c)).im = 0 := by simpa [hrel1] using (prod1 h).2
-    -- `im (-z) = - im z`.
-    simpa using (by simpa using congrArg Complex.im (by simpa using this))
+    have hneg : (-(star (d c) * c' c)).im = 0 := by
+      have him_eq := congrArg Complex.im hrel1
+      calc
+        (-(star (d c) * c' c)).im = (star (b c) * a c).im := by
+          simpa using him_eq.symm
+        _ = 0 := (prod1 h).2
+    have him : -(star (d c) * c' c).im = 0 := by
+      have htmp : (-(star (d c) * c' c)).im = 0 := hneg
+      rw [Complex.neg_im] at htmp
+      exact htmp
+    exact (neg_eq_zero).1 him
   -- Put `c'` on the left to deduce `star d` real.
   have hdstar_im : (star (d c)).im = 0 := by
     have : (c' c * star (d c)).im = 0 := by simpa [mul_comm, mul_assoc] using hd_mul_im
     exact im_eq_zero_of_mul_im_eq_zero_left (r := c' c) (z := star (d c)) hc_im hc0 this
   have hd_im : (d c).im = 0 := by
-    have : (star (d c)).im = -(d c).im := by
-      simpa [Complex.star_def] using (Complex.conj_im (d c))
-    have : -(d c).im = 0 := by simpa [this] using hdstar_im
-    exact (neg_eq_zero).1 this
+    have hstar_im : (star (d c)).im = -(d c).im := by
+      simp
+    have hneg : -(d c).im = 0 := by
+      have htmp : (star (d c)).im = 0 := hdstar_im
+      rw [hstar_im] at htmp
+      exact htmp
+    exact (neg_eq_zero).1 hneg
 
   have hd0 : d c ≠ 0 := (six_ne_zero h).2.2.2.1
 
   -- Finally from `prod2` relation we deduce `f` real.
   have hrel2 : star (b c) * e c = -(star (d c) * f c) := (prod2 h).1
   have hf_mul_im : (star (d c) * f c).im = 0 := by
-    have : (-(star (d c) * f c)).im = 0 := by
-      -- again RHS is negation of a real
-      have := (prod2 h).2
-      -- rewrite `star b = b` and `e` real; but we only need `im`.
-      simpa [hrel2] using this
-    -- `im (-z) = -im z`.
-    have : -(star (d c) * f c).im = 0 := by
-      -- `Complex.im` is additive
-      simpa using (by
-        -- `Complex.im_neg` is simp
-        simpa using this)
-    -- so `(star d * f).im = 0`
-    exact (neg_eq_zero).1 this
+    have hneg : (-(star (d c) * f c)).im = 0 := by
+      have him_eq := congrArg Complex.im hrel2
+      calc
+        (-(star (d c) * f c)).im = (star (b c) * e c).im := by
+          simpa using him_eq.symm
+        _ = 0 := (prod2 h).2
+    have him : -(star (d c) * f c).im = 0 := by
+      have htmp : (-(star (d c) * f c)).im = 0 := hneg
+      rw [Complex.neg_im] at htmp
+      exact htmp
+    exact (neg_eq_zero).1 him
   have hf_im : (f c).im = 0 :=
     im_eq_zero_of_mul_im_eq_zero_left (r := star (d c)) (z := f c)
       (by
@@ -692,12 +705,12 @@ lemma af_eq_zero_of_real_gauge (h : System c)
   have h1' : b c * (a c * f c) = -(d c * (c' c * f c)) := by
     calc
       b c * (a c * f c) = (b c * a c) * f c := by ring
-      _ = (-(d c * c' c)) * f c := by simpa [h1]
+      _ = (-(d c * c' c)) * f c := by simp [h1]
       _ = -(d c * (c' c * f c)) := by ring
   have h2' : b c * (e c * c' c) = -(d c * (f c * c' c)) := by
     calc
       b c * (e c * c' c) = (b c * e c) * c' c := by ring
-      _ = (-(d c * f c)) * c' c := by simpa [h2]
+      _ = (-(d c * f c)) * c' c := by simp [h2]
       _ = -(d c * (f c * c' c)) := by ring
 
   -- The RHS of `h1'` and `h2'` coincide by commutativity.
@@ -708,8 +721,8 @@ lemma af_eq_zero_of_real_gauge (h : System c)
     exact by
       calc
         b c * (a c * f c) = -(d c * (c' c * f c)) := h1'
-        _ = -(d c * (f c * c' c)) := by simpa [this]
-        _ = b c * (e c * c' c) := by simpa [h2']
+        _ = -(d c * (f c * c' c)) := by simp [this]
+        _ = b c * (e c * c' c) := by simp [h2']
 
   have haf_eq : a c * f c = e c * c' c := by
     exact mul_left_cancel₀ hb0 (by simpa [mul_assoc] using hbc)
@@ -739,14 +752,11 @@ theorem no_solution : ¬ ∃ c : Fin 10 → ℂ, System c := by
   have hc₁ : System c₁ := scale_system hc (ω := ω) hω
 
   have hb_real : b c₁ = (Real.sqrt (Complex.normSq (b c)) : ℂ) := by
-    -- `b c₁ = ω * b c`.
-    have : b c₁ = ω * b c := rfl
-    -- and `ω * b = √(normSq b)`.
-    simpa [c₁, scale, ω, phaseFix_mul_self] using (by rfl : ω * b c = ω * b c)
+    simp [c₁, scale, ω, phaseFix_mul_self]
 
   have hb₁_im : (b c₁).im = 0 := by
     -- `b c₁` is a real number.
-    simpa [hb_real]
+    simp [hb_real]
 
   have hb₁0 : b c₁ ≠ 0 := by
     -- `b c₁ = √(normSq (b c))` and `b c ≠ 0`.
@@ -756,10 +766,9 @@ theorem no_solution : ¬ ∃ c : Fin 10 → ℂ, System c := by
       exact (Complex.normSq_eq_zero).1 h0
     have hs : Real.sqrt (Complex.normSq (b c)) ≠ 0 :=
       (Real.sqrt_ne_zero (Complex.normSq_nonneg (b c))).2 hbns
-    -- coe to `ℂ`
-    simpa [hb_real] using (show (Real.sqrt (Complex.normSq (b c)) : ℂ) ≠ 0 from by
-      -- `simp` knows `((r:ℂ)=0) ↔ r=0` for reals
-      simpa using congrArg (fun r : ℝ => (r : ℂ)) hs)
+    have hsC : (Real.sqrt (Complex.normSq (b c)) : ℂ) ≠ 0 := by
+      exact_mod_cast hs
+    simpa [hb_real] using hsC
 
   -- In this gauge, all six special amplitudes are real.
   have hims : (a c₁).im = 0 ∧ (c' c₁).im = 0 ∧ (d c₁).im = 0 ∧ (e c₁).im = 0 ∧ (f c₁).im = 0 :=
