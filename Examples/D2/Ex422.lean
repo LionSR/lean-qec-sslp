@@ -1,11 +1,8 @@
 import SS
-import Mathlib.Tactic  -- `native_decide`
 
 namespace Examples.D2.Ex422
 
-open scoped BigOperators
-open SS
-open SS.Verify
+open SS SS.Verify
 
 section Example_4_2_2
 
@@ -29,7 +26,6 @@ local notation "m" => 4
 local notation "K" => 2
 
 local instance : NeZero (m : ℕ) := ⟨by decide⟩
-local instance : DecidableEq (BitString n) := by infer_instance
 
 /-- weights `w = (1,1,1,1)` in `ZMod 4` -/
 def a422 : Fin n → ZMod m := ![(1 : ZMod m), 1, 1, 1]
@@ -49,19 +45,13 @@ def supp0 : Finset (BitString n) := {x0000, x1111}
 /-- support of $|1_L⟩$ -/
 def supp1 : Finset (BitString n) := {x0110, x1001}
 
-/-- probabilities for the canonical $|0_L⟩$ -/
+/-- probabilities for the canonical $|0_L⟩$ (uniform) -/
 def prob0 : BitString n → ℚ :=
-  fun s =>
-    if s = x0000 then (1 : ℚ) / 2
-    else if s = x1111 then (1 : ℚ) / 2
-    else 0
+  fun s => if s ∈ supp0 then (1 : ℚ) / 2 else 0
 
-/-- probabilities for the canonical $|1_L⟩$ -/
+/-- probabilities for the canonical $|1_L⟩$ (uniform) -/
 def prob1 : BitString n → ℚ :=
-  fun s =>
-    if s = x0110 then (1 : ℚ) / 2
-    else if s = x1001 then (1 : ℚ) / 2
-    else 0
+  fun s => if s ∈ supp1 then (1 : ℚ) / 2 else 0
 
 /-- target Z expectations (all zero). -/
 def targetZ : Fin n → ℚ := ![0, 0, 0, 0]

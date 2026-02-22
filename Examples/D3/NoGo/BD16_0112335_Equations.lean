@@ -101,7 +101,7 @@ lemma abs_im_star_mul_le (x y : ℂ) :
   have h₁ : |(star x * y).im| ≤ ‖star x * y‖ := Complex.abs_im_le_norm _
   -- `‖conj x * y‖ = ‖x‖ * ‖y‖`.
   have h₂ : ‖star x * y‖ = ‖x‖ * ‖y‖ := by
-    simpa [norm_mul, Complex.norm_conj, Complex.star_def]
+    simp
   -- AM–GM: `‖x‖*‖y‖ ≤ (‖x‖^2+‖y‖^2)/2`.
   have h₃ : ‖x‖ * ‖y‖ ≤ (‖x‖ ^ 2 + ‖y‖ ^ 2) / 2 := by
     have h := two_mul_le_add_sq ‖x‖ ‖y‖
@@ -144,7 +144,7 @@ lemma gaugeFactor_mul_self (z : ℂ) : (star z / (‖z‖ : ℂ)) * z = (‖z‖
         simpa [Complex.star_def] using (Complex.normSq_eq_conj_mul_self (z := z)).symm
       _ = (‖z‖ : ℂ) ^ 2 := by
         -- `normSq z = ‖z‖^2`
-        simpa [Complex.normSq_eq_norm_sq, pow_two]
+        simp [Complex.normSq_eq_norm_sq, pow_two]
 
 namespace System
 
@@ -202,15 +202,8 @@ lemma mult513 (h : System c) : p5 c * p13 c = p6 c * p12 c := by
     · -- imaginary parts
       have him513 : (star (c 5) * c 13).im = 0 := im_star_mul_513 h
       have him612 : (star (c 6) * c 12).im = 0 := im_star_mul_612 h
-      have him612_neg : - (star (c 6) * c 12).im = 0 := by
-        have := congrArg (fun t : ℝ => -t) him612
-        simpa using this
-      calc
-        (star (c 5) * c 13).im = 0 := him513
-        _ = - (star (c 6) * c 12).im := by
-          simpa using him612_neg.symm
-        _ = (- (star (c 6) * c 12)).im := by
-          simpa using (Complex.neg_im (star (c 6) * c 12)).symm
+      rw [Complex.neg_im]
+      linarith
   have := congrArg Complex.normSq hcomp
   simpa [p, Complex.normSq_mul] using this
 
@@ -225,15 +218,8 @@ lemma mult413 (h : System c) : p4 c * p13 c = p6 c * p11 c := by
     · -- imaginary parts
       have him413 : (star (c 4) * c 13).im = 0 := im_star_mul_413 h
       have him611 : (star (c 6) * c 11).im = 0 := im_star_mul_611 h
-      have him611_neg : - (star (c 6) * c 11).im = 0 := by
-        have := congrArg (fun t : ℝ => -t) him611
-        simpa using this
-      calc
-        (star (c 4) * c 13).im = 0 := him413
-        _ = - (star (c 6) * c 11).im := by
-          simpa using him611_neg.symm
-        _ = (- (star (c 6) * c 11)).im := by
-          simpa using (Complex.neg_im (star (c 6) * c 11)).symm
+      rw [Complex.neg_im]
+      linarith
   have := congrArg Complex.normSq hcomp
   simpa [p, Complex.normSq_mul] using this
 
@@ -375,7 +361,7 @@ lemma star_mul_gauge (ω x y : ℂ) (hω : star ω * ω = (1 : ℂ)) :
     _ = star x * ((1 : ℂ) * y) := by
       rw [hω]
     _ = star x * y := by
-      simp [mul_assoc]
+      simp
 
 /-- Scaling by `ω` with `|ω| = 1` preserves the whole system. -/
 lemma scale_system (h : System c) {ω : ℂ} (hω : Complex.normSq ω = 1) : System (scale ω c) := by
@@ -527,7 +513,8 @@ theorem no_solution : ¬ ∃ c : Fin 14 → ℂ, System c := by
     calc
       Complex.normSq ω
           = Complex.normSq (star (c 13)) / Complex.normSq (‖c 13‖ : ℂ) := by
-            simp [ω, Complex.normSq_div]
+            show Complex.normSq (star (c 13) / (‖c 13‖ : ℂ)) = _
+            simp
       _ = Complex.normSq (c 13) / Complex.normSq (‖c 13‖ : ℂ) := by
             simp [Complex.normSq_conj]
       _ = (‖c 13‖ * ‖c 13‖) / (‖c 13‖ * ‖c 13‖) := by
@@ -546,7 +533,7 @@ theorem no_solution : ¬ ∃ c : Fin 14 → ℂ, System c := by
     simpa [c', scale, ω, mul_assoc] using (gaugeFactor_mul_self (c 13))
 
   have hc13_im : (c' 13).im = 0 := by
-    simpa [hc13_gauge]
+    simp [hc13_gauge]
 
   have hc13_re_pos : 0 < (c' 13).re := by
     have : 0 < ‖c 13‖ := (norm_pos_iff).2 hc13_ne
@@ -645,7 +632,7 @@ theorem no_solution : ¬ ∃ c : Fin 14 → ℂ, System c := by
   have h_abs_eq : |T| = |U| := by
     have hTU : T = -U := by linarith [hUT]
     -- `|T| = |-U| = |U|`.
-    simpa [hTU, abs_neg] using congrArg abs hTU
+    simp [hTU, abs_neg]
 
   -- Solve for `c'12.im` and `c'11.im` from (E10) and (E13) in the gauge.
   have hc12_im_eq : (c' 12).im = -((c' 5).re * (c' 13).re) / (c' 6).im := by
@@ -676,11 +663,11 @@ theorem no_solution : ¬ ∃ c : Fin 14 → ℂ, System c := by
       T = -((c' 13).re / (c' 6).im) * (p4 c' + p5 c' + p6 c') := by
     -- First rewrite the three imag-parts using the gauge constraints.
     have h1 : (star (c' 4) * c' 11).im = (c' 4).re * (c' 11).im := by
-      simp [Complex.mul_im, hc4_im, hc11_re, sub_eq_add_neg]
+      simp [Complex.mul_im, hc4_im, hc11_re]
     have h2 : (star (c' 5) * c' 12).im = (c' 5).re * (c' 12).im := by
-      simp [Complex.mul_im, hc5_im, hc12_re, sub_eq_add_neg]
+      simp [Complex.mul_im, hc5_im, hc12_re]
     have h3 : (star (c' 6) * c' 13).im = - (c' 6).im * (c' 13).re := by
-      simp [Complex.mul_im, hc6_re, hc13_im, sub_eq_add_neg, mul_assoc]
+      simp [Complex.mul_im, hc6_re, hc13_im]
 
     have hT'' :
         T = (c' 4).re * (c' 11).im + (c' 5).re * (c' 12).im + (-(c' 6).im * (c' 13).re) := by
@@ -714,7 +701,7 @@ theorem no_solution : ¬ ∃ c : Fin 14 → ℂ, System c := by
               (c' 4).re * (-( (c' 4).re * (c' 13).re) / (c' 6).im)
             + (c' 5).re * (-( (c' 5).re * (c' 13).re) / (c' 6).im)
             - (c' 6).im * (c' 13).re := by
-        simpa [hT', hc11_im_eq, hc12_im_eq]
+        simp [hT', hc11_im_eq, hc12_im_eq]
       -- Clear denominators (using `c'6.im ≠ 0`) and finish with ring algebra.
       rw [hsub]
       field_simp [hc6_im_ne]
@@ -755,7 +742,7 @@ theorem no_solution : ¬ ∃ c : Fin 14 → ℂ, System c := by
         |(c' 13).re / (c' 6).im| = |(c' 13).re| / |(c' 6).im| := by
           simpa using (abs_div ((c' 13).re) ((c' 6).im))
         _ = Real.sqrt (p13 c') / Real.sqrt (p6 c') := by
-          simpa [habs_re, habs_im]
+          simp [habs_re, habs_im]
 
     -- finish by rewriting `p6 / sqrt p6 = sqrt p6`.
     calc
@@ -774,13 +761,13 @@ theorem no_solution : ¬ ∃ c : Fin 14 → ℂ, System c := by
                   simp [div_mul_eq_mul_div, mul_div_assoc]
             _ = Real.sqrt (p13 c') * Real.sqrt (p6 c') := by
                   simp [Real.div_sqrt]
-        simpa [this, mul_assoc]
+        simp [this]
       _ = (11 : ℝ) / 5 * Real.sqrt (p6 c' * p13 c') := by
         -- `√p13 * √p6 = √(p6*p13)`
         have hmul : Real.sqrt (p6 c' * p13 c') = Real.sqrt (p6 c') * Real.sqrt (p13 c') :=
           (Real.sqrt_mul (p_nonneg c' 6) (p13 c'))
         -- use commutativity
-        simpa [mul_comm, mul_left_comm, mul_assoc, hmul] 
+        simp [mul_comm, hmul] 
 
   -- Lower bound for `|T|` (Step 8).
   have hT_lower : (3 : ℝ) / 16 ≤ |T| := by

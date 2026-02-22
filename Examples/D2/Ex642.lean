@@ -1,11 +1,8 @@
 import SS
-import Mathlib.Tactic  -- `native_decide`
 
 namespace Examples.D2.Ex642
 
-open scoped BigOperators
-open SS
-open SS.Verify
+open SS SS.Verify
 
 section CatalogueExample_6_4_2
 
@@ -30,7 +27,6 @@ local notation "m" => 12
 local notation "K" => 4
 
 local instance : NeZero (m : ℕ) := ⟨by decide⟩
-local instance : DecidableEq (BitString n) := by infer_instance
 
 /-- weights `w = (1,1,3,3,5,5)` in `ZMod 12` -/
 def a642 : Fin n → ZMod m := ![(1 : ZMod m), 1, 3, 3, 5, 5]
