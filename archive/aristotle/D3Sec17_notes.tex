@@ -1,0 +1,622 @@
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fvextra}
+
+% --- Make common Lean unicode compile under pdfLaTeX ---
+\DeclareUnicodeCharacter{00AC}{\ensuremath{\neg}}         % ¬
+\DeclareUnicodeCharacter{00B7}{\ensuremath{\cdot}}        % ·
+\DeclareUnicodeCharacter{2016}{\ensuremath{\Vert}}        % ‖
+\DeclareUnicodeCharacter{2080}{\textsubscript{0}}         % ₀
+\DeclareUnicodeCharacter{2081}{\textsubscript{1}}         % ₁
+\DeclareUnicodeCharacter{2082}{\textsubscript{2}}         % ₂
+\DeclareUnicodeCharacter{2083}{\textsubscript{3}}         % ₃
+\DeclareUnicodeCharacter{2084}{\textsubscript{4}}         % ₄
+\DeclareUnicodeCharacter{2085}{\textsubscript{5}}         % ₅
+\DeclareUnicodeCharacter{2086}{\textsubscript{6}}         % ₆
+\DeclareUnicodeCharacter{2087}{\textsubscript{7}}         % ₇
+\DeclareUnicodeCharacter{2088}{\textsubscript{8}}         % ₈
+\DeclareUnicodeCharacter{2089}{\textsubscript{9}}         % ₉
+\DeclareUnicodeCharacter{2102}{\ensuremath{\mathbb{C}}}   % ℂ
+\DeclareUnicodeCharacter{211D}{\ensuremath{\mathbb{R}}}   % ℝ
+\DeclareUnicodeCharacter{2190}{\ensuremath{\leftarrow}}   % ←
+\DeclareUnicodeCharacter{2192}{\ensuremath{\to}}          % →
+\DeclareUnicodeCharacter{2200}{\ensuremath{\forall}}      % ∀
+\DeclareUnicodeCharacter{2203}{\ensuremath{\exists}}      % ∃
+\DeclareUnicodeCharacter{2208}{\ensuremath{\in}}          % ∈
+\DeclareUnicodeCharacter{2227}{\ensuremath{\wedge}}       % ∧
+\DeclareUnicodeCharacter{2228}{\ensuremath{\vee}}         % ∨
+\DeclareUnicodeCharacter{2260}{\ensuremath{\neq}}         % ≠
+\DeclareUnicodeCharacter{2264}{\ensuremath{\le}}          % ≤
+\DeclareUnicodeCharacter{2265}{\ensuremath{\ge}}          % ≥
+\DeclareUnicodeCharacter{27E8}{\ensuremath{\langle}}      % ⟨
+\DeclareUnicodeCharacter{27E9}{\ensuremath{\rangle}}      % ⟩
+
+% Verbatim environment for Lean code (line-breaking enabled)
+\DefineVerbatimEnvironment{LeanCode}{Verbatim}{
+  fontsize=\small,
+  breaklines=true,
+  breakanywhere=true,
+  commandchars=\\\{\},
+  showspaces=false,
+  showtabs=false
+}
+
+\setlist[itemize]{topsep=2pt, itemsep=2pt}
+\setlist[enumerate]{topsep=2pt, itemsep=2pt}
+
+\title{Detailed Notes on \texttt{D3Sec17.lean}\\(No real solution to a 19-equation quadratic system)}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{-- general overview and logic: what is the problem, how does the proof go (and check if the proof is logically correct)}
+
+\subsection*{What is being proved?}
+
+The file proves a final theorem:
+
+\begin{quote}
+\textbf{No real solution exists} to a specific system of \textbf{19 quadratic equations} in \textbf{28 real variables}.
+\end{quote}
+
+Concretely, the theorem at the end is (in Lean):
+
+\begin{LeanCode}
+theorem NoRealSolution : ¬ ∃ v : Fin 28 → ℝ,
+  let c := c_from_v v
+  E1 c ∧ E2 c ∧ ... ∧ E19 c
+\end{LeanCode}
+
+This means: there is no vector $v\in\mathbb{R}^{28}$ such that (after mapping $v$ into $14$ complex numbers $c_0,\dots,c_{13}$) all equations $E1,\dots,E19$ hold.
+
+\subsection*{How are the variables organized?}
+
+Instead of working directly with $28$ real variables, the file packages them into $14$ complex variables:
+\[
+c_0,\dots,c_{13}\in\mathbb{C}.
+\]
+Each $c_k$ has real and imaginary parts coming from two real coordinates.  The key derived quantity is
+\[
+p_k := \|c_k\|^2 = |c_k|^2 \in \mathbb{R}_{\ge 0},
+\]
+implemented as \texttt{Complex.normSq (c k)} in Lean.
+
+So the system is quadratic in the reals, but becomes a structured system involving:
+\begin{itemize}
+\item linear equations in the nonnegative reals $p_k$, and
+\item bilinear equations involving products like $\overline{c_i}c_j$.
+\end{itemize}
+
+\subsection*{What do the 19 equations look like?}
+
+They split naturally into blocks.
+
+\paragraph{(i) ``Diagonal'' / norm-squared constraints (E1--E8).}
+These are linear equalities among the $p_k = |c_k|^2$. For example:
+\[
+\sum_{k=0}^{13} p_k = 1,\qquad
+p_7+p_8+\cdots+p_{13}=\frac12,
+\]
+and six other similar subset sums.
+
+\paragraph{(ii) A ``Y1'' imaginary-part sum (E9).}
+Equation E9 says a sum of imaginary parts vanishes:
+\[
+\operatorname{Im}(\overline{c_0}c_7)+\cdots+\operatorname{Im}(\overline{c_6}c_{13})=0.
+\]
+Later the proof splits this into two pieces $U$ (indices $0$--$3$) and $T$ (indices $4$--$6$).
+
+\paragraph{(iii) Local orthogonality-type constraints (E10--E15).}
+These constrain real and imaginary parts of
+\[
+\overline{c_5}c_{13} + \overline{c_6}c_{12}, \qquad
+\overline{c_4}c_{13} + \overline{c_6}c_{11},
+\]
+and force corresponding multiplicative relations among norms.
+
+\paragraph{(iv) Real-part constraints (E16--E19).}
+Together these force certain real parts to vanish, e.g.
+\[
+\operatorname{Re}(\overline{c_{12}}c_{13})=0,\qquad
+\operatorname{Re}(\overline{c_{5}}c_{6})=0,
+\]
+and similarly for $(c_{11},c_{13})$ and $(c_4,c_6)$.
+
+\subsection*{How does the proof work? (main logical chain)}
+
+The proof is a sequence of lemmas \texttt{L1}--\texttt{L11} plus a final gauge argument in \texttt{NoRealSolution}.  The key idea is:
+
+\begin{enumerate}
+\item Use the diagonal equations (E1--E8) to solve for many combinations of the $p_k$ (Lemma L1).
+\item Use the bilinear blocks (E10--E12) and (E13--E15) to derive two \emph{multiplicative identities} among the $p_k$ (L2, L3).
+\item Combine (1) and (2) to get \emph{exact proportionalities}:
+  \[
+  p_{11}=p_{12}=\frac35 p_{13},\qquad p_4=p_5=\frac35 p_6 \quad \text{(Lemma L4)}.
+  \]
+\item From those proportionalities and the diagonal relations in L1, derive \emph{uniform lower bounds}:
+  \[
+  p_{13}\ge \frac{15}{176},\qquad p_6\ge \frac{15}{176} \quad \text{(Lemma L5)}.
+  \]
+\item Perform a \textbf{global phase normalization} (a gauge transformation): multiply all $c_k$ by a unit complex number $g$ so that $c_{13}$ becomes a positive real. This does not change any $p_k$ nor any inner-products $\overline{c_i}c_j$ (Lemma L7).
+\item Under the gauge $c_{13}\in\mathbb{R}_{>0}$, the real-part equations force certain variables to be purely real/purely imaginary (Lemma L8).
+\item Define
+  \[
+  T := \operatorname{Im}(\overline{c_4}c_{11})+\operatorname{Im}(\overline{c_5}c_{12})+\operatorname{Im}(\overline{c_6}c_{13})
+  \]
+  and show
+  \[
+  |T| = \frac{11}{5}\sqrt{p_6p_{13}} \ \ge\ \frac{3}{16} \quad \text{(Lemma L9)}.
+  \]
+\item Define
+  \[
+  U := \operatorname{Im}(\overline{c_0}c_{7})+\operatorname{Im}(\overline{c_1}c_{8})+\operatorname{Im}(\overline{c_2}c_{9})+\operatorname{Im}(\overline{c_3}c_{10})
+  \]
+  and show
+  \[
+  |U|\le \frac{5}{32} \quad \text{(Lemma L10)}.
+  \]
+\item Equation E9 is exactly $U+T=0$, hence $|T|=|U|$ (Lemma L11).
+\item Contradiction:
+  \[
+  |T|\ge \frac{3}{16}=\frac{6}{32} > \frac{5}{32}\ge |U|,\quad \text{but } |T|=|U|.
+  \]
+\end{enumerate}
+
+\subsection*{Is the proof logically correct?}
+
+\begin{itemize}
+\item \textbf{Mathematical correctness (by inspection):} Each step is standard:
+  \begin{itemize}
+  \item L1 is linear elimination on the diagonal equations.
+  \item L2/L3 use that the block equations force two complex numbers to be negatives of each other and purely real, hence their squared magnitudes are equal.
+  \item L4 is algebra combining L1 with L2/L3.
+  \item L5 is inequality chasing using nonnegativity of norm squares.
+  \item L7 is a standard unit-modulus ``global phase'' gauge.
+  \item L8--L11 are structured real/imag decompositions plus the triangle/AM--GM style inequality $| \operatorname{Im}(\overline{a}b) |\le (|a|^2+|b|^2)/2$.
+  \end{itemize}
+\item \textbf{Lean correctness:} If \texttt{D3Sec17.lean} typechecks in Lean, then the final theorem is certified by Lean's kernel. This file contains no \texttt{sorry} and no \texttt{exact?} placeholders; it relies on automation (\texttt{grind}, \texttt{linarith}, \texttt{nlinarith}) but those tactics produce explicit proof terms when they succeed.
+\end{itemize}
+
+\newpage
+\section*{-- interpretation of lean code: a few lines of lean code, then explanation; then next few lines of lean code, then explanation; \dots}
+
+\subsection*{Imports, options, and the basic ``norm squared'' function}
+
+\begin{LeanCode}
+import Mathlib
+
+noncomputable section
+
+def p (c : Fin 14 → ℂ) (k : Fin 14) : ℝ := Complex.normSq (c k)
+\end{LeanCode}
+
+\paragraph{Explanation.}
+\texttt{p c k} is the real number $\|c_k\|^2 = |c_k|^2$.
+\texttt{Complex.normSq} returns a nonnegative real number and satisfies $\mathrm{normSq}(zw)=\mathrm{normSq}(z)\,\mathrm{normSq}(w)$.
+
+\subsection*{The diagonal equations E1--E8}
+
+\begin{LeanCode}
+def E1 (c : Fin 14 → ℂ) : Prop :=
+  (Finset.univ.sum (fun i => p c i)) = 1
+
+def E2 (c : Fin 14 → ℂ) : Prop :=
+  p c 7 + p c 8 + p c 9 + p c 10 + p c 11 + p c 12 + p c 13 = 1/2
+
+def E3 (c : Fin 14 → ℂ) : Prop :=
+  p c 5 + p c 6 + p c 12 + p c 13 = 1/2
+\end{LeanCode}
+
+\paragraph{Explanation.}
+\begin{itemize}
+\item E1 says the total sum of squared magnitudes is $1$:
+  \[
+  \sum_{k=0}^{13} p_k = 1.
+  \]
+\item E2 says the ``tail'' sum $p_7+\cdots+p_{13}$ equals $1/2$.
+\item E3 (and similarly E4--E8, not shown here) constrain other subset sums to equal $1/2$.
+\end{itemize}
+
+Together E1--E8 form a linear system in the nonnegative reals $p_0,\dots,p_{13}$.
+
+\subsection*{The Y1 equation E9 and the local bilinear blocks}
+
+\begin{LeanCode}
+def E9 (c : Fin 14 → ℂ) : Prop :=
+  (star (c 0) * c 7).im + (star (c 1) * c 8).im +
+  (star (c 2) * c 9).im + (star (c 3) * c 10).im +
+  (star (c 4) * c 11).im + (star (c 5) * c 12).im +
+  (star (c 6) * c 13).im = 0
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Here \texttt{star} is complex conjugation, so \texttt{star (c i) * c j} is $\overline{c_i}c_j$.
+Thus E9 is:
+\[
+\sum_{i=0}^{6} \operatorname{Im}(\overline{c_i}c_{i+7}) = 0.
+\]
+Later this is split into $U$ (the first four terms) and $T$ (the last three terms).
+
+\begin{LeanCode}
+def E10 (c : Fin 14 → ℂ) : Prop :=
+  (star (c 5) * c 13).re + (star (c 6) * c 12).re = 0
+
+def E11 (c : Fin 14 → ℂ) : Prop :=
+  (star (c 5) * c 13).im + (star (c 6) * c 12).im = 0
+
+def E12 (c : Fin 14 → ℂ) : Prop :=
+  (star (c 5) * c 13).im - (star (c 6) * c 12).im = 0
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Let $A=\overline{c_5}c_{13}$ and $B=\overline{c_6}c_{12}$.
+\begin{itemize}
+\item E10 says $\operatorname{Re}(A)+\operatorname{Re}(B)=0$.
+\item E11 says $\operatorname{Im}(A)+\operatorname{Im}(B)=0$.
+\item E12 says $\operatorname{Im}(A)-\operatorname{Im}(B)=0$.
+\end{itemize}
+From E11 and E12 we get $\operatorname{Im}(A)=\operatorname{Im}(B)=0$.
+Together with E10 this implies $A=-B$ (as real numbers inside $\mathbb{C}$), which is the input to Lemma L2.
+
+\subsection*{Lemma L1: solving the diagonal subsystem}
+
+\begin{LeanCode}
+theorem L1 (c : Fin 14 → ℂ)
+  (h1 : E1 c) (h2 : E2 c) (h3 : E3 c) (h4 : E4 c)
+  (h5 : E5 c) (h6 : E6 c) (h7 : E7 c) (h8 : E8 c) :
+  p c 0 + p c 7 = 1/16 ∧
+  p c 1 + p c 8 = 1/16 ∧
+  p c 2 + p c 9 = 1/16 ∧
+  p c 3 + p c 10 = 1/8 ∧
+  p c 4 + p c 11 = 3/16 ∧
+  p c 5 + p c 12 = 3/16 ∧
+  p c 6 + p c 13 = 5/16 ∧
+  p c 7 = 1/2 - (p c 8 + p c 9 + p c 10 + p c 11 + p c 12 + p c 13) ∧
+  p c 0 = (p c 8 + p c 9 + p c 10 + p c 11 + p c 12 + p c 13) - 7/16 := by
+  unfold E1 E2 E3 E4 E5 E6 E7 E8 at *; norm_num [ Fin.sum_univ_succ ] at *;
+  grind
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Lemma L1 is purely linear algebra on the equations E1--E8.
+It yields:
+\begin{itemize}
+\item \emph{Pair-sum identities} such as $p_0+p_7=\frac1{16}$, $p_1+p_8=\frac1{16}$, etc.
+\item \emph{Explicit formulas} for $p_7$ and $p_0$ in terms of $(p_8,p_9,p_{10},p_{11},p_{12},p_{13})$.
+\end{itemize}
+The proof is handled automatically by \texttt{grind} after expanding the definitions.
+
+\subsection*{Lemmas L2 and L3: multiplicative identities from the bilinear blocks}
+
+\begin{LeanCode}
+theorem L2 (c : Fin 14 → ℂ)
+  (h10 : E10 c) (h11 : E11 c) (h12 : E12 c) :
+  p c 5 * p c 13 = p c 6 * p c 12 := by
+  unfold E10 E11 E12 at *;
+  unfold p;
+  simp_all +decide [Complex.normSq];
+  grind +ring
+\end{LeanCode}
+
+\paragraph{Explanation.}
+As discussed above, E10--E12 force $\overline{c_5}c_{13}=-\overline{c_6}c_{12}$ and both sides are real.
+Taking squared magnitudes and using multiplicativity of \texttt{normSq} gives:
+\[
+|c_5|^2\,|c_{13}|^2 = |c_6|^2\,|c_{12}|^2,
+\]
+i.e.\ $p_5p_{13}=p_6p_{12}$.
+
+\begin{LeanCode}
+theorem L3 (c : Fin 14 → ℂ)
+  (h13 : E13 c) (h14 : E14 c) (h15 : E15 c) :
+  p c 4 * p c 13 = p c 6 * p c 11 := by
+  unfold E13 E14 E15 p at *;
+  simp_all +decide [Complex.normSq];
+  grind
+\end{LeanCode}
+
+\paragraph{Explanation.}
+This is the analogous statement for the block E13--E15, giving $p_4p_{13}=p_6p_{11}$.
+
+\subsection*{Lemma L4: deducing exact proportionalities among norms}
+
+\begin{LeanCode}
+theorem L4 (c : Fin 14 → ℂ)
+  (h1 : E1 c) (h2 : E2 c) (h3 : E3 c) (h4 : E4 c)
+  (h5 : E5 c) (h6 : E6 c) (h7 : E7 c) (h8 : E8 c)
+  (h10 : E10 c) (h11 : E11 c) (h12 : E12 c)
+  (h13 : E13 c) (h14 : E14 c) (h15 : E15 c) :
+  p c 12 = 3/5 * p c 13 ∧
+  p c 11 = 3/5 * p c 13 ∧
+  p c 5 = 3/5 * p c 6 ∧
+  p c 4 = 3/5 * p c 6 := by
+  ...
+  grind
+\end{LeanCode}
+
+\paragraph{Explanation.}
+The goal is to solve the multiplicative identities from L2/L3 together with the pair-sum identities from L1.
+Sketch of the algebra (informal):
+\begin{itemize}
+\item From L1: $p_5+p_{12}=\frac{3}{16}$ and $p_6+p_{13}=\frac{5}{16}$.
+\item From L2: $p_5p_{13}=p_6p_{12}$.
+\end{itemize}
+This system has the solution $p_{12}=\frac35 p_{13}$ and $p_5=\frac35 p_6$ (and similarly with $p_{11},p_4$ using L3).
+Lean lets \texttt{grind} perform the necessary algebra.
+
+\subsection*{Lemma L5: uniform lower bounds on $p_{13}$ and $p_6$}
+
+\begin{LeanCode}
+theorem L5 (c : Fin 14 → ℂ)
+  (h1 : E1 c) (h2 : E2 c) (h3 : E3 c) (h4 : E4 c)
+  (h5 : E5 c) (h6 : E6 c) (h7 : E7 c) (h8 : E8 c)
+  (h10 : E10 c) (h11 : E11 c) (h12 : E12 c)
+  (h13 : E13 c) (h14 : E14 c) (h15 : E15 c) :
+  p c 13 ≥ 15/176 ∧ p c 6 ≥ 15/176 := by
+  ...
+  constructor <;> linarith [...]
+\end{LeanCode}
+
+\paragraph{Explanation.}
+This lemma is an inequality chase using:
+\begin{itemize}
+\item L4: $p_{11}=p_{12}=\frac35 p_{13}$,
+\item L1: $p_0 = (p_8+p_9+p_{10}+p_{11}+p_{12}+p_{13})-\frac{7}{16}$,
+\item nonnegativity $p_k\ge 0$ for all $k$.
+\end{itemize}
+
+Key bound for $p_{13}$:
+\[
+0\le p_0 \implies p_8+p_9+p_{10}+p_{11}+p_{12}+p_{13}\ge \frac{7}{16}.
+\]
+Substitute $p_{11}=p_{12}=\frac35 p_{13}$ to get
+\[
+p_8+p_9+p_{10}+\frac{11}{5}p_{13}\ge \frac{7}{16}.
+\]
+Also L1 gives $p_1+p_8=\frac1{16}$, $p_2+p_9=\frac1{16}$, $p_3+p_{10}=\frac18$, so with $p_1,p_2,p_3\ge 0$:
+\[
+p_8\le \frac{1}{16},\quad p_9\le \frac{1}{16},\quad p_{10}\le \frac{1}{8}.
+\]
+Hence $p_8+p_9+p_{10}\le \frac14$, so
+\[
+\frac{11}{5}p_{13}\ge \frac{7}{16}-\frac14=\frac{3}{16}
+\quad\Longrightarrow\quad
+p_{13}\ge \frac{3}{16}\cdot\frac{5}{11}=\frac{15}{176}.
+\]
+A similar argument gives an upper bound $p_{13}\le \frac{5}{22}$ from $p_7\ge 0$, and since L1 gives $p_6=\frac{5}{16}-p_{13}$, this yields
+\[
+p_6\ge \frac{15}{176}.
+\]
+Lean discharges these inequalities with \texttt{linarith}.
+
+\subsection*{Lemma L6: consequences of E16--E19}
+
+\begin{LeanCode}
+theorem L6 (c : Fin 14 → ℂ)
+  (h16 : E16 c) (h17 : E17 c) (h18 : E18 c) (h19 : E19 c) :
+  (star (c 12) * c 13).re = 0 ∧
+  (star (c 5) * c 6).re = 0 ∧
+  (star (c 11) * c 13).re = 0 ∧
+  (star (c 4) * c 6).re = 0 := by
+  unfold E16 E17 E18 E19 at *;
+  grind +ring
+\end{LeanCode}
+
+\paragraph{Explanation.}
+For example, E16 and E17 are:
+\[
+\operatorname{Re}(\overline{c_{12}}c_{13})+\operatorname{Re}(\overline{c_5}c_6)=0,\qquad
+\operatorname{Re}(\overline{c_{12}}c_{13})-\operatorname{Re}(\overline{c_5}c_6)=0.
+\]
+Adding and subtracting gives each term is $0$.  Similarly for E18/E19.
+Lemma L6 packages these consequences.
+
+\subsection*{Lemma L7: global phase normalization (gauge)}
+
+\begin{LeanCode}
+theorem L7 (c : Fin 14 → ℂ)
+  (h1 : E1 c) ... (h15 : E15 c) :
+  let g := star (c 13) / (‖c 13‖ : ℂ)
+  let c' := fun k => g * c k
+  c' 13 = (‖c 13‖ : ℂ) ∧
+  (∀ i j, star (c' i) * c' j = star (c i) * c j) ∧
+  (∀ k, p c' k = p c k) := by
+  by_cases h : c 13 = 0 <;> simp_all +decide [ div_eq_inv_mul ];
+  · have := L5 c h1 ... h15; ...
+  · field_simp [h]; ...
+\end{LeanCode}
+
+\paragraph{Explanation.}
+The gauge choice is
+\[
+g:=\frac{\overline{c_{13}}}{\|c_{13}\|}.
+\]
+Then $g$ has norm $1$, and
+\[
+c'_{13} = g c_{13} = \|c_{13}\|\in\mathbb{R}_{\ge 0}.
+\]
+Moreover,
+\[
+\overline{(g c_i)}(g c_j)=\overline{c_i}c_j
+\]
+because $\overline{g}g=1$, so all bilinear expressions $\overline{c_i}c_j$ are invariant under this global rotation.  Finally, since $|g|=1$, the norms satisfy $|g c_k|^2=|c_k|^2$, i.e.\ $p$ is unchanged.
+
+The proof splits into cases: if $c_{13}=0$ then $p_{13}=0$, contradicting L5's lower bound; so the nonzero case holds and the algebra goes through.
+
+\subsection*{Lemma L8: under the gauge $c_{13}\in\mathbb{R}_{>0}$, many variables become purely real/imaginary}
+
+\begin{LeanCode}
+theorem L8 (c : Fin 14 → ℂ)
+  (h1 : E1 c) ... (h19 : E19 c)
+  (h_gauge_im : (c 13).im = 0) (h_gauge_pos : 0 < (c 13).re) :
+  (c 4).im = 0 ∧ (c 5).im = 0 ∧
+  (c 11).re = 0 ∧ (c 12).re = 0 ∧
+  (c 6).re = 0 ∧
+  c 4 ≠ 0 ∧ c 5 ≠ 0 ∧ (c 6).im ≠ 0 := by
+  ...
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Under the gauge assumptions, $c_{13}$ is a positive real number. Then:
+\begin{itemize}
+\item From E14 and E15, one extracts $\operatorname{Im}(\overline{c_4}c_{13})=0$, and since $c_{13}\neq 0$ and is real, this forces $\operatorname{Im}(c_4)=0$. Hence $c_4$ is real.
+\item From L6, $\operatorname{Re}(\overline{c_{11}}c_{13})=0$ and $\operatorname{Re}(\overline{c_{12}}c_{13})=0$, which force $\operatorname{Re}(c_{11})=\operatorname{Re}(c_{12})=0$ (so $c_{11},c_{12}$ are purely imaginary).
+\item Another real-part equation from L6 gives $\operatorname{Re}(\overline{c_4}c_6)=0$, and since $c_4$ is real and nonzero, this forces $\operatorname{Re}(c_6)=0$ (so $c_6$ is purely imaginary).
+\item The nonzero conditions $c_4\neq 0$, $c_5\neq 0$, and $(c_6).im\neq 0$ are proved using L4 and L5: if one of these vanished, it would force a corresponding norm-square to be $0$, contradicting the proportionalities and the lower bounds.
+\end{itemize}
+
+\subsection*{Lemma L9: define $T$ and compute $|T|$ and a lower bound}
+
+\begin{LeanCode}
+theorem L9 (c : Fin 14 → ℂ)
+  (h1 : E1 c) ... (h19 : E19 c)
+  (h_gauge_im : (c 13).im = 0) (h_gauge_pos : 0 < (c 13).re) :
+  let T := (star (c 4) * c 11).im + (star (c 5) * c 12).im + (star (c 6) * c 13).im
+  abs T = 11/5 * Real.sqrt (p c 6 * p c 13) ∧
+  abs T ≥ 3/16 := by
+  ...
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Under the gauge and using L8, write:
+\[
+c_4=y_4\in\mathbb{R},\quad c_5=y_5\in\mathbb{R},\quad
+c_{11}= i y_{11},\quad c_{12}= i y_{12},\quad c_6= i y_6,\quad c_{13}=r_{13}\in\mathbb{R}_{>0}.
+\]
+Then:
+\[
+\operatorname{Im}(\overline{c_4}c_{11}) = \operatorname{Im}(y_4 \cdot i y_{11}) = y_4 y_{11},
+\]
+\[
+\operatorname{Im}(\overline{c_5}c_{12}) = y_5 y_{12},\qquad
+\operatorname{Im}(\overline{c_6}c_{13}) = \operatorname{Im}((-i y_6) r_{13}) = -y_6 r_{13}.
+\]
+So $T = y_4 y_{11} + y_5 y_{12} - y_6 r_{13}$.
+
+The remaining equations force $y_{11}$ and $y_{12}$ to be affine multiples of $y_6 r_{13}$, and the file shows:
+\[
+T = \pm \frac{11}{5}\, y_6 r_{13}.
+\]
+Thus
+\[
+|T| = \frac{11}{5}\,|y_6|\,r_{13}.
+\]
+But $p_6=|c_6|^2=y_6^2$ and $p_{13}=|c_{13}|^2=r_{13}^2$, so
+\[
+|y_6|\,r_{13} = \sqrt{y_6^2}\,\sqrt{r_{13}^2} = \sqrt{p_6p_{13}},
+\]
+giving the formula $|T|=\frac{11}{5}\sqrt{p_6p_{13}}$.
+
+Finally, Lemma L5 gives $p_6,p_{13}\ge \frac{15}{176}$, hence
+\[
+|T|=\frac{11}{5}\sqrt{p_6p_{13}}
+\ge \frac{11}{5}\sqrt{\Bigl(\frac{15}{176}\Bigr)^2}
+= \frac{11}{5}\cdot\frac{15}{176}
+= \frac{3}{16}.
+\]
+
+\subsection*{Lemma L10: define $U$ and bound it from above}
+
+\begin{LeanCode}
+theorem L10 (c : Fin 14 → ℂ)
+  (h1 : E1 c) ... (h8 : E8 c) :
+  let U := (star (c 0) * c 7).im + (star (c 1) * c 8).im
+         + (star (c 2) * c 9).im + (star (c 3) * c 10).im
+  abs U ≤ 5/32 := by
+  ...
+\end{LeanCode}
+
+\paragraph{Explanation.}
+For any complex numbers $a,b$:
+\[
+|\operatorname{Im}(\overline{a}b)| \le |\overline{a}b| = |a||b|
+\le \frac{|a|^2+|b|^2}{2}.
+\]
+In the file, this is applied term-by-term to $U$, yielding:
+\[
+|U|
+\le \sum_{i=0}^{3} \frac{p_i+p_{i+7}}{2}.
+\]
+Lemma L1 provides the exact pair sums:
+\[
+p_0+p_7=\frac{1}{16},\quad p_1+p_8=\frac{1}{16},\quad p_2+p_9=\frac{1}{16},\quad p_3+p_{10}=\frac{1}{8}.
+\]
+Therefore
+\[
+|U| \le \frac{1}{2}\Bigl(\frac{1}{16}+\frac{1}{16}+\frac{1}{16}+\frac{1}{8}\Bigr)
+= \frac{1}{2}\Bigl(\frac{3}{16}+\frac{2}{16}\Bigr)
+= \frac{5}{32}.
+\]
+
+\subsection*{Lemma L11: E9 ties $U$ and $T$}
+
+\begin{LeanCode}
+theorem L11 (c : Fin 14 → ℂ)
+  (h9 : E9 c) :
+  let T := (star (c 4) * c 11).im + (star (c 5) * c 12).im + (star (c 6) * c 13).im
+  let U := (star (c 0) * c 7).im + (star (c 1) * c 8).im + (star (c 2) * c 9).im + (star (c 3) * c 10).im
+  U + T = 0 ∧ abs T = abs U := by
+  unfold E9 at h9;
+  exact ⟨ by linarith, by rw [ ← abs_neg ] ; congr; linarith ⟩
+\end{LeanCode}
+
+\paragraph{Explanation.}
+E9 is exactly $U+T=0$, so $T=-U$. Hence $|T|=|U|$.
+This lemma extracts both facts directly.
+
+\subsection*{Mapping 28 reals to 14 complexes and the final contradiction}
+
+\begin{LeanCode}
+def c_from_v (v : Fin 28 → ℝ) : Fin 14 → ℂ :=
+  fun k => ⟨v ⟨2 * k.val, by fin_cases k <;> decide⟩,
+            v ⟨2 * k.val + 1, by decide +revert⟩⟩
+\end{LeanCode}
+
+\paragraph{Explanation.}
+This is the packaging map:
+\[
+c_k = v_{2k} + i\,v_{2k+1}.
+\]
+So a real vector $v\in\mathbb{R}^{28}$ is identified with $14$ complex numbers.
+
+\begin{LeanCode}
+theorem NoRealSolution : ¬ ∃ v : Fin 28 → ℝ,
+  let c := c_from_v v
+  E1 c ∧ E2 c ∧ E3 c ∧ ... ∧ E19 c := by
+  by_contra h
+  obtain ⟨v, hc⟩ := h
+  set c := c_from_v v
+  ...
+  have := L9 ( fun k => g * c k ) ... hg₂ hg₃
+  have := L10 ( fun k => g * c k ) ...
+  have := L11 ( fun k => g * c k ) hc₉
+  linarith
+\end{LeanCode}
+
+\paragraph{Explanation.}
+The final theorem proceeds by contradiction:
+\begin{enumerate}
+\item Assume there is a real solution $v$; set $c=c\_from\_v(v)$ and collect the hypotheses $E1(c),\dots,E19(c)$.
+\item Choose a gauge $g=\overline{c_{13}}/\|c_{13}\|$ so that $(g c_{13})$ is a positive real.
+\item Prove that multiplying all variables by $g$ preserves all equations (because $\overline{(g c_i)}(g c_j)=\overline{c_i}c_j$ and $p(gc_k)=p(c_k)$ when $\|g\|=1$).
+\item Apply Lemmas L9, L10, L11 to the gauged tuple $c'=\{g c_k\}$:
+  \[
+  |T|\ge \frac{3}{16},\qquad |U|\le \frac{5}{32},\qquad |T|=|U|.
+  \]
+\item The numeric contradiction is discharged by \texttt{linarith}.
+\end{enumerate}
+
+This completes the proof that no real solution exists.
+
+\end{document}

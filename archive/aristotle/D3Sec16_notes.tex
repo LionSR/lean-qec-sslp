@@ -1,0 +1,742 @@
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fvextra}
+
+% --- Make common Lean unicode compile under pdfLaTeX ---
+\DeclareUnicodeCharacter{00AC}{\ensuremath{\neg}}         % ¬
+\DeclareUnicodeCharacter{00B7}{\ensuremath{\cdot}}        % ·
+\DeclareUnicodeCharacter{2016}{\ensuremath{\Vert}}        % ‖
+\DeclareUnicodeCharacter{2080}{\textsubscript{0}}         % ₀
+\DeclareUnicodeCharacter{2082}{\textsubscript{2}}         % ₂
+\DeclareUnicodeCharacter{2102}{\ensuremath{\mathbb{C}}}   % ℂ
+\DeclareUnicodeCharacter{211D}{\ensuremath{\mathbb{R}}}   % ℝ
+\DeclareUnicodeCharacter{2190}{\ensuremath{\leftarrow}}   % ←
+\DeclareUnicodeCharacter{2192}{\ensuremath{\to}}          % →
+\DeclareUnicodeCharacter{2200}{\ensuremath{\forall}}      % ∀
+\DeclareUnicodeCharacter{2203}{\ensuremath{\exists}}      % ∃
+\DeclareUnicodeCharacter{2227}{\ensuremath{\wedge}}       % ∧
+\DeclareUnicodeCharacter{2260}{\ensuremath{\neq}}         % ≠
+\DeclareUnicodeCharacter{2264}{\ensuremath{\le}}          % ≤
+\DeclareUnicodeCharacter{22A2}{\ensuremath{\vdash}}       % ⊢
+\DeclareUnicodeCharacter{27E8}{\ensuremath{\langle}}      % ⟨
+\DeclareUnicodeCharacter{27E9}{\ensuremath{\rangle}}      % ⟩
+
+% Verbatim environment for Lean code (line-breaking enabled)
+\DefineVerbatimEnvironment{LeanCode}{Verbatim}{
+  fontsize=\small,
+  breaklines=true,
+  breakanywhere=true,
+  commandchars=\\\{\},
+  showspaces=false,
+  showtabs=false
+}
+
+\setlist[itemize]{topsep=2pt, itemsep=2pt}
+\setlist[enumerate]{topsep=2pt, itemsep=2pt}
+
+\title{Notes on \texttt{D3Sec16.lean}\\(System of 17 equations in 20 reals has no solution)}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{-- general overview and logic: what is the problem, how does the proof go (and check if the proof is logically correct)}
+
+\subsection*{What is the problem?}
+
+The Lean file \texttt{D3Sec16.lean} defines a predicate \texttt{Sys} on vectors
+\[
+v : \mathrm{Fin}\ 20 \to \mathbb{R},
+\]
+i.e.\ on $20$ real variables.  The predicate \texttt{Sys v} is the conjunction of
+\[
+17 \text{ equations (equalities) in these } 20 \text{ real variables.}
+\]
+The file proves the theorem:
+\[
+\texttt{theorem no\_solution : ¬ ∃ v : Fin 20 → ℝ, Sys v.}
+\]
+In ordinary mathematics, this means:
+
+\begin{quote}
+\emph{There is no assignment of $20$ real numbers that satisfies all $17$ equations simultaneously.}
+\end{quote}
+
+Equivalently, the system of equations is \emph{inconsistent} (unsatisfiable over $\mathbb{R}$).
+
+\subsection*{What are the variables and how are they organized?}
+
+Let the $20$ real coordinates be
+\[
+x_1,\dots,x_{20}\in\mathbb{R},
+\]
+where $x_i$ corresponds to \texttt{v$i$ v} in Lean.  The file groups them into $10$ complex numbers:
+\[
+c_0 = x_1 + i x_2,\quad
+c_1 = x_3 + i x_4,\quad \dots,\quad
+c_9 = x_{19} + i x_{20}.
+\]
+For each $k=0,\dots,9$ it defines the squared magnitude
+\[
+p_k := |c_k|^2 = (\Re c_k)^2 + (\Im c_k)^2 \ge 0.
+\]
+Six of these complex variables are given special names:
+\[
+\begin{aligned}
+e &= c_4 = x_9 + i x_{10},&
+f &= c_5 = x_{11} + i x_{12},\\
+a &= c_6 = x_{13} + i x_{14},&
+c &= c_7 = x_{15} + i x_{16},\\
+d &= c_8 = x_{17} + i x_{18},&
+b &= c_9 = x_{19} + i x_{20}.
+\end{aligned}
+\]
+
+\subsection*{What equations are in the system?}
+
+The system consists of:
+\begin{itemize}
+\item \textbf{8 ``diagonal'' equations} involving only the magnitudes $p_0,\dots,p_9$:
+  one global normalization equation $N$ and seven additional linear equations $D1$--$D7$.
+\item \textbf{9 ``off-diagonal'' (cross) equations} $X1_{\ast}$, $X2_{\ast}$, $X3_{\ast}$, which are bilinear in the real coordinates.
+\end{itemize}
+
+The diagonal part forces certain sums and equalities among the $p_k$ and ultimately pins many of them to the specific value $1/16$, leaving only two degrees of freedom (essentially $p_7$ and $p_9$).  The off-diagonal part forces compatibility conditions among the phases of the complex variables.
+
+\subsection*{How does the proof go? (the 5-step plan)}
+
+The file itself states a five-step plan in the header comment; the proof follows that plan.
+
+\paragraph{Step 1: Solve the diagonal subsystem.}
+From the linear equations in the $p_k$, Lean proves:
+\begin{itemize}
+\item $p_2=p_1$ and $p_3=p_1$.
+\item $p_6+p_7=\frac14$ and $p_8+p_9=\frac14$.
+\item $p_4+p_5=\frac14$.
+\item $p_1=\frac1{16}$ and $p_0=\frac1{16}$.
+\end{itemize}
+Combining these gives a full parameterization:
+\[
+\begin{aligned}
+p_0=p_1=p_2=p_3&=\frac1{16},\\
+p_6&=\frac14-p_7,\\
+p_8&=\frac14-p_9,\\
+p_4&=p_7+p_9-\frac3{16},\\
+p_5&=\frac7{16}-p_7-p_9.
+\end{aligned}
+\]
+Nonnegativity of the $p_k$ then gives inequalities:
+\[
+0\le p_7\le \tfrac14,\qquad 0\le p_9\le \tfrac14,\qquad
+\tfrac3{16}\le p_7+p_9\le \tfrac7{16}.
+\]
+
+\paragraph{Step 2: Extract cross relations.}
+By adding/subtracting appropriate off-diagonal equations (e.g.\ $X1_2\pm X1_4$), Lean isolates six simpler bilinear relations such as
+\[
+x_{13}x_{20}-x_{14}x_{19}=0,\qquad
+x_{15}x_{18}-x_{16}x_{17}=0,
+\]
+and four analogous ones involving $(b,e)$, $(d,f)$, $(c,e)$, $(a,f)$.
+These are exactly the statements that certain complex products have zero imaginary part, e.g.
+\[
+\operatorname{Im}(\overline{b}a)=0,\quad \operatorname{Im}(\overline{d}c)=0,\quad \operatorname{Im}(\overline{b}e)=0,\ \dots
+\]
+
+\paragraph{Step 3: Show key complex amplitudes are nonzero.}
+Lean proves
+\[
+a\neq 0,\quad b\neq 0,\quad c\neq 0,\quad d\neq 0,\quad e\neq 0,\quad f\neq 0
+\]
+by contradiction: assuming one is $0$ forces its corresponding $p_k=0$ and, through the Step~1 parameterization and nonnegativity, eventually implies some other $p_j<0$, impossible since each $p_j$ is a sum of squares.
+
+\paragraph{Step 4: Global phase reduction.}
+Define the unit complex scalar
+\[
+g := \frac{\overline{b}}{\lVert b\rVert}\in\mathbb{C}.
+\]
+Then $\overline{g}g=1$ and $b':=gb=\lVert b\rVert$ is a positive real number.
+Define primed variables $a'=ga$, $c'=gc$, $d'=gd$, $e'=ge$, $f'=gf$.
+Because $\overline{g}g=1$, the key identity holds:
+\[
+\overline{(g x)}(g y)=\overline{x}y.
+\]
+Using this invariance together with the Step~2 cross relations and the fact that $b'$ is real and nonzero, Lean shows that all primed amplitudes are real:
+\[
+\operatorname{Im}(a')=\operatorname{Im}(b')=\operatorname{Im}(c')=\operatorname{Im}(d')=\operatorname{Im}(e')=\operatorname{Im}(f')=0.
+\]
+
+\paragraph{Step 5: Convert dot equations and derive a contradiction.}
+From the original $X$-equations, Lean packages three complex ``dot-product'' equations:
+\[
+\overline{b}a+\overline{d}c=0,\qquad
+\overline{b}e+\overline{d}f=0,\qquad
+\overline{f}a+\overline{e}c=0.
+\]
+After multiplying by $g$ and using that the primed variables are real, these become real multiplicative relations:
+\[
+b'a'=-d'c',\qquad b'e'=-d'f',\qquad c'e'=-a'f'.
+\]
+Since $b'\neq 0$ and $d'\neq 0$, we can solve the first two for $c'$ and $e'$:
+\[
+c'=-\frac{b'a'}{d'},\qquad e'=-\frac{d'f'}{b'}.
+\]
+Multiplying gives
+\[
+c'e'=\Bigl(-\frac{b'a'}{d'}\Bigr)\Bigl(-\frac{d'f'}{b'}\Bigr)=a'f'.
+\]
+But the third relation says $c'e'=-a'f'$. Hence
+\[
+a'f'=-a'f' \quad\Rightarrow\quad a'f'=0.
+\]
+This contradicts $a'\neq 0$ and $f'\neq 0$ (Step~4 preserves nonzeroness), so no solution exists.
+
+\subsection*{Is the proof logically correct?}
+
+\begin{itemize}
+\item \textbf{Mathematical logic:} the five-step plan is standard and coherent: solve the magnitude constraints, extract phase constraints, fix a global phase, reduce to a purely real algebraic system, and derive a contradiction.
+\item \textbf{Lean-level certainty:} if this file \emph{compiles} in Lean, then the theorem is formally verified by Lean's kernel.
+\item \textbf{Automation caveat:} the file contains several occurrences of the tactic \texttt{exact?}.  This is a ``proof search'' tactic: Lean tries to fill in the missing proof term automatically.  If any \texttt{exact?} fails, the file will not compile.  (Many of these are plausibly intended to be direct references to earlier lemmas such as \texttt{cross\_ba h} or \texttt{step3\_c\_ne0 h}.)
+\end{itemize}
+
+\section*{-- interpretation of lean code: a few lines of lean code, then explanation; then next few lines of lean code, then explanation; \dots}
+
+In what follows, each Lean excerpt is shown in a boxed verbatim block, followed by a mathematical explanation of what it does.
+
+\subsection*{Header, imports, and options}
+
+\begin{LeanCode}
+/-
+This file was generated by Aristotle (https://aristotle.harmonic.fun).
+
+Proof that the given system of 17 equations in 20 real variables has no solution.
+
+We follow the 5-step proof plan:
+1.  Solve the diagonal subsystem ...
+...
+-/
+
+import Mathlib
+
+set_option maxHeartbeats 0
+set_option autoImplicit false
+
+noncomputable section
+\end{LeanCode}
+
+\paragraph{Explanation.}
+\texttt{import Mathlib} imports the standard Lean mathematical library.
+The various \texttt{set\_option} commands relax resource limits so that heavy tactics (notably \texttt{grind}) can run without timeouts.
+\texttt{autoImplicit false} forces all implicit arguments to be explicit, which tends to make generated code more predictable.
+\texttt{noncomputable section} allows definitions that are not computationally reducible, which is common when using division and norms in $\mathbb{C}$.
+
+\subsection*{Naming the 20 real coordinates}
+
+\begin{LeanCode}
+abbrev v1 (v : Fin 20 → ℝ) := v ⟨0, by decide⟩
+...
+abbrev v20 (v : Fin 20 → ℝ) := v ⟨19, by decide⟩
+\end{LeanCode}
+
+\paragraph{Explanation.}
+A vector $v:\mathrm{Fin}\ 20\to\mathbb{R}$ is a function assigning a real number to each index $0,1,\dots,19$.
+The abbreviations \texttt{v1},\dots,\texttt{v20} simply give human-friendly names to these coordinates.
+Thus \texttt{v13 v} means $x_{13}$ in our notation, and so on.
+
+\subsection*{Defining the squared magnitudes $p_0,\dots,p_9$ and proving they are nonnegative}
+
+\begin{LeanCode}
+def p0 (v : Fin 20 → ℝ) := (v1 v)^2 + (v2 v)^2
+...
+def p9 (v : Fin 20 → ℝ) := (v19 v)^2 + (v20 v)^2
+
+lemma p0_nonneg (v) : 0 ≤ p0 v := by
+  apply add_nonneg; apply sq_nonneg; apply sq_nonneg
+...
+lemma p9_nonneg (v) : 0 ≤ p9 v := by
+  apply add_nonneg; apply sq_nonneg; apply sq_nonneg
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Each $p_k$ is defined as a sum of two squares, hence $p_k\ge 0$.
+For instance,
+\[
+p_0=(x_1)^2+(x_2)^2\ge 0.
+\]
+The proofs use the lemmas \texttt{sq\_nonneg} ($x^2\ge 0$) and \texttt{add\_nonneg}.
+
+\subsection*{Packaging pairs into complex numbers and naming the special amplitudes}
+
+\begin{LeanCode}
+def c0 (v : Fin 20 → ℝ) : ℂ := Complex.mk (v1 v) (v2 v)
+...
+def c9 (v : Fin 20 → ℝ) : ℂ := Complex.mk (v19 v) (v20 v)
+
+def a (v : Fin 20 → ℝ) := c6 v
+def b (v : Fin 20 → ℝ) := c9 v
+def c (v : Fin 20 → ℝ) := c7 v
+def d (v : Fin 20 → ℝ) := c8 v
+def e (v : Fin 20 → ℝ) := c4 v
+def f (v : Fin 20 → ℝ) := c5 v
+\end{LeanCode}
+
+\paragraph{Explanation.}
+\texttt{Complex.mk re im} creates the complex number $re+i\,im$.
+Thus $c_k$ is the $k$th complex number from the paired real coordinates.
+The file singles out $a,b,c,d,e,f$ as specific $c_k$ for later phase and dot-product arguments:
+$a=c_6$, $b=c_9$, $c=c_7$, $d=c_8$, $e=c_4$, $f=c_5$.
+
+\subsection*{Defining the system \texttt{Sys}}
+
+\begin{LeanCode}
+structure Sys (v : Fin 20 → ℝ) : Prop :=
+  (N  : p0 v + p1 v + p2 v + p3 v + p4 v + p5 v + p6 v + p7 v + p8 v + p9 v = 1)
+  (D1 : p6 v + p7 v + p8 v + p9 v = 1/2)
+  ...
+  (D7 : p1 v + p2 v + p3 v + p4 v + p6 v + p8 v = 1/2)
+  (X1_0 : v13 v * v19 v + v14 v * v20 v + v15 v * v17 v + v16 v * v18 v = 0)
+  (X1_2 : v13 v * v20 v - v14 v * v19 v + v15 v * v18 v - v16 v * v17 v = 0)
+  (X1_4 : v13 v * v20 v - v14 v * v19 v - v15 v * v18 v + v16 v * v17 v = 0)
+  ...
+  (X3_4 : -v11 v * v14 v + v12 v * v13 v - v15 v * v10 v + v16 v * v9 v = 0)
+\end{LeanCode}
+
+\paragraph{Explanation.}
+A Lean \texttt{structure} with fields is essentially a record: \texttt{Sys v} is a proposition that holds when all of these equalities hold.
+The fields are:
+\begin{itemize}
+\item \texttt{N} and \texttt{D1}--\texttt{D7}: linear constraints on $p_0,\dots,p_9$.
+\item \texttt{X1\_*}, \texttt{X2\_*}, \texttt{X3\_*}: bilinear constraints in the raw real coordinates.
+\end{itemize}
+
+\subsection*{Step 1: Diagonal linear algebra in the $p_k$}
+
+\begin{LeanCode}
+lemma step1_p123 {v : Fin 20 → ℝ} (h : Sys v) : p2 v = p1 v ∧ p3 v = p1 v := by
+  constructor <;> linarith [ h.D4, h.D5, h.D6, h.D7 ]
+\end{LeanCode}
+
+\paragraph{Explanation.}
+From the diagonal equations \texttt{D4}--\texttt{D7}, the tactic \texttt{linarith} solves a linear system and deduces:
+\[
+p_2=p_1,\qquad p_3=p_1.
+\]
+
+\begin{LeanCode}
+lemma step1_sums {v : Fin 20 → ℝ} (h : Sys v) : p6 v + p7 v = 1/4 ∧ p8 v + p9 v = 1/4 := by
+  constructor <;> linarith! [ h.D1, h.D2, h.D3, h.D4, h.D5, h.D6, h.D7, step1_p123 h ]
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Using the diagonal equations together with $p_2=p_1$ and $p_3=p_1$, \texttt{linarith!} (a stronger variant) derives the two key sum identities:
+\[
+p_6+p_7=\frac14,\qquad p_8+p_9=\frac14.
+\]
+
+\begin{LeanCode}
+lemma step1_p4p5 {v : Fin 20 → ℝ} (h : Sys v) : p4 v + p5 v = 1/4 := by
+  have h_sum : p4 v + p5 v + (p8 v + p9 v) = 1/2 := by
+    rw [← add_assoc]
+    exact h.D2
+  have h_p89 : p8 v + p9 v = 1/4 := (step1_sums h).2
+  rw [h_p89] at h_sum
+  linarith
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Equation \texttt{D2} states $p_4+p_5+p_8+p_9=\frac12$.
+Since Step~1 already proved $p_8+p_9=\frac14$, substituting yields $p_4+p_5=\frac14$.
+
+\begin{LeanCode}
+lemma step1_norm {v : Fin 20 → ℝ} (h : Sys v) : p0 v + 3 * p1 v = 1/4 := by
+  obtain ⟨ N, D1, D2, D3, D4, D5, D6, D7, X1_0, X1_2, X1_4, X2_0, X2_1, X2_4, X3_0, X3_1, X3_4 ⟩ := h;
+  grind
+\end{LeanCode}
+
+\paragraph{Explanation.}
+This lemma is another linear consequence of the diagonal constraints: it proves
+\[
+p_0+3p_1=\frac14.
+\]
+The tactic \texttt{grind} performs aggressive algebraic simplification and solving.  Although \texttt{grind} receives all fields of \texttt{Sys}, the statement itself involves only the diagonal $p$'s.
+
+\begin{LeanCode}
+lemma step1_solve_t {v : Fin 20 → ℝ} (h : Sys v) : p1 v = 1/16 ∧ p0 v = 1/16 := by
+  let S := p4 v + p6 v + p8 v
+  ...
+  have hp1 : p1 v = 1/16 := by linarith
+  have hp0 : p0 v = 1/16 := by
+    have norm := step1_norm h
+    rw [hp1] at norm
+    linarith
+  constructor
+  · exact hp1
+  · exact hp0
+\end{LeanCode}
+
+\paragraph{Explanation.}
+The proof introduces $S:=p_4+p_6+p_8$ and derives two linear equations relating $p_1$ and $S$:
+\[
+p_1 = S-\frac14,\qquad 3p_1+S=\frac12.
+\]
+Solving gives $p_1=\frac1{16}$.  Then \texttt{step1\_norm} implies $p_0=\frac1{16}$.
+
+\begin{LeanCode}
+lemma step1_param {v : Fin 20 → ℝ} (h : Sys v) :
+  p0 v = 1/16 ∧ p1 v = 1/16 ∧ p2 v = 1/16 ∧ p3 v = 1/16 ∧
+  p4 v = p7 v + p9 v - 3/16 ∧ p5 v = 7/16 - p7 v - p9 v ∧
+  p6 v = 1/4 - p7 v ∧ p8 v = 1/4 - p9 v := by
+  ...
+\end{LeanCode}
+
+\paragraph{Explanation.}
+This is the explicit parameterization of all $p_k$ in terms of the two free variables $p_7$ and $p_9$.
+It uses the already-proved identities:
+$p_0=p_1=p_2=p_3=\frac1{16}$,
+$p_6=\frac14-p_7$,
+$p_8=\frac14-p_9$,
+and solves for $p_4$ and $p_5$ using the diagonal constraints.
+
+\begin{LeanCode}
+lemma step1_ineq {v : Fin 20 → ℝ} (h : Sys v) :
+  0 ≤ p7 v ∧ p7 v ≤ 1/4 ∧
+  0 ≤ p9 v ∧ p9 v ≤ 1/4 ∧
+  3/16 ≤ p7 v + p9 v ∧ p7 v + p9 v ≤ 7/16 := by
+  have h_nonneg : 0 ≤ p0 v ∧ ... ∧ 0 ≤ p9 v := by
+    exact ⟨ p0_nonneg v, ..., p9_nonneg v ⟩;
+  exact ⟨ ..., by linarith [ step1_param h ], ... ⟩
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Since each $p_k$ is a sum of squares, $p_k\ge 0$ for all $k$.
+Combining these with the parameterization:
+\[
+p_6=\tfrac14-p_7,\quad p_8=\tfrac14-p_9,\quad p_4=p_7+p_9-\tfrac3{16},\quad p_5=\tfrac7{16}-p_7-p_9,
+\]
+yields the displayed inequalities by linear arithmetic.
+
+\subsection*{Step 2: Extracting cross relations by linear combination}
+
+\begin{LeanCode}
+lemma cross_ba {v : Fin 20 → ℝ} (h : Sys v) : v13 v * v20 v - v14 v * v19 v = 0 := by
+  have h_sum : 2 * (v13 v * v20 v - v14 v * v19 v) = 0 := by
+    linear_combination h.X1_2 + h.X1_4
+  linarith
+\end{LeanCode}
+
+\paragraph{Explanation.}
+The tactic \texttt{linear\_combination} forms a linear combination of equations.  Adding \texttt{X1\_2} and \texttt{X1\_4} cancels the $(v15,v16,v17,v18)$ terms and isolates
+\[
+2(x_{13}x_{20}-x_{14}x_{19})=0,
+\]
+hence $x_{13}x_{20}-x_{14}x_{19}=0$.
+
+\begin{LeanCode}
+lemma cross_cd {v : Fin 20 → ℝ} (h : Sys v) : v15 v * v18 v - v16 v * v17 v = 0 := by
+  have h_diff : 2 * (v15 v * v18 v - v16 v * v17 v) = 0 := by
+    linear_combination h.X1_2 - h.X1_4
+  linarith
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Subtracting \texttt{X1\_4} from \texttt{X1\_2} isolates the remaining cross term
+\[
+2(x_{15}x_{18}-x_{16}x_{17})=0,
+\]
+so $x_{15}x_{18}-x_{16}x_{17}=0$.
+
+\begin{LeanCode}
+lemma cross_be {v : Fin 20 → ℝ} (h : Sys v) : v20 v * v9 v - v19 v * v10 v = 0 := by
+  have h_sum : 2 * (v20 v * v9 v - v19 v * v10 v) = 0 := by
+    linear_combination h.X2_1 + h.X2_4
+  linarith
+...
+lemma cross_af {v : Fin 20 → ℝ} (h : Sys v) : v11 v * v14 v - v12 v * v13 v = 0 := by
+  have h_diff : 2 * (v11 v * v14 v - v12 v * v13 v) = 0 := by
+    linear_combination h.X3_1 - h.X3_4
+  linarith
+\end{LeanCode}
+
+\paragraph{Explanation.}
+These are analogous: $X2_1\pm X2_4$ and $X3_1\pm X3_4$ are combined to isolate and prove four additional cross relations.
+Conceptually, each one is an ``imaginary part equals zero'' condition for a product of two complex amplitudes.
+
+\subsection*{Step 3: Proving $a,b,c,d,e,f$ are nonzero}
+
+\begin{LeanCode}
+lemma step3_b_ne0 {v : Fin 20 → ℝ} (h : Sys v) : b v ≠ 0 := by
+  by_contra hb_zero
+  have hp9_zero : p9 v = 0 := by
+    simp_all +decide [ Complex.ext_iff, p9 ]
+  ...
+  have hp4_neg_three_sixteenths : p4 v = -3 / 16 := by
+    linarith [ step1_param h ]
+  have hp4_nonneg : 0 ≤ p4 v := by
+    exact add_nonneg ( sq_nonneg _ ) ( sq_nonneg _ )
+  linarith
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Assume $b=0$. Then $x_{19}=x_{20}=0$ and hence $p_9=x_{19}^2+x_{20}^2=0$.
+Using the Step~1 parameterization, Lean derives $p_4=-\frac3{16}$.
+But $p_4$ is a sum of squares, so $p_4\ge 0$. Contradiction.
+Therefore $b\neq 0$.
+
+\begin{LeanCode}
+lemma step3_e_ne0 {v : Fin 20 → ℝ} (h : Sys v) : e v ≠ 0 := by
+  by_contra he_zero
+  have hp4_zero : p4 v = 0 := by
+    ...
+  ...
+  have h_p7_neg : p7 v = 3 / 16 - 1 / 4 := by
+    linarith [ step1_param h ]
+  have h_p7_neg_contra : (0 : ℝ) ≤ p7 v := by
+    exact?
+  linarith [h_p7_neg, h_p7_neg_contra]
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Assume $e=0$ so $p_4=0$.  The diagonal constraints then force $p_9=\frac14$, which plugged into the Step~1 parameterization yields
+\[
+p_7=\frac3{16}-\frac14=-\frac1{16}<0,
+\]
+contradicting $p_7\ge 0$.
+The line \texttt{exact?} is an automated step that should prove $0\le p_7$ (e.g.\ from the earlier lemma \texttt{p7\_nonneg}).
+
+\begin{LeanCode}
+lemma step3_c_ne0 {v : Fin 20 → ℝ} (h : Sys v) : c v ≠ 0 := by
+  by_contra hc_zero
+  have h_p7_zero : p7 v = 0 := by
+    unfold c p7 at * ; simp_all +decide [ Complex.ext_iff ]
+  have h_p6_nonzero : p6 v ≠ 0 := by
+    linarith [ step1_sums h ]
+  have h_cross_ba_zero : v13 v * v20 v - v14 v * v19 v = 0 := by
+    exact?
+  ...
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Assuming $c=0$ forces $p_7=0$, hence $p_6=\frac14$ from $p_6+p_7=\frac14$, so $p_6\neq 0$.
+Then the proof uses the previously established cross relations (the \texttt{exact?} lines) and the fact $b\neq 0$ to show $a=0$; but $a=0$ implies $p_6=0$, contradiction.
+Thus $c\neq 0$.
+
+\begin{LeanCode}
+lemma step3_d_ne0 {v : Fin 20 → ℝ} (h : Sys v) : d v ≠ 0 := by
+  by_contra h_contra;
+  ...
+  have hX20_cross : v20 v * v9 v - v19 v * v10 v = 0 := by
+    exact?;
+  ...
+  exact absurd h_conj_b_e_zero ( mul_ne_zero ( step3_b_ne0 h ) ( star_ne_zero.mpr ( step3_e_ne0 h ) ) )
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Assuming $d=0$ sets $x_{17}=x_{18}=0$ and simplifies \texttt{X2\_0} to an equation involving only $(b,e)$.
+Together with the cross relation \texttt{cross\_be} (again supplied via \texttt{exact?}), this implies a complex product $b\cdot \overline{e}=0$.
+But Step~3 already proved $b\neq 0$ and $e\neq 0$, so the product cannot be zero. Contradiction, hence $d\neq 0$.
+
+\begin{LeanCode}
+lemma step3_a_ne0 {v : Fin 20 → ℝ} (h : Sys v) : a v ≠ 0 := by
+  by_contra h_contra
+  have h_p6 : p6 v = 0 := by
+    unfold a at h_contra; unfold p6; simp_all +decide [ Complex.ext_iff ] ;
+  have h_c : c v ≠ 0 := by
+    exact?;
+  ...
+  have h_cross_ce : v16 v * v9 v - v15 v * v10 v = 0 := by
+    exact?;
+  ...
+  have h_e_ne0 : e v ≠ 0 := by
+    exact?;
+  ...
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Assuming $a=0$ forces $p_6=0$.
+Then, using \texttt{X3\_0} (simplified with $x_{13}=x_{14}=0$) and the cross relation \texttt{cross\_ce}, Lean shows $\overline{e}\,c=0$.
+Since $e\neq 0$ (Step~3) this would force $c=0$, contradicting \texttt{h\_c}.
+Therefore $a\neq 0$.
+
+\subsection*{Step 4: Defining $g$, rotating all amplitudes, and proving primed amplitudes are real}
+
+\begin{LeanCode}
+noncomputable def g (v : Fin 20 → ℝ) : ℂ := star (b v) / (‖b v‖ : ℂ)
+\end{LeanCode}
+
+\paragraph{Explanation.}
+This defines
+\[
+g=\frac{\overline{b}}{\lVert b\rVert}.
+\]
+Since $b\neq 0$, $\lVert b\rVert>0$ and $g$ is well-defined.  It has unit modulus.
+
+\begin{LeanCode}
+lemma conj_g_mul_g {v : Fin 20 → ℝ} (h : Sys v) : star (g v) * g v = 1 := by
+  have h_b_norm : Complex.normSq (b v) ≠ 0 := by
+    exact ne_of_gt ( Complex.normSq_pos.mpr ( step3_b_ne0 h ) );
+  unfold g; ...
+\end{LeanCode}
+
+\paragraph{Explanation.}
+This proves $\overline{g}\,g=1$.
+The key input is $b\neq 0$, which implies $\mathrm{normSq}(b)>0$ and allows cancellation/inversion.
+
+\begin{LeanCode}
+lemma gb_eq_abs {v : Fin 20 → ℝ} (h : Sys v) : g v * b v = (‖b v‖ : ℂ) := by
+  unfold g; ...
+\end{LeanCode}
+
+\paragraph{Explanation.}
+This proves the defining property of the phase normalization:
+\[
+g\,b=\lVert b\rVert,
+\]
+so $b' := g b$ is real and nonnegative.
+
+\begin{LeanCode}
+noncomputable def a' (v : Fin 20 → ℝ) := g v * a v
+noncomputable def b' (v : Fin 20 → ℝ) := g v * b v
+...
+lemma b'_is_real_pos {v : Fin 20 → ℝ} (h : Sys v) : (b' v).im = 0 ∧ 0 < (b' v).re := by
+  unfold b';
+  rw [ gb_eq_abs ];
+  · exact ⟨ by norm_cast, by simpa using norm_pos_iff.mpr ( step3_b_ne0 h ) ⟩;
+  · exact h
+\end{LeanCode}
+
+\paragraph{Explanation.}
+The primed variables are the original amplitudes multiplied by $g$.
+The lemma \texttt{b'\_is\_real\_pos} uses $gb=\lVert b\rVert$ to prove:
+\[
+\operatorname{Im}(b')=0,\qquad \operatorname{Re}(b')>0.
+\]
+
+\begin{LeanCode}
+lemma conj_mul_invariant {v : Fin 20 → ℝ} (h : Sys v) (x y : ℂ) :
+  star (g v * x) * (g v * y) = star x * y := by
+  ...
+  exact?
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Mathematically, the identity is:
+\[
+\overline{(g x)}(g y) = \overline{x}y,
+\]
+because $\overline{(g x)}=\overline{x}\,\overline{g}$ and $\overline{g}g=1$.
+The proof uses \texttt{conj\_g\_mul\_g} and ring manipulation.  The trailing \texttt{exact?} is an automation step to finish the goal.
+
+\begin{LeanCode}
+lemma step4_all_real {v : Fin 20 → ℝ} (h : Sys v) :
+  (a' v).im = 0 ∧ (b' v).im = 0 ∧ (c' v).im = 0 ∧ (d' v).im = 0 ∧ (e' v).im = 0 ∧ (f' v).im = 0 := by
+  ...
+\end{LeanCode}
+
+\paragraph{Explanation.}
+This is the core ``phase propagation'' lemma.
+Using:
+\begin{itemize}
+\item $b'$ is real and nonzero,
+\item invariance of $\overline{x}y$ under $x\mapsto gx$, $y\mapsto gy$,
+\item the Step~2 cross relations (imaginary parts equal $0$),
+\end{itemize}
+Lean proves that each of $a',c',d',e',f'$ has imaginary part $0$.
+For example, the cross relation $x_{13}x_{20}-x_{14}x_{19}=0$ is $\operatorname{Im}(\overline{b}a)=0$; after rotating, this becomes $\operatorname{Im}(\overline{b'}a')=0$.
+Since $b'$ is a nonzero real scalar, this forces $\operatorname{Im}(a')=0$.
+The remaining variables are handled similarly, using other cross relations.
+
+\subsection*{Step 5: Dot equations, primed multiplicative relations, and final contradiction}
+
+\begin{LeanCode}
+lemma rel1 {v : Fin 20 → ℝ} (h : Sys v) : star (b v) * a v + star (d v) * c v = 0 := by
+  unfold a b c d; ...
+  constructor <;> linarith! [ h.X1_0, h.X1_2, h.X1_4 ]
+\end{LeanCode}
+
+\paragraph{Explanation.}
+The three real equations \texttt{X1\_0}, \texttt{X1\_2}, \texttt{X1\_4} together encode the complex equation
+\[
+\overline{b}a+\overline{d}c=0.
+\]
+Lean proves this by unfolding the definitions of $a,b,c,d$ as complex numbers and checking equality of real and imaginary parts (the \texttt{constructor} splits the goal into real/imag parts).
+
+Similarly:
+\begin{LeanCode}
+lemma rel2 {v : Fin 20 → ℝ} (h : Sys v) : star (b v) * e v + star (d v) * f v = 0 := by
+  ...
+lemma rel3 {v : Fin 20 → ℝ} (h : Sys v) : star (f v) * a v + star (e v) * c v = 0 := by
+  ...
+\end{LeanCode}
+are the other two complex dot equations.
+
+\begin{LeanCode}
+lemma eq1 {v : Fin 20 → ℝ} (h : Sys v) : b' v * a' v = - (d' v * c' v) := by
+  have eq1 : star (b' v) * a' v + star (d' v) * c' v = 0 := by
+    convert rel1 h using 1;
+    convert congr_arg₂ ( · + · )
+      ( conj_mul_invariant h ( b v ) ( a v ) )
+      ( conj_mul_invariant h ( d v ) ( c v ) ) using 1;
+  ...
+\end{LeanCode}
+
+\paragraph{Explanation.}
+This lemma transports \texttt{rel1} to the primed variables:
+\[
+\overline{b'}a'+\overline{d'}c'=0,
+\]
+using the invariance of $\overline{x}y$ under multiplication by $g$.
+Then it uses that $a',b',c',d'$ are real (Step~4) so conjugation has no effect, giving the real multiplicative relation:
+\[
+b'a'=-d'c'.
+\]
+The lemmas \texttt{eq2} and \texttt{eq3} similarly produce:
+\[
+b'e'=-d'f',\qquad c'e'=-a'f'.
+\]
+
+\begin{LeanCode}
+theorem no_solution : ¬ ∃ v : Fin 20 → ℝ, Sys v := by
+  by_contra h_contra
+  obtain ⟨v, hv⟩ := h_contra
+  have eq1 : b' v * a' v = - (d' v * c' v) := by
+    exact?
+  have eq2 : b' v * e' v = - (d' v * f' v) := by
+    exact?
+  have eq3 : c' v * e' v = - (a' v * f' v) := by
+    exact?;
+  have h_contra : a' v * f' v = -a' v * f' v := by
+    have h_contra : b' v ≠ 0 := by
+      exact step4_nonzero hv |>.2.1;
+    grind;
+  have h_contra : a' v * f' v = 0 := by
+    linear_combination' h_contra / 2;
+  exact absurd h_contra ( mul_ne_zero ( step4_nonzero hv |>.1 ) ( step4_nonzero hv |>.2.2.2.2.2 ) )
+\end{LeanCode}
+
+\paragraph{Explanation.}
+Assuming a solution exists, Lean extracts the witness $v$ and $hv:\texttt{Sys v}$.
+
+\begin{itemize}
+\item The three \texttt{exact?} lines are intended to invoke the already-proved lemmas \texttt{eq1 hv}, \texttt{eq2 hv}, \texttt{eq3 hv}.
+\item Using these three relations and the fact $b'\neq 0$ (from \texttt{step4\_nonzero}), the tactic \texttt{grind} derives
+  \[
+  a'f'=-a'f'.
+  \]
+  This is exactly the algebra shown in the overview: from $b'a'=-d'c'$ and $b'e'=-d'f'$ one gets $c'=-\frac{b'a'}{d'}$ and $e'=-\frac{d'f'}{b'}$, hence $c'e'=a'f'$, contradicting $c'e'=-a'f'$.
+\item The tactic \texttt{linear\_combination'} turns $a'f'=-a'f'$ into $a'f'=0$.
+\item Finally, \texttt{mul\_ne\_zero} contradicts $a'f'=0$ using the nonzeroness of $a'$ and $f'$ (also from \texttt{step4\_nonzero}).
+\end{itemize}
+
+Therefore no solution exists, completing the proof.
+
+\end{document}

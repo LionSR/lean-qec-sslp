@@ -771,9 +771,9 @@ theorem no_solution : ¬ ∃ c : Fin 14 → ℂ, System c := by
           calc
             (Real.sqrt (p13 c') / Real.sqrt (p6 c')) * p6 c'
                 = Real.sqrt (p13 c') * (p6 c' / Real.sqrt (p6 c')) := by
-                  simp [div_mul_eq_mul_div, mul_div_assoc, mul_assoc]
+                  simp [div_mul_eq_mul_div, mul_div_assoc]
             _ = Real.sqrt (p13 c') * Real.sqrt (p6 c') := by
-                  simp [Real.div_sqrt, mul_assoc]
+                  simp [Real.div_sqrt]
         simpa [this, mul_assoc]
       _ = (11 : ℝ) / 5 * Real.sqrt (p6 c' * p13 c') := by
         -- `√p13 * √p6 = √(p6*p13)`
@@ -894,6 +894,26 @@ end System
 /-- There is no `c : Fin 14 → ℂ` satisfying `System c`. -/
 theorem no_solution : ¬ ∃ c : Fin 14 → ℂ, System c :=
   System.no_solution
+
+/-- Package `v : Fin 28 → ℝ` into `c : Fin 14 → ℂ` by pairing consecutive coordinates:
+`c k = v(2k) + i·v(2k+1)`.
+
+This is useful when stating the no-go as a purely real (28-variable) quadratic system,
+as in \ref{subsec:lean-nogo-19eq} of `BD16_distance3.tex`.
+-/
+def cFromV (v : Fin 28 → ℝ) : Fin 14 → ℂ :=
+  fun k =>
+    ⟨v ⟨2 * k.val, by
+        fin_cases k <;> decide⟩,
+      v ⟨2 * k.val + 1, by
+        fin_cases k <;> decide⟩⟩
+
+/-- No real solution to the 28-real-variable packaging of the 19-equation system.
+
+(This is an immediate corollary of `no_solution`.) -/
+theorem no_solution_real : ¬ ∃ v : Fin 28 → ℝ, System (cFromV v) := by
+  rintro ⟨v, hv⟩
+  exact no_solution ⟨cFromV v, hv⟩
 
 end
 

@@ -1,0 +1,2557 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{braket}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+
+
+\usepackage{graphicx}%
+\usepackage{multirow}%
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{mathrsfs}%
+\usepackage[title]{appendix}%
+\usepackage{xcolor}%
+\usepackage{textcomp}%
+\usepackage{manyfoot}%
+\usepackage{booktabs}%
+\usepackage{algorithm}%
+\usepackage{algorithmicx}%
+\usepackage{algpseudocode}%
+\usepackage{listings}%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{bm}
+\usepackage{braket}
+\usepackage{tikz}
+\usepackage{fontawesome}
+\usetikzlibrary{arrows.meta,positioning,fit,calc,shapes.symbols,shapes.misc}
+
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{makecell}
+\usepackage{arydshln} % provides dashed vertical rules via ':' in the preamble
+
+\usepackage{xurl}
+
+
+\usepackage{amsthm}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\wt}{\mathrm{wt}}
+\newcommand{\supp}{\mathrm{supp}}
+\newcommand{\Bit}{\mathrm{Bit}}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{teal},
+  showstringspaces=false
+}
+
+\title{General solutions of SSLP}
+\author{(working notes)}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Code catalogue of small diagonal distance-two codes}
+\label{supp:code-catalog}
+
+Our multi-agent system performed large-scale parameter sweeps on a local high-performance computing workstation equipped with an Intel Xeon w7-3565X CPU and two Nvidia RTX 6000 Ada Generation GPUs. The search focused on distance-2 codes for $n \le 6$ qubits and logical dimensions $K \in \{2,3,4\}$. This procedure, executed by the Search Agent and verified by the Audit Agent, yielded a rich catalog of new nonadditive quantum codes. The following subsections present these codes, organized by logical dimension $K$. Each entry includes the code parameters, the explicit logical states with exact rational amplitudes, and the resulting transversal diagonal gate.
+
+\subsection{$K=2$ (two-dimensional logical space)}
+
+For two-dimensional codes ($K=2$), our search on up to $n=6$ qubits revealed a rich structure, including codes with cyclic group orders as high as 18. Table.~\ref{tab:K=2} summarizes the parameters of these instances, followed by their explicit logical state constructions.
+
+\begin{table}[t]
+  \caption{Representative distance-2 diagonal-transversal codes for $K=2$.}
+  \label{tab:K=2}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llllllll}
+    \toprule
+    $\mathcal{O}$ & $m$ & $n$ & $\mathbf w$
+    & $\mathbf S$ & $(|C_0|,|C_2|)$ \\
+    \midrule
+    2 & 4 & 4 & (1,1,1,1) & (0,2) & (2,6) \\
+    \midrule
+    2   & 4   & 5 & (1, 1, 1, 1, 1)           & (0, 2) & (6, 10)  \\
+    3   & 6   & 5 & (1, 1, 1, 1, 3)           & (0, 4) & (5, 5) \\
+    4   & 8   & 5 & (1, 1, 1, 3, 3)           & (0, 6) & (4, 3) \\
+    5   & 5   & 5 & (1, 1, 1, 1, 1)           & (0, 2) & (2, 10) \\
+    6   & 6   & 5 & (2, 2, 2, 3, 3)           & (0, 1) & (4, 6) \\
+    7   & 7   & 5 & (1, 1, 1, 2, 2)           & (0, 3) & (2, 7) \\
+    8   & 8   & 5 & (1, 1, 2, 2, 4)           & (0, 5) & (4, 4) \\
+    9   & 9   & 5 & (1, 1, 2, 2, 3)           & (0, 4) & (2, 5) \\
+    \midrule
+    2   & 4   & 6 & (1, 1, 1, 1, 1, 1)        & (0, 2) & (16, 16) \\
+    3   & 6   & 6 & (1, 1, 1, 1, 1, 1)        & (0, 2) & (2, 15) \\
+    4   & 8   & 6 & (1, 1, 1, 1, 3, 3)        & (0, 6) & (7, 9) \\
+    5   & 5   & 6 & (1, 1, 1, 1, 1, 1)        & (0, 2) & (7, 15) \\
+    6   & 6   & 6 & (2, 2, 2, 2, 3, 3)        & (0, 1) & (10, 12) \\
+    7   & 7   & 6 & (1, 1, 1, 1, 1, 2)        & (0, 3) & (2, 15) \\
+    8   & 8   & 6 & (1, 1, 1, 1, 1, 4)        & (0, 5) & (6, 6) \\
+    9   & 9   & 6 & (1, 1, 1, 1, 2, 3)        & (0, 4) & (2, 11) \\
+    10  & 10  & 6 & (1, 1, 1, 1, 4, 6)        & (0, 7) & (3, 8) \\
+    11  & 11  & 6 & (1, 1, 1, 1, 4, 4)        & (0, 8) & (5, 3) \\
+    12  & 12  & 6 & (1, 1, 1, 2, 3, 4)        & (0, 5) & (2, 8) \\
+    13  & 13  & 6 & (1, 1, 1, 2, 5, 5)        & (0, 10) & (5, 3)\\
+    14  & 14  & 6 & (1, 1, 1, 3, 3, 6)        & (0, 9)  & (4, 4)\\
+    15  & 15  & 6 & (1, 1, 2, 2, 5, 6)        & (0, 11) & (4, 4)\\
+    16  & 16  & 6 & (1, 1, 2, 3, 4, 5)        & (0, 7) & (2, 6) \\
+    17  & 17  & 6 & (1, 1, 2, 4, 4, 6)        & (0, 8) & (3, 5)\\
+    18  & 18  & 6 & (1, 2, 3, 4, 5, 6)        & (0, 11) & (3, 5)\\
+    \bottomrule
+  \end{tabular*}
+\end{table}
+
+\subsubsection{$n=4$}
+\label{subsubsec:K2n4}
+\paragraph{\textbf{Order 2:}}
+\noindent\textbf{Parameters:} $n=4,\; m=4,\; K=2;\quad \mathbf w=(1, 1, 1, 1);\quad \mathbf S=\{0, 2\};\quad \text{sizes}=\left(2, 6\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{4}{2}=2.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,4)=Z \left(\tfrac{2\pi}{4}\right)^{\otimes 4},\qquad \overline U=\mathrm{diag}(1,\omega_4^{2}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_4, P1_5]$. 
+
+Region constraints:
+\begin{itemize}
+    \item $P1_4 + P1_5 <= 1/2$ 
+    \item $P1_4 >= 0$ 
+    \item $P1_5 >= 0$
+\end{itemize}
+
+Probabilities on C0 (X):
+\begin{itemize}
+    \item $X_{0000} = 1/2$
+    \item $X_{1111} = 1/2$
+\end{itemize}
+
+Probabilities on C1 (Y):
+\begin{itemize}
+    \item $Y_{0011} = P1_5$
+    \item $Y_{0101} = P1_4$
+    \item $Y_{0110} = -P1_4 - P1_5 + 1/2$
+    \item $Y_{1001} = -P1_4 - P1_5 + 1/2$
+    \item $Y_{1010} = P1_4$
+    \item $Y_{1100} = P1_5$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{1}{2}}\,\ket{0000} + \sqrt{\tfrac{1}{2}}\,\ket{1111},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_5}\,\ket{0011} + \sqrt{P1_4}\,\ket{0101} + \sqrt{-P1_4 - P1_5 + \tfrac{1}{2}}\,\ket{0110} + \sqrt{-P1_4 - P1_5 + \tfrac{1}{2}}\,\ket{1001} \\
+&\quad + \sqrt{P1_4}\,\ket{1010} + \sqrt{P1_5}\,\ket{1100}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + 2z^{2} + 5z^{4},\\[2pt]
+B(z) &= 1 + 10z^{2} + 8z^{3} + 13z^{4}.
+\end{align*}
+
+\subsubsection{$n=5$}
+\label{subsubsec:K2n5}
+\paragraph{\textbf{Order 2:}}
+\noindent\textbf{Parameters:} $n=5,\; m=4,\; K=2;\quad \mathbf w=(1, 1, 1, 1, 1);\quad \mathbf S=\{0, 2\};\quad \text{sizes}=\left(6, 10\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{4}{2}=2.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,4)=Z \left(\tfrac{2\pi}{4}\right)^{\otimes5},\qquad
+    \overline U=\mathrm{diag}(1,\omega_4^{2}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_1, P1_2, P1_3, P1_4, P1_5, P1_6, P1_7, P1_8, P1_9]$.
+
+Region constraints:
+\begin{itemize}
+    \item $-P1_1 - P1_3 - P1_5 - P1_6 - P1_8 - P1_9 <= -1/2$
+    \item $-P1_2 - P1_4 - P1_5 - P1_7 - P1_8 - P1_9 <= -1/2$
+    \item $P1_1 + P1_2 + P1_3 + P1_4 + P1_5 + P1_6 + P1_7 + P1_8 + P1_9 <= 1$
+    \item $P1_1 + P1_2 + P1_5 + P1_8 <= 1/2$
+    \item $P1_3 + P1_4 + P1_5 + P1_9 <= 1/2$
+    \item $P1_6 + P1_7 + P1_8 + P1_9 <= 1/2$
+    \item $P1_1 >= 0$
+    \item $P1_2 >= 0$
+    \item $P1_3 >= 0$
+    \item $P1_4 >= 0$
+    \item $P1_5 >= 0$
+    \item $P1_6 >= 0$
+    \item $P1_7 >= 0$
+    \item $P1_8 >= 0$
+    \item $P1_9 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{00000} = 1/2$
+    \item $X_{01111} = -P1_6 - P1_7 - P1_8 - P1_9 + 1/2$
+    \item $X_{10111} = -P1_3 - P1_4 - P1_5 - P1_9 + 1/2$
+    \item $X_{11011} = -P1_1 - P1_2 - P1_5 - P1_8 + 1/2$
+    \item $X_{11101} = P1_1 + P1_3 + P1_5 + P1_6 + P1_8 + P1_9 - 1/2$
+    \item $X_{11110} = P1_2 + P1_4 + P1_5 + P1_7 + P1_8 + P1_9 - 1/2$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{00011} = -P1_1 - P1_2 - P1_3 - P1_4 - P1_5 - P1_6 - P1_7 - P1_8 - P1_9 + 1$
+    \item $Y_{00101} = P1_1$
+    \item $Y_{00110} = P1_2$
+    \item $Y_{01001} = P1_3$
+    \item $Y_{01010} = P1_4$
+    \item $Y_{01100} = P1_5$
+    \item $Y_{10001} = P1_6$
+    \item $Y_{10010} = P1_7$
+    \item $Y_{10100} = P1_8$
+    \item $Y_{11000} = P1_9$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{1}{2}}\,\ket{00000} + \sqrt{-P1_6 - P1_7 - P1_8 - P1_9 + \tfrac{1}{2}}\,\ket{01111} + \sqrt{-P1_3 - P1_4 - P1_5 - P1_9 + \tfrac{1}{2}}\,\ket{10111} \\
+&\quad + \sqrt{-P1_1 - P1_2 - P1_5 - P1_8 + \tfrac{1}{2}}\,\ket{11011} + \sqrt{P1_1 + P1_3 + P1_5 + P1_6 + P1_8 + P1_9 - \tfrac{1}{2}}\,\ket{11101}\\
+&\quad + \sqrt{P1_2 + P1_4 + P1_5 + P1_7 + P1_8 + P1_9 - \tfrac{1}{2}}\,\ket{11110},
+\\[2pt]
+\ket{1_L} &= \sqrt{-P1_1 - P1_2 - P1_3 - P1_4 - P1_5 - P1_6 - P1_7 - P1_8 - P1_9 + 1}\,\ket{00011} + \sqrt{P1_1}\,\ket{00101}\\
+&\quad + \sqrt{P1_2}\,\ket{00110} + \sqrt{P1_3}\,\ket{01001} + \sqrt{P1_4}\,\ket{01010} + \sqrt{P1_5}\,\ket{01100} + \sqrt{P1_6}\,\ket{10001}\\
+&\quad + \sqrt{P1_7}\,\ket{10010} + \sqrt{P1_8}\,\ket{10100} + \sqrt{P1_9}\,\ket{11000}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + 1z^{1} + 2z^{2} + 2z^{3} + 5z^{4} + 5z^{5},\\[2pt]
+B(z) &= 1 + 1z^{1} + 10z^{2} + 18z^{3} + 21z^{4} + 13z^{5}.
+\end{align*}
+
+\paragraph{\textbf{Order 3:}}
+\noindent\textbf{Parameters:} $n=5,\; m=6,\; K=2;\quad \mathbf w=(1, 1, 1, 1, 3);\quad \mathbf S=\{0, 4\};\quad \text{sizes}=\left(5, 5\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{6}{2}=3.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,6)=Z \left(\tfrac{2\pi}{6}\right)^{\otimes4} \otimes Z \left(\tfrac{6\pi}{6}\right),\qquad
+    \overline U=\mathrm{diag}(1,\omega_6^{4}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_1, P1_2, P1_3]$
+
+Region constraints:
+\begin{itemize}
+    \item $-P1_1 - P1_2 - P1_3 <= -1/3$
+    \item $P1_1 + P1_2 + P1_3 <= 2/3$
+    \item $P1_1 >= 0$
+    \item $P1_2 >= 0$
+    \item $P1_3 >= 0$
+    \item $P1_1 <= 1/3$
+    \item $P1_2 <= 1/3$
+    \item $P1_3 <= 1/3$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{00000} = 1/3$
+    \item $X_{01111} = 1/3 - P1_3$
+    \item $X_{10111} = 1/3 - P1_2$
+    \item $X_{11011} = 1/3 - P1_1$
+    \item $X_{11101} = P1_1 + P1_2 + P1_3 - 1/3$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{00011} = -P1_1 - P1_2 - P1_3 + 2/3$
+    \item $Y_{00101} = P1_1$
+    \item $Y_{01001} = P1_2$
+    \item $Y_{10001} = P1_3$
+    \item $Y_{11110} = 1/3$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{1}{3}}\,\ket{00000} + \sqrt{\tfrac{1}{3} - P1_3}\,\ket{01111} + \sqrt{\tfrac{1}{3} - P1_2}\,\ket{10111} + \sqrt{\tfrac{1}{3} - P1_1}\,\ket{11011}\\
+&\quad + \sqrt{P1_1 + P1_2 + P1_3 - \tfrac{1}{3}}\,\ket{11101},
+\\[2pt]
+\ket{1_L} &= \sqrt{-P1_1 - P1_2 - P1_3 + \tfrac{2}{3}}\,\ket{00011} + \sqrt{P1_1}\,\ket{00101} + \sqrt{P1_2}\,\ket{01001} + \sqrt{P1_3}\,\ket{10001} + \sqrt{\tfrac{1}{3}}\,\ket{11110}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{5}{9}z^{1} + \tfrac{14}{9}z^{2} + \tfrac{22}{9}z^{3} + \tfrac{49}{9}z^{4} + 5z^{5},\\[2pt]
+B(z) &= 1 + \tfrac{5}{9}z^{1} + \tfrac{74}{9}z^{2} + \tfrac{154}{9}z^{3} + \tfrac{205}{9}z^{4} + \tfrac{43}{3}z^{5}.
+\end{align*}
+
+\paragraph{\textbf{Order 4:}}
+\noindent\textbf{Parameters:} $n=5,\; m=8,\; K=2;\quad \mathbf w=(1, 1, 1, 3, 3);\quad \mathbf S=\{0, 6\};\quad \text{sizes}=\left(4, 3\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{8}{2}=4.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,8)=Z \left(\tfrac{2\pi}{8}\right)^{\otimes3} \otimes Z \left(\tfrac{6\pi}{8}\right)^{\otimes2},\qquad
+    \overline U=\mathrm{diag}(1,\omega_8^{6}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[]$
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{00000} = 1/4$
+    \item $X_{01111} = 1/4$
+    \item $X_{10111} = 1/4$
+    \item $X_{11011} = 1/4$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{00011} = 1/2$
+    \item $Y_{11101} = 1/4$
+    \item $Y_{11110} = 1/4$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{1}{4}}\,\ket{00000} + \sqrt{\tfrac{1}{4}}\,\ket{01111} + \sqrt{\tfrac{1}{4}}\,\ket{10111} + \sqrt{\tfrac{1}{4}}\,\ket{11011},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{1}{2}}\,\ket{00011} + \sqrt{\tfrac{1}{4}}\,\ket{11101} + \sqrt{\tfrac{1}{4}}\,\ket{11110}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{1}{2}z^{1} + \tfrac{3}{2}z^{2} + \tfrac{5}{2}z^{3} + \tfrac{11}{2}z^{4} + 5z^{5},\\[2pt]
+B(z) &= 1 + \tfrac{1}{2}z^{1} + 8z^{2} + 17z^{3} + 23z^{4} + \tfrac{29}{2}z^{5}.
+\end{align*}
+
+\paragraph{\textbf{Order 5:}}
+\noindent\textbf{Parameters:} $n=5,\; m=10,\; K=2;\quad \mathbf w=(1, 1, 4, 4, 4);\quad \mathbf S=\{0, 2\};\quad \text{sizes}=\left(4, 2\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{10}{2}=5.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,10)=Z \left(\tfrac{2\pi}{10}\right)^{\otimes2} \otimes Z \left(\tfrac{8\pi}{10}\right)^{\otimes3},\qquad
+    \overline U=\mathrm{diag}(1,\omega_{10}^{2}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[]$.
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{00000} = 2/5$
+    \item $X_{11011} = 1/5$
+    \item $X_{11101} = 1/5$
+    \item $X_{11110} = 1/5$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{00111} = 2/5$
+    \item $Y_{11000} = 3/5$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{2}{5}}\,\ket{00000} + \sqrt{\tfrac{1}{5}}\,\ket{11011} + \sqrt{\tfrac{1}{5}}\,\ket{11101} + \sqrt{\tfrac{1}{5}}\,\ket{11110},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{2}{5}}\,\ket{00111} + \sqrt{\tfrac{3}{5}}\,\ket{11000}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{1}{5}z^{1} + \tfrac{64}{25}z^{2} + \tfrac{36}{25}z^{3} + \tfrac{111}{25}z^{4} + \tfrac{159}{25}z^{5},\\[2pt]
+B(z) &= 1 + \tfrac{1}{5}z^{1} + \tfrac{238}{25}z^{2} + \tfrac{342}{25}z^{3} + \tfrac{537}{25}z^{4} + \tfrac{453}{25}z^{5}.
+\end{align*}
+
+\paragraph{\textbf{Order 6:}}
+\noindent\textbf{Parameters:} $n=5,\; m=12,\; K=2;\quad \mathbf w=(4, 4, 4, 6, 6);\quad \mathbf S=\{0, 2\};\quad \text{sizes}=\left(4, 6\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{12}{2}=6.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,12)=Z \left(\tfrac{8\pi}{12}\right)^{\otimes3} \otimes Z \left(\tfrac{12\pi}{12}\right)^{\otimes2},\qquad
+    \overline U=\mathrm{diag}(1,\omega_{12}^{2}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P0_3, P1_3, P1_5]$.
+
+Region constraints:
+\begin{itemize}
+    \item $-P1_3 - P1_5 <= -1/6$
+    \item $P1_3 + P1_5 <= 1/2$
+    \item $P0_3 >= 1/6$
+    \item $P1_3 >= 0$
+    \item $P1_5 >= 0$
+    \item $P0_3 <= 1/2$
+    \item $P1_3 <= 1/3$
+    \item $P1_5 <= 1/3$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{00000} = P0_3 - 1/6$
+    \item $X_{00011} = 1/2 - P0_3$
+    \item $X_{11100} = 2/3 - P0_3$
+    \item $X_{11111} = P0_3$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{01101} = P1_3 + P1_5 - 1/6$
+    \item $Y_{01110} = -P1_3 - P1_5 + 1/2$
+    \item $Y_{10101} = 1/3 - P1_3$
+    \item $Y_{10110} = P1_3$
+    \item $Y_{11001} = 1/3 - P1_5$
+    \item $Y_{11010} = P1_5$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{P0_3 - \tfrac{1}{6}}\,\ket{00000} + \sqrt{\tfrac{1}{2} - P0_3}\,\ket{00011} + \sqrt{\tfrac{2}{3} - P0_3}\,\ket{11100} + \sqrt{P0_3}\,\ket{11111},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_3 + P1_5 - \tfrac{1}{6}}\,\ket{01101} + \sqrt{-P1_3 - P1_5 + \tfrac{1}{2}}\,\ket{01110} + \sqrt{\tfrac{1}{3} - P1_3}\,\ket{10101} + \sqrt{P1_3}\,\ket{10110}\\
+&\quad + \sqrt{\tfrac{1}{3} - P1_5}\,\ket{11001} + \sqrt{P1_5}\,\ket{11010}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{1}{3}z^{1} + \tfrac{17}{9}z^{2} + \tfrac{19}{9}z^{3} + \tfrac{46}{9}z^{4} + \tfrac{50}{9}z^{5},\\[2pt]
+B(z) &= 1 + \tfrac{1}{3}z^{1} + \tfrac{76}{9}z^{2} + \tfrac{140}{9}z^{3} + \tfrac{203}{9}z^{4} + \tfrac{145}{9}z^{5}.
+\end{align*}
+
+\paragraph{\textbf{Order 7:}}
+\noindent\textbf{Parameters:} $n=5,\; m=7,\; K=2;\quad \mathbf w=(2, 2, 2, 4, 4);\quad \mathbf S=\{0, 6\};\quad \text{sizes}=\left(2, 7\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{7}{1}=7.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,7)=Z \left(\tfrac{4\pi}{7}\right)^{\otimes3} \otimes Z \left(\tfrac{8\pi}{7}\right)^{\otimes2},\qquad
+    \overline U=\mathrm{diag}(1,\omega_{7}^{6}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_3, P1_5]$.
+
+Region constraints:
+\begin{itemize}
+    \item $-P1_3 - P1_5 <= -1/7$
+    \item $P1_3 + P1_5 <= 3/7$
+    \item $P1_3 >= 0$
+    \item $P1_5 >= 0$
+    \item $P1_3 <= 2/7$
+    \item $P1_5 <= 2/7$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{00000} = 4/7$
+    \item $X_{11111} = 3/7$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{00101} = P1_3 + P1_5 - 1/7$
+    \item $Y_{00110} = -P1_3 - P1_5 + 3/7$
+    \item $Y_{01001} = 2/7 - P1_3$
+    \item $Y_{01010} = P1_3$
+    \item $Y_{10001} = 2/7 - P1_5$
+    \item $Y_{10010} = P1_5$
+    \item $Y_{11100} = 1/7$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{4}{7}}\,\ket{00000} + \sqrt{\tfrac{3}{7}}\,\ket{11111},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_3 + P1_5 - \tfrac{1}{7}}\,\ket{00101} + \sqrt{-P1_3 - P1_5 + \tfrac{3}{7}}\,\ket{00110} + \sqrt{\tfrac{2}{7} - P1_3}\,\ket{01001} + \sqrt{P1_3}\,\ket{01010}\\
+&\quad + \sqrt{\tfrac{2}{7} - P1_5}\,\ket{10001} + \sqrt{P1_5}\,\ket{10010} + \sqrt{\tfrac{1}{7}}\,\ket{11100}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{5}{49}z^{1} + \tfrac{108}{49}z^{2} + \tfrac{88}{49}z^{3} + \tfrac{235}{49}z^{4} + \tfrac{299}{49}z^{5},\\[2pt]
+B(z) &= 1 + \tfrac{5}{49}z^{1} + \tfrac{422}{49}z^{2} + 14z^{3} + \tfrac{1097}{49}z^{4} + \tfrac{877}{49}z^{5}.
+\end{align*}
+
+\paragraph{\textbf{Order 8:}}
+\noindent\textbf{Parameters:} $n=5,\; m=16,\; K=2;\quad \mathbf w=(2, 2, 4, 4, 8);\quad \mathbf S=\{0, 10\};\quad \text{sizes}=\left(4, 4\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{16}{2}=8.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,16)=Z \left(\tfrac{4\pi}{16}\right)^{\otimes2} \otimes Z \left(\tfrac{8\pi}{16}\right)^{\otimes2} \otimes Z \left(\tfrac{16\pi}{16}\right),\quad
+    \overline U=\mathrm{diag}(1,\omega_{16}^{10}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_3]$.
+
+Region constraints:
+\begin{itemize}
+    \item $(P1_3 >= 0)$
+    \item $(P1_3 <= 3/8)$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{00000} = 3/8$
+    \item $X_{00111} = 1/8$
+    \item $X_{11011} = 1/4$
+    \item $X_{11101} = 1/4$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{01001} = P1_3 + 1/8$
+    \item $Y_{01110} = 3/8 - P1_3$
+    \item $Y_{10001} = 1/2 - P1_3$
+    \item $Y_{10110} = P1_3$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{3}{8}}\,\ket{00000} + \sqrt{\tfrac{1}{8}}\,\ket{00111} + \sqrt{\tfrac{1}{4}}\,\ket{11011} + \sqrt{\tfrac{1}{4}}\,\ket{11101},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_3 + \tfrac{1}{8}}\,\ket{01001} + \sqrt{\tfrac{3}{8} - P1_3}\,\ket{01110} + \sqrt{\tfrac{1}{2} - P1_3}\,\ket{10001} + \sqrt{P1_3}\,\ket{10110}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{3}{16}z^{1} + \tfrac{29}{16}z^{2} + \tfrac{35}{16}z^{3} + \tfrac{83}{16}z^{4} + \tfrac{45}{8}z^{5},\\[2pt]
+B(z) &= 1 + \tfrac{3}{16}z^{1} + 8z^{2} + \tfrac{121}{8}z^{3} + 23z^{4} + \tfrac{267}{16}z^{5}.
+\end{align*}
+
+\paragraph{\textbf{Order 9:}}
+\noindent\textbf{Parameters:} $n=5,\; m=9,\; K=2;\quad \mathbf w=(2, 2, 4, 4, 6);\quad \mathbf S=\{0, 1\};\quad \text{sizes}=\left(2, 5\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{9}{1}=9.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,9)=Z \left(\tfrac{4\pi}{9}\right)^{\otimes2} \otimes Z \left(\tfrac{8\pi}{9}\right)^{\otimes2} \otimes Z \left(\tfrac{12\pi}{9}\right),\quad
+    \overline U=\mathrm{diag}(1,\omega_{9}^{1}).
+\]
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{00000} = 4/9$
+    \item $X_{11111} = 5/9$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{00011} = 1/9$
+    \item $Y_{00101} = 1/9$
+    \item $Y_{01110} = 2/9$
+    \item $Y_{10110} = 2/9$
+    \item $Y_{11001} = 1/3$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{4}{9}}\,\ket{00000} + \sqrt{\tfrac{5}{9}}\,\ket{11111},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{1}{9}}\,\ket{00011} + \sqrt{\tfrac{1}{9}}\,\ket{00101} + \sqrt{\tfrac{2}{9}}\,\ket{01110} + \sqrt{\tfrac{2}{9}}\,\ket{10110} + \sqrt{\tfrac{1}{3}}\,\ket{11001}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{5}{81}z^{1} + \tfrac{172}{81}z^{2} + \tfrac{152}{81}z^{3} + \tfrac{395}{81}z^{4} + \tfrac{491}{81}z^{5},\\[2pt]
+B(z) &= 1 + \tfrac{5}{81}z^{1} + \tfrac{226}{27}z^{2} + 14z^{3} + \tfrac{611}{27}z^{4} + \tfrac{1453}{81}z^{5}.
+\end{align*}
+
+\subsubsection{$n=6$}
+\label{subsubsec:K2n6}
+\paragraph{\textbf{Order 2:}}
+\noindent\textbf{Parameters:} $n=6,\; m=4,\; K=2;\quad \mathbf w=(1, 1, 1, 1, 1, 1);\quad \mathbf S=\{0, 2\};\quad \text{sizes}=\left(16, 16\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{4}{2}=2.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,4)=Z \left(\tfrac{2\pi}{4}\right)^{\otimes6},\qquad
+    \overline U=\mathrm{diag}(1,\omega_{4}^{2}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P0_7, P0_8, P0_9, P0_{10}, P0_{11}, P0_{12}, P0_{13}, P0_{14}, P0_{15}, P1_1, P1_2, P1_3, P1_4, P1_5, P1_6, \\ P1_7, P1_8, P1_9, P1_{10}, P1_{11}, P1_{12}, P1_{13}, P1_{14}, P1_{15}]$
+
+Region constraints:
+\begin{itemize}
+    \item $-P0_{10} - P0_{11} - P0_{12} - P0_{13} - P0_{14} - P0_{15} + P1_{10} + P1_{11} + P1_{12} + P1_{13} + 2*P1_{14} + P1_{15} + P1_6 + P1_7 + P1_8 + P1_9 <= 1/2$
+    \item $-P0_{13} - P0_{14} - P0_{15} - P0_7 - P0_8 - P0_9 + P1_{10} + P1_{11} + P1_{12} + 2*P1_{13} + P1_{14} + P1_{15} + P1_3 + P1_4 + P1_5 + P1_9 <= 1/2$
+    \item $P0_{10} + P0_{11} + P0_{12} + P0_{13} + P0_{14} + P0_{15} + P0_7 + P0_8 + P0_9 - P1_{10} - P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_{15} <= 0$
+    \item $P0_{10} + P0_{13} + P0_{14} + P0_7 + P1_1 + P1_{12} + P1_2 + P1_5 + P1_8 <= 1/2$
+    \item $P0_{11} + P0_{13} + P0_{15} + P0_8 - P1_1 - P1_{10} - P1_{12} - P1_{13} - P1_{14} - P1_{15} - P1_3 - P1_5 - P1_6 - P1_8 - P1_9 <= -1/2$
+    \item $P0_{12} + P0_{14} + P0_{15} + P0_9 - P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_{15} - P1_2 - P1_4 - P1_5 - P1_7 - P1_8 - P1_9 <= -1/2$
+    \item $P1_1 + P1_{10} + P1_{11} + P1_{12} + P1_{13} + P1_{14} + P1_{15} + P1_2 + P1_3 + P1_4 + P1_5 + P1_6 + P1_7 + P1_8 + P1_9 <= 1$
+    \item $P0_{10} >= 0$
+    \item $P0_{11} >= 0$
+    \item $P0_{12} >= 0$
+    \item $P0_{13} >= 0$
+    \item $P0_{14} >= 0$
+    \item $P0_{15} >= 0$
+    \item $P0_7 >= 0$
+    \item $P0_8 >= 0$
+    \item $P0_9 >= 0$
+    \item $P1_1 >= 0$
+    \item $P1_{10} >= 0$
+    \item $P1_{11} >= 0$
+    \item $P1_{12} >= 0$
+    \item $P1_{13} >= 0$
+    \item $P1_{14} >= 0$
+    \item $P1_{15} >= 0$
+    \item $P1_2 >= 0$
+    \item $P1_3 >= 0$
+    \item $P1_4 >= 0$
+    \item $P1_5 >= 0$
+    \item $P1_6 >= 0$
+    \item $P1_7 >= 0$
+    \item $P1_8 >= 0$
+    \item $P1_9 >= 0$
+    \item $P1_{15} <= 1/2$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 1/2 - P1_{15}$
+    \item $X_{001111} = P0_{10} + P0_{11} + P0_{12} + P0_{13} + P0_{14} + P0_{15} - P1_{10} - P1_{11} - P1_{12} - P1_{13} - 2*P1_{14} - P1_{15} - P1_6 - P1_7 - P1_8 - P1_9 + 1/2$
+    \item $X_{010111} = P0_{13} + P0_{14} + P0_{15} + P0_7 + P0_8 + P0_9 - P1_{10} - P1_{11} - P1_{12} - 2*P1_{13} - P1_{14} - P1_{15} - P1_3 - P1_4 - P1_5 - P1_9 + 1/2$
+    \item $X_{011011} = -P0_{10} - P0_{13} - P0_{14} - P0_7 - P1_1 - P1_{12} - P1_2 - P1_5 - P1_8 + 1/2$
+    \item $X_{011101} = -P0_{11} - P0_{13} - P0_{15} - P0_8 + P1_1 + P1_{10} + P1_{12} + P1_{13} + P1_{14} + P1_{15} + P1_3 + P1_5 + P1_6 + P1_8 + P1_9 - 1/2$
+    \item $X_{011110} = -P0_{12} - P0_{14} - P0_{15} - P0_9 + P1_{11} + P1_{12} + P1_{13} + P1_{14} + P1_{15} + P1_2 + P1_4 + P1_5 + P1_7 + P1_8 + P1_9 - 1/2$
+    \item $X_{100111} = -P0_{10} - P0_{11} - P0_{12} - P0_{13} - P0_{14} - P0_{15} - P0_7 - P0_8 - P0_9 + P1_{10} + P1_{11} + P1_{12} + P1_{13} + P1_{14} + P1_{15}$
+    \item $X_{101011} = P0_7$
+    \item $X_{101101} = P0_8$
+    \item $X_{101110} = P0_9$
+    \item $X_{110011} = P0_{10}$
+    \item $X_{110101} = P0_{11}$
+    \item $X_{110110} = P0_{12}$
+    \item $X_{111001} = P0_{13}$
+    \item $X_{111010} = P0_{14}$
+    \item $X_{111100} = P0_{15}$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000011} = -P1_1 - P1_{10} - P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_{15} - P1_2 - P1_3 - P1_4 - P1_5 - P1_6 - P1_7 - P1_8 - P1_9 + 1$
+    \item $Y_{000101} = P1_1$
+    \item $Y_{000110} = P1_2$
+    \item $Y_{001001} = P1_3$
+    \item $Y_{001010} = P1_4$
+    \item $Y_{001100} = P1_5$
+    \item $Y_{010001} = P1_6$
+    \item $Y_{010010} = P1_7$
+    \item $Y_{010100} = P1_8$
+    \item $Y_{011000} = P1_9$
+    \item $Y_{100001} = P1_{10}$
+    \item $Y_{100010} = P1_{11}$
+    \item $Y_{100100} = P1_{12}$
+    \item $Y_{101000} = P1_{13}$
+    \item $Y_{110000} = P1_{14}$
+    \item $Y_{111111} = P1_{15}$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{1}{2} - P1_{15}}\,\ket{000000}\\
+&\quad + (P0_{10} + P0_{11} + P0_{12} + P0_{13} + P0_{14} + P0_{15} - P1_{10} - P1_{11} - P1_{12} - P1_{13} - 2\,P1_{14} - P1_{15}\\
+&\quad - P1_6 - P1_7 - P1_8 - P1_9 + \tfrac{1}{2})^{1/2}\,\ket{001111} + (P0_{13} + P0_{14} + P0_{15} + P0_7 + P0_8 + P0_9\\
+&\quad- P1_{10} - P1_{11} - P1_{12} - 2\,P1_{13} - P1_{14} - P1_{15} - P1_3 - P1_4 - P1_5 - P1_9 + \tfrac{1}{2})^{1/2}\,\ket{010111}\\
+&\quad + (-P0_{10} - P0_{13} - P0_{14} - P0_7 - P1_1 - P1_{12} - P1_2 - P1_5 - P1_8 + \tfrac{1}{2})^{1/2}\,\ket{011011}\\
+&\quad + (-P0_{11} - P0_{13} - P0_{15} - P0_8 + P1_1 + P1_{10} + P1_{12} + P1_{13} + P1_{14} + P1_{15} + P1_3 + P1_5 \\
+&\quad  + P1_6 + P1_8 + P1_9 - \tfrac{1}{2})^{1/2}\,\ket{011101} + (-P0_{12} - P0_{14} - P0_{15} - P0_9 + P1_{11} + P1_{12} + P1_{13}\\
+&\quad + P1_{14} + P1_{15} + P1_2 + P1_4 + P1_5 + P1_7 + P1_8 + P1_9 - \tfrac{1}{2})^{1/2}\,\ket{011110} + (-P0_{10} - P0_{11}\\
+&\quad - P0_{12} - P0_{13} - P0_{14} - P0_{15} - P0_7 - P0_8 - P0_9 + P1_{10} + P1_{11} + P1_{12} + P1_{13} + P1_{14}\\
+&\quad + P1_{15})^{1/2}\,\ket{100111} + \sqrt{P0_7}\,\ket{101011} + \sqrt{P0_8}\,\ket{101101} + \sqrt{P0_9}\,\ket{101110} + \sqrt{P0_{10}}\,\ket{110011}\\
+&\quad + \sqrt{P0_{11}}\,\ket{110101} + \sqrt{P0_{12}}\,\ket{110110} + \sqrt{P0_{13}}\,\ket{111001} + \sqrt{P0_{14}}\,\ket{111010} + \sqrt{P0_{15}}\,\ket{111100},
+\\[2pt]
+\ket{1_L} &= (-P1_1 - P1_{10} - P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_{15} - P1_2 - P1_3 - P1_4 - P1_5 - P1_6\\
+&\quad - P1_7 - P1_8 - P1_9 + 1)^{1/2}\,\ket{000011} + \sqrt{P1_1}\,\ket{000101} + \sqrt{P1_2}\,\ket{000110} + \sqrt{P1_3}\,\ket{001001}\\
+&\quad + \sqrt{P1_4}\,\ket{001010} + \sqrt{P1_5}\,\ket{001100} + \sqrt{P1_6}\,\ket{010001} + \sqrt{P1_7}\,\ket{010010} + \sqrt{P1_8}\,\ket{010100}\\
+&\quad + \sqrt{P1_9}\,\ket{011000} + \sqrt{P1_{10}}\,\ket{100001} + \sqrt{P1_{11}}\,\ket{100010} + \sqrt{P1_{12}}\,\ket{100100} + \sqrt{P1_{13}}\,\ket{101000}\\
+&\quad + \sqrt{P1_{14}}\,\ket{110000} + \sqrt{P1_{15}}\,\ket{111111}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + 2z^{1} + 3z^{2} + 4z^{3} + 7z^{4} + 10z^{5} + 5z^{6},\\[2pt]
+B(z) &= 1 + 2z^{1} + 11z^{2} + 28z^{3} + 39z^{4} + 34z^{5} + 13z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 3:}}
+\noindent\textbf{Parameters:} $n=6,\; m=6,\; K=2;\quad \mathbf w=(1, 1, 1, 1, 1, 1);\quad \mathbf S=\{0, 2\};\quad \text{sizes}=\left(2, 15\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{6}{2}=3.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,6)=Z \left(\tfrac{2\pi}{6}\right)^{\otimes6},\qquad
+    \overline U=\mathrm{diag}(1,\omega_{6}^{2}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_4, P1_5, P1_7, P1_8, P1_9, P1_{11}, P1_{12}, P1_{13}, P1_{14}]$.
+
+Region constraints:
+\begin{itemize}
+    \item $-P1_{11} - P1_{13} - P1_{14} - P1_4 - P1_7 - P1_9 <= -1/3$
+    \item $-P1_{12} - P1_{13} - P1_{14} - P1_5 - P1_8 - P1_9 <= -1/3$
+    \item $P1_{11} + P1_{12} + P1_{13} + P1_{14} <= 1/3$
+    \item $P1_{11} + P1_{12} + P1_{13} + P1_{14} + P1_4 + P1_5 + P1_7 + P1_8 + P1_9 <= 2/3$
+    \item $P1_{13} + P1_4 + P1_5 + P1_9 <= 1/3$
+    \item $P1_{14} + P1_7 + P1_8 + P1_9 <= 1/3$
+    \item $P1_{11} >= 0$
+    \item $P1_{12} >= 0$
+    \item $P1_{13} >= 0$
+    \item $P1_{14} >= 0$
+    \item $P1_4 >= 0$
+    \item $P1_5 >= 0$
+    \item $P1_7 >= 0$
+    \item $P1_8 >= 0$
+    \item $P1_9 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 2/3$
+    \item $X_{111111} = 1/3$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000011} = P1_{12} + P1_{13} + P1_{14} + P1_5 + P1_8 + P1_9 - 1/3$
+    \item $Y_{000101} = P1_{11} + P1_{13} + P1_{14} + P1_4 + P1_7 + P1_9 - 1/3$
+    \item $Y_{000110} = -P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_4 - P1_5 - P1_7 - P1_8 - P1_9 + 2/3$
+    \item $Y_{001001} = -P1_{13} - P1_4 - P1_5 - P1_9 + 1/3$
+    \item $Y_{001010} = P1_4$
+    \item $Y_{001100} = P1_5$
+    \item $Y_{010001} = -P1_{14} - P1_7 - P1_8 - P1_9 + 1/3$
+    \item $Y_{010010} = P1_7$
+    \item $Y_{010100} = P1_8$
+    \item $Y_{011000} = P1_9$
+    \item $Y_{100001} = -P1_{11} - P1_{12} - P1_{13} - P1_{14} + 1/3$
+    \item $Y_{100010} = P1_{11}$
+    \item $Y_{100100} = P1_{12}$
+    \item $Y_{101000} = P1_{13}$
+    \item $Y_{110000} = P1_{14}$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{2}{3}}\,\ket{000000} + \sqrt{\tfrac{1}{3}}\,\ket{111111},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_{12} + P1_{13} + P1_{14} + P1_5 + P1_8 + P1_9 - \tfrac{1}{3}}\,\ket{000011} + \sqrt{P1_{11} + P1_{13} + P1_{14} + P1_4 + P1_7 + P1_9 - \tfrac{1}{3}}\,\\
+&\quad \ket{000101} + \sqrt{-P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_4 - P1_5 - P1_7 - P1_8 - P1_9 + \tfrac{2}{3}}\,\ket{000110}\\
+&\quad + \sqrt{-P1_{13} - P1_4 - P1_5 - P1_9 + \tfrac{1}{3}}\,\ket{001001} + \sqrt{P1_4}\,\ket{001010} + \sqrt{P1_5}\,\ket{001100}\\
+&\quad + \sqrt{-P1_{14} - P1_7 - P1_8 - P1_9 + \tfrac{1}{3}}\,\ket{010001} + \sqrt{P1_7}\,\ket{010010} + \sqrt{P1_8}\,\ket{010100} + \sqrt{P1_9}\,\ket{011000}\\
+&\quad+ \sqrt{-P1_{11} - P1_{12} - P1_{13} - P1_{14} + \tfrac{1}{3}}\,\ket{100001} + \sqrt{P1_{11}}\,\ket{100010} + \sqrt{P1_{12}}\,\ket{100100} + \sqrt{P1_{13}}\,\ket{101000}\\
+&\quad + \sqrt{P1_{14}}\,\ket{110000}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{2}{3}z^{1} + \tfrac{13}{3}z^{2} + \tfrac{20}{9}z^{3} + 7z^{4} + 6z^{5} + \tfrac{97}{9}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{2}{3}z^{1} + \tfrac{37}{3}z^{2} + \tfrac{148}{9}z^{3} + \tfrac{109}{3}z^{4} + \tfrac{98}{3}z^{5} + \tfrac{257}{9}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 4:}}
+\noindent\textbf{Parameters:} $n=6,\; m=8,\; K=2;\quad \mathbf w=(1, 1, 1, 1, 3, 3);\quad \mathbf S=\{0, 6\};\quad \text{sizes}=\left(7, 9\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{8}{2}=4.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,8)=Z \left(\tfrac{2\pi}{8}\right)^{\otimes4} \otimes Z \left(\tfrac{6\pi}{8}\right)^{\otimes2},\qquad
+    \overline U=\mathrm{diag}(1,\omega_{8}^{6}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P0_5, P0_6, P1_3, P1_4, P1_5, P1_6, P1_7, P1_8]$.
+
+Region constraints:
+\begin{itemize}
+    \item $-P0_5 + P1_3 + P1_4 + P1_7 + P1_8 <= 1/4$
+    \item $-P0_6 + P1_5 + P1_6 + P1_7 + P1_8 <= 1/4$
+    \item $P0_5 + P0_6 - P1_3 - P1_4 - P1_5 - P1_6 - P1_7 - P1_8 <= 0$
+    \item $P0_5 + P0_6 - P1_7 - P1_8 <= 1/4$
+    \item $P1_3 + P1_5 + P1_7 <= 1/4$
+    \item $P1_4 + P1_6 + P1_8 <= 1/4$
+    \item $P0_5 >= 0$
+    \item $P0_6 >= 0$
+    \item $P1_3 >= 0$
+    \item $P1_4 >= 0$
+    \item $P1_5 >= 0$
+    \item $P1_6 >= 0$
+    \item $P1_7 >= 0$
+    \item $P1_8 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 1/4$
+    \item $X_{001111} = P0_6 - P1_5 - P1_6 - P1_7 - P1_8 + 1/4$
+    \item $X_{010111} = P0_5 - P1_3 - P1_4 - P1_7 - P1_8 + 1/4$
+    \item $X_{011011} = -P0_5 - P0_6 + P1_7 + P1_8 + 1/4$
+    \item $X_{100111} = -P0_5 - P0_6 + P1_3 + P1_4 + P1_5 + P1_6 + P1_7 + P1_8$
+    \item $X_{101011} = P0_5$
+    \item $X_{110011} = P0_6$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000011} = 1/2$
+    \item $Y_{011101} = -P1_3 - P1_5 - P1_7 + 1/4$
+    \item $Y_{011110} = -P1_4 - P1_6 - P1_8 + 1/4$
+    \item $Y_{101101} = P1_3$
+    \item $Y_{101110} = P1_4$
+    \item $Y_{110101} = P1_5$
+    \item $Y_{110110} = P1_6$
+    \item $Y_{111001} = P1_7$
+    \item $Y_{111010} = P1_8$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{1}{4}}\,\ket{000000} + \sqrt{P0_6 - P1_5 - P1_6 - P1_7 - P1_8 + \tfrac{1}{4}}\,\ket{001111}\\
+&\quad + \sqrt{P0_5 - P1_3 - P1_4 - P1_7 - P1_8 + \tfrac{1}{4}}\,\ket{010111} + \sqrt{-P0_5 - P0_6 + P1_7 + P1_8 + \tfrac{1}{4}}\,\ket{011011}\\
+&\quad + \sqrt{-P0_5 - P0_6 + P1_3 + P1_4 + P1_5 + P1_6 + P1_7 + P1_8}\,\ket{100111} + \sqrt{P0_5}\,\ket{101011} + \sqrt{P0_6}\,\ket{110011},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{1}{2}}\,\ket{000011} + \sqrt{-P1_3 - P1_5 - P1_7 + \tfrac{1}{4}}\,\ket{011101} + \sqrt{-P1_4 - P1_6 - P1_8 + \tfrac{1}{4}}\,\ket{011110}\\
+&\quad + \sqrt{P1_3}\,\ket{101101} + \sqrt{P1_4}\,\ket{101110} + \sqrt{P1_5}\,\ket{110101} + \sqrt{P1_6}\,\ket{110110} + \sqrt{P1_7}\,\ket{111001}\\
+&\quad + \sqrt{P1_8}\,\ket{111010}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{3}{2}z^{1} + 2z^{2} + 4z^{3} + 8z^{4} + \tfrac{21}{2}z^{5} + 5z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{3}{2}z^{1} + \tfrac{17}{2}z^{2} + 25z^{3} + 40z^{4} + \tfrac{75}{2}z^{5} + \tfrac{29}{2}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 5:}}
+\noindent\textbf{Parameters:} $n=6,\; m=5,\; K=2;\quad \mathbf w=(1, 1, 1, 1, 1, 1);\quad \mathbf S=\{0, 2\};\quad \text{sizes}=\left(7, 15\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{5}{1}=5.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,5)=Z \left(\tfrac{2\pi}{5}\right)^{\otimes6} ,\qquad
+    \overline U=\mathrm{diag}(1,\omega_{5}^{2}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_1, P1_2, P1_3, P1_4, P1_5, P1_6, P1_7, P1_8, P1_9, P1_{10}, P1_{11}, P1_{12}, P1_{13}, P1_{14}]$.
+
+Region constraints:
+\begin{itemize}
+    \item $-P1_1 - P1_{10} - P1_{12} - P1_{13} - P1_{14} - P1_3 - P1_5 - P1_6 - P1_8 - P1_9 <= -3/5$
+    \item $-P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_2 - P1_4 - P1_5 - P1_7 - P1_8 - P1_9 <= -3/5$
+    \item $P1_1 + P1_{10} + P1_{11} + P1_{12} + P1_{13} + P1_{14} + P1_2 + P1_3 + P1_4 + P1_5 + P1_6 + P1_7 + P1_8 + P1_9 <= 1$
+    \item $P1_1 + P1_{12} + P1_2 + P1_5 + P1_8 <= 2/5$
+    \item $P1_{10} + P1_{11} + P1_{12} + P1_{13} + P1_{14} <= 2/5$
+    \item $P1_{13} + P1_3 + P1_4 + P1_5 + P1_9 <= 2/5$
+    \item $P1_{14} + P1_6 + P1_7 + P1_8 + P1_9 <= 2/5$
+    \item $P1_1 >= 0$
+    \item $P1_{10} >= 0$
+    \item $P1_{11} >= 0$
+    \item $P1_{12} >= 0$
+    \item $P1_{13} >= 0$
+    \item $P1_{14} >= 0$
+    \item $P1_2 >= 0$
+    \item $P1_3 >= 0$
+    \item $P1_4 >= 0$
+    \item $P1_5 >= 0$
+    \item $P1_6 >= 0$
+    \item $P1_7 >= 0$
+    \item $P1_8 >= 0$
+    \item $P1_9 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 3/5$
+    \item $X_{011111} = -P1_{10} - P1_{11} - P1_{12} - P1_{13} - P1_{14} + 2/5$
+    \item $X_{101111} = -P1_{14} - P1_6 - P1_7 - P1_8 - P1_9 + 2/5$
+    \item $X_{110111} = -P1_{13} - P1_3 - P1_4 - P1_5 - P1_9 + 2/5$
+    \item $X_{111011} = -P1_1 - P1_{12} - P1_2 - P1_5 - P1_8 + 2/5$
+    \item $X_{111101} = P1_1 + P1_{10} + P1_{12} + P1_{13} + P1_{14} + P1_3 + P1_5 + P1_6 + P1_8 + P1_9 - 3/5$
+    \item $X_{111110} = P1_{11} + P1_{12} + P1_{13} + P1_{14} + P1_2 + P1_4 + P1_5 + P1_7 + P1_8 + P1_9 - 3/5$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000011} = -P1_1 - P1_{10} - P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_2 - P1_3 - P1_4 - P1_5 - P1_6 - P1_7 - P1_8 - P1_9 + 1$
+    \item $Y_{000101} = P1_1$
+    \item $Y_{000110} = P1_2$
+    \item $Y_{001001} = P1_3$
+    \item $Y_{001010} = P1_4$
+    \item $Y_{001100} = P1_5$
+    \item $Y_{010001} = P1_6$
+    \item $Y_{010010} = P1_7$
+    \item $Y_{010100} = P1_8$
+    \item $Y_{011000} = P1_9$
+    \item $Y_{100001} = P1_{10}$
+    \item $Y_{100010} = P1_{11}$
+    \item $Y_{100100} = P1_{12}$
+    \item $Y_{101000} = P1_{13}$
+    \item $Y_{110000} = P1_{14}$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{3}{5}}\,\ket{000000} + \sqrt{-P1_{10} - P1_{11} - P1_{12} - P1_{13} - P1_{14} + \tfrac{2}{5}}\,\ket{011111}\\
+&\quad + \sqrt{-P1_{14} - P1_6 - P1_7 - P1_8 - P1_9 + \tfrac{2}{5}}\,\ket{101111} + \sqrt{-P1_{13} - P1_3 - P1_4 - P1_5 - P1_9 + \tfrac{2}{5}}\,\ket{110111}\\
+&\quad + \sqrt{-P1_1 - P1_{12} - P1_2 - P1_5 - P1_8 + \tfrac{2}{5}}\,\ket{111011}\\
+&\quad+ \sqrt{P1_1 + P1_{10} + P1_{12} + P1_{13} + P1_{14} + P1_3 + P1_5 + P1_6 + P1_8 + P1_9 - \tfrac{3}{5}}\,\ket{111101}\\
+&\quad + \sqrt{P1_{11} + P1_{12} + P1_{13} + P1_{14} + P1_2 + P1_4 + P1_5 + P1_7 + P1_8 + P1_9 - \tfrac{3}{5}}\,\ket{111110},
+\\[2pt]
+\ket{1_L} &= \sqrt{-P1_1 - P1_{10} - P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_2 - P1_3 - P1_4 - P1_5 - P1_6 - P1_7 - P1_8 - P1_9 + 1}\,\\
+&\quad \ket{000011} + \sqrt{P1_1}\,\ket{000101} + \sqrt{P1_2}\,\ket{000110} + \sqrt{P1_3}\,\ket{001001} + \sqrt{P1_4}\,\ket{001010} + \sqrt{P1_5}\,\ket{001100}\\
+&\quad + \sqrt{P1_6}\,\ket{010001} + \sqrt{P1_7}\,\ket{010010} + \sqrt{P1_8}\,\ket{010100} + \sqrt{P1_9}\,\ket{011000} + \sqrt{P1_{10}}\,\ket{100001}\\
+&\quad + \sqrt{P1_{11}}\,\ket{100010} + \sqrt{P1_{12}}\,\ket{100100} + \sqrt{P1_{13}}\,\ket{101000} + \sqrt{P1_{14}}\,\ket{110000}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{6}{5}z^{1} + \tfrac{69}{25}z^{2} + 4z^{3} + \tfrac{147}{25}z^{4} + \tfrac{54}{5}z^{5} + \tfrac{159}{25}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{6}{5}z^{1} + \tfrac{243}{25}z^{2} + \tfrac{116}{5}z^{3} + \tfrac{879}{25}z^{4} + \tfrac{198}{5}z^{5} + \tfrac{453}{25}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 6:}}
+\noindent\textbf{Parameters:} $n=6,\; m=6,\; K=2;\quad \mathbf w=(2, 2, 2, 2, 3, 3);\quad \mathbf S=\{0, 1\};\quad \text{sizes}=\left(10, 12\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{6}{1}=6.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,6)=Z \left(\tfrac{4\pi}{6}\right)^{\otimes4} \otimes Z \left(\tfrac{6\pi}{6}\right)^{\otimes2} ,\qquad
+    \overline U=\mathrm{diag}(1,\omega_{6}^{1}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P0_3, P0_5, P0_7, P0_9, P1_2, P1_3, P1_4, P1_5, P1_6, P1_7, P1_8, P1_9, P1_{10}, P1_{11}]$
+
+Region constraints:
+\begin{itemize}
+    \item $-P0_3 - P0_5 - P0_7 - P0_9 <= -1/6$
+    \item $P0_3 + P0_5 + P0_7 + P0_9 <= 1/2$
+    \item $P0_3 + P1_{10} + P1_{11} + P1_6 + P1_7 + P1_8 + P1_9 <= 2/3$
+    \item $P0_5 + P1_{10} + P1_{11} + P1_2 + P1_3 + P1_4 + P1_5 <= 2/3$
+    \item $P0_7 - P1_{10} - P1_{11} - P1_2 - P1_3 - P1_6 - P1_7 <= -1/3$
+    \item $P0_9 - P1_{10} - P1_{11} - P1_4 - P1_5 - P1_8 - P1_9 <= -1/3$
+    \item $P1_{10} + P1_2 + P1_4 + P1_6 + P1_8 <= 1/2$
+    \item $P1_{11} + P1_3 + P1_5 + P1_7 + P1_9 <= 1/2$
+    \item $P0_3 >= 0$
+    \item $P0_5 >= 0$
+    \item $P0_7 >= 0$
+    \item $P0_9 >= 0$
+    \item $P1_{10} >= 0$
+    \item $P1_{11} >= 0$
+    \item $P1_2 >= 0$
+    \item $P1_3 >= 0$
+    \item $P1_4 >= 0$
+    \item $P1_5 >= 0$
+    \item $P1_6 >= 0$
+    \item $P1_7 >= 0$
+    \item $P1_8 >= 0$
+    \item $P1_9 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = P0_3 + P0_5 + P0_7 + P0_9 - 1/6$
+    \item $X_{000011} = -P0_3 - P0_5 - P0_7 - P0_9 + 1/2$
+    \item $X_{011100} = -P0_3 - P1_{10} - P1_{11} - P1_6 - P1_7 - P1_8 - P1_9 + 2/3$
+    \item $X_{011111} = P0_3$
+    \item $X_{101100} = -P0_5 - P1_{10} - P1_{11} - P1_2 - P1_3 - P1_4 - P1_5 + 2/3$
+    \item $X_{101111} = P0_5$
+    \item $X_{110100} = -P0_7 + P1_{10} + P1_{11} + P1_2 + P1_3 + P1_6 + P1_7 - 1/3$
+    \item $X_{110111} = P0_7$
+    \item $X_{111000} = -P0_9 + P1_{10} + P1_{11} + P1_4 + P1_5 + P1_8 + P1_9 - 1/3$
+    \item $X_{111011} = P0_9$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{001101} = -P1_{10} - P1_2 - P1_4 - P1_6 - P1_8 + 1/2$
+    \item $Y_{001110} = -P1_{11} - P1_3 - P1_5 - P1_7 - P1_9 + 1/2$
+    \item $Y_{010101} = P1_2$
+    \item $Y_{010110} = P1_3$
+    \item $Y_{011001} = P1_4$
+    \item $Y_{011010} = P1_5$
+    \item $Y_{100101} = P1_6$
+    \item $Y_{100110} = P1_7$
+    \item $Y_{101001} = P1_8$
+    \item $Y_{101010} = P1_9$
+    \item $Y_{110001} = P1_{10}$
+    \item $Y_{110010} = P1_{11}$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{P0_3 + P0_5 + P0_7 + P0_9 - \tfrac{1}{6}}\,\ket{000000} + \sqrt{-P0_3 - P0_5 - P0_7 - P0_9 + \tfrac{1}{2}}\,\ket{000011}\\
+&\quad + \sqrt{-P0_3 - P1_{10} - P1_{11} - P1_6 - P1_7 - P1_8 - P1_9 + \tfrac{2}{3}}\,\ket{011100} + \sqrt{P0_3}\,\ket{011111}\\
+&\quad + \sqrt{-P0_5 - P1_{10} - P1_{11} - P1_2 - P1_3 - P1_4 - P1_5 + \tfrac{2}{3}}\,\ket{101100} + \sqrt{P0_5}\,\ket{101111}\\
+&\quad + \sqrt{-P0_7 + P1_{10} + P1_{11} + P1_2 + P1_3 + P1_6 + P1_7 - \tfrac{1}{3}}\,\ket{110100} + \sqrt{P0_7}\,\ket{110111}\\
+&\quad + \sqrt{-P0_9 + P1_{10} + P1_{11} + P1_4 + P1_5 + P1_8 + P1_9 - \tfrac{1}{3}}\,\ket{111000} + \sqrt{P0_9}\,\ket{111011},
+\\[2pt]
+\ket{1_L} &= \sqrt{-P1_{10} - P1_2 - P1_4 - P1_6 - P1_8 + \tfrac{1}{2}}\,\ket{001101} + \sqrt{-P1_{11} - P1_3 - P1_5 - P1_7 - P1_9 + \tfrac{1}{2}}\,\ket{001110}\\
+&\quad + \sqrt{P1_2}\,\ket{010101} + \sqrt{P1_3}\,\ket{010110} + \sqrt{P1_4}\,\ket{011001} + \sqrt{P1_5}\,\ket{011010} + \sqrt{P1_6}\,\ket{100101}\\
+&\quad + \sqrt{P1_7}\,\ket{100110} + \sqrt{P1_8}\,\ket{101001} + \sqrt{P1_9}\,\ket{101010} + \sqrt{P1_{10}}\,\ket{110001} + \sqrt{P1_{11}}\,\ket{110010}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{4}{9}z^{1} + \tfrac{31}{9}z^{2} + \tfrac{8}{3}z^{3} + 7z^{4} + \tfrac{68}{9}z^{5} + \tfrac{89}{9}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{4}{9}z^{1} + \tfrac{31}{3}z^{2} + 16z^{3} + \tfrac{323}{9}z^{4} + \tfrac{332}{9}z^{5} + \tfrac{247}{9}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 7:}}
+\noindent\textbf{Parameters:} $n=6,\; m=7,\; K=2;\quad \mathbf w=(1, 1, 1, 1, 1, 2);\quad \mathbf S=\{0, 3\};\quad \text{sizes}=\left(2, 15\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{7}{1}=7.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,7)=Z \left(\tfrac{2\pi}{7}\right)^{\otimes5} \otimes Z \left(\tfrac{4\pi}{7}\right) ,\qquad
+    \overline U=\mathrm{diag}(1,\omega_{7}^{3}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_5, P1_6, P1_7, P1_9, P1_{10}, P1_{11}, P1_{12}, P1_{13}, P1_{14}]$
+
+Region constraints:
+\begin{itemize}
+    \item $-P1_{10} - P1_{12} - P1_{14} - P1_6 <= -1/7$
+    \item $-P1_{11} - P1_{13} - P1_{14} - P1_7 <= -1/7$
+    \item $-P1_{12} - P1_{13} - P1_5 - P1_9 <= -1/7$
+    \item $P1_{10} + P1_{11} + P1_{12} + P1_{13} + P1_{14} + P1_5 + P1_6 + P1_7 + P1_9 <= 4/7$
+    \item $P1_{10} + P1_{11} + P1_{12} + P1_{13} + P1_{14} + P1_9 <= 3/7$
+    \item $P1_{12} + P1_{13} + P1_{14} + P1_5 + P1_6 + P1_7 <= 3/7$
+    \item $P1_{10} >= 0$
+    \item $P1_{11} >= 0$
+    \item $P1_{12} >= 0$
+    \item $P1_{13} >= 0$
+    \item $P1_{14} >= 0$
+    \item $P1_5 >= 0$
+    \item $P1_6 >= 0$
+    \item $P1_7 >= 0$
+    \item $P1_9 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 4/7$
+    \item $X_{111111} = 3/7$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000011} = P1_{11} + P1_{13} + P1_{14} + P1_7 - 1/7$
+    \item $Y_{000101} = P1_{10} + P1_{12} + P1_{14} + P1_6 - 1/7$
+    \item $Y_{001001} = P1_{12} + P1_{13} + P1_5 + P1_9 - 1/7$
+    \item $Y_{001110} = -P1_{10} - P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_5 - P1_6 - P1_7 - P1_9 + 4/7$
+    \item $Y_{010001} = -P1_{12} - P1_{13} - P1_{14} - P1_5 - P1_6 - P1_7 + 3/7$
+    \item $Y_{010110} = P1_5$
+    \item $Y_{011010} = P1_6$
+    \item $Y_{011100} = P1_7$
+    \item $Y_{100001} = -P1_{10} - P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_9 + 3/7$
+    \item $Y_{100110} = P1_9$
+    \item $Y_{101010} = P1_{10}$
+    \item $Y_{101100} = P1_{11}$
+    \item $Y_{110010} = P1_{12}$
+    \item $Y_{110100} = P1_{13}$
+    \item $Y_{111000} = P1_{14}$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{4}{7}}\,\ket{000000} + \sqrt{\tfrac{3}{7}}\,\ket{111111},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_{11} + P1_{13} + P1_{14} + P1_7 - \tfrac{1}{7}}\,\ket{000011} + \sqrt{P1_{10} + P1_{12} + P1_{14} + P1_6 - \tfrac{1}{7}}\,\ket{000101}\\
+&\quad + \sqrt{P1_{12} + P1_{13} + P1_5 + P1_9 - \tfrac{1}{7}}\,\ket{001001}\\
+&\quad + \sqrt{-P1_{10} - P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_5 - P1_6 - P1_7 - P1_9 + \tfrac{4}{7}}\,\ket{001110}\\
+&\quad + \sqrt{-P1_{12} - P1_{13} - P1_{14} - P1_5 - P1_6 - P1_7 + \tfrac{3}{7}}\,\ket{010001} + \sqrt{P1_5}\,\ket{010110} + \sqrt{P1_6}\,\ket{011010}\\
+&\quad + \sqrt{P1_7}\,\ket{011100} + \sqrt{-P1_{10} - P1_{11} - P1_{12} - P1_{13} - P1_{14} - P1_9 + \tfrac{3}{7}}\,\ket{100001} + \sqrt{P1_9}\,\ket{100110}\\
+&\quad + \sqrt{P1_{10}}\,\ket{101010} + \sqrt{P1_{11}}\,\ket{101100} + \sqrt{P1_{12}}\,\ket{110010} + \sqrt{P1_{13}}\,\ket{110100} + \sqrt{P1_{14}}\,\ket{111000}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{6}{49}z^{1} + \tfrac{191}{49}z^{2} + \tfrac{100}{49}z^{3} + \tfrac{359}{49}z^{4} + 6z^{5} + \tfrac{569}{49}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{6}{49}z^{1} + \tfrac{535}{49}z^{2} + \tfrac{628}{49}z^{3} + \tfrac{1759}{49}z^{4} + \tfrac{1734}{49}z^{5} + \tfrac{223}{7}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 8:}}
+\noindent\textbf{Parameters:} $n=6,\; m=8,\; K=2;\quad \mathbf w=(1, 1, 1, 1, 1, 4);\quad \mathbf S=\{0, 5\};\quad \text{sizes}=\left(6, 6\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{8}{1}=8.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,8)=Z \left(\tfrac{2\pi}{8}\right)^{\otimes5} \otimes Z \left(\tfrac{8\pi}{8}\right) ,\qquad
+    \overline U=\mathrm{diag}(1,\omega_{8}^{5}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_1, P1_2, P1_3, P1_4]$.
+
+Region constraints:
+\begin{itemize}
+    \item $-P1_1 - P1_2 - P1_3 - P1_4 <= -3/8$
+    \item $P1_1 + P1_2 + P1_3 + P1_4 <= 5/8$
+    \item $P1_1 >= 0$
+    \item $P1_2 >= 0$
+    \item $P1_3 >= 0$
+    \item $P1_4 >= 0$
+    \item $P1_1 <= 1/4$
+    \item $P1_2 <= 1/4$
+    \item $P1_3 <= 1/4$
+    \item $P1_4 <= 1/4$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 3/8$
+    \item $X_{011111} = 1/4 - P1_4$
+    \item $X_{101111} = 1/4 - P1_3$
+    \item $X_{110111} = 1/4 - P1_2$
+    \item $X_{111011} = 1/4 - P1_1$
+    \item $X_{111101} = P1_1 + P1_2 + P1_3 + P1_4 - 3/8$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000011} = -P1_1 - P1_2 - P1_3 - P1_4 + 5/8$
+    \item $Y_{000101} = P1_1$
+    \item $Y_{001001} = P1_2$
+    \item $Y_{010001} = P1_3$
+    \item $Y_{100001} = P1_4$
+    \item $Y_{111110} = 3/8$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{3}{8}}\,\ket{000000} + \sqrt{\tfrac{1}{4} - P1_4}\,\ket{011111} + \sqrt{\tfrac{1}{4} - P1_3}\,\ket{101111} + \sqrt{\tfrac{1}{4} - P1_2}\,\ket{110111} + \sqrt{\tfrac{1}{4} - P1_1}\,\ket{111011}\\
+&\quad + \sqrt{P1_1 + P1_2 + P1_3 + P1_4 - \tfrac{3}{8}}\,\ket{111101},
+\\[2pt]
+\ket{1_L} &= \sqrt{-P1_1 - P1_2 - P1_3 - P1_4 + \tfrac{5}{8}}\,\ket{000011} + \sqrt{P1_1}\,\ket{000101} + \sqrt{P1_2}\,\ket{001001} + \sqrt{P1_3}\,\ket{010001}\\
+&\quad + \sqrt{P1_4}\,\ket{100001} + \sqrt{\tfrac{3}{8}}\,\ket{111110}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{5}{16}z^{1} + \tfrac{13}{4}z^{2} + \tfrac{27}{8}z^{3} + \tfrac{15}{4}z^{4} + \tfrac{197}{16}z^{5} + 8z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{5}{16}z^{1} + \tfrac{147}{16}z^{2} + \tfrac{153}{8}z^{3} + \tfrac{223}{8}z^{4} + \tfrac{713}{16}z^{5} + \tfrac{415}{16}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 9:}}
+\noindent\textbf{Parameters:} $n=6,\; m=9,\; K=2;\quad \mathbf w=(1, 1, 1, 1, 2, 3);\quad \mathbf S=\{0, 4\};\quad \text{sizes}=\left(2, 11\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{9}{1}=9.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,9)=Z \left(\tfrac{2\pi}{9}\right)^{\otimes4} \otimes Z \left(\tfrac{4\pi}{9}\right) \otimes Z \left(\tfrac{6\pi}{9}\right),\qquad
+    \overline U=\mathrm{diag}(1,\omega_{9}^{4}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_4, P1_5, P1_7, P1_8, P1_9]$
+
+Region constraints:
+\begin{itemize}
+    \item $-P1_4 - P1_7 - P1_9 <= -1/9$
+    \item $-P1_5 - P1_8 - P1_9 <= -1/9$
+    \item $P1_4 + P1_5 + P1_7 + P1_8 + P1_9 <= 4/9$
+    \item $P1_4 + P1_5 + P1_9 <= 1/3$
+    \item $P1_7 + P1_8 + P1_9 <= 1/3$
+    \item $P1_4 >= 0$
+    \item $P1_5 >= 0$
+    \item $P1_7 >= 0$
+    \item $P1_8 >= 0$
+    \item $P1_9 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 5/9$
+    \item $X_{111111} = 4/9$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000101} = P1_5 + P1_8 + P1_9 - 1/9$
+    \item $Y_{001001} = P1_4 + P1_7 + P1_9 - 1/9$
+    \item $Y_{001110} = -P1_4 - P1_5 - P1_7 - P1_8 - P1_9 + 4/9$
+    \item $Y_{010001} = -P1_4 - P1_5 - P1_9 + 1/3$
+    \item $Y_{010110} = P1_4$
+    \item $Y_{011010} = P1_5$
+    \item $Y_{100001} = -P1_7 - P1_8 - P1_9 + 1/3$
+    \item $Y_{100110} = P1_7$
+    \item $Y_{101010} = P1_8$
+    \item $Y_{110010} = P1_9$
+    \item $Y_{111100} = 1/9$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{5}{9}}\,\ket{000000} + \sqrt{\tfrac{4}{9}}\,\ket{111111},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_5 + P1_8 + P1_9 - \tfrac{1}{9}}\,\ket{000101} + \sqrt{P1_4 + P1_7 + P1_9 - \tfrac{1}{9}}\,\ket{001001}\\
+&\quad + \sqrt{-P1_4 - P1_5 - P1_7 - P1_8 - P1_9 + \tfrac{4}{9}}\,\ket{001110} + \sqrt{-P1_4 - P1_5 - P1_9 + \tfrac{1}{3}}\,\ket{010001}\\
+&\quad + \sqrt{P1_4}\,\ket{010110} + \sqrt{P1_5}\,\ket{011010} + \sqrt{-P1_7 - P1_8 - P1_9 + \tfrac{1}{3}}\,\ket{100001} + \sqrt{P1_7}\,\ket{100110}\\
+&\quad + \sqrt{P1_8}\,\ket{101010} + \sqrt{P1_9}\,\ket{110010} + \sqrt{\tfrac{1}{9}}\,\ket{111100}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{2}{27}z^{1} + \tfrac{319}{81}z^{2} + \tfrac{164}{81}z^{3} + \tfrac{583}{81}z^{4} + 6z^{5} + \tfrac{953}{81}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{2}{27}z^{1} + \tfrac{887}{81}z^{2} + \tfrac{1012}{81}z^{3} + \tfrac{2879}{81}z^{4} + \tfrac{962}{27}z^{5} + \tfrac{2617}{81}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 10:}}
+\noindent\textbf{Parameters:} $n=6,\; m=10,\; K=2;\quad \mathbf w=(1, 1, 1, 1, 4, 6);\quad \mathbf S=\{0, 7\};\quad \text{sizes}=\left(3, 8\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{10}{1}=10.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,10)=Z \left(\tfrac{2\pi}{10}\right)^{\otimes4} \otimes Z \left(\tfrac{8\pi}{10}\right) \otimes Z \left(\tfrac{12\pi}{10}\right),\qquad
+    \overline U=\mathrm{diag}(1,\omega_{10}^{7}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_5, P1_6, P1_7]$.
+
+Region constraints:
+\begin{itemize}
+    \item $P1_5 + P1_6 + P1_7 <= 3/10$
+    \item $P1_5 >= 0$
+    \item $P1_6 >= 0$
+    \item $P1_7 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 3/10$
+    \item $X_{000011} = 3/10$
+    \item $X_{111101} = 2/5$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000101} = P1_7 + 1/10$
+    \item $Y_{001001} = P1_6 + 1/10$
+    \item $Y_{010001} = P1_5 + 1/10$
+    \item $Y_{011110} = -P1_5 - P1_6 - P1_7 + 3/10$
+    \item $Y_{100001} = -P1_5 - P1_6 - P1_7 + 2/5$
+    \item $Y_{101110} = P1_5$
+    \item $Y_{110110} = P1_6$
+    \item $Y_{111010} = P1_7$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{3}{10}}\,\ket{000000} + \sqrt{\tfrac{3}{10}}\,\ket{000011} + \sqrt{\tfrac{2}{5}}\,\ket{111101},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_7 + \tfrac{1}{10}}\,\ket{000101} + \sqrt{P1_6 + \tfrac{1}{10}}\,\ket{001001} + \sqrt{P1_5 + \tfrac{1}{10}}\,\ket{010001} + \sqrt{-P1_5 - P1_6 - P1_7 + \tfrac{3}{10}}\,\ket{011110}\\
+&\quad + \sqrt{-P1_5 - P1_6 - P1_7 + \tfrac{2}{5}}\,\ket{100001} + \sqrt{P1_5}\,\ket{101110} + \sqrt{P1_6}\,\ket{110110} + \sqrt{P1_7}\,\ket{111010}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{12}{25}z^{1} + \tfrac{81}{25}z^{2} + \tfrac{76}{25}z^{3} + \tfrac{159}{25}z^{4} + \tfrac{216}{25}z^{5} + \tfrac{231}{25}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{12}{25}z^{1} + \tfrac{249}{25}z^{2} + \tfrac{424}{25}z^{3} + \tfrac{867}{25}z^{4} + \tfrac{972}{25}z^{5} + \tfrac{651}{25}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 11:}}
+\noindent\textbf{Parameters:} $n=6,\; m=11,\; K=2;\quad \mathbf w=(1, 1, 1, 1, 4, 4);\quad \mathbf S=\{0, 8\};\quad \text{sizes}=\left(5, 3\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{11}{1}=11.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,11)=Z \left(\tfrac{2\pi}{11}\right)^{\otimes4} \otimes Z \left(\tfrac{8\pi}{11}\right)^{\otimes2},\qquad
+    \overline U=\mathrm{diag}(1,\omega_{11}^{8}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[]$.
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 3/11$
+    \item $X_{011111} = 2/11$
+    \item $X_{101111} = 2/11$
+    \item $X_{110111} = 2/11$
+    \item $X_{111011} = 2/11$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000011} = 5/11$
+    \item $Y_{111101} = 3/11$
+    \item $Y_{111110} = 3/11$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{3}{11}}\,\ket{000000} + \sqrt{\tfrac{2}{11}}\,\ket{011111} + \sqrt{\tfrac{2}{11}}\,\ket{101111} + \sqrt{\tfrac{2}{11}}\,\ket{110111} + \sqrt{\tfrac{2}{11}}\,\ket{111011},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{5}{11}}\,\ket{000011} + \sqrt{\tfrac{3}{11}}\,\ket{111101} + \sqrt{\tfrac{3}{11}}\,\ket{111110}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{54}{121}z^{1} + \tfrac{393}{121}z^{2} + \tfrac{412}{121}z^{3} + \tfrac{483}{121}z^{4} + \tfrac{1470}{121}z^{5} + \tfrac{939}{121}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{54}{121}z^{1} + \tfrac{1131}{121}z^{2} + \tfrac{2404}{121}z^{3} + \tfrac{3471}{121}z^{4} + \tfrac{5286}{121}z^{5} + \tfrac{3021}{121}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 12:}}
+\noindent\textbf{Parameters:} $n=6,\; m=12,\; K=2;\quad \mathbf w=(1, 1, 1, 2, 3, 4);\quad \mathbf S=\{0, 5\};\quad \text{sizes}=\left(2, 8\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{12}{1}=12.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,12)=Z \left(\tfrac{2\pi}{12}\right)^{\otimes3} \otimes Z \left(\tfrac{4\pi}{12}\right) \otimes Z \left(\tfrac{6\pi}{12}\right) \otimes Z \left(\tfrac{8\pi}{12}\right),\qquad
+    \overline U=\mathrm{diag}(1,\omega_{12}^{5}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_5, P1_6]$.
+
+Region constraints:
+\begin{itemize}
+    \item $P1_5 + P1_6 <= 1/6$
+    \item $P1_5 >= 0$
+    \item $P1_6 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 7/12$
+    \item $X_{111111} = 5/12$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000110} = 1/4$
+    \item $Y_{001001} = P1_6 + 1/12$
+    \item $Y_{010001} = P1_5 + 1/12$
+    \item $Y_{011010} = -P1_5 - P1_6 + 1/6$
+    \item $Y_{100001} = -P1_5 - P1_6 + 1/4$
+    \item $Y_{101010} = P1_5$
+    \item $Y_{110010} = P1_6$
+    \item $Y_{111100} = 1/6$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{7}{12}}\,\ket{000000} + \sqrt{\tfrac{5}{12}}\,\ket{111111},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{1}{4}}\,\ket{000110} + \sqrt{P1_6 + \tfrac{1}{12}}\,\ket{001001} + \sqrt{P1_5 + \tfrac{1}{12}}\,\ket{010001} + \sqrt{-P1_5 - P1_6 + \tfrac{1}{6}}\,\ket{011010}\\
+&\quad + \sqrt{-P1_5 - P1_6 + \tfrac{1}{4}}\,\ket{100001} + \sqrt{P1_5}\,\ket{101010} + \sqrt{P1_6}\,\ket{110010} + \sqrt{\tfrac{1}{6}}\,\ket{111100}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{1}{6}z^{1} + \tfrac{269}{72}z^{2} + \tfrac{37}{18}z^{3} + \tfrac{277}{36}z^{4} + 6z^{5} + \tfrac{817}{72}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{1}{6}z^{1} + \tfrac{383}{36}z^{2} + \tfrac{118}{9}z^{3} + \tfrac{661}{18}z^{4} + \tfrac{211}{6}z^{5} + \tfrac{1123}{36}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 13:}}
+\noindent\textbf{Parameters:} $n=6,\; m=13,\; K=2;\quad \mathbf w=(1, 1, 1, 2, 5, 5);\quad \mathbf S=\{0, 10\};\quad \text{sizes}=\left(5, 3\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{13}{1}=13.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,13)=Z \left(\tfrac{2\pi}{13}\right)^{\otimes3} \otimes Z \left(\tfrac{4\pi}{13}\right) \otimes Z \left(\tfrac{10\pi}{13}\right)^{\otimes2},\qquad
+    \overline U=\mathrm{diag}(1,\omega_{13}^{10}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[]$.
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 3/13$
+    \item $X_{001111} = 2/13$
+    \item $X_{010111} = 2/13$
+    \item $X_{100111} = 2/13$
+    \item $X_{111011} = 4/13$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000011} = 7/13$
+    \item $Y_{111101} = 3/13$
+    \item $Y_{111110} = 3/13$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{3}{13}}\,\ket{000000} + \sqrt{\tfrac{2}{13}}\,\ket{001111} + \sqrt{\tfrac{2}{13}}\,\ket{010111} + \sqrt{\tfrac{2}{13}}\,\ket{100111} + \sqrt{\tfrac{4}{13}}\,\ket{111011},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{7}{13}}\,\ket{000011} + \sqrt{\tfrac{3}{13}}\,\ket{111101} + \sqrt{\tfrac{3}{13}}\,\ket{111110}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{102}{169}z^{1} + \tfrac{417}{169}z^{2} + \tfrac{604}{169}z^{3} + \tfrac{963}{169}z^{4} + \tfrac{1998}{169}z^{5} + \tfrac{1155}{169}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{102}{169}z^{1} + \tfrac{1371}{169}z^{2} + \tfrac{3460}{169}z^{3} + \tfrac{5535}{169}z^{4} + \tfrac{558}{13}z^{5} + \tfrac{3741}{169}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 14:}}
+\noindent\textbf{Parameters:} $n=6,\; m=14,\; K=2;\quad \mathbf w=(1, 1, 1, 3, 3, 6);\quad \mathbf S=\{0, 9\};\quad \text{sizes}=\left(4, 4\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{14}{1}=14.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,14)=Z \left(\tfrac{2\pi}{14}\right)^{\otimes3} \otimes Z \left(\tfrac{6\pi}{14}\right)^{\otimes2} \otimes Z \left(\tfrac{12\pi}{14}\right),\qquad
+    \overline U=\mathrm{diag}(1,\omega_{14}^{9}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[]$.
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 5/14$
+    \item $X_{011111} = 3/14$
+    \item $X_{101111} = 3/14$
+    \item $X_{110111} = 3/14$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000011} = 2/7$
+    \item $Y_{000101} = 2/7$
+    \item $Y_{111001} = 1/14$
+    \item $Y_{111110} = 5/14$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{5}{14}}\,\ket{000000} + \sqrt{\tfrac{3}{14}}\,\ket{011111} + \sqrt{\tfrac{3}{14}}\,\ket{101111} + \sqrt{\tfrac{3}{14}}\,\ket{110111},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{2}{7}}\,\ket{000011} + \sqrt{\tfrac{2}{7}}\,\ket{000101} + \sqrt{\tfrac{1}{14}}\,\ket{111001} + \sqrt{\tfrac{5}{14}}\,\ket{111110}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{15}{49}z^{1} + \tfrac{41}{14}z^{2} + \tfrac{171}{49}z^{3} + \tfrac{209}{49}z^{4} + \tfrac{598}{49}z^{5} + \tfrac{765}{98}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{15}{49}z^{1} + \tfrac{424}{49}z^{2} + \tfrac{132}{7}z^{3} + \tfrac{1427}{49}z^{4} + \tfrac{2197}{49}z^{5} + \tfrac{1236}{49}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 15:}}
+\noindent\textbf{Parameters:} $n=6,\; m=15,\; K=2;\quad \mathbf w=(1, 1, 2, 2, 5, 6);\quad \mathbf S=\{0, 11\};\quad \text{sizes}=\left(4, 4\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{15}{1}=15.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,15)=Z \left(\tfrac{2\pi}{15}\right)^{\otimes2} \otimes Z \left(\tfrac{4\pi}{15}\right)^{\otimes2} \otimes Z \left(\tfrac{10\pi}{15}\right) \otimes Z \left(\tfrac{12\pi}{15}\right),\qquad
+    \overline U=\mathrm{diag}(1,\omega_{15}^{11}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[]$.
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 4/15$
+    \item $X_{001111} = 1/3$
+    \item $X_{110111} = 1/5$
+    \item $X_{111011} = 1/5$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000011} = 7/15$
+    \item $Y_{011101} = 2/15$
+    \item $Y_{101101} = 2/15$
+    \item $Y_{111110} = 4/15$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{4}{15}}\,\ket{000000} + \sqrt{\tfrac{1}{3}}\,\ket{001111} + \sqrt{\tfrac{1}{5}}\,\ket{110111} + \sqrt{\tfrac{1}{5}}\,\ket{111011},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{7}{15}}\,\ket{000011} + \sqrt{\tfrac{2}{15}}\,\ket{011101} + \sqrt{\tfrac{2}{15}}\,\ket{101101} + \sqrt{\tfrac{4}{15}}\,\ket{111110}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{118}{225}z^{1} + \tfrac{401}{225}z^{2} + \tfrac{836}{225}z^{3} + \tfrac{1523}{225}z^{4} + \tfrac{294}{25}z^{5} + \tfrac{1451}{225}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{118}{225}z^{1} + \tfrac{1531}{225}z^{2} + \tfrac{4436}{225}z^{3} + \tfrac{7879}{225}z^{4} + \tfrac{1094}{25}z^{5} + \tfrac{953}{45}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 16:}}
+\noindent\textbf{Parameters:} $n=6,\; m=16,\; K=2;\quad \mathbf w=(1, 1, 2, 3, 4, 5);\quad \mathbf S=\{0, 7\};\quad \text{sizes}=\left(2, 6\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{16}{1}=16.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,16)=Z \left(\tfrac{2\pi}{16}\right)^{\otimes2} \otimes Z \left(\tfrac{4\pi}{16}\right) \otimes Z \left(\tfrac{6\pi}{16}\right) \otimes Z \left(\tfrac{8\pi}{16}\right) \otimes Z \left(\tfrac{10\pi}{16}\right),\qquad
+    \overline U=\mathrm{diag}(1,\omega_{16}^{7}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[]$.
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 9/16$
+    \item $X_{111111} = 7/16$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000110} = 5/16$
+    \item $Y_{001001} = 3/16$
+    \item $Y_{011010} = 1/16$
+    \item $Y_{101010} = 1/16$
+    \item $Y_{110001} = 1/4$
+    \item $Y_{111100} = 1/8$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{9}{16}}\,\ket{000000} + \sqrt{\tfrac{7}{16}}\,\ket{111111},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{5}{16}}\,\ket{000110} + \sqrt{\tfrac{3}{16}}\,\ket{001001} + \sqrt{\tfrac{1}{16}}\,\ket{011010} + \sqrt{\tfrac{1}{16}}\,\ket{101010} + \sqrt{\tfrac{1}{4}}\,\ket{110001} + \sqrt{\tfrac{1}{8}}\,\ket{111100}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{3}{32}z^{1} + \tfrac{459}{128}z^{2} + \tfrac{65}{32}z^{3} + \tfrac{507}{64}z^{4} + 6z^{5} + \tfrac{1455}{128}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{3}{32}z^{1} + \tfrac{657}{64}z^{2} + \tfrac{101}{8}z^{3} + \tfrac{1185}{32}z^{4} + \tfrac{1137}{32}z^{5} + \tfrac{2013}{64}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 17:}}
+\noindent\textbf{Parameters:} $n=6,\; m=17,\; K=2;\quad \mathbf w=(1, 1, 2, 4, 4, 6);\quad \mathbf S=\{0, 8\};\quad \text{sizes}=\left(3, 5\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{17}{1}=17.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,17)=Z \left(\tfrac{2\pi}{17}\right)^{\otimes2} \otimes Z \left(\tfrac{4\pi}{17}\right) \otimes Z \left(\tfrac{8\pi}{17}\right)^{\otimes2} \otimes Z \left(\tfrac{12\pi}{17}\right),\qquad
+    \overline U=\mathrm{diag}(1,\omega_{17}^{8}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[]$.
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 9/17$
+    \item $X_{011111} = 4/17$
+    \item $X_{101111} = 4/17$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000110} = 7/17$
+    \item $Y_{001001} = 6/17$
+    \item $Y_{110001} = 2/17$
+    \item $Y_{111010} = 1/17$
+    \item $Y_{111100} = 1/17$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{9}{17}}\,\ket{000000} + \sqrt{\tfrac{4}{17}}\,\ket{011111} + \sqrt{\tfrac{4}{17}}\,\ket{101111},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{7}{17}}\,\ket{000110} + \sqrt{\tfrac{6}{17}}\,\ket{001001} + \sqrt{\tfrac{2}{17}}\,\ket{110001} + \sqrt{\tfrac{1}{17}}\,\ket{111010} + \sqrt{\tfrac{1}{17}}\,\ket{111100}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{166}{289}z^{1} + \tfrac{665}{289}z^{2} + 4z^{3} + \tfrac{1603}{289}z^{4} + \tfrac{3302}{289}z^{5} + \tfrac{2067}{289}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{166}{289}z^{1} + \tfrac{139}{17}z^{2} + \tfrac{5620}{289}z^{3} + \tfrac{9607}{289}z^{4} + \tfrac{12710}{289}z^{5} + \tfrac{6237}{289}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 18:}}
+\noindent\textbf{Parameters:} $n=6,\; m=18,\; K=2;\quad \mathbf w=(1, 2, 3, 4, 5, 6);\quad \mathbf S=\{0, 11\};\quad \text{sizes}=\left(3, 5\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{18}{1}=18.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U(\mathbf w,18)=\bigotimes_{i=1}^{6} Z \left(\tfrac{2\pi i}{18}\right),\qquad
+    \overline U=\mathrm{diag}(1,\omega_{18}^{11}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[]$.
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 7/18$
+    \item $X_{001111} = 1/6$
+    \item $X_{110111} = 4/9$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000011} = 2/9$
+    \item $Y_{010110} = 5/18$
+    \item $Y_{011001} = 1/18$
+    \item $Y_{100101} = 1/3$
+    \item $Y_{111010} = 1/9$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{7}{18}}\,\ket{000000} + \sqrt{\tfrac{1}{6}}\,\ket{001111} + \sqrt{\tfrac{4}{9}}\,\ket{110111},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{2}{9}}\,\ket{000011} + \sqrt{\tfrac{5}{18}}\,\ket{010110} + \sqrt{\tfrac{1}{18}}\,\ket{011001} + \sqrt{\tfrac{1}{3}}\,\ket{100101} + \sqrt{\tfrac{1}{9}}\,\ket{111010}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{50}{81}z^{1} + \tfrac{37}{27}z^{2} + 4z^{3} + \tfrac{607}{81}z^{4} + \tfrac{922}{81}z^{5} + \tfrac{497}{81}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{50}{81}z^{1} + \tfrac{515}{81}z^{2} + \tfrac{532}{27}z^{3} + \tfrac{335}{9}z^{4} + \tfrac{3538}{81}z^{5} + \tfrac{1573}{81}z^{6}.
+\end{align*}
+
+\subsection{$K=3$ (qutrit logical space)}
+
+\paragraph{\textbf{Order 3:}}
+\noindent\textbf{Parameters:} $n=6,\; m=6,\; K=3;\quad \mathbf w=(1, 1, 1, 1, 3, 3);\quad \mathbf S=\{0, 2, 4\};\quad \text{sizes}=\left(10, 12, 10\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{6}{2}=3.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U=Z \left(\tfrac{2\pi}{6}\right)^{\otimes4} \otimes Z \left(\tfrac{6\pi}{6}\right)^{\otimes2},\quad
+    \overline U=\mathrm{diag}(1,\omega_6^{2},\omega_6^{4}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P0_5, P0_7, P0_9, P1_3, P1_5, P1_7, P1_8, P1_9, P1_{10}, P1_{11}, P2_2, P2_3, P2_4, P2_5, P2_6, P2_7, P2_9]$.
+
+Region constraints:
+\begin{itemize}
+    \item $-P0_5 - P0_7 - P0_9 + P2_6 + P2_7 <= 0$
+    \item $-P1_{10} - 2*P1_{11} - P1_3 - P1_5 - P1_7 - P1_9 + P2_4 + P2_5 + P2_6 + P2_7 + P2_9 <= 0$
+    \item $P0_5 + P0_7 + P0_9 <= 1/3$
+    \item $P0_5 + P2_4 + P2_5 <= 1/3$
+    \item $P0_7 + P2_2 + P2_3 <= 1/3$
+    \item $P0_9 - P2_2 - P2_3 - P2_4 - P2_5 - P2_6 - P2_7 <= -1/3$
+    \item $P1_{10} + P1_{11} + P1_5 + P1_8 + P1_9 - P2_2 - P2_3 - P2_4 - P2_5 - P2_6 - P2_7 <= 0$
+    \item $P1_{10} + P1_{11} + P1_7 + P1_8 + P1_9 - P2_6 - P2_7 <= 1/3$
+    \item $P1_{11} + P1_3 + P1_5 + P1_7 + P1_9 - P2_9 <= 1/3$
+    \item $P1_3 - P1_8 - P1_9 + P2_2 + P2_3 + P2_6 + P2_7 <= 1/3$
+    \item $P2_2 + P2_4 + P2_6 <= 1/3$
+    \item $P2_3 + P2_5 + P2_7 <= 1/3$
+    \item $P0_5 >= 0$
+    \item $P0_7 >= 0$
+    \item $P0_9 >= 0$
+    \item $P1_{10} >= 0$
+    \item $P1_{11} >= 0$
+    \item $P1_3 >= 0$
+    \item $P1_5 >= 0$
+    \item $P1_7 >= 0$
+    \item $P1_8 >= 0$
+    \item $P1_9 >= 0$
+    \item $P2_2 >= 0$
+    \item $P2_3 >= 0$
+    \item $P2_4 >= 0$
+    \item $P2_5 >= 0$
+    \item $P2_6 >= 0$
+    \item $P2_7 >= 0$
+    \item $P2_9 >= 0$
+    \item $P2_9 <= 1/3$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 1/3 - P2_9$
+    \item $X_{000011} = P2_9$
+    \item $X_{011101} = P0_5 + P0_7 + P0_9 - P2_6 - P2_7$
+    \item $X_{011110} = -P0_5 - P0_7 - P0_9 + 1/3$
+    \item $X_{101101} = -P0_5 - P2_4 - P2_5 + 1/3$
+    \item $X_{101110} = P0_5$
+    \item $X_{110101} = -P0_7 - P2_2 - P2_3 + 1/3$
+    \item $X_{110110} = P0_7$
+    \item $X_{111001} = -P0_9 + P2_2 + P2_3 + P2_4 + P2_5 + P2_6 + P2_7 - 1/3$
+    \item $X_{111010} = P0_9$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{001100} = P1_{10} + 2*P1_{11} + P1_3 + P1_5 + P1_7 + P1_9 - P2_4 - P2_5 - P2_6 - P2_7 - P2_9$
+    \item $Y_{001111} = -P1_{11} - P1_3 - P1_5 - P1_7 - P1_9 + P2_9 + 1/3$
+    \item $Y_{010100} = -P1_3 + P1_8 + P1_9 - P2_2 - P2_3 - P2_6 - P2_7 + 1/3$
+    \item $Y_{010111} = P1_3$
+    \item $Y_{011000} = -P1_{10} - P1_{11} - P1_5 - P1_8 - P1_9 + P2_2 + P2_3 + P2_4 + P2_5 + P2_6 + P2_7$
+    \item $Y_{011011} = P1_5$
+    \item $Y_{100100} = -P1_{10} - P1_{11} - P1_7 - P1_8 - P1_9 + P2_6 + P2_7 + 1/3$
+    \item $Y_{100111} = P1_7$
+    \item $Y_{101000} = P1_8$
+    \item $Y_{101011} = P1_9$
+    \item $Y_{110000} = P1_{10}$
+    \item $Y_{110011} = P1_{11}$
+\end{itemize}
+
+Probabilities on $C2 (Z)$:
+\begin{itemize}
+    \item $Z_{000101} = -P2_2 - P2_4 - P2_6 + 1/3$
+    \item $Z_{000110} = -P2_3 - P2_5 - P2_7 + 1/3$
+    \item $Z_{001001} = P2_2$
+    \item $Z_{001010} = P2_3$
+    \item $Z_{010001} = P2_4$
+    \item $Z_{010010} = P2_5$
+    \item $Z_{100001} = P2_6$
+    \item $Z_{100010} = P2_7$
+    \item $Z_{111100} = 1/3 - P2_9$
+    \item $Z_{111111} = P2_9$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{1}{3} - P2_9}\,\ket{000000} + \sqrt{P2_9}\,\ket{000011} + \sqrt{P0_5 + P0_7 + P0_9 - P2_6 - P2_7}\,\ket{011101}\\
+&\quad + \sqrt{-P0_5 - P0_7 - P0_9 + \tfrac{1}{3}}\,\ket{011110} + \sqrt{-P0_5 - P2_4 - P2_5 + \tfrac{1}{3}}\,\ket{101101} + \sqrt{P0_5}\,\ket{101110}\\
+&\quad + \sqrt{-P0_7 - P2_2 - P2_3 + \tfrac{1}{3}}\,\ket{110101} + \sqrt{P0_7}\,\ket{110110}\\
+&\quad + \sqrt{-P0_9 + P2_2 + P2_3 + P2_4 + P2_5 + P2_6 + P2_7 - \tfrac{1}{3}}\,\ket{111001} + \sqrt{P0_9}\,\ket{111010},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_{10} + 2\,P1_{11} + P1_3 + P1_5 + P1_7 + P1_9 - P2_4 - P2_5 - P2_6 - P2_7 - P2_9}\,\ket{001100}\\
+&\quad + \sqrt{-P1_{11} - P1_3 - P1_5 - P1_7 - P1_9 + P2_9 + \tfrac{1}{3}}\,\ket{001111}\\
+&\quad + \sqrt{-P1_3 + P1_8 + P1_9 - P2_2 - P2_3 - P2_6 - P2_7 + \tfrac{1}{3}}\,\ket{010100} + \sqrt{P1_3}\,\ket{010111}\\
+&\quad + \sqrt{-P1_{10} - P1_{11} - P1_5 - P1_8 - P1_9 + P2_2 + P2_3 + P2_4 + P2_5 + P2_6 + P2_7}\,\ket{011000}\\
+&\quad + \sqrt{P1_5}\,\ket{011011} + \sqrt{-P1_{10} - P1_{11} - P1_7 - P1_8 - P1_9 + P2_6 + P2_7 + \tfrac{1}{3}}\,\ket{100100} + \sqrt{P1_7}\,\ket{100111}\\
+&\quad + \sqrt{P1_8}\,\ket{101000} + \sqrt{P1_9}\,\ket{101011} + \sqrt{P1_{10}}\,\ket{110000} + \sqrt{P1_{11}}\,\ket{110011},
+\\[2pt]
+\ket{2_L} &= \sqrt{-P2_2 - P2_4 - P2_6 + \tfrac{1}{3}}\,\ket{000101} + \sqrt{-P2_3 - P2_5 - P2_7 + \tfrac{1}{3}}\,\ket{000110} + \sqrt{P2_2}\,\ket{001001}\\
+&\quad + \sqrt{P2_3}\,\ket{001010} + \sqrt{P2_4}\,\ket{010001} + \sqrt{P2_5}\,\ket{010010} + \sqrt{P2_6}\,\ket{100001} + \sqrt{P2_7}\,\ket{100010}\\
+&\quad + \sqrt{\tfrac{1}{3} - P2_9}\,\ket{111100} + \sqrt{P2_9}\,\ket{111111}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{2}{3}z^{1} + \tfrac{55}{81}z^{2} + \tfrac{20}{9}z^{3} + \tfrac{367}{81}z^{4} + \tfrac{70}{9}z^{5} + \tfrac{361}{81}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{2}{3}z^{1} + \tfrac{253}{27}z^{2} + \tfrac{92}{3}z^{3} + \tfrac{1573}{27}z^{4} + \tfrac{194}{3}z^{5} + \tfrac{739}{27}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 4:}}
+\noindent\textbf{Parameters:} $n=6,\; m=8,\; K=3;\quad \mathbf w=(1, 1, 1, 3, 3, 3);\quad \mathbf S=\{0, 2, 4\};\quad \text{sizes}=\left(10, 6, 10\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{8}{2}=4.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U=Z \left(\tfrac{2\pi}{8}\right)^{\otimes3} \otimes Z \left(\tfrac{6\pi}{8}\right)^{\otimes3},\quad
+    \overline U=\mathrm{diag}(1,\omega_8^{2},\omega_8^{4}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P0_5, P0_6, P0_8, P0_9, P1_4, P1_5, P2_3, P2_4, P2_5, P2_6, P2_7, P2_8]$.
+
+Region constraints:
+\begin{itemize}
+    \item $-P0_5 - P0_6 - P0_8 - P0_9 + P2_6 + P2_7 + P2_8 <= 0$
+    \item $-P1_4 - P2_3 - P2_4 - P2_5 <= -1/4$
+    \item $-P1_5 + P2_3 + P2_4 + P2_5 + P2_6 + P2_7 + P2_8 <= 1/2$
+    \item $P0_5 + P0_6 + P2_3 + P2_4 + P2_5 <= 1/2$
+    \item $P0_5 + P0_8 <= 1/4$
+    \item $P0_6 + P0_9 <= 1/4$
+    \item $P0_8 + P0_9 - P2_3 - P2_4 - P2_5 - P2_6 - P2_7 - P2_8 <= -1/4$
+    \item $P1_4 + P1_5 <= 1/2$
+    \item $P1_4 + P1_5 - P2_6 - P2_7 - P2_8 <= 1/4$
+    \item $P2_3 + P2_6 <= 1/4$
+    \item $P2_4 + P2_7 <= 1/4$
+    \item $P2_5 + P2_8 <= 1/4$
+    \item $P0_5 >= 0$
+    \item $P0_6 >= 0$
+    \item $P0_8 >= 0$
+    \item $P0_9 >= 0$
+    \item $P1_4 >= 0$
+    \item $P1_5 >= 0$
+    \item $P2_3 >= 0$
+    \item $P2_4 >= 0$
+    \item $P2_5 >= 0$
+    \item $P2_6 >= 0$
+    \item $P2_7 >= 0$
+    \item $P2_8 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 1/4$
+    \item $X_{011011} = P0_5 + P0_6 + P0_8 + P0_9 - P2_6 - P2_7 - P2_8$
+    \item $X_{011101} = -P0_5 - P0_8 + 1/4$
+    \item $X_{011110} = -P0_6 - P0_9 + 1/4$
+    \item $X_{101011} = -P0_5 - P0_6 - P2_3 - P2_4 - P2_5 + 1/2$
+    \item $X_{101101} = P0_5$
+    \item $X_{101110} = P0_6$
+    \item $X_{110011} = -P0_8 - P0_9 + P2_3 + P2_4 + P2_5 + P2_6 + P2_7 + P2_8 - 1/4$
+    \item $X_{110101} = P0_8$
+    \item $X_{110110} = P0_9$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{001111} = P1_5 - P2_3 - P2_4 - P2_5 - P2_6 - P2_7 - P2_8 + 1/2$
+    \item $Y_{010111} = P1_4 + P2_3 + P2_4 + P2_5 - 1/4$
+    \item $Y_{011000} = -P1_4 - P1_5 + 1/2$
+    \item $Y_{100111} = -P1_4 - P1_5 + P2_6 + P2_7 + P2_8 + 1/4$
+    \item $Y_{101000} = P1_4$
+    \item $Y_{110000} = P1_5$
+\end{itemize}
+
+Probabilities on $C2 (Z)$:
+\begin{itemize}
+    \item $Z_{001001} = -P2_3 - P2_6 + 1/4$
+    \item $Z_{001010} = -P2_4 - P2_7 + 1/4$
+    \item $Z_{001100} = -P2_5 - P2_8 + 1/4$
+    \item $Z_{010001} = P2_3$
+    \item $Z_{010010} = P2_4$
+    \item $Z_{010100} = P2_5$
+    \item $Z_{100001} = P2_6$
+    \item $Z_{100010} = P2_7$
+    \item $Z_{100100} = P2_8$
+    \item $Z_{111111} = 1/4$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{1}{4}}\,\ket{000000} + \sqrt{P0_5 + P0_6 + P0_8 + P0_9 - P2_6 - P2_7 - P2_8}\,\ket{011011} + \sqrt{-P0_5 - P0_8 + \tfrac{1}{4}}\,\ket{011101}\\
+&\quad + \sqrt{-P0_6 - P0_9 + \tfrac{1}{4}}\,\ket{011110} + \sqrt{-P0_5 - P0_6 - P2_3 - P2_4 - P2_5 + \tfrac{1}{2}}\,\ket{101011} + \sqrt{P0_5}\,\ket{101101}\\
+&\quad + \sqrt{P0_6}\,\ket{101110} + \sqrt{-P0_8 - P0_9 + P2_3 + P2_4 + P2_5 + P2_6 + P2_7 + P2_8 - \tfrac{1}{4}}\,\ket{110011}\\
+&\quad + \sqrt{P0_8}\,\ket{110101} + \sqrt{P0_9}\,\ket{110110},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_5 - P2_3 - P2_4 - P2_5 - P2_6 - P2_7 - P2_8 + \tfrac{1}{2}}\,\ket{001111} + \sqrt{P1_4 + P2_3 + P2_4 + P2_5 - \tfrac{1}{4}}\,\ket{010111}\\
+&\quad + \sqrt{-P1_4 - P1_5 + \tfrac{1}{2}}\,\ket{011000} + \sqrt{-P1_4 - P1_5 + P2_6 + P2_7 + P2_8 + \tfrac{1}{4}}\,\ket{100111} + \sqrt{P1_4}\,\ket{101000}\\
+&\quad + \sqrt{P1_5}\,\ket{110000},
+\\[2pt]
+\ket{2_L} &= \sqrt{-P2_3 - P2_6 + \tfrac{1}{4}}\,\ket{001001} + \sqrt{-P2_4 - P2_7 + \tfrac{1}{4}}\,\ket{001010} + \sqrt{-P2_5 - P2_8 + \tfrac{1}{4}}\,\ket{001100}\\
+&\quad + \sqrt{P2_3}\,\ket{010001} + \sqrt{P2_4}\,\ket{010010} + \sqrt{P2_5}\,\ket{010100} + \sqrt{P2_6}\,\ket{100001} + \sqrt{P2_7}\,\ket{100010}\\
+&\quad + \sqrt{P2_8}\,\ket{100100} + \sqrt{\tfrac{1}{4}}\,\ket{111111}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{1}{2}z^{1} + \tfrac{25}{18}z^{2} + \tfrac{13}{9}z^{3} + \tfrac{44}{9}z^{4} + \tfrac{13}{2}z^{5} + \tfrac{101}{18}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{1}{2}z^{1} + \tfrac{32}{3}z^{2} + \tfrac{85}{3}z^{3} + \tfrac{173}{3}z^{4} + \tfrac{121}{2}z^{5} + \tfrac{100}{3}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 6:}}
+\noindent\textbf{Parameters:} $n=6,\; m=12,\; K=3;\quad \mathbf w=(1, 1, 1, 5, 5, 7);\quad \mathbf S=\{0, 6, 10\};\quad \text{sizes}=\left(6, 9, 2\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{12}{2}=6.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U=Z \left(\tfrac{2\pi}{12}\right)^{\otimes3} \otimes Z \left(\tfrac{10\pi}{12}\right)^{\otimes2} \otimes Z \left(\tfrac{14\pi}{12}\right),\quad
+    \overline U=\mathrm{diag}(1,\omega_{12}^{6},\omega_{12}^{10}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P1_4, P1_5, P1_7, P1_8]$.
+
+Region constraints:
+\begin{itemize}
+    \item $-P1_4 - P1_5 - P1_7 - P1_8 <= -1/3$
+    \item $P1_4 + P1_5 <= 1/3$
+    \item $P1_4 + P1_7 <= 1/3$
+    \item $P1_5 + P1_8 <= 1/3$
+    \item $P1_7 + P1_8 <= 1/3$
+    \item $P1_4 >= 0$
+    \item $P1_5 >= 0$
+    \item $P1_7 >= 0$
+    \item $P1_8 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 1/6$
+    \item $X_{000011} = 1/6$
+    \item $X_{000101} = 1/6$
+    \item $X_{011110} = 1/6$
+    \item $X_{101110} = 1/6$
+    \item $X_{110110} = 1/6$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{001010} = P1_4 + P1_5 + P1_7 + P1_8 - 1/3$
+    \item $Y_{001100} = -P1_4 - P1_7 + 1/3$
+    \item $Y_{001111} = -P1_5 - P1_8 + 1/3$
+    \item $Y_{010010} = -P1_4 - P1_5 + 1/3$
+    \item $Y_{010100} = P1_4$
+    \item $Y_{010111} = P1_5$
+    \item $Y_{100010} = -P1_7 - P1_8 + 1/3$
+    \item $Y_{100100} = P1_7$
+    \item $Y_{100111} = P1_8$
+\end{itemize}
+
+Probabilities on $C2 (Z)$:
+\begin{itemize}
+    \item $Z_{000110} = 2/3$
+    \item $Z_{111001} = 1/3$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{1}{6}}\,\ket{000000} + \sqrt{\tfrac{1}{6}}\,\ket{000011} + \sqrt{\tfrac{1}{6}}\,\ket{000101} + \sqrt{\tfrac{1}{6}}\,\ket{011110} + \sqrt{\tfrac{1}{6}}\,\ket{101110} + \sqrt{\tfrac{1}{6}}\,\ket{110110},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_4 + P1_5 + P1_7 + P1_8 - \tfrac{1}{3}}\,\ket{001010} + \sqrt{-P1_4 - P1_7 + \tfrac{1}{3}}\,\ket{001100} + \sqrt{-P1_5 - P1_8 + \tfrac{1}{3}}\,\ket{001111}\\
+&\quad + \sqrt{-P1_4 - P1_5 + \tfrac{1}{3}}\,\ket{010010} + \sqrt{P1_4}\,\ket{010100} + \sqrt{P1_5}\,\ket{010111} + \sqrt{-P1_7 - P1_8 + \tfrac{1}{3}}\,\ket{100010}\\
+&\quad + \sqrt{P1_7}\,\ket{100100} + \sqrt{P1_8}\,\ket{100111},
+\\[2pt]
+\ket{2_L} &= \sqrt{\tfrac{2}{3}}\,\ket{000110} + \sqrt{\tfrac{1}{3}}\,\ket{111001}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{2}{3}z^{1} + \tfrac{49}{27}z^{2} + \tfrac{116}{81}z^{3} + \tfrac{125}{27}z^{4} + \tfrac{146}{27}z^{5} + \tfrac{517}{81}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{2}{3}z^{1} + \tfrac{115}{9}z^{2} + \tfrac{764}{27}z^{3} + \tfrac{527}{9}z^{4} + \tfrac{518}{9}z^{5} + \tfrac{895}{27}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 8:}}
+\noindent\textbf{Parameters:} $n=6,\; m=16,\; K=3;\quad \mathbf w=(1, 1, 4, 4, 7, 7);\quad \mathbf S=\{0, 2, 8\};\quad \text{sizes}=\left(6, 3, 6\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{16}{2}=8.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U=Z \left(\tfrac{2\pi}{16}\right)^{\otimes2} \otimes Z \left(\tfrac{8\pi}{16}\right)^{\otimes2} \otimes Z \left(\tfrac{14\pi}{16}\right)^{\otimes2},\quad
+    \overline U=\mathrm{diag}(1,\omega_{16}^{2},\omega_{16}^{8}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P0_4, P2_4]$.
+
+Region constraints:
+\begin{itemize}
+    \item $P0_4 >= 0$
+    \item $P2_4 >= 0$
+    \item $P0_4 <= 1/8$
+    \item $P2_4 <= 3/8$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 3/8$
+    \item $X_{011101} = P0_4$
+    \item $X_{011110} = 1/8 - P0_4$
+    \item $X_{101101} = 1/8 - P0_4$
+    \item $X_{101110} = P0_4$
+    \item $X_{110011} = 3/8$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000111} = 1/4$
+    \item $Y_{001011} = 1/4$
+    \item $Y_{110000} = 1/2$
+\end{itemize}
+
+Probabilities on $C2 (Z)$:
+\begin{itemize}
+    \item $Z_{001100} = 1/8$
+    \item $Z_{010001} = P2_4$
+    \item $Z_{010010} = 3/8 - P2_4$
+    \item $Z_{100001} = 3/8 - P2_4$
+    \item $Z_{100010} = P2_4$
+    \item $Z_{111111} = 1/8$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{3}{8}}\,\ket{000000} + \sqrt{P0_4}\,\ket{011101} + \sqrt{\tfrac{1}{8} - P0_4}\,\ket{011110} + \sqrt{\tfrac{1}{8} - P0_4}\,\ket{101101} + \sqrt{P0_4}\,\ket{101110}\\
+&\quad + \sqrt{\tfrac{3}{8}}\,\ket{110011},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{1}{4}}\,\ket{000111} + \sqrt{\tfrac{1}{4}}\,\ket{001011} + \sqrt{\tfrac{1}{2}}\,\ket{110000},
+\\[2pt]
+\ket{2_L} &= \sqrt{\tfrac{1}{8}}\,\ket{001100} + \sqrt{P2_4}\,\ket{010001} + \sqrt{\tfrac{3}{8} - P2_4}\,\ket{010010} + \sqrt{\tfrac{3}{8} - P2_4}\,\ket{100001} + \sqrt{P2_4}\,\ket{100010}\\
+&\quad + \sqrt{\tfrac{1}{8}}\,\ket{111111}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{1}{2}z^{1} + \tfrac{25}{18}z^{2} + 1z^{3} + \tfrac{62}{9}z^{4} + \tfrac{23}{6}z^{5} + \tfrac{121}{18}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{1}{2}z^{1} + \tfrac{67}{6}z^{2} + 25z^{3} + \tfrac{194}{3}z^{4} + \tfrac{109}{2}z^{5} + \tfrac{211}{6}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 10:}}
+\noindent\textbf{Parameters:} $n=6,\; m=10,\; K=3;\quad \mathbf w=(1, 1, 1, 4, 4, 4);\quad \mathbf S=\{0, 2, 5\};\quad \text{sizes}=\left(10, 4, 10\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{10}{1}=10.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U=Z \left(\tfrac{2\pi}{10}\right)^{\otimes3} \otimes Z \left(\tfrac{8\pi}{10}\right)^{\otimes3},\quad
+    \overline U=\mathrm{diag}(1,\omega_{10}^{2},\omega_{10}^{5}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P0_5, P0_6, P0_8, P0_9, P2_3, P2_4, P2_5, P2_6, P2_7, P2_8]$.
+
+Region constraints:
+\begin{itemize}
+    \item $-P0_5 - P0_6 - P0_8 - P0_9 + P2_6 + P2_7 + P2_8 <= 1/10$
+    \item $-P2_3 - P2_4 - P2_5 - P2_6 - P2_7 - P2_8 <= -2/5$
+    \item $P0_5 + P0_6 + P2_3 + P2_4 + P2_5 <= 1/2$
+    \item $P0_5 + P0_8 <= 1/5$
+    \item $P0_6 + P0_9 <= 1/5$
+    \item $P0_8 + P0_9 - P2_3 - P2_4 - P2_5 - P2_6 - P2_7 - P2_8 <= -2/5$
+    \item $P2_3 + P2_4 + P2_5 <= 1/2$
+    \item $P2_3 + P2_6 <= 3/10$
+    \item $P2_4 + P2_7 <= 3/10$
+    \item $P2_5 + P2_8 <= 3/10$
+    \item $P2_6 + P2_7 + P2_8 <= 1/2$
+    \item $P0_5 >= 0$
+    \item $P0_6 >= 0$
+    \item $P0_8 >= 0$
+    \item $P0_9 >= 0$
+    \item $P2_3 >= 0$
+    \item $P2_4 >= 0$
+    \item $P2_5 >= 0$
+    \item $P2_6 >= 0$
+    \item $P2_7 >= 0$
+    \item $P2_8 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 2/5$
+    \item $X_{011011} = P0_5 + P0_6 + P0_8 + P0_9 - P2_6 - P2_7 - P2_8 + 1/10$
+    \item $X_{011101} = -P0_5 - P0_8 + 1/5$
+    \item $X_{011110} = -P0_6 - P0_9 + 1/5$
+    \item $X_{101011} = -P0_5 - P0_6 - P2_3 - P2_4 - P2_5 + 1/2$
+    \item $X_{101101} = P0_5$
+    \item $X_{101110} = P0_6$
+    \item $X_{110011} = -P0_8 - P0_9 + P2_3 + P2_4 + P2_5 + P2_6 + P2_7 + P2_8 - 2/5$
+    \item $X_{110101} = P0_8$
+    \item $X_{110110} = P0_9$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000111} = 2/5$
+    \item $Y_{011000} = -P2_6 - P2_7 - P2_8 + 1/2$
+    \item $Y_{101000} = -P2_3 - P2_4 - P2_5 + 1/2$
+    \item $Y_{110000} = P2_3 + P2_4 + P2_5 + P2_6 + P2_7 + P2_8 - 2/5$
+\end{itemize}
+
+Probabilities on $C2 (Z)$:
+\begin{itemize}
+    \item $Z_{001001} = -P2_3 - P2_6 + 3/10$
+    \item $Z_{001010} = -P2_4 - P2_7 + 3/10$
+    \item $Z_{001100} = -P2_5 - P2_8 + 3/10$
+    \item $Z_{010001} = P2_3$
+    \item $Z_{010010} = P2_4$
+    \item $Z_{010100} = P2_5$
+    \item $Z_{100001} = P2_6$
+    \item $Z_{100010} = P2_7$
+    \item $Z_{100100} = P2_8$
+    \item $Z_{111111} = 1/10$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{2}{5}}\,\ket{000000} + \sqrt{P0_5 + P0_6 + P0_8 + P0_9 - P2_6 - P2_7 - P2_8 + \tfrac{1}{10}}\,\ket{011011}\\
+&\quad + \sqrt{-P0_5 - P0_8 + \tfrac{1}{5}}\,\ket{011101} + \sqrt{-P0_6 - P0_9 + \tfrac{1}{5}}\,\ket{011110}\\
+&\quad + \sqrt{-P0_5 - P0_6 - P2_3 - P2_4 - P2_5 + \tfrac{1}{2}}\,\ket{101011} + \sqrt{P0_5}\,\ket{101101} + \sqrt{P0_6}\,\ket{101110}\\
+&\quad + \sqrt{-P0_8 - P0_9 + P2_3 + P2_4 + P2_5 + P2_6 + P2_7 + P2_8 - \tfrac{2}{5}}\,\ket{110011} + \sqrt{P0_8}\,\ket{110101}\\
+&\quad + \sqrt{P0_9}\,\ket{110110},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{2}{5}}\,\ket{000111} + \sqrt{-P2_6 - P2_7 - P2_8 + \tfrac{1}{2}}\,\ket{011000} + \sqrt{-P2_3 - P2_4 - P2_5 + \tfrac{1}{2}}\,\ket{101000}\\
+&\quad + \sqrt{P2_3 + P2_4 + P2_5 + P2_6 + P2_7 + P2_8 - \tfrac{2}{5}}\,\ket{110000},
+\\[2pt]
+\ket{2_L} &= \sqrt{-P2_3 - P2_6 + \tfrac{3}{10}}\,\ket{001001} + \sqrt{-P2_4 - P2_7 + \tfrac{3}{10}}\,\ket{001010} + \sqrt{-P2_5 - P2_8 + \tfrac{3}{10}}\,\ket{001100}\\
+&\quad + \sqrt{P2_3}\,\ket{010001} + \sqrt{P2_4}\,\ket{010010} + \sqrt{P2_5}\,\ket{010100} + \sqrt{P2_6}\,\ket{100001} + \sqrt{P2_7}\,\ket{100010}\\
+&\quad + \sqrt{P2_8}\,\ket{100100} + \sqrt{\tfrac{1}{10}}\,\ket{111111}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{14}{25}z^{1} + \tfrac{23}{25}z^{2} + \tfrac{28}{15}z^{3} + \tfrac{430934}{90765}z^{4} + \tfrac{277878}{37495}z^{5} + \tfrac{108611}{22497}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{14}{25}z^{1} + \tfrac{529012}{55389}z^{2} + \tfrac{1197052}{40391}z^{3} + \tfrac{4470863}{77317}z^{4} + \tfrac{4731713}{74731}z^{5} + \tfrac{2365418}{78557}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 12:}}
+\noindent\textbf{Parameters:} $n=6,\; m=12,\; K=3;\quad \mathbf w=(2, 2, 3, 3, 4, 4);\quad \mathbf S=\{0, 6, 7\};\quad \text{sizes}=\left(6, 6, 6\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{12}{1}=12.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U=Z \left(\tfrac{4\pi}{12}\right)^{\otimes2} \otimes Z \left(\tfrac{6\pi}{12}\right)^{\otimes2} \otimes Z \left(\tfrac{8\pi}{12}\right)^{\otimes2},\quad
+    \overline U=\mathrm{diag}(1,\omega_{12}^{6},\omega_{12}^{7}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P0_4, P1_4, P2_1, P2_3, P2_5]$
+
+Region constraints:
+\begin{itemize}
+    \item $-P0_4 + P2_1 + P2_3 <= 1/3$
+    \item $-P1_4 + P2_1 + P2_3 <= 1/3$
+    \item $P0_4 - P2_1 - P2_3 <= -1/12$
+    \item $P1_4 - P2_1 - P2_3 <= -1/12$
+    \item $P2_1 - P2_5 <= 1/6$
+    \item $P2_3 + P2_5 <= 1/2$
+    \item $P0_4 >= 0$
+    \item $P1_4 >= 0$
+    \item $P2_1 >= 0$
+    \item $P2_3 >= 0$
+    \item $P2_5 >= 0$
+    \item $P0_4 <= 1/4$
+    \item $P1_4 <= 1/4$
+    \item $P2_5 <= 1/3$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 5/12$
+    \item $X_{011101} = P0_4 - P2_1 - P2_3 + 1/3$
+    \item $X_{011110} = -P0_4 + P2_1 + P2_3 - 1/12$
+    \item $X_{101101} = 1/4 - P0_4$
+    \item $X_{101110} = P0_4$
+    \item $X_{110011} = 1/12$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{001100} = 5/12$
+    \item $Y_{010001} = P1_4 - P2_1 - P2_3 + 1/3$
+    \item $Y_{010010} = -P1_4 + P2_1 + P2_3 - 1/12$
+    \item $Y_{100001} = 1/4 - P1_4$
+    \item $Y_{100010} = P1_4$
+    \item $Y_{111111} = 1/12$
+\end{itemize}
+
+Probabilities on $C2 (Z)$:
+\begin{itemize}
+    \item $Z_{000101} = -P2_1 + P2_5 + 1/6$
+    \item $Z_{000110} = P2_1$
+    \item $Z_{001001} = -P2_3 - P2_5 + 1/2$
+    \item $Z_{001010} = P2_3$
+    \item $Z_{110100} = 1/3 - P2_5$
+    \item $Z_{111000} = P2_5$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{5}{12}}\,\ket{000000} + \sqrt{P0_4 - P2_1 - P2_3 + \tfrac{1}{3}}\,\ket{011101} + \sqrt{-P0_4 + P2_1 + P2_3 - \tfrac{1}{12}}\,\ket{011110}\\
+&\quad + \sqrt{\tfrac{1}{4} - P0_4}\,\ket{101101} + \sqrt{P0_4}\,\ket{101110} + \sqrt{\tfrac{1}{12}}\,\ket{110011},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{5}{12}}\,\ket{001100} + \sqrt{P1_4 - P2_1 - P2_3 + \tfrac{1}{3}}\,\ket{010001} + \sqrt{-P1_4 + P2_1 + P2_3 - \tfrac{1}{12}}\,\ket{010010}\\
+&\quad + \sqrt{\tfrac{1}{4} - P1_4}\,\ket{100001} + \sqrt{P1_4}\,\ket{100010} + \sqrt{\tfrac{1}{12}}\,\ket{111111},
+\\[2pt]
+\ket{2_L} &= \sqrt{-P2_1 + P2_5 + \tfrac{1}{6}}\,\ket{000101} + \sqrt{P2_1}\,\ket{000110} + \sqrt{-P2_3 - P2_5 + \tfrac{1}{2}}\,\ket{001001} + \sqrt{P2_3}\,\ket{001010}\\
+&\quad + \sqrt{\tfrac{1}{3} - P2_5}\,\ket{110100} + \sqrt{P2_5}\,\ket{111000}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{17}{18}z^{1} + \tfrac{7}{6}z^{2} + \tfrac{125}{81}z^{3} + \tfrac{398}{81}z^{4} + \tfrac{1165}{162}z^{5} + \tfrac{247}{54}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{17}{18}z^{1} + \tfrac{595}{54}z^{2} + \tfrac{301}{9}z^{3} + \tfrac{538}{9}z^{4} + \tfrac{3167}{54}z^{5} + \tfrac{163}{6}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 14:}}
+\noindent\textbf{Parameters:} $n=6,\; m=14,\; K=3;\quad \mathbf w=(1, 1, 3, 4, 6, 6);\quad \mathbf S=\{0, 2, 7\};\quad \text{sizes}=\left(6, 4, 6\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{14}{1}=14.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U=Z \left(\tfrac{2\pi}{14}\right)^{\otimes2} \otimes Z \left(\tfrac{6\pi}{14}\right) \otimes Z \left(\tfrac{8\pi}{14}\right) \otimes Z \left(\tfrac{12\pi}{14}\right)^{\otimes2},\quad
+    \overline U=\mathrm{diag}(1,\omega_{14}^{2},\omega_{14}^{7}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P0_4, P2_3, P2_4]$.
+
+Region constraints:
+\begin{itemize}
+    \item $-P0_4 + P2_3 + P2_4 <= 5/14$
+    \item $-P2_3 - P2_4 <= -3/14$
+    \item $P0_4 - P2_3 - P2_4 <= -3/14$
+    \item $P2_3 + P2_4 <= 1/2$
+    \item $P0_4 >= 0$
+    \item $P2_3 >= 0$
+    \item $P2_4 >= 0$
+    \item $P0_4 <= 1/7$
+    \item $P2_3 <= 5/14$
+    \item $P2_4 <= 5/14$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 2/7$
+    \item $X_{011101} = P0_4 - P2_3 - P2_4 + 5/14$
+    \item $X_{011110} = 1/7 - P0_4$
+    \item $X_{101101} = -P0_4 + P2_3 + P2_4 - 3/14$
+    \item $X_{101110} = P0_4$
+    \item $X_{110011} = 3/7$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{000111} = 2/7$
+    \item $Y_{011011} = -P2_3 - P2_4 + 1/2$
+    \item $Y_{101011} = P2_3 + P2_4 - 3/14$
+    \item $Y_{110000} = 3/7$
+\end{itemize}
+
+Probabilities on $C2 (Z)$:
+\begin{itemize}
+    \item $Z_{001100} = 1/14$
+    \item $Z_{010001} = 5/14 - P2_3$
+    \item $Z_{010010} = 5/14 - P2_4$
+    \item $Z_{100001} = P2_3$
+    \item $Z_{100010} = P2_4$
+    \item $Z_{111111} = 3/14$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{2}{7}}\,\ket{000000} + \sqrt{P0_4 - P2_3 - P2_4 + \tfrac{5}{14}}\,\ket{011101} + \sqrt{\tfrac{1}{7} - P0_4}\,\ket{011110}\\
+&\quad + \sqrt{-P0_4 + P2_3 + P2_4 - \tfrac{3}{14}}\,\ket{101101} + \sqrt{P0_4}\,\ket{101110} + \sqrt{\tfrac{3}{7}}\,\ket{110011},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{2}{7}}\,\ket{000111} + \sqrt{-P2_3 - P2_4 + \tfrac{1}{2}}\,\ket{011011} + \sqrt{P2_3 + P2_4 - \tfrac{3}{14}}\,\ket{101011} + \sqrt{\tfrac{3}{7}}\,\ket{110000},
+\\[2pt]
+\ket{2_L} &= \sqrt{\tfrac{1}{14}}\,\ket{001100} + \sqrt{\tfrac{5}{14} - P2_3}\,\ket{010001} + \sqrt{\tfrac{5}{14} - P2_4}\,\ket{010010} + \sqrt{P2_3}\,\ket{100001} + \sqrt{P2_4}\,\ket{100010}\\
+&\quad + \sqrt{\tfrac{3}{14}}\,\ket{111111}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{22}{49}z^{1} + \tfrac{125}{147}z^{2} + \tfrac{12}{7}z^{3} + \tfrac{425053}{81971}z^{4} + \tfrac{548884}{75869}z^{5} + \tfrac{212093}{43287}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{22}{49}z^{1} + \tfrac{763784}{85385}z^{2} + \tfrac{2593873}{90867}z^{3} + \tfrac{3770749}{64629}z^{4} + \tfrac{2552666}{40391}z^{5} + \tfrac{2984402}{94693}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 15:}}
+\noindent\textbf{Parameters:} $n=6,\; m=15,\; K=3;\quad \mathbf w=(1, 1, 4, 4, 6, 9);\quad \mathbf S=\{0, 2, 10\};\quad \text{sizes}=\left(6, 3, 6\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{15}{1}=15.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U=Z \left(\tfrac{2\pi}{15}\right)^{\otimes2} \otimes Z \left(\tfrac{8\pi}{15}\right)^{\otimes2} \otimes Z \left(\tfrac{12\pi}{15}\right) \otimes Z \left(\tfrac{18\pi}{15}\right),\quad
+    \overline U=\mathrm{diag}(1,\omega_{15}^{2},\omega_{15}^{10}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P2_5]$.
+
+Region constraints:
+\begin{itemize}
+    \item $P2_5 >= 0$
+    \item $P2_5 <= 1/3$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 1/3 - P2_5$
+    \item $X_{000011} = P2_5$
+    \item $X_{011110} = 1/15$
+    \item $X_{101110} = 1/15$
+    \item $X_{110101} = 4/15$
+    \item $X_{111001} = 4/15$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{001101} = 2/5$
+    \item $Y_{110000} = 7/15 - P2_5$
+    \item $Y_{110011} = P2_5 + 2/15$
+\end{itemize}
+
+Probabilities on $C2 (Z)$:
+\begin{itemize}
+    \item $Z_{000110} = 1/15$
+    \item $Z_{001010} = 1/15$
+    \item $Z_{010001} = 4/15$
+    \item $Z_{100001} = 4/15$
+    \item $Z_{111100} = 1/3 - P2_5$
+    \item $Z_{111111} = P2_5$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{1}{3} - P2_5}\,\ket{000000} + \sqrt{P2_5}\,\ket{000011} + \sqrt{\tfrac{1}{15}}\,\ket{011110} + \sqrt{\tfrac{1}{15}}\,\ket{101110} + \sqrt{\tfrac{4}{15}}\,\ket{110101} + \sqrt{\tfrac{4}{15}}\,\ket{111001},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{2}{5}}\,\ket{001101} + \sqrt{\tfrac{7}{15} - P2_5}\,\ket{110000} + \sqrt{P2_5 + \tfrac{2}{15}}\,\ket{110011},
+\\[2pt]
+\ket{2_L} &= \sqrt{\tfrac{1}{15}}\,\ket{000110} + \sqrt{\tfrac{1}{15}}\,\ket{001010} + \sqrt{\tfrac{4}{15}}\,\ket{010001} + \sqrt{\tfrac{4}{15}}\,\ket{100001} + \sqrt{\tfrac{1}{3} - P2_5}\,\ket{111100} + \sqrt{P2_5}\,\ket{111111}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{158}{225}z^{1} + \tfrac{2239}{2025}z^{2} + \tfrac{36}{25}z^{3} + \tfrac{3709}{675}z^{4} + \tfrac{13166}{2025}z^{5} + \tfrac{229}{45}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{158}{225}z^{1} + \tfrac{2327}{225}z^{2} + \tfrac{20428}{675}z^{3} + \tfrac{40861}{675}z^{4} + \tfrac{39802}{675}z^{5} + \tfrac{6793}{225}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 16:}}
+\noindent\textbf{Parameters:} $n=6,\; m=16,\; K=3;\quad \mathbf w=(1, 2, 4, 4, 6, 7);\quad \mathbf S=\{0, 8, 11\};\quad \text{sizes}=\left(4, 4, 5\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,s_1,\dots,s_{K-1})}=\frac{16}{1}=16.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U=Z \left(\tfrac{2\pi}{16}\right) \otimes Z \left(\tfrac{4\pi}{16}\right) \otimes Z \left(\tfrac{8\pi}{16}\right)^{\otimes2} \otimes Z \left(\tfrac{12\pi}{16}\right) \otimes Z \left(\tfrac{14\pi}{16}\right),\quad
+    \overline U=\mathrm{diag}(1,\omega_{16}^{8},\omega_{16}^{11}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P2_3]$.
+
+Region constraints:
+\begin{itemize}
+    \item $P2_3 >= 0$
+    \item $P2_3 <= 1/4$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 5/16$
+    \item $X_{011110} = 3/16$
+    \item $X_{101101} = 7/16$
+    \item $X_{110011} = 1/16$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{001100} = 7/16$
+    \item $Y_{010010} = 1/16$
+    \item $Y_{100001} = 5/16$
+    \item $Y_{111111} = 3/16$
+\end{itemize}
+
+Probabilities on $C2 (Z)$:
+\begin{itemize}
+    \item $Z_{000101} = P2_3 + 1/8$
+    \item $Z_{001001} = 3/8 - P2_3$
+    \item $Z_{100110} = 1/4 - P2_3$
+    \item $Z_{101010} = P2_3$
+    \item $Z_{111100} = 1/4$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{5}{16}}\,\ket{000000} + \sqrt{\tfrac{3}{16}}\,\ket{011110} + \sqrt{\tfrac{7}{16}}\,\ket{101101} + \sqrt{\tfrac{1}{16}}\,\ket{110011},
+\\[2pt]
+\ket{1_L} &= \sqrt{\tfrac{7}{16}}\,\ket{001100} + \sqrt{\tfrac{1}{16}}\,\ket{010010} + \sqrt{\tfrac{5}{16}}\,\ket{100001} + \sqrt{\tfrac{3}{16}}\,\ket{111111},
+\\[2pt]
+\ket{2_L} &= \sqrt{P2_3 + \tfrac{1}{8}}\,\ket{000101} + \sqrt{\tfrac{3}{8} - P2_3}\,\ket{001001} + \sqrt{\tfrac{1}{4} - P2_3}\,\ket{100110} + \sqrt{P2_3}\,\ket{101010} + \sqrt{\tfrac{1}{4}}\,\ket{111100}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{5}{8}z^{1} + \tfrac{85}{72}z^{2} + \tfrac{37}{36}z^{3} + \tfrac{426890}{60507}z^{4} + \tfrac{101089}{23551}z^{5} + \tfrac{615127}{99981}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{5}{8}z^{1} + \tfrac{938576}{87481}z^{2} + \tfrac{541222}{20169}z^{3} + \tfrac{3525011}{53784}z^{4} + \tfrac{5115750}{94081}z^{5} + \tfrac{1321547}{40174}z^{6}.
+\end{align*}
+
+\subsection{$K=4$ (four-dimensional logical space)}
+
+
+
+\paragraph{\textbf{Order 4:}} 
+\noindent\textbf{Parameters:} $n=6,\; m=8,\; K=4;\quad \mathbf w=(1, 1, 1, 3, 3, 3);\quad \mathbf S=\{0, 2, 4, 6\};\quad \text{sizes}=\left(10, 6, 10, 6\right).$
+$\displaystyle \text{order}=\frac{m}{\gcd(m,S_1,\dots,S_{K-1})}=\frac{8}{2}=4.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U=Z \left(\tfrac{2\pi}{8}\right)^{\otimes3} \otimes Z \left(\tfrac{6\pi}{8}\right)^{\otimes3},\quad
+    \overline U=\mathrm{diag}(1,\omega_8^{2},\omega_8^{4},\omega_8^{6}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P0_5, P0_6, P0_8, P0_9, P1_4, P1_5, P2_4, P2_5, P2_7, P2_8, P3_4, P3_5]$
+
+Region constraints:
+\begin{itemize}
+    \item $-P0_5 - P0_6 - P0_8 - P0_9 <= -1/4$
+    \item $-P2_4 - P2_5 - P2_7 - P2_8 <= -1/4$
+    \item $P0_5 + P0_6 <= 1/4$
+    \item $P0_5 + P0_8 <= 1/4$
+    \item $P0_6 + P0_9 <= 1/4$
+    \item $P0_8 + P0_9 <= 1/4$
+    \item $P1_4 + P1_5 <= 1/2$
+    \item $P2_4 + P2_5 <= 1/4$
+    \item $P2_4 + P2_7 <= 1/4$
+    \item $P2_5 + P2_8 <= 1/4$
+    \item $P2_7 + P2_8 <= 1/4$
+    \item $P3_4 + P3_5 <= 1/2$
+    \item $P0_5 >= 0$
+    \item $P0_6 >= 0$
+    \item $P0_8 >= 0$
+    \item $P0_9 >= 0$
+    \item $P1_4 >= 0$
+    \item $P1_5 >= 0$
+    \item $P2_4 >= 0$
+    \item $P2_5 >= 0$
+    \item $P2_7 >= 0$
+    \item $P2_8 >= 0$
+    \item $P3_4 >= 0$
+    \item $P3_5 >= 0$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 1/4$
+    \item $X_{011011} = P0_5 + P0_6 + P0_8 + P0_9 - 1/4$
+    \item $X_{011101} = -P0_5 - P0_8 + 1/4$
+    \item $X_{011110} = -P0_6 - P0_9 + 1/4$
+    \item $X_{101011} = -P0_5 - P0_6 + 1/4$
+    \item $X_{101101} = P0_5$
+    \item $X_{101110} = P0_6$
+    \item $X_{110011} = -P0_8 - P0_9 + 1/4$
+    \item $X_{110101} = P0_8$
+    \item $X_{110110} = P0_9$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{001111} = P1_5$
+    \item $Y_{010111} = P1_4$
+    \item $Y_{011000} = -P1_4 - P1_5 + 1/2$
+    \item $Y_{100111} = -P1_4 - P1_5 + 1/2$
+    \item $Y_{101000} = P1_4$
+    \item $Y_{110000} = P1_5$
+\end{itemize}
+
+Probabilities on $C2 (Z)$:
+\begin{itemize}
+    \item $Z_{001001} = P2_4 + P2_5 + P2_7 + P2_8 - 1/4$
+    \item $Z_{001010} = -P2_4 - P2_7 + 1/4$
+    \item $Z_{001100} = -P2_5 - P2_8 + 1/4$
+    \item $Z_{010001} = -P2_4 - P2_5 + 1/4$
+    \item $Z_{010010} = P2_4$
+    \item $Z_{010100} = P2_5$
+    \item $Z_{100001} = -P2_7 - P2_8 + 1/4$
+    \item $Z_{100010} = P2_7$
+    \item $Z_{100100} = P2_8$
+    \item $Z_{111111} = 1/4$
+\end{itemize}
+
+Probabilities on $C3 (W)$:
+\begin{itemize}
+    \item $W_{000011} = P3_5$
+    \item $W_{000101} = P3_4$
+    \item $W_{000110} = -P3_4 - P3_5 + 1/2$
+    \item $W_{111001} = -P3_4 - P3_5 + 1/2$
+    \item $W_{111010} = P3_4$
+    \item $W_{111100} = P3_5$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{1}{4}}\,\ket{000000} + \sqrt{P0_5 + P0_6 + P0_8 + P0_9 - \tfrac{1}{4}}\,\ket{011011} + \sqrt{-P0_5 - P0_8 + \tfrac{1}{4}}\,\ket{011101}\\
+&\quad + \sqrt{-P0_6 - P0_9 + \tfrac{1}{4}}\,\ket{011110} + \sqrt{-P0_5 - P0_6 + \tfrac{1}{4}}\,\ket{101011} + \sqrt{P0_5}\,\ket{101101} + \sqrt{P0_6}\,\ket{101110}\\
+&\quad + \sqrt{-P0_8 - P0_9 + \tfrac{1}{4}}\,\ket{110011} + \sqrt{P0_8}\,\ket{110101} + \sqrt{P0_9}\,\ket{110110},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_5}\,\ket{001111} + \sqrt{P1_4}\,\ket{010111} + \sqrt{-P1_4 - P1_5 + \tfrac{1}{2}}\,\ket{011000} + \sqrt{-P1_4 - P1_5 + \tfrac{1}{2}}\,\ket{100111}\\
+&\quad + \sqrt{P1_4}\,\ket{101000} + \sqrt{P1_5}\,\ket{110000},
+\\[2pt]
+\ket{2_L} &= \sqrt{P2_4 + P2_5 + P2_7 + P2_8 - \tfrac{1}{4}}\,\ket{001001} + \sqrt{-P2_4 - P2_7 + \tfrac{1}{4}}\,\ket{001010} + \sqrt{-P2_5 - P2_8 + \tfrac{1}{4}}\,\ket{001100}\\
+&\quad + \sqrt{-P2_4 - P2_5 + \tfrac{1}{4}}\,\ket{010001} + \sqrt{P2_4}\,\ket{010010} + \sqrt{P2_5}\,\ket{010100} + \sqrt{-P2_7 - P2_8 + \tfrac{1}{4}}\,\ket{100001}\\
+&\quad + \sqrt{P2_7}\,\ket{100010} + \sqrt{P2_8}\,\ket{100100} + \sqrt{\tfrac{1}{4}}\,\ket{111111},
+\\[2pt]
+\ket{3_L} &= \sqrt{P3_5}\,\ket{000011} + \sqrt{P3_4}\,\ket{000101} + \sqrt{-P3_4 - P3_5 + \tfrac{1}{2}}\,\ket{000110} + \sqrt{-P3_4 - P3_5 + \tfrac{1}{2}}\,\ket{111001}\\
+&\quad + \sqrt{P3_4}\,\ket{111010} + \sqrt{P3_5}\,\ket{111100}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{7}{4}z^{2} + \tfrac{1}{2}z^{3} + \tfrac{7}{2}z^{4} + \tfrac{5}{2}z^{5} + \tfrac{27}{4}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{31}{2}z^{2} + 28z^{3} + 76z^{4} + 80z^{5} + \tfrac{111}{2}z^{6}.
+\end{align*}
+
+\paragraph{\textbf{Order 6:}} 
+
+\noindent\textbf{Parameters:} $n=6,\; m=12,\; K=4;\quad \mathbf w=(1, 1, 3, 3, 5, 5);\quad \mathbf S=\{0, 2, 6, 10\};\quad \text{sizes}=\left(6, 5, 6, 5\right).$ $\displaystyle \text{order}=\frac{m}{\gcd(m,S_1,\dots,S_{K-1})}=\frac{12}{2}=6.$
+
+\noindent\textbf{Transversal gates:}
+\[
+    U=Z \left(\tfrac{2\pi}{12}\right)^{\otimes2} \otimes Z \left(\tfrac{6\pi}{12}\right)^{\otimes2} \otimes Z \left(\tfrac{10\pi}{12}\right)^{\otimes2},\quad
+    \overline U=\mathrm{diag}(1,\omega_{12}^{2},\omega_{12}^{6},\omega_{12}^{10}).
+\]
+
+\noindent\textbf{General solution:}
+
+Free variables: $[P0_4, P1_3, P2_4, P3_4]$.
+
+Region constraints:
+\begin{itemize}
+    \item $P0_4 >= 0$
+    \item $P1_3 >= 0$
+    \item $P2_4 >= 0$
+    \item $P3_4 >= 0$
+    \item $P0_4 <= 1/6$
+    \item $P1_3 <= 1/3$
+    \item $P2_4 <= 1/3$
+    \item $P3_4 <= 1/3$
+\end{itemize}
+
+Probabilities on $C0 (X)$:
+\begin{itemize}
+    \item $X_{000000} = 1/6$
+    \item $X_{011101} = P0_4$
+    \item $X_{011110} = 1/6 - P0_4$
+    \item $X_{101101} = 1/6 - P0_4$
+    \item $X_{101110} = P0_4$
+    \item $X_{110011} = 1/2$
+\end{itemize}
+
+Probabilities on $C1 (Y)$:
+\begin{itemize}
+    \item $Y_{010111} = P1_3$
+    \item $Y_{011011} = 1/3 - P1_3$
+    \item $Y_{100111} = 1/3 - P1_3$
+    \item $Y_{101011} = P1_3$
+    \item $Y_{110000} = 1/3$
+\end{itemize}
+
+Probabilities on $C2 (Z)$:
+\begin{itemize}
+    \item $Z_{001100} = 0$
+    \item $Z_{010001} = P2_4$
+    \item $Z_{010010} = 1/3 - P2_4$
+    \item $Z_{100001} = 1/3 - P2_4$
+    \item $Z_{100010} = P2_4$
+    \item $Z_{111111} = 1/3$
+\end{itemize}
+
+Probabilities on $C3 (W)$:
+\begin{itemize}
+    \item $W_{000011} = 1/3$
+    \item $W_{110101} = P3_4$
+    \item $W_{110110} = 1/3 - P3_4$
+    \item $W_{111001} = 1/3 - P3_4$
+    \item $W_{111010} = P3_4$
+\end{itemize}
+
+\noindent\textbf{Logical states:}
+\begin{align*}
+\ket{0_L} &= \sqrt{\tfrac{1}{6}}\,\ket{000000} + \sqrt{P0_4}\,\ket{011101} + \sqrt{\tfrac{1}{6} - P0_4}\,\ket{011110} + \sqrt{\tfrac{1}{6} - P0_4}\,\ket{101101} + \sqrt{P0_4}\,\ket{101110}\\
+&\quad + \sqrt{\tfrac{1}{2}}\,\ket{110011},
+\\[2pt]
+\ket{1_L} &= \sqrt{P1_3}\,\ket{010111} + \sqrt{\tfrac{1}{3} - P1_3}\,\ket{011011} + \sqrt{\tfrac{1}{3} - P1_3}\,\ket{100111} + \sqrt{P1_3}\,\ket{101011} + \sqrt{\tfrac{1}{3}}\,\ket{110000},
+\\[2pt]
+\ket{2_L} &= \sqrt{0}\,\ket{001100} + \sqrt{P2_4}\,\ket{010001} + \sqrt{\tfrac{1}{3} - P2_4}\,\ket{010010} + \sqrt{\tfrac{1}{3} - P2_4}\,\ket{100001} + \sqrt{P2_4}\,\ket{100010}\\
+&\quad + \sqrt{\tfrac{1}{3}}\,\ket{111111},
+\\[2pt]
+\ket{3_L} &= \sqrt{\tfrac{1}{3}}\,\ket{000011} + \sqrt{P3_4}\,\ket{110101} + \sqrt{\tfrac{1}{3} - P3_4}\,\ket{110110} + \sqrt{\tfrac{1}{3} - P3_4}\,\ket{111001} + \sqrt{P3_4}\,\ket{111010}.
+\end{align*}
+
+\noindent\textbf{Weight enumerators:}
+\begin{align*}
+A(z) &= 1 + \tfrac{2}{3}z^{1} + \tfrac{2}{3}z^{2} + \tfrac{2}{3}z^{3} + 4z^{4} + \tfrac{14}{3}z^{5} + \tfrac{13}{3}z^{6},\\[2pt]
+B(z) &= 1 + \tfrac{2}{3}z^{1} + \tfrac{40}{3}z^{2} + 40z^{3} + \tfrac{247}{3}z^{4} + \tfrac{238}{3}z^{5} + \tfrac{118}{3}z^{6}.
+\end{align*}
+
+This systematic search produced a large number of new quantum codes for $n \in \{4, 5, 6\}$. The verified instances in this dataset reveal recurring patterns that can be elevated to analytical families.
+
+
+
+\end{document}

@@ -797,4 +797,24 @@ end System
 theorem no_solution : ¬ ∃ c : Fin 10 → ℂ, System c :=
   System.no_solution
 
+/-- Package `v : Fin 20 → ℝ` into `c : Fin 10 → ℂ` by pairing consecutive coordinates:
+`c k = v(2k) + i·v(2k+1)`.
+
+This is useful when stating the no-go as a purely real (20-variable) quadratic system,
+as in the real-coordinate certificate subsection of `BD16_distance3.tex` (Sec. 16).
+-/
+def cFromV (v : Fin 20 → ℝ) : Fin 10 → ℂ :=
+  fun k =>
+    ⟨v ⟨2 * k.val, by
+        fin_cases k <;> decide⟩,
+      v ⟨2 * k.val + 1, by
+        fin_cases k <;> decide⟩⟩
+
+/-- No real solution to the 20-real-variable packaging of the 17-equation subsystem.
+
+(This is an immediate corollary of `no_solution`.) -/
+theorem no_solution_real : ¬ ∃ v : Fin 20 → ℝ, System (cFromV v) := by
+  rintro ⟨v, hv⟩
+  exact no_solution ⟨cFromV v, hv⟩
+
 end Examples.D3.NoGo.BD16_1112226
