@@ -1,5 +1,8 @@
 import Examples.D2.Ex422
 import Examples.D2.Ex522
 import Examples.D2.Ex622
+import Examples.D2.Ex622O18
 import Examples.D2.Ex632
+import Examples.D2.Ex632O12
 import Examples.D2.Ex642
+import Examples.D2.Ex642Order4
