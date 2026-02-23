@@ -1,7 +1,7 @@
 % Formal Verification of Quantum Codes with Transversal Diagonal Gates
 % Compile with:
 %   latexmk -xelatex -interaction=nonstopmode -halt-on-error -outdir=build slides/distance23_talk_paper.tex
-\documentclass[aspectratio=169,t]{beamer}
+\documentclass[aspectratio=169,t,10pt]{beamer}
 \usetheme{metropolis}
 \metroset{
   progressbar=frametitle,
@@ -187,6 +187,7 @@ with transversal diagonal gates via the SSLP pipeline.
 % =====================================================================
 \begin{frame}{Paper Storyline}
 
+\small
 \begin{columns}[T]
 \column{0.54\textwidth}
 \begin{block}{Core message}
@@ -194,8 +195,8 @@ with transversal diagonal gates via the SSLP pipeline.
 kernel-checked certificates for instances and families.
 \end{block}
 
-\vspace{-0.3em}
-\begin{itemize}\setlength\itemsep{1pt}
+\vspace{-0.6em}
+\begin{itemize}\setlength\itemsep{0pt}
 \item SSLP reformulates diagonal-transversal QEC as
   \alert{residue classes + linear constraints} on probabilities
 \item \textbf{Distance 2}: TeX catalogue
@@ -207,7 +208,7 @@ kernel-checked certificates for instances and families.
 
 \column{0.42\textwidth}
 \begin{exampleblock}{Paper outline (sketch)}
-\begin{enumerate}\setlength\itemsep{1pt}
+\begin{enumerate}\setlength\itemsep{0pt}
 \item Problem + SSLP pipeline
 \item Lean library: definitions + main theorems
 \item Distance-2 certificates + analytical families
@@ -558,36 +559,31 @@ theorem verified : myCode.OK :=
 % =====================================================================
 \begin{frame}{Curated Lean Certificates from the TeX Catalogue}
 
-\begin{block}{Human-readable catalogue}
-\code{sslp\_general\_solutions/General\_solutions\_of\_SSLP.tex} lists affine families of
-(distance-2) LP solutions (free variables + nonnegativity regions).
-\end{block}
+\small
+Source: \code{sslp\_general\_solutions/General\_solutions\_of\_SSLP.tex}
+(affine LP families with nonnegativity regions).
 
 \begin{columns}[T]
-\column{0.60\textwidth}
-\begin{exampleblock}{Representative $K=3,4$ rows already certified in Lean}
-\small
-\begin{itemize}\setlength\itemsep{2pt}
-\item $K=3$: $n=6$, $m=12$, $\mathbf w=(1,1,1,5,5,7)$, $\mathbf S=(0,6,10)$ (order $6$)\\
+\column{0.62\textwidth}
+\begin{exampleblock}{Representative catalogue rows certified in Lean}
+\footnotesize
+\begin{itemize}\setlength\itemsep{1pt}
+\item $K=3$: $n=6$, $m=12$, $\mathbf w=(1,1,1,5,5,7)$, $\mathbf S=(0,6,10)$ (order $6$)
   \hfill \code{Examples/D2/Ex632.lean}
-\item $K=4$: $n=6$, $m=12$, $\mathbf w=(1,1,3,3,5,5)$, $\mathbf S=(0,2,6,10)$ (order $6$)\\
+\item $K=4$: $n=6$, $m=12$, $\mathbf w=(1,1,3,3,5,5)$, $\mathbf S=(0,2,6,10)$ (order $6$)
   \hfill \code{Examples/D2/Ex642.lean}
 \end{itemize}
 \end{exampleblock}
 
-\vspace{-0.3em}
-\begin{itemize}\setlength\itemsep{1pt}\small
-\item Choose a rational point in the feasible region so that $p_x\ge 0$
-\item Export data to \code{ExampleData}; prove \code{ex.OK} by \code{native\_decide}
-\end{itemize}
+\footnotesize
+Pick a rational point with $p_x\ge 0$ and discharge \code{ExampleData.OK} by \code{native\_decide}.
 
-\column{0.36\textwidth}
+\column{0.34\textwidth}
 \begin{block}{Use in the paper}
-\small
-\begin{itemize}\setlength\itemsep{2pt}
-\item Citable, kernel-checked certificates for concrete catalogue rows
-\item Makes the “search $\to$ verification” bridge explicit
-\item Sets up batch verification for all 14,116 codes
+\footnotesize
+\begin{itemize}\setlength\itemsep{1pt}
+\item Citable certificates for concrete catalogue rows
+\item Template for batch verification of the full catalogue
 \end{itemize}
 \end{block}
 \end{columns}
@@ -664,9 +660,7 @@ Formal proof provides \textbf{kernel-checked} assurance.
 \code{QSqrt235i.lean}\\
 \code{FullKLEval.lean}\\
 \code{Distance3Verify.lean}\\
-\code{BD16Defs.lean}
-
-
+\code{BD16Defs.lean}\\[-0.4em]
 {\small\textbf{SS/ library}}\\
 4,197 lines $\cdot$ 32 modules\\
 no \code{sorry}
@@ -685,6 +679,7 @@ no \code{sorry}
 \quad\code{NoGo/} \textcolor{Slate}{\scriptsize (2 no-go proofs)}\\
 {\small\textbf{Build}}\\
 \code{lake build} (Lean~4)
+\vspace{-0.3em}
 \end{columns}
 \end{frame}
 
@@ -970,31 +965,26 @@ No \code{sorry}; end-to-end checking is executable via \code{native\_decide}.
 $m{=}8$ (transversal $T$),\;
 $|T|=7$.\quad
 {\small
-$4\ket{0_L}
-  {=}
-  \ket{0000000}
-  {+}\sqrt{3}\ket{0111100}
-  {+}\sqrt{3}\ket{1001110}
-  {+}\sqrt{2}\ket{1010101}
-  {+}\sqrt{2}\ket{1011001}
-  {+}\ket{1110010}
-  {+}2i\ket{0100011}$
+\[
+\begin{aligned}
+4\ket{0_L}={}&\ket{0000000} + \sqrt{3}\ket{0111100} + \sqrt{3}\ket{1001110}\\
+&+ \sqrt{2}\ket{1010101} + \sqrt{2}\ket{1011001} + \ket{1110010} + 2i\ket{0100011}.
+\end{aligned}
+\]
 }
 
 \vspace{0.2em}
-\begin{columns}[T]
+\begin{columns}[T,onlytextwidth]
 \column{0.56\textwidth}
-\begin{lstlisting}[style=lean,basicstyle=\ttfamily\scriptsize]
+\begin{lstlisting}[style=lean,basicstyle=\ttfamily\scriptsize,xleftmargin=0pt,xrightmargin=0pt]
 def bd16Data : Distance3Data 7 8 where
   a    := ![1, 2, 2, 2, 2, 3, 3]
   b₀   := 0
-  supp₀ := {s0, s1, s2, s3, s4, s5, s6}
+  supp₀ := {s0, ..., s6}
   prob₀ := ... -- (1,3,3,2,2,1,4)/16
 
-theorem layer1 : bd16Data.Layer1OK
-  := by native_decide
-theorem layer2 : AllKLSatisfied supp₀ amp₀ 2
-  := by native_decide
+theorem layer1 : bd16Data.Layer1OK := by native_decide
+theorem layer2 : AllKLSatisfied ... := by native_decide
 \end{lstlisting}
 
 \column{0.40\textwidth}
@@ -1148,41 +1138,30 @@ $(0,1,1,2,3,3,5)$ & --- & \textcolor{Coral}{no-go in Lean} \\
 % =====================================================================
 % Slide: Lean no-go proofs (overview)
 % =====================================================================
-\begin{frame}[fragile]{Lean No-Go Proofs for the Remaining 2 BD$_{16}$ Vectors}
+\begin{frame}{Lean No-Go Proofs for the Remaining 2 BD$_{16}$ Vectors}
 
+\small
 Two angle vectors pass SS--LP but admit \alert{no} complementary full-KL solution.
-We formalize \textbf{infeasibility} by proving a small KL subsystem already contradicts.
+We formalize \textbf{infeasibility} by extracting a small KL subsystem and deriving a contradiction.
 
 \begin{columns}[T]
-\column{0.55\textwidth}
-\begin{itemize}\setlength\itemsep{2pt}
-\item Work under $\ket{1_L}=X^{\otimes 7}\ket{0_L}$ and amplitudes $c_s\in\CC$.
-\item Prove \textbf{non-existence} statements (not just numerical optimization).
-\item Split the job:
-  \begin{enumerate}\setlength\itemsep{0pt}
-  \item KL subsystem $\Rightarrow$ explicit polynomial equations
-  \item equations $\Rightarrow$ contradiction by algebra/inequalities
-  \end{enumerate}
+\column{0.58\textwidth}
+\begin{itemize}\setlength\itemsep{1pt}
+\item Work under $\ket{1_L}=X^{\otimes 7}\ket{0_L}$ and amplitudes $c_s\in\CC$
+\item KL subsystem $\Rightarrow$ explicit polynomial system over $\CC$
+\item Algebra/inequalities $\Rightarrow$ contradiction (no solution)
 \end{itemize}
 
-\begin{exampleblock}{Lean files}
-\code{Examples/D3/NoGo/BD16\_1112226.lean}\\
-\code{Examples/D3/NoGo/BD16\_0112335.lean}
+\column{0.38\textwidth}
+\begin{exampleblock}{Lean artifacts}
+\footnotesize
+\code{BD16\_1112226.lean}: \code{no\_solution}\\
+\code{BD16\_0112335.lean}: \code{no\_KLSubsys}\\
+\textcolor{Slate}{\scriptsize (in \code{Examples/D3/NoGo/})}
 \end{exampleblock}
-
-\column{0.43\textwidth}
-\begin{lstlisting}[style=lean,basicstyle=\ttfamily\scriptsize]
--- Sec 16
- theorem no_solution :
-   Not (Exists fun c : Fin 10 -> Complex => System c) := ...
-
--- Sec 17.6
- theorem no_KLSubsys :
-   Not (Exists fun c : Fin 14 -> Complex => KLSubsys c) := ...
-\end{lstlisting}
 \end{columns}
 
-\textcolor{Slate}{\small No floating point and no \code{sorry} placeholders. (All proofs in $\CC$ = \code{Complex}.)}
+\textcolor{Slate}{\scriptsize Fully formal (no \code{sorry}); exact arithmetic in \code{Complex}.}
 \end{frame}
 
 % =====================================================================
@@ -1193,38 +1172,29 @@ We formalize \textbf{infeasibility} by proving a small KL subsystem already cont
 \begin{columns}[T]
 \column{0.52\textwidth}
 \begin{block}{A tiny KL subsystem suffices}
-Unknowns: $c_0,\dots,c_9\in\CC$ on a $|S_0|=10$ residue support.
-
+Unknowns: $c_0,\dots,c_9\in\CC$ on a $|S_0|=10$ residue support.\\[-0.2em]
 Subsystem: \textbf{17 equations} = norm $+$ 7 diagonal ($Z_i$) $+$ 9 off-diagonal.
 \end{block}
 
 \begin{exampleblock}{Step 1: solve the diagonal system}
 Let $p_k:=|c_k|^2$ and set $u:=p_7$, $v:=p_9$. The diagonal equations force
-{\small
+{\scriptsize
 \[
-p_0=p_1=p_2=p_3=\tfrac{1}{16},\quad
-p_6=\tfrac14-u,\; p_8=\tfrac14-v,\;
-p_4=u+v-\tfrac{3}{16},\;
-p_5=\tfrac{7}{16}-u-v.
+\begin{aligned}
+p_0=p_1=p_2=p_3&=\tfrac{1}{16},\\
+p_6&=\tfrac14-u,\qquad p_8=\tfrac14-v,\\
+p_4&=u+v-\tfrac{3}{16},\qquad p_5=\tfrac{7}{16}-u-v.
+\end{aligned}
 \]
 }
 \end{exampleblock}
 
 \column{0.46\textwidth}
 \begin{alertblock}{Step 2: phase-gauge contradiction}
-Off-diagonal equations imply three product relations, e.g.
-{\small\[
-\overline b\,a = -\overline d\,c,\qquad
-\Im(\overline b\,a)=0.
-\]}
-These force $a,b,c,d,e,f \neq 0$.
-
-Global phase invariance lets us fix a gauge with $b\in\mathbb{R}_{>0}$.
-Then all six special amplitudes become real, and the subsystem reduces to
-an inconsistent real algebraic system.
+Off-diagonal equations imply three product relations, e.g. $\overline b\,a = -\overline d\,c$ and $\Im(\overline b\,a)=0$. Gauge-fix $b\in\mathbb{R}_{>0}$; reduce to an inconsistent real system.
 \end{alertblock}
 
-\textcolor{Slate}{\small Lean: \code{Examples/D3/NoGo/BD16\_1112226.lean}.}
+\textcolor{Slate}{\scriptsize Lean: \code{Examples/D3/NoGo/BD16\_1112226.lean}.}
 \end{columns}
 \end{frame}
 
@@ -1263,13 +1233,12 @@ Here $|S_0|=14$. We encode a sufficient KL subsystem as \textbf{19 explicit equa
 % =====================================================================
 % Slide: KL ⇒ equations (formalization)
 % =====================================================================
-\begin{frame}[fragile]{Formalizing the missing step: KL $\Rightarrow$ (E1)--(E19)}
+\begin{frame}{Formalizing the missing step: KL $\Rightarrow$ (E1)--(E19)}
 
-We do \emph{not} assume (E1)--(E19) magically: we derive them from a KL subsystem
-on the explicit SS support $S_0$.
+We derive (E1)--(E19) from a KL subsystem on the explicit SS support $S_0$.
 
-\begin{columns}[T]
-\column{0.54\textwidth}
+\begin{columns}[T,onlytextwidth]
+\column{0.50\textwidth}
 \begin{block}{Mechanization idea}
 \begin{itemize}\setlength\itemsep{1pt}
 \item Hard part in Lean is bookkeeping: which pairs $(x,x\oplus z_P)$ contribute?
@@ -1280,17 +1249,16 @@ and register them as simp lemmas.
 \end{block}
 
 \column{0.44\textwidth}
-\begin{lstlisting}[style=lean,basicstyle=\ttfamily\scriptsize]
-structure KLSubsys (c : Fin 14 -> Complex) : Prop where
-  norm : ...
-  z1   : diagMatElt S0 (coeff c) b0 e1 = 0
-  ...
-  x13_ze1 : offdiagMatElt S0 (coeff c) x13 e1 = 0
-
-theorem KLSubsys.toSystem (h : KLSubsys c) :
-  System c := by
-  -- simp + linarith
-\end{lstlisting}
+\begin{exampleblock}{Lean interface (sketch)}
+{\tiny\ttfamily
+\begin{tabular}{@{}l@{}}
+structure KLSubsys (c : Fin 14 -> Complex)\\
+: Prop\\
+theorem KLSubsys.toSystem : KLSubsys c ->\\
+\quad System c
+\end{tabular}
+}
+\end{exampleblock}
 \end{columns}
 
 \textcolor{Slate}{\small Lean: \code{Examples/D3/NoGo/BD16\_0112335\_FromKL.lean}.}
@@ -1329,14 +1297,8 @@ T:=\sum_{k=4}^6 \Im(\overline{c_k}c_{k+7}).
 
 \column{0.48\textwidth}
 \begin{alertblock}{Upper vs lower bounds}
-Using
-\[
-|\Im(\overline{x}y)| \le \frac{\|x\|^2+\|y\|^2}{2},
-\]
-pair sums give $|U|\le \tfrac{5}{32}$.
-
+Using $|\Im(\overline{x}y)| \le (\|x\|^2+\|y\|^2)/2$, pair sums give $|U|\le \tfrac{5}{32}$.
 But $\tau\ge \tfrac{15}{176}$ forces $|T|\ge \tfrac{3}{16}=\tfrac{6}{32}$.
-
 Contradiction: $|T|=|U|$ is impossible.
 \end{alertblock}
 \end{columns}
@@ -1351,36 +1313,26 @@ Contradiction: $|T|=|U|$ is impossible.
 % =====================================================================
 \begin{frame}{Outlook: Batch Verification of All 14,116 Codes}
 
-The distance-2 catalogue has 14,116 $((n,K,2))$ codes.  Currently: individual
-Lean files for representative examples.
+\small
+Goal: turn the distance-2 catalogue into a library of Lean-checked certificates.
 
 \begin{columns}[T]
-\column{0.50\textwidth}
+\column{0.54\textwidth}
 \begin{block}{Scaling strategy}
 \begin{enumerate}\setlength\itemsep{0pt}
-\item Python exports each code's data as a \code{.lean} file
-  (support, probabilities, angle vector)
-\item Lean's \code{ExampleData.OK} bundle checks
-  SS $+$ screen $+$ normalization $+$ $Z$-KL
-\item \code{native\_decide} discharges each finite goal automatically (runtime hardware-dependent)
-\item \code{lake build} can compile the generated files (one per code)
+\item Export each instance as a data-only \code{ExampleData} file
+\item Prove \code{ExampleData.OK} by \code{native\_decide}
+\item Build the generated files with \code{lake build} (parallelizable)
 \end{enumerate}
 \end{block}
 
-\column{0.46\textwidth}
-\begin{exampleblock}{Already demonstrated}
+\column{0.42\textwidth}
+\begin{exampleblock}{Status}
 \begin{itemize}\setlength\itemsep{0pt}
-\item Lean-certified examples (from \code{General\_solutions\_of\_SSLP.tex}) cover $K=2,3,4$ and orders up to $18$:\\
-  \code{Ex422.lean}, \code{Ex622O18.lean}, \code{Ex632O12.lean}, \code{Ex642Order4.lean}, \ldots
-\item Each is a data-only \code{ExampleData} file proved by \code{native\_decide}
-\item Verification tasks are independent and can be parallelized across instances
+\item Demonstrated on $K=2,3,4$ examples, with orders up to $18$ (e.g. \code{Ex622O18.lean})
+\item Verification tasks are independent (easy parallelism)
 \end{itemize}
 \end{exampleblock}
-
-\tikz\node[draw=Teal!60, fill=Teal!6, rounded corners=3pt, inner sep=4pt,
-  text width=4cm, align=center, font=\small]{%
-  \textbf{14,116 machine-checked}\\
-  \textbf{certificates}: a concrete target};
 \end{columns}
 \end{frame}
 
@@ -1503,12 +1455,6 @@ SS/ library: 4,197 lines,\; no \code{sorry}\\
 \end{block}
 \end{columns}
 
-\vspace{-0.2em}
-\begin{alertblock}{Next steps}
-{\tiny
-Batch verification of 14{,}116 distance-2 instances\; $\cdot$\; distance-3 automation\\
-Other BD groups (BD$_{12}$--BD$_{36}$), $n{=}8$ extensions, and exceptional groups ($2I/2T/2O$).}
-\end{alertblock}
 \end{frame}
 
 % =====================================================================
