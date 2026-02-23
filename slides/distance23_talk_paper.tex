@@ -1,5 +1,6 @@
 % Formal Verification of Quantum Codes with Transversal Diagonal Gates
-% Compile with: xelatex distance23_talk_paper.tex
+% Compile with:
+%   latexmk -xelatex -interaction=nonstopmode -halt-on-error -outdir=build slides/distance23_talk_paper.tex
 \documentclass[aspectratio=169,t]{beamer}
 \usetheme{metropolis}
 \metroset{
@@ -161,18 +162,18 @@ with transversal diagonal gates via the SSLP pipeline.
 \vspace{0.2em}
 \textbf{Three new contributions}:
 \begin{enumerate}\setlength\itemsep{1pt}
-\item \textbf{Lean~4 formalization} of the full SSLP pipeline ---
-  machine-checked proofs, zero \code{sorry}
-\item \textbf{Analytical families}: one proof covers \emph{infinitely many} codes
-\item \textbf{Distance-3 generalization}: exact solutions for $((7,2,3))$ codes
-  discovered by \alert{GPT-5.2}, formally verified in Lean
+\item \textbf{Lean~4 library} formalizing SSLP notions (SS, screens, KL bundles)\,---
+  machine-checked proofs with no \code{sorry}
+\item \textbf{Analytical families}: one proof covers \emph{infinitely many} parameter instances
+\item \textbf{Distance-3 extension}: exact solutions for selected $((7,2,3))$ BD$_{16}$ candidates,
+  verified by full weight-$\le 2$ KL checks in Lean
 \end{enumerate}
 
 \vspace{0.3em}
 \begin{center}
 \begin{tikzpicture}
   \node[pipebox=Amber!15, text width=3cm, minimum height=0.7cm, font=\small]
-    (ai) {\textbf{GPT-5.2}\\discovers solutions};
+    (ai) {\textbf{Symbolic solve}\\(LLM-assisted)};
   \node[pipebox=Sage!15, text width=3cm, minimum height=0.7cm, font=\small, right=0.8cm of ai]
     (lean) {\textbf{Lean 4}\\verifies proofs};
   \draw[fatarr] (ai) -- (lean);
@@ -182,15 +183,15 @@ with transversal diagonal gates via the SSLP pipeline.
 \end{frame}
 
 % =====================================================================
-% Slide: Paper Storyline (Draft)
+% Slide: Paper Storyline
 % =====================================================================
-\begin{frame}{Paper Storyline (Draft)}
+\begin{frame}{Paper Storyline}
 
 \begin{columns}[T]
 \column{0.54\textwidth}
 \begin{block}{Core message}
-\textbf{Search} (SSLP) scales to 14K codes; \textbf{verification} (Lean) scales to
-machine-checked certificates.
+\textbf{Search} (SSLP) enumerates 14K codes; \textbf{verification} (Lean) produces
+kernel-checked certificates for instances and families.
 \end{block}
 
 \vspace{-0.3em}
@@ -205,7 +206,7 @@ machine-checked certificates.
 \end{itemize}
 
 \column{0.42\textwidth}
-\begin{exampleblock}{Draft paper outline}
+\begin{exampleblock}{Paper outline (sketch)}
 \begin{enumerate}\setlength\itemsep{1pt}
 \item Problem + SSLP pipeline
 \item Lean library: definitions + main theorems
@@ -290,7 +291,7 @@ Step~2 is an LP $\Rightarrow$ fast rejection of infeasible parameters.
 
 For \alert{distance~2}: our residue-shift screen makes Step~3 \emph{automatic}.
 
-For \alert{distance~3}: we solve Step~3 via exact arithmetic in $\QQ(\sqrt2,\sqrt3,i)$.
+For \alert{distance~3}: we solve Step~3 via exact arithmetic in $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$.
 \end{frame}
 
 % =====================================================================
@@ -364,7 +365,7 @@ $\bigcap_{j}\mathrm{conv}(V_j)$.
 % =====================================================================
 % Slide: Residue-Shift Screen
 % =====================================================================
-\begin{frame}{Residue-Shift Screen: Distance 2 for Free}
+\begin{frame}{Residue-Shift Screen: Automating Distance 2}
 
 Flipping bit $i$ shifts the residue by $\pm a_i$:
 \[
@@ -454,8 +455,8 @@ certified $((n,K,2))$ codes
 \column{0.46\textwidth}
 \begin{block}{Highlights}
 \begin{itemize}\setlength\itemsep{1pt}
-\item Orders $\mathcal{O}=2$ through $18$ at $n=6$
-\item Mostly \textbf{nonadditive}
+\item For $K=2$, all orders $\mathcal{O}=2,\dots,18$ occur at $n=6$
+\item Many are \textbf{nonadditive}
 \item Includes $K=3,4$ codes
 \end{itemize}
 \end{block}
@@ -463,7 +464,7 @@ certified $((n,K,2))$ codes
 \begin{exampleblock}{Analytical families}
 Family I: $C_0=\{0^n,1^n\}$,\\
 closed-form $p(0^n)=1-s/m$\\
-\chk  verified in Lean for all $(n,m,s)$
+\chk\; verified in Lean for all parameters satisfying the screen and side conditions
 \end{exampleblock}
 \end{columns}
 \end{frame}
@@ -488,11 +489,10 @@ Valid for \emph{all} $(n,m,\mathbf{a})$ passing the screen.
 \end{block}
 
 \column{0.46\textwidth}
-\begin{exampleblock}{$\lambda$-families}
-Larger supports, free parameter $\lambda$:
+\begin{exampleblock}{$\lambda$-families (A--E)}
+$n=5$ families with a free parameter $\lambda$:
 \begin{itemize}\setlength\itemsep{0pt}
-\item $\lambda$-Family II: $|C_0|=4$
-\item $\lambda$-Family V: $|C_0|=6$
+\item supports of size $3$ or $4$
 \item 5 families, each a \textbf{universally\\
   quantified} Lean theorem
 \end{itemize}
@@ -546,9 +546,9 @@ theorem verified : myCode.OK :=
 \vspace{0.1em}
 \begin{center}
 \tikz\node[draw=Sage, fill=Sage!6, rounded corners=3pt, inner sep=4pt]{%
-  \textbf{SS $+$ screen $+$ LP} $ \Rightarrow $
+  \textbf{SS $+$ screen $+$ LP} $\Rightarrow$
   certified $((5,2,2))$ code, order $\mathcal{O}=7$.\;
-  Build: ${<}\,1$\,s.
+  Checked by \code{native\_decide}.
 };
 \end{center}
 \end{frame}
@@ -606,9 +606,9 @@ theorem verified : myCode.OK :=
 \column{0.55\textwidth}
 A \textbf{proof assistant} based on dependent type theory:
 \begin{itemize}\setlength\itemsep{0pt}
-\item Every proof is a program; the \textbf{kernel} type-checks it
-\item Compiles $\Rightarrow$ proof is correct.  No trust required.
-\item \textbf{Mathlib}: 180K+ formalized theorems
+\item Every proof is a program; a small \textbf{kernel} type-checks it
+\item Kernel checking provides a small trusted base for correctness
+\item \textbf{Mathlib}: a large community library of formalized mathematics
 \end{itemize}
 
 \textbf{Key tactic}: \code{native\_decide}
@@ -633,7 +633,7 @@ A \textbf{proof assistant} based on dependent type theory:
 \begin{block}{Why Lean for QEC?}
 14K codes: too many for humans.\\
 AI-found solutions: trust but verify.\\
-Formal proof $=$ \textbf{certainty}.
+Formal proof provides \textbf{kernel-checked} assurance.
 \end{block}
 \end{columns}
 \end{frame}
@@ -667,9 +667,9 @@ Formal proof $=$ \textbf{certainty}.
 \code{BD16Defs.lean}
 
 
-{\small\textbf{Codebase}}\\
-${\sim}$4,300 lines, ${\sim}$30 modules\\
-0 \code{sorry},  0 warnings
+{\small\textbf{SS/ library}}\\
+4,197 lines $\cdot$ 32 modules\\
+no \code{sorry}
 
 \column{0.36\textwidth}
 {\small\textbf{Examples}}\\
@@ -684,8 +684,7 @@ ${\sim}$4,300 lines, ${\sim}$30 modules\\
 \quad\code{BD16v10.lean} \textcolor{Slate}{\scriptsize (12 instances)}\\
 \quad\code{NoGo/} \textcolor{Slate}{\scriptsize (2 no-go proofs)}\\
 {\small\textbf{Build}}\\
-3,092 jobs\\
-\textcolor{Sage}{\textbf{0 errors $\cdot$ 0 warnings}}
+\code{lake build} (Lean~4)
 \end{columns}
 \end{frame}
 
@@ -718,14 +717,14 @@ Bundles four checks:
 \item $Z$-type KL matching
 \end{enumerate}
 All \code{Decidable} $\Rightarrow$\\
-\code{native\_decide} in $<1$\,s
+\code{native\_decide} discharges the checks automatically
 \end{alertblock}
 \end{columns}
 
-\vspace{0.5em}
-\textbf{Technique}: \code{BitString n} $= \texttt{Fin} n \to \texttt{Bool}$ has $2^n$ elements.
-All quantifiers over finite support are decidable $\Rightarrow$ 
-Lean compiles to native code, executes, returns \code{true} $\Rightarrow$ kernel accepts as proof.
+\vspace{0.2em}
+{\footnotesize
+\textbf{Technique:} encode basis strings as \code{BitString n}. All goals quantify over finite sets,
+so \code{native\_decide} can evaluate the checks.}
 \end{frame}
 
 % =====================================================================
@@ -767,7 +766,7 @@ At $n{=}7$: $210$ weight-${\leq}\,2$ Pauli constraints.
 \begin{center}
 \tikz\node[draw=Coral!60, fill=Coral!6, rounded corners=4pt, inner sep=4pt, text width=10cm, align=center, font=\small]{%
   \textbf{Core challenge}: solve $210$ nonlinear constraints
-  over $\CC$, then verify with mathematical certainty.};
+  over $\CC$, then formally verify in Lean.};
 \end{center}
 \end{frame}
 
@@ -780,11 +779,11 @@ At $n{=}7$: $210$ weight-${\leq}\,2$ Pauli constraints.
 \column{0.31\textwidth}
 \textbf{1. Most constraints vanish.}
 
-$S_0 \cap (S_0 \oplus z_P) = \emptyset$\\
-$\Rightarrow$ sum is empty $\Rightarrow 0$.
+Let $T=\mathrm{supp}(\ket{0_L})$.\\
+$T \cap (T \oplus z_P) = \emptyset \Rightarrow$ empty sum $\Rightarrow 0$.
 
-{\small BD16v1: \alert{25}\,/\,210}\\
-{\small $>$\,88\% are automatic.}
+{\small BD16v1: \alert{25}/210 non-automatic}\\
+{\small ($185/210 \approx 88.1\%$ automatic).}
 
 \column{0.31\textwidth}
 \textbf{2. Exact number field.}
@@ -795,20 +794,20 @@ $=$ 16 rational coefficients.
 \code{DecidableEq}, no floats.
 
 \column{0.31\textwidth}
-\textbf{3. AI + Lean.}
+\textbf{3. Symbolic solve + Lean.}
 
-\alert{GPT-5.2} solves the surviving constraints symbolically.
+LLM-assisted symbolic solving proposes closed-form amplitudes.
 
-Lean verifies \emph{exactly}.
+Lean verifies the identities exactly.
 \end{columns}
 
 \vspace{0.6em}
 \begin{center}
 \begin{tikzpicture}
   \node[pipebox=Teal!10, text width=2.6cm, minimum height=0.7cm, font=\small]
-    (int) {Intersection test\\filters ${\sim}$88\%};
+    (int) {Intersection test\\filters $185/210$};
   \node[pipebox=Amber!15, text width=2.6cm, minimum height=0.7cm, font=\small, right=0.4cm of int]
-    (ai) {GPT-5.2 solves\\remaining system};
+    (ai) {Symbolic solve\\(LLM-assisted)};
   \node[pipebox=Sage!15, text width=2.6cm, minimum height=0.7cm, font=\small, right=0.4cm of ai]
     (lean) {Lean verifies\\every identity};
   \draw[fatarr] (int) -- (ai);
@@ -823,7 +822,7 @@ Lean verifies \emph{exactly}.
 \begin{frame}{Why Most KL Constraints Vanish}
 
 $\braket{0_L|P|0_L}$ sums over pairs where
-$x$ and $x \oplus z_P$ are \emph{both} in $S_0$.
+$x$ and $x \oplus z_P$ are \emph{both} in $T$.
 
 \begin{center}
 \begin{tikzpicture}[
@@ -831,21 +830,21 @@ $x$ and $x \oplus z_P$ are \emph{both} in $S_0$.
     minimum height=0.9cm, fill=Teal!10},
 ]
   \node[sset] (s0) at (0,0) {};
-  \node[above=-1pt] at (s0.north) {\small $S_0$};
+  \node[above=-1pt] at (s0.north) {\small $T$};
   \node[sset] (s0x) at (3.8,0) {};
-  \node[above=-1pt] at (s0x.north) {\small $S_0 \oplus z_P$};
+  \node[above=-1pt] at (s0x.north) {\small $T \oplus z_P$};
   \draw[fatarr, Coral] (s0.east) -- node[above, font=\small]{$\oplus\; z_P$} (s0x.west);
   \node[font=\small, text=Slate] at (1.9,-0.9) {Disjoint $\Rightarrow$ empty sum $\Rightarrow$ automatically $0$};
 \end{tikzpicture}
 \end{center}
 
 \vspace{-0.5em}
-$S_0 \cap (S_0 \oplus z_P) = \emptyset
+$T \cap (T \oplus z_P) = \emptyset
   \;\Longrightarrow\; \braket{0_L|P|0_L} = 0$.
 
 \begin{exampleblock}{Why so effective}
-$S_0$ is \textbf{sparse}: $|S_0| = 7$ out of $2^7 = 128$.
-Random shifts almost never land back inside $S_0$.\;
+$T$ is \textbf{sparse}: $|T| = 7$ out of $2^7 = 128$.
+Random shifts almost never land back inside $T$.\;
 Only \alert{25}\,/\,210 survive (BD16v1).
 \end{exampleblock}
 
@@ -853,9 +852,9 @@ In Lean: \code{klIsAutomatic} is \code{Decidable} --- checked by \code{native\_d
 \end{frame}
 
 % =====================================================================
-% Slide: GPT-5.2 Discovers Solutions
+% Slide: From Constraints to Closed-Form Solutions
 % =====================================================================
-\begin{frame}{From Constraints to Solutions: GPT-5.2}
+\begin{frame}{From Constraints to Closed-Form Amplitudes}
 
 After intersection test, the surviving constraints form a
 \textbf{quadratic system} in $c_x \in \CC$.
@@ -864,15 +863,15 @@ After intersection test, the surviving constraints form a
 \column{0.48\textwidth}
 \textbf{The problem}:
 \begin{itemize}\setlength\itemsep{0pt}
-\item Unknowns: $c_x$ for each $x \in S_0$
+\item Unknowns: $c_x$ for each $x \in T$
 \item $\sum_{x} \bar{c}_x\, c_{x'}\!\cdot\!(\text{phase}) = 0$
 \item Non-convex $\Rightarrow$ hard for standard solvers
 \end{itemize}
 
 \column{0.48\textwidth}
-\textbf{GPT-5.2's approach}:
+\textbf{Symbolic solving (LLM-assisted)}:
 \begin{itemize}\setlength\itemsep{0pt}
-\item Given $S_0$, probabilities, constraint eqns
+\item Given $T$, probabilities, and the surviving KL equations
 \item Exploits symmetries, groups terms
 \item Returns \textbf{closed-form} amplitudes
   in $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$
@@ -885,7 +884,7 @@ After intersection test, the surviving constraints form a
   \node[pipebox=Amber!15, text width=2.6cm, minimum height=0.6cm, font=\small]
     (c) {Constraint\\equations};
   \node[pipebox=Amber!15, text width=2.3cm, minimum height=0.6cm, font=\small, right=0.3cm of c]
-    (ai) {\textbf{GPT-5.2}\\symbolic solve};
+    (ai) {\textbf{Symbolic solve}\\(LLM-assisted)};
   \node[pipebox=Sage!15, text width=2.3cm, minimum height=0.6cm, font=\small, right=0.3cm of ai]
     (lean) {\textbf{Lean 4}\\\code{native\_decide}};
   \node[right=0.3cm of lean, font=\small\bfseries, text=Sage] {$\checkmark$ QED};
@@ -915,7 +914,7 @@ Multiplication closed.\\
 Equality \emph{decidable} (rational coefficients).
 
 \column{0.48\textwidth}
-\begin{exampleblock}{BD16v1 amplitudes (GPT-5.2)}
+\begin{exampleblock}{BD16v1 amplitudes (closed form)}
 {\small
 \begin{tabular}{@{}ll@{}}
 $c_0 {=} \tfrac{1}{4}$ & $c_5 {=} \tfrac{1}{4}$\\[2pt]
@@ -924,7 +923,8 @@ $c_3 {=} c_4 {=} \tfrac{\sqrt{2}}{4}$\\
 \end{tabular}
 }
 
-In Lean: $c_1 = (0,0,\tfrac{1}{4},0,\;0,0,0,0)$\;\chk
+In Lean: $\tfrac{\sqrt{3}}{4}$ corresponds to $(u,v)$ with\\
+$u=(0,0,\tfrac{1}{4},0,0,0,0,0)$ and $v=0$\;\chk
 \end{exampleblock}
 \end{columns}
 
@@ -959,7 +959,7 @@ In Lean: $c_1 = (0,0,\tfrac{1}{4},0,\;0,0,0,0)$\;\chk
 \vspace{0.5em}
 Both layers are \textbf{fully decidable} --- verified by \code{native\_decide}.
 
-No \code{sorry}, no axioms. Build time per code: 2--11\,s.
+No \code{sorry}; end-to-end checking is executable via \code{native\_decide}.
 \end{frame}
 
 % =====================================================================
@@ -968,7 +968,7 @@ No \code{sorry}, no axioms. Build time per code: 2--11\,s.
 \begin{frame}[fragile]{BD16 Example: $((7,2,3))$ with $\mathbf{a}=(1,2,2,2,2,3,3)$}
 
 $m{=}8$ (transversal $T$),\;
-$|S_0| = 7$.\quad
+$|T|=7$.\quad
 {\small
 $4\ket{0_L}
   {=}
@@ -1013,7 +1013,7 @@ All 25 $= 0$ & \leanproof \\
 
 \vspace{0.3em}
 \tikz\node[draw=Sage, fill=Sage!6, rounded corners=3pt, inner sep=4pt, text width=3.4cm, align=center, font=\small]{%
-  \textbf{Complete $d{\geq}3$ proof}\\Build: 2.6\,s};
+  \textbf{Complete $d{\geq}3$ proof}\\Checked by \code{native\_decide}};
 \end{columns}
 \end{frame}
 
@@ -1076,12 +1076,12 @@ These 12 Lean files cover all 10 feasible BD16 angle vectors
 % =====================================================================
 \begin{frame}{What the Surviving Constraints Look Like}
 
-After the intersection test, ${\sim}25$--$150$ non-automatic Pauli strings remain.
+After the intersection test, a reduced set of non-automatic Pauli strings remains.
 
 \begin{columns}[T]
 \column{0.48\textwidth}
 \begin{block}{Diagonal ($Z_iZ_j$)}
-$\braket{0_L|Z_iZ_j|0_L} = \sum_{x \in S_0} (-1)^{x_i+x_j}\,|c_x|^2$
+$\braket{0_L|Z_iZ_j|0_L} = \sum_{x \in T} (-1)^{x_i+x_j}\,|c_x|^2$
 
 \emph{Linear} in probabilities $p_x = |c_x|^2$.\\
 Already verified in \textbf{Layer~1}.
@@ -1097,7 +1097,7 @@ Only $\ket{0_L}$ amplitudes needed.
 
 \column{0.48\textwidth}
 \begin{alertblock}{Off-diagonal ($X_iX_j, X_iY_j, \ldots$)}
-$\braket{0_L|P|0_L} = \displaystyle\sum_{\substack{x \in S_0 \\ x \oplus z_P \in S_0}}
+$\braket{0_L|P|0_L} = \displaystyle\sum_{\substack{x \in T \\ x \oplus z_P \in T}}
   \bar{c}_x\, c_{x \oplus z_P}\, \omega^{f(x,P)}$
 
 \emph{Quadratic} in amplitudes $c_x \in \CC$.\\
@@ -1118,32 +1118,31 @@ All 12 SS--LP-passing BD$_{16}$ $((7,2,3))$ angle vectors:
 \vspace{-0.5em}
 \begin{center}
 {\scriptsize
-\begin{tabular}{@{}lccccl@{}}
+\begin{tabular}{@{}lcl@{}}
 \toprule
-\textbf{Angle vector $\mathbf{a}$} & $|S_0|$ & \textbf{Non-auto} & \textbf{Solution type} & \textbf{Status} \\
+\textbf{Angle vector $\mathbf{a}$} & \textbf{Solution type} & \textbf{Lean status} \\
 \midrule
-$(1,2,2,2,2,3,3)$ & 18 & 83  & 2-param continuous  & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,2,2,2,2,5)$ & 14 & 97  & 192-elt discrete    & \textcolor{Sage}{Lean \checkmark} \\
-$(0,1,2,2,3,3,4)$ & 16 & 68  & 3 isolated solutions & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,1,1,3,3,5)$ & 13 & 81  & continuous           & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,1,1,3,4,4)$ & 12 & 85  & 128-elt discrete     & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,1,2,2,4,4)$ & 16 & 83  & uniform magnitude    & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,2,2,2,3,4)$ & 16 & 83  & phase-only $+$ families & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,2,2,3,3,3)$ & 16 & 85  & continuous ($\sqrt{10}$ coeffs)  & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,1,2,3,3,4)$ & 16 & 85  & isolated ($\sqrt{10}$ coeffs)    & \textcolor{Sage}{Lean \checkmark} \\
-$(1,1,1,2,2,3,5)$ & 14 & 99  & isolated ($\sqrt{5}$ coeffs)     & \textcolor{Sage}{Lean \checkmark} \\
+$(1,2,2,2,2,3,3)$ & 2-param continuous & \textcolor{Sage}{verified} \\
+$(1,1,2,2,2,2,5)$ & 192-elt discrete & \textcolor{Sage}{verified} \\
+$(0,1,2,2,3,3,4)$ & 3 isolated solutions & \textcolor{Sage}{verified} \\
+$(1,1,1,1,3,3,5)$ & continuous & \textcolor{Sage}{verified} \\
+$(1,1,1,1,3,4,4)$ & 128-elt discrete & \textcolor{Sage}{verified} \\
+$(1,1,1,2,2,4,4)$ & uniform magnitude & \textcolor{Sage}{verified} \\
+$(1,1,2,2,2,3,4)$ & phase-only $+$ families & \textcolor{Sage}{verified} \\
+$(1,1,2,2,3,3,3)$ & continuous ($\sqrt{10}$ coeffs) & \textcolor{Sage}{verified} \\
+$(1,1,1,2,3,3,4)$ & isolated ($\sqrt{10}$ coeffs) & \textcolor{Sage}{verified} \\
+$(1,1,1,2,2,3,5)$ & isolated (requires $\sqrt{5}$) & \textcolor{Sage}{verified} \\
 \rowcolor{Coral!8}
-$(1,1,1,2,2,2,6)$ & 10 & 115 & \multicolumn{2}{l}{\textcolor{Coral}{proven infeasible}} \\
+$(1,1,1,2,2,2,6)$ & --- & \textcolor{Coral}{no-go in Lean} \\
 \rowcolor{Coral!8}
-$(0,1,1,2,3,3,5)$ & 14 & 78  & \multicolumn{2}{l}{\textcolor{Coral}{proven infeasible}} \\
+$(0,1,1,2,3,3,5)$ & --- & \textcolor{Coral}{no-go in Lean} \\
 \bottomrule
 \end{tabular}
 }
 \end{center}
 
 \vspace{-0.7em}
-\textcolor{Slate}{\scriptsize $|S_0|$, non-auto from Lean \code{\#eval}.\;
-10 feasible, all 10 in Lean (exact arithmetic in $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$).}
+\textcolor{Slate}{\scriptsize 10 vectors admit explicit $((7,2,3))$ solutions verified in Lean (exact arithmetic in $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$); two are ruled out by Lean no-go proofs.}
 \end{frame}
 
 % =====================================================================
@@ -1183,7 +1182,7 @@ We formalize \textbf{infeasibility} by proving a small KL subsystem already cont
 \end{lstlisting}
 \end{columns}
 
-\textcolor{Slate}{\small No floating point, no axioms, no \code{sorry}. (All proofs in $\CC$ = \code{Complex}.)}
+\textcolor{Slate}{\small No floating point and no \code{sorry} placeholders. (All proofs in $\CC$ = \code{Complex}.)}
 \end{frame}
 
 % =====================================================================
@@ -1363,8 +1362,8 @@ Lean files for representative examples.
   (support, probabilities, angle vector)
 \item Lean's \code{ExampleData.OK} bundle checks
   SS $+$ screen $+$ normalization $+$ $Z$-KL
-\item \code{native\_decide} proves each in $< 1$\,s
-\item \code{lake build} compiles all 14K files
+\item \code{native\_decide} discharges each finite goal automatically (runtime hardware-dependent)
+\item \code{lake build} can compile the generated files (one per code)
 \end{enumerate}
 \end{block}
 
@@ -1374,16 +1373,14 @@ Lean files for representative examples.
 \item Lean-certified examples (from \code{General\_solutions\_of\_SSLP.tex}) cover $K=2,3,4$ and orders up to $18$:\\
   \code{Ex422.lean}, \code{Ex622O18.lean}, \code{Ex632O12.lean}, \code{Ex642Order4.lean}, \ldots
 \item Each is a data-only \code{ExampleData} file proved by \code{native\_decide}
-\item Build time: 0.3--0.8\,s each
-\item At 1\,s/code: $\sim$4 hours total\\
-  (embarrassingly parallel)
+\item Verification tasks are independent and can be parallelized across instances
 \end{itemize}
 \end{exampleblock}
 
 \tikz\node[draw=Teal!60, fill=Teal!6, rounded corners=3pt, inner sep=4pt,
   text width=4cm, align=center, font=\small]{%
   \textbf{14,116 machine-checked}\\
-  \textbf{proofs}: within reach};
+  \textbf{certificates}: a concrete target};
 \end{columns}
 \end{frame}
 
@@ -1395,26 +1392,25 @@ Lean files for representative examples.
 \vspace{-0.2em}
 \begin{columns}[T]
 \column{0.48\textwidth}
-\begin{block}{Family II: 4-element support}
+\begin{block}{Planned: Family II (4-element support)}
 $C_0 = \{0^n, 1^n, e_1 \bar{e}_1, \bar{e}_1 e_1 \}$
 
 Free parameter $\lambda \in [0,1]$ $\to$ continuous family.
 
-Lean: \code{familyII\_OK}\;
-$\forall\,(n,m,s,\lambda)$ passing screens.
+\textcolor{Slate}{\small Status: not yet formalized in the current Lean library.}
 \end{block}
 
 \begin{alertblock}{$\lambda$-Families A--E (verified)}
 5 families at $n{=}5$, each covers $\infty$ values.\\
-$\Sigma_Z(\lambda) = \sum_i \braket{Z_i}^2 \in [\tfrac{1}{3},\,1]$
+Across A--E: $\Sigma_Z(\lambda)=\sum_i \braket{Z_i}^2 \in [\tfrac{1}{3},\,1]$
 \end{alertblock}
 
 \column{0.48\textwidth}
 \begin{exampleblock}{What universality buys}
 \begin{itemize}\setlength\itemsep{0pt}
-\item One 100-line file $\to$ \textbf{all} instantiations
+\item One Lean theorem covers \textbf{all} parameter instantiations
 \item Proves \textbf{structure}, not cases
-\item Classification complete for $|C_0| \leq 4$
+\item Current library covers several infinite families (e.g. $\lambda$-families A--E)
 \end{itemize}
 \end{exampleblock}
 
@@ -1440,7 +1436,7 @@ BD$_{12}$--BD$_{36}$ ($m{=}6$--$18$)
 
 Same pipeline; number field adapts to $\omega_m$.
 
-\textcolor{Slate}{\small Zhang--Zeng: dozens of $((7,2,3))$ candidates}
+\textcolor{Slate}{\small Prior SSLP work reports further $((7,2,3))$ candidates.}
 \end{block}
 
 \column{0.31\textwidth}
@@ -1465,9 +1461,9 @@ Two-layer architecture still applies.
 \begin{center}
 \tikz\node[draw=Navy!40, fill=Navy!4, rounded corners=4pt, inner sep=5pt,
   text width=11cm, align=center, font=\small]{%
-  \textbf{Long-term vision}: a formal library of quantum codes
+  \textbf{Long-term direction}: a formal library of quantum codes
   with \textbf{machine-verified} fault-tolerance properties ---
-  AI discovers, Lean certifies.};
+  automated search proposes candidates, Lean certifies.};
 \end{center}
 \end{frame}
 
@@ -1492,7 +1488,7 @@ Two-layer architecture still applies.
 \end{block}
 
 \begin{exampleblock}{Codebase}
-${\sim}$4,300 lines Lean 4,\; 0 \code{sorry}\\
+SS/ library: 4,197 lines,\; no \code{sorry}\\
 \code{github.com/LionSR/lean-qec}
 \end{exampleblock}
 
@@ -1500,17 +1496,18 @@ ${\sim}$4,300 lines Lean 4,\; 0 \code{sorry}\\
 \begin{block}{Distance 3 (new)}
 \begin{itemize}\setlength\itemsep{0pt}
 \item Intersection test filters most of 210 KL
-\item GPT-5.2 $\to$ closed-form amplitudes
+\item LLM-assisted symbolic solving $\to$ closed-form amplitudes
 \item Exact arithmetic in $\QQ(\sqrt{2},\sqrt{3},\sqrt{5},i)$
 \item All 10 feasible BD$_{16}$ vectors verified; 2 Lean no-go proofs
 \end{itemize}
 \end{block}
 \end{columns}
 
-\vspace{0.2em}
-\begin{alertblock}{What's next}
-{\scriptsize Batch 14K codes\; $\cdot$\; distance-3 automation\; $\cdot$\;
-BD$_{12}$--BD$_{36}$\; $\cdot$\; $n{=}8$\; $\cdot$\; 2I/2T/2O}
+\vspace{-0.2em}
+\begin{alertblock}{Next steps}
+{\tiny
+Batch verification of 14{,}116 distance-2 instances\; $\cdot$\; distance-3 automation\\
+Other BD groups (BD$_{12}$--BD$_{36}$), $n{=}8$ extensions, and exceptional groups ($2I/2T/2O$).}
 \end{alertblock}
 \end{frame}
 
