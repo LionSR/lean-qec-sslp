@@ -1239,12 +1239,11 @@ We derive (E1)--(E19) from a KL subsystem on the explicit SS support $S_0$.
 
 \begin{columns}[T,onlytextwidth]
 \column{0.50\textwidth}
-\begin{block}{Mechanization idea}
+\begin{block}{Mechanization idea (and the speed trick)}
+\footnotesize
 \begin{itemize}\setlength\itemsep{1pt}
-\item Hard part in Lean is bookkeeping: which pairs $(x,x\oplus z_P)$ contribute?
-\item We precompute intersections like $S_0\cap(S_0\oplus z_P)$ by \code{native\_decide}
-and register them as simp lemmas.
-\item Then each KL matrix element reduces to a short explicit sum in the $c_k$.
+\item Pitfall: letting \code{simp} unfold \code{coeff} inside \code{Finset.sum} can create huge nested \code{if}-terms (heartbeat timeouts).
+\item Fix: precompute intersections like $S_0\cap(S_0\oplus z_P)$ by \code{native\_decide}, expand each KL element into a $2$--$4$ term sum, then use \code{simp only} + \code{linarith}.
 \end{itemize}
 \end{block}
 
