@@ -43,7 +43,7 @@ def diagTerm {n : ℕ} (c : SS.BitString n → ℂ) (x z s : SS.BitString n) : �
 (We omit the global prefactor `i^{x·z}`.) -/
 def diagMatElt {n : ℕ} (S₀ : Finset (SS.BitString n)) (c : SS.BitString n → ℂ)
     (x z : SS.BitString n) : ℂ :=
-  ∑ s in SS.diagIntersection S₀ x, diagTerm c x z s
+  ∑ s ∈ SS.diagIntersection S₀ x, diagTerm c x z s
 
 /-- One term of the off-diagonal matrix element:
 `(-1)^{z·s} · conj(c_{s⊕Δ(x)}) · c_s`.
@@ -57,7 +57,7 @@ def offdiagTerm {n : ℕ} (c : SS.BitString n → ℂ) (x z s : SS.BitString n) 
 (We omit the global prefactor `i^{x·z}·(-1)^{z·x}`.) -/
 def offdiagMatElt {n : ℕ} (S₀ : Finset (SS.BitString n)) (c : SS.BitString n → ℂ)
     (x z : SS.BitString n) : ℂ :=
-  ∑ s in SS.offdiagIntersection S₀ x, offdiagTerm c x z s
+  ∑ s ∈ SS.offdiagIntersection S₀ x, offdiagTerm c x z s
 
 /-- Self-product as a real scalar: `conj z * z = ‖z‖^2`. -/
 @[simp] lemma star_mul_self (z : ℂ) : star z * z = (Complex.normSq z : ℂ) := by

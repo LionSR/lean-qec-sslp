@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Analysis.Complex.Norm
+import Mathlib.Tactic.Linarith
 
 /-!
 # BD16 no-go: $a = (0,1,1,2,3,3,5)$ (mod $8$) — the 19 quadratic equations (E1–E19)
@@ -99,9 +100,11 @@ lemma abs_im_star_mul_le (x y : ℂ) :
     |(star x * y).im| ≤ (Complex.normSq x + Complex.normSq y) / 2 := by
   -- `|Im z| ≤ ‖z‖`.
   have h₁ : |(star x * y).im| ≤ ‖star x * y‖ := Complex.abs_im_le_norm _
-  -- `‖conj x * y‖ = ‖x‖ * ‖y‖`.
-  have h₂ : ‖star x * y‖ = ‖x‖ * ‖y‖ := by
-    simp
+  -- `‖conj x‖ = ‖x‖`.
+  have hstar : ‖(starRingEnd ℂ) x‖ = ‖x‖ := by
+    -- `starRingEnd ℂ x = star x` by rfl.
+    change ‖star x‖ = ‖x‖
+    simpa [Complex.star_def] using Complex.norm_conj x
   -- AM–GM: `‖x‖*‖y‖ ≤ (‖x‖^2+‖y‖^2)/2`.
   have h₃ : ‖x‖ * ‖y‖ ≤ (‖x‖ ^ 2 + ‖y‖ ^ 2) / 2 := by
     have h := two_mul_le_add_sq ‖x‖ ‖y‖
@@ -110,7 +113,7 @@ lemma abs_im_star_mul_le (x y : ℂ) :
   have h₄ : |(star x * y).im| ≤ (‖x‖ ^ 2 + ‖y‖ ^ 2) / 2 := by
     have : |(star x * y).im| ≤ ‖x‖ * ‖y‖ := by
       -- rewrite `h₁` using `h₂`
-      simpa [h₂] using h₁
+      simpa [hstar] using h₁
     exact le_trans this h₃
   -- rewrite `‖z‖^2` as `normSq z`.
   simpa [Complex.normSq_eq_norm_sq] using h₄
@@ -891,9 +894,11 @@ as in \ref{subsec:lean-nogo-19eq} of `BD16_distance3.tex`.
 def cFromV (v : Fin 28 → ℝ) : Fin 14 → ℂ :=
   fun k =>
     ⟨v ⟨2 * k.val, by
-        fin_cases k <;> decide⟩,
+        have hk : k.val < 14 := k.isLt
+        nlinarith⟩,
       v ⟨2 * k.val + 1, by
-        fin_cases k <;> decide⟩⟩
+        have hk : k.val < 14 := k.isLt
+        nlinarith⟩⟩
 
 /-- No real solution to the 28-real-variable packaging of the 19-equation system.
 
