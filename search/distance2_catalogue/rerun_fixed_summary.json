@@ -1,0 +1,9 @@
+{
+  "input": "search/distance2_catalogue/data/codes_all_details_multi_allK.zip",
+  "checker": "indep_check_core_multi.check_one_hit_multi; matel_Yi carries the accumulated factor and the standard Y phase, and verify_transversal_U_multi checks the advertised phase directly",
+  "total": 111315,
+  "passed_overall": 111315,
+  "failed_overall": 0,
+  "wall_time_s": 8147.0,
+  "failed_records": []
+}

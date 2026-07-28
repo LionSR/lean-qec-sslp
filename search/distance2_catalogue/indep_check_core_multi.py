@@ -189,8 +189,10 @@ def matel_Yi(psi: np.ndarray, phi: np.ndarray, n: int, i: int) -> complex:
     for x in range(d):
         bit_i = (x >> (n-1-i)) & 1
         y = x ^ (1 << (n-1-i))
-        factor = 1j * ((-1) ** bit_i)
-        val += np.conjugate(psi[x]) * phi[y]
+        # <x|Y|y> with y = x with bit i flipped:  <0|Y|1> = -i, <1|Y|0> = +i,
+        # i.e. -i * (-1)^{bit i of the bra index}.
+        factor = -1j * ((-1) ** bit_i)
+        val += np.conjugate(psi[x]) * factor * phi[y]
     return val
 
 # ----------------------------
@@ -235,15 +237,34 @@ def apply_transversal_U(a: List[int], m: int, psi: np.ndarray, n: int) -> np.nda
 
 def verify_transversal_U_multi(a: List[int], m: int, s_list: List[int],
                                psi_list: List[np.ndarray], n: int, tol: float = TOL) -> Dict[str, Any]:
+    """Verify the advertised logical phase for every represented logical state.
+
+    For each j this checks U|psi_j> = omega^{s_j} |psi_j> against the advertised
+    exponent s_j, in two independent ways: the full state vector must match the
+    target state to within `tol`, and the phase ratio <psi_j|U|psi_j> / omega^{s_j}
+    must equal 1. Both must hold.
+    """
     omega = np.exp(2j * np.pi / m)
     oks = []; details = []
     for j, psi in enumerate(psi_list):
         Upsi = apply_transversal_U(a, m, psi, n)
         phase_target = omega ** (s_list[j] % m)
-        cj = np.vdot(psi, Upsi) / phase_target
-        okj = np.allclose(Upsi, phase_target * cj * psi, atol=tol)
-        oks.append(bool(okj))
-        details.append({"phase_target": complex(phase_target), "phase_proj": complex(cj)})
+        target_state = phase_target * psi
+        residual = Upsi - target_state
+        phase_observed = np.vdot(psi, Upsi)
+        phase_ratio = phase_observed / phase_target
+        state_ok = np.allclose(Upsi, target_state, atol=tol, rtol=0.0)
+        phase_ok = np.isclose(phase_ratio, 1.0 + 0.0j, atol=tol, rtol=0.0)
+        okj = bool(state_ok and phase_ok)
+        oks.append(okj)
+        details.append({
+            "phase_target": complex(phase_target),
+            "phase_observed": complex(phase_observed),
+            "phase_ratio": complex(phase_ratio),
+            "max_abs_residual": float(np.max(np.abs(residual))) if residual.size else 0.0,
+            "state_ok": bool(state_ok),
+            "phase_ok": bool(phase_ok),
+        })
     return {"ok": all(oks), "per_state_ok": oks, "details": details}
 
 # ----------------------------
@@ -282,7 +303,7 @@ def _build_pauli_action_cache(n: int):
         bit = ((idx >> shift) & 1).astype(np.int8)
         flip_idx.append(idx ^ mask)                               # X: reindex
         signZ.append(1.0 - 2.0 * bit.astype(np.float64))          # Z: ±1
-        phaseY.append(1j * np.where(bit == 1, -1.0, 1.0))         # Y: i*(-1)^bit
+        phaseY.append(-1j * np.where(bit == 1, -1.0, 1.0))        # Y: -i*(-1)^bit
     return {
         "flip": [np.asarray(x, dtype=np.int64) for x in flip_idx],
         "signZ": [np.asarray(x, dtype=np.float64) for x in signZ],

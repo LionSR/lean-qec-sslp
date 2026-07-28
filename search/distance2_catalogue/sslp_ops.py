@@ -55,7 +55,8 @@ def matel_Yi(psi, phi, n, i):
     for k, b in enumerate(idx2bits):
         lst = list(b); lst[i] ^= 1
         kflip = idxmap[tuple(lst)]
-        factor = 1j * ((-1) ** b[i])
+        # <0|Y|1> = -i, <1|Y|0> = +i  ->  -i * (-1)^{bra bit}
+        factor = -1j * ((-1) ** b[i])
         val += np.conjugate(psi[k]) * factor * phi[kflip]
     return val
 
@@ -94,15 +95,33 @@ def apply_transversal_U(a: List[int], m: int, state, n: int):
     return state * phases
 
 def verify_transversal_U_multi(n: int, a: List[int], m: int, s_list: List[int], psi_list: List[np.ndarray], tol: float=1e-8):
-    """Check U acts as diag(ω^{s_j}) on the span of psi_list."""
+    """Check U acts with the advertised phases diag(omega^{s_j}).
+
+    For each j this checks U|psi_j> = omega^{s_j} |psi_j> against the advertised
+    exponent s_j, in two independent ways: the full state vector must match the
+    target state to within `tol`, and the phase ratio <psi_j|U|psi_j> / omega^{s_j}
+    must equal 1. Both must hold.
+    """
     omega = np.exp(2j * np.pi / m)
     oks = []
     details = []
     for j, psi in enumerate(psi_list):
         Upsi = apply_transversal_U(a, m, psi, n)
-        phase = omega ** (s_list[j] % m)
-        cj = np.vdot(psi, Upsi) / phase
-        okj = np.allclose(Upsi, phase * cj * psi, atol=tol)
-        oks.append(bool(okj))
-        details.append({"phase_target": phase, "phase_proj": cj})
+        phase_target = omega ** (s_list[j] % m)
+        target_state = phase_target * psi
+        residual = Upsi - target_state
+        phase_observed = np.vdot(psi, Upsi)
+        phase_ratio = phase_observed / phase_target
+        state_ok = np.allclose(Upsi, target_state, atol=tol, rtol=0.0)
+        phase_ok = np.isclose(phase_ratio, 1.0 + 0.0j, atol=tol, rtol=0.0)
+        okj = bool(state_ok and phase_ok)
+        oks.append(okj)
+        details.append({
+            "phase_target": phase_target,
+            "phase_observed": phase_observed,
+            "phase_ratio": phase_ratio,
+            "max_abs_residual": float(np.max(np.abs(residual))) if residual.size else 0.0,
+            "state_ok": bool(state_ok),
+            "phase_ok": bool(phase_ok),
+        })
     return {"ok": all(oks), "per_state_ok": oks, "details": details}
