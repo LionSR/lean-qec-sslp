@@ -10,6 +10,10 @@ build/
 *.dylib
 *.exe
 
+# Python
+__pycache__/
+*.py[cod]
+
 # OS / editor
 .DS_Store
 .vscode/
