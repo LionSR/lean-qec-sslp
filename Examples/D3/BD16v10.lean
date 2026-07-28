@@ -1,4 +1,5 @@
 import SS.BD16Defs
+import SS.BridgeBD16
 
 /-!
 # BD16 example #10: a = (1,1,1,2,2,3,5)
@@ -73,5 +74,23 @@ theorem layer1_ok : code.layer1OK := by native_decide
 
 /-- Layer 2 verification (full KL for all weight-≤2 Paulis). -/
 theorem layer2_ok : code.layer2OK 2 := by native_decide
+
+
+/-- Probability–amplitude consistency: `prob s = |amp s|^2` on the support,
+    tying the two data fields together (checked by `native_decide` over
+    the exact field `QSqrt235i`). -/
+theorem probamp_ok : code.probAmpConsistent := by native_decide
+
+
+/-- Amplitudes vanish off the support (side condition of the KL bridge). -/
+theorem amp_vanish : ∀ s, s ∉ code.supp → code.amp s = SS.QSqrt235i.zero := by
+  native_decide
+
+/-- **Quantum statement.** This code detects every Pauli error of weight ≤ 2. -/
+theorem qec (P : SS.PauliString 7) (hw : P.wt ≤ 2) :
+    SS.innerC (SS.BD16.state0 code) (SS.pauliAct P (SS.BD16.state1 code)) = 0
+      ∧ SS.innerC (SS.BD16.state1 code) (SS.pauliAct P (SS.BD16.state1 code))
+          = SS.innerC (SS.BD16.state0 code) (SS.pauliAct P (SS.BD16.state0 code)) :=
+  SS.BD16.detects_weight2 code ⟨probamp_ok, layer1_ok, layer2_ok⟩ amp_vanish P hw
 
 end BD16v10
