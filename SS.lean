@@ -12,6 +12,7 @@ import SS.HilbertKL
 import SS.Verify
 import SS.BridgeD2
 import SS.FamilyI
+import SS.LambdaV2
 import SS.Pauli
 import SS.FullKL
 import SS.Distance3Verify
