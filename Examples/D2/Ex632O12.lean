@@ -20,7 +20,12 @@ Parameters:
 We choose a concrete rational point in the reported affine family so that all
 probabilities are nonnegative (some become exactly `0` and are omitted from supports).
 
-All checks are discharged by a single `native_decide` proof of `ex.OK`.
+The support condition and the residue-shift screen are discharged in the Lean
+kernel by `decide`, and normalization by an explicit `isNormalizedProb_prob*`
+lemma; only the `ZTypeKL'` conjunct still uses `native_decide` (which is why
+`Lean.ofReduceBool` and `Lean.trustCompiler` still appear in `#print axioms`).
+For the same codes with every conjunct in the kernel, see
+`search/distance2_catalogue/lean_certification/pure/`.
 -/
 
 local notation "n" => 6
@@ -64,30 +69,15 @@ def supp2 : Finset (BitString n) := {x000101, x000110, x001001, x110100}
 
 /-- probabilities for $|0_L⟩$ (fixed rational point in the affine family) -/
 def prob0 : BitString n → ℚ :=
-  fun s =>
-    if s = x000000 then (5 : ℚ) / 12
-    else if s = x011101 then (1 : ℚ) / 4
-    else if s = x101101 then (1 : ℚ) / 4
-    else if s = x110011 then (1 : ℚ) / 12
-    else 0
+  probFour x000000 x011101 x101101 x110011 (5/12) (1/4) (1/4) (1/12)
 
 /-- probabilities for $|1_L⟩$ (fixed rational point in the affine family) -/
 def prob1 : BitString n → ℚ :=
-  fun s =>
-    if s = x001100 then (5 : ℚ) / 12
-    else if s = x010001 then (1 : ℚ) / 4
-    else if s = x100001 then (1 : ℚ) / 4
-    else if s = x111111 then (1 : ℚ) / 12
-    else 0
+  probFour x001100 x010001 x100001 x111111 (5/12) (1/4) (1/4) (1/12)
 
 /-- probabilities for $|2_L⟩$ (fixed rational point in the affine family) -/
 def prob2 : BitString n → ℚ :=
-  fun s =>
-    if s = x000101 then (1 : ℚ) / 12
-    else if s = x000110 then (1 : ℚ) / 12
-    else if s = x001001 then (1 : ℚ) / 2
-    else if s = x110100 then (1 : ℚ) / 3
-    else 0
+  probFour x000101 x000110 x001001 x110100 (1/12) (1/12) (1/2) (1/3)
 
 /-- common Z-expectation target -/
 def targetZ : Fin n → ℚ :=
@@ -103,7 +93,22 @@ def ex632O12 : ExampleData n m K :=
 
 /-- One-line verification of the full example bundle. -/
 theorem ex632O12_ok : ex632O12.OK := by
-  native_decide
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · decide                -- SSConditionSupport'  (kernel)
+  · decide                -- ResidueShiftScreen   (kernel)
+  · -- IsNormalizedProb  (kernel, via explicit lemmas)
+    intro k
+    fin_cases k
+    · exact isNormalizedProb_probFour x000000 x011101 x101101 x110011 _ _ _ _
+        (by decide) (by decide) (by decide) (by decide) (by decide) (by decide)
+        (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+    · exact isNormalizedProb_probFour x001100 x010001 x100001 x111111 _ _ _ _
+        (by decide) (by decide) (by decide) (by decide) (by decide) (by decide)
+        (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+    · exact isNormalizedProb_probFour x000101 x000110 x001001 x110100 _ _ _ _
+        (by decide) (by decide) (by decide) (by decide) (by decide) (by decide)
+        (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  · native_decide         -- ZTypeKL'
 
 end CatalogueExample_6_3_2_Order12
 

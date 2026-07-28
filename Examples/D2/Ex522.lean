@@ -12,7 +12,14 @@ section WorkedExample_5_2_2
 This file is intentionally written in a *data-only* style:
 
 1. define the parameters `(n,m,K)` and the concrete data `(a,S,supp,prob,targetZ)`;
-2. discharge the full verification bundle `ex.OK` with a single `native_decide`.
+2. discharge the full verification bundle `ex.OK`.
+
+The support condition and the residue-shift screen are discharged in the Lean
+kernel by `decide`, and normalization by an explicit `isNormalizedProb_prob*`
+lemma; only the `ZTypeKL'` conjunct still uses `native_decide` (which is why
+`Lean.ofReduceBool` and `Lean.trustCompiler` still appear in `#print axioms`).
+For the same codes with every conjunct in the kernel, see
+`search/distance2_catalogue/lean_certification/pure/`.
 
 The bundled check `ex.OK` includes:
 - SS support condition for each logical state
@@ -51,20 +58,11 @@ def supp1 : Finset (BitString n) := {x00011, x00101, x00110, x11001}
 
 /-- probabilities for the canonical $|0_L⟩$ -/
 def prob0 : BitString n → ℚ :=
-  fun s =>
-    if s = x00000 then (3 : ℚ) / 7
-    else if s = x01111 then (2 : ℚ) / 7
-    else if s = x10111 then (2 : ℚ) / 7
-    else 0
+  probThree x00000 x01111 x10111 (3/7) (2/7) (2/7)
 
 /-- probabilities for the canonical $|1_L⟩$ -/
 def prob1 : BitString n → ℚ :=
-  fun s =>
-    if s = x00011 then (1 : ℚ) / 7
-    else if s = x00101 then (1 : ℚ) / 7
-    else if s = x00110 then (3 : ℚ) / 7
-    else if s = x11001 then (2 : ℚ) / 7
-    else 0
+  probFour x00011 x00101 x00110 x11001 (1/7) (1/7) (3/7) (2/7)
 
 /-- target Z expectations: 3/7 on sites 0,1 and -1/7 on sites 2,3,4 -/
 def targetZ : Fin n → ℚ :=
@@ -80,7 +78,19 @@ def ex522 : ExampleData n m K :=
 
 /-- One-line verification of the full example bundle. -/
 theorem ex522_ok : ex522.OK := by
-  native_decide
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · decide                -- SSConditionSupport'  (kernel)
+  · decide                -- ResidueShiftScreen   (kernel)
+  · -- IsNormalizedProb  (kernel, via explicit lemmas as suggested by the referee)
+    intro k
+    fin_cases k
+    · exact isNormalizedProb_probThree x00000 x01111 x10111 _ _ _
+        (by decide) (by decide) (by decide)
+        (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+    · exact isNormalizedProb_probFour x00011 x00101 x00110 x11001 _ _ _ _
+        (by decide) (by decide) (by decide) (by decide) (by decide) (by decide)
+        (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  · native_decide         -- ZTypeKL'
 
 end WorkedExample_5_2_2
 

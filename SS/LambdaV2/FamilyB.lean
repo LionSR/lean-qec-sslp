@@ -86,13 +86,13 @@ def ex (lam : ℚ) : ExampleData n m K :=
 /-! ## SS conditions and screen (purely finite, discharged by computation) -/
 
 lemma SS_C0 : SSConditionSupport' (m := m) a (S 0) C0 := by
-  native_decide
+  decide
 
 lemma SS_C2 : SSConditionSupport' (m := m) a (S 1) C2 := by
-  native_decide
+  decide
 
 lemma screen : ResidueShiftScreen (m := m) a S := by
-  native_decide
+  decide
 
 /-! ## Probability normalization -/
 

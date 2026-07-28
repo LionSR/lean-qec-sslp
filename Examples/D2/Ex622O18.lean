@@ -16,7 +16,12 @@ Parameters:
 - weights `w = (1,2,3,4,5,6)` in `ZMod 18`
 - residues `S = (0,11)` (logical order `O = 18`)
 
-All checks are discharged by a single `native_decide` proof of `ex.OK`.
+The support condition and the residue-shift screen are discharged in the Lean
+kernel by `decide`, and normalization by an explicit `isNormalizedProb_prob*`
+lemma; only the `ZTypeKL'` conjunct still uses `native_decide` (which is why
+`Lean.ofReduceBool` and `Lean.trustCompiler` still appear in `#print axioms`).
+For the same codes with every conjunct in the kernel, see
+`search/distance2_catalogue/lean_certification/pure/`.
 -/
 
 local notation "n" => 6
@@ -52,21 +57,11 @@ def supp1 : Finset (BitString n) := {x000011, x010110, x011001, x100101, x111010
 
 /-- probabilities for $|0_L⟩$ (from the TeX catalogue) -/
 def prob0 : BitString n → ℚ :=
-  fun s =>
-    if s = x000000 then (7 : ℚ) / 18
-    else if s = x001111 then (1 : ℚ) / 6
-    else if s = x110111 then (4 : ℚ) / 9
-    else 0
+  probThree x000000 x001111 x110111 (7/18) (1/6) (4/9)
 
 /-- probabilities for $|1_L⟩$ (from the TeX catalogue) -/
 def prob1 : BitString n → ℚ :=
-  fun s =>
-    if s = x000011 then (2 : ℚ) / 9
-    else if s = x010110 then (5 : ℚ) / 18
-    else if s = x011001 then (1 : ℚ) / 18
-    else if s = x100101 then (1 : ℚ) / 3
-    else if s = x111010 then (1 : ℚ) / 9
-    else 0
+  probFive x000011 x010110 x011001 x100101 x111010 (2/9) (5/18) (1/18) (1/3) (1/9)
 
 /-- common Z-expectation target -/
 def targetZ : Fin n → ℚ :=
@@ -82,7 +77,20 @@ def ex622O18 : ExampleData n m K :=
 
 /-- One-line verification of the full example bundle. -/
 theorem ex622O18_ok : ex622O18.OK := by
-  native_decide
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · decide                -- SSConditionSupport'  (kernel)
+  · decide                -- ResidueShiftScreen   (kernel)
+  · -- IsNormalizedProb  (kernel, via explicit lemmas)
+    intro k
+    fin_cases k
+    · exact isNormalizedProb_probThree x000000 x001111 x110111 _ _ _
+        (by decide) (by decide) (by decide)
+        (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+    · exact isNormalizedProb_probFive x000011 x010110 x011001 x100101 x111010 _ _ _ _ _
+        (by decide) (by decide) (by decide) (by decide) (by decide)
+        (by decide) (by decide) (by decide) (by decide) (by decide)
+        (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  · native_decide         -- ZTypeKL'
 
 end CatalogueExample_6_2_2_Order18
 

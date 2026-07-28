@@ -18,7 +18,12 @@ We verify the standard distance-2 bundle `ExampleData.OK`:
 - probability normalization
 - Z-type KL equalities (via an explicit target function)
 
-All checks are discharged with a single `native_decide`.
+The support condition and the residue-shift screen are discharged in the Lean
+kernel by `decide`, and normalization by an explicit `isNormalizedProb_prob*`
+lemma; only the `ZTypeKL'` conjunct still uses `native_decide` (which is why
+`Lean.ofReduceBool` and `Lean.trustCompiler` still appear in `#print axioms`).
+For the same codes with every conjunct in the kernel, see
+`search/distance2_catalogue/lean_certification/pure/`.
 -/
 
 local notation "n" => 4
@@ -47,11 +52,11 @@ def supp1 : Finset (BitString n) := {x0110, x1001}
 
 /-- probabilities for the canonical $|0_L⟩$ (uniform) -/
 def prob0 : BitString n → ℚ :=
-  fun s => if s ∈ supp0 then (1 : ℚ) / 2 else 0
+  probTwo x0000 x1111 (1/2) (1/2)
 
 /-- probabilities for the canonical $|1_L⟩$ (uniform) -/
 def prob1 : BitString n → ℚ :=
-  fun s => if s ∈ supp1 then (1 : ℚ) / 2 else 0
+  probTwo x0110 x1001 (1/2) (1/2)
 
 /-- target Z expectations (all zero). -/
 def targetZ : Fin n → ℚ := ![0, 0, 0, 0]
@@ -66,7 +71,17 @@ def ex422 : ExampleData n m K :=
 
 /-- One-line verification of the full example bundle. -/
 theorem ex422_ok : ex422.OK := by
-  native_decide
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · decide                -- SSConditionSupport'  (kernel)
+  · decide                -- ResidueShiftScreen   (kernel)
+  · -- IsNormalizedProb  (kernel, via explicit lemma)
+    intro k
+    fin_cases k
+    · exact isNormalizedProb_probTwo x0000 x1111 _ _
+        (by decide) (by norm_num) (by norm_num) (by norm_num)
+    · exact isNormalizedProb_probTwo x0110 x1001 _ _
+        (by decide) (by norm_num) (by norm_num) (by norm_num)
+  · native_decide         -- ZTypeKL'
 
 end Example_4_2_2
 
