@@ -56,18 +56,22 @@ introduces — appear nowhere. Their absence across all 14,116 reports is what
 certifies, machine-checkably and code by code, that nothing was delegated to the
 compiler.
 
-`compile_all.sh` writes each chunk's output next to its source, as
-`Chunks/ChunkNNN.lean.log`. To check the whole build yourself afterwards, from the
-repository root:
+The reports from the recorded run are archived here in [`axioms/`](axioms/), one file
+per chunk, exactly as Lean emitted them. They can be checked without recompiling:
 
 ```bash
-cd search/distance2_catalogue/lean_certification/pure
-cat Chunks/Chunk*.lean.log | grep -c 'depends on axioms'          # expect 14116
-cat Chunks/Chunk*.lean.log | grep -c 'ofReduceBool\|trustCompiler' # expect 0
+cd search/distance2_catalogue/lean_certification/pure/axioms
+cat Chunk*.txt | wc -l                                      # 14116
+cat Chunk*.txt | grep -c 'ofReduceBool\|trustCompiler'       # 0
+cat Chunk*.txt | sed 's/.*depends on axioms: //' | sort -u   # a single line
 ```
 
-(`cat` first: `grep -c` over several files prints one count per file rather than a
-total.)
+The third command is the strongest of the three: over all 14,116 reports there is
+exactly **one** distinct axiom set, `[propext, Classical.choice, Quot.sound]`.
+
+If you recompile, `compile_all.sh` writes each chunk's output next to its source as
+`Chunks/ChunkNNN.lean.log`, in the same format; `cat` them first, since `grep -c`
+over several files prints one count per file rather than a total.
 
 ## Relation to the other artifacts
 

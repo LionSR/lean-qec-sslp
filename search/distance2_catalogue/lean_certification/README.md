@@ -82,9 +82,10 @@ and are discharged in the kernel by `decide` for every code, so the per-code the
 | `packed/`       | one theorem per chunk + one umbrella `catalogue_all_ok`; no per-code theorems | `by native_decide` | none (all via compiler) | ~5 min |
 | **`pure/`**     | per code: `code_i_ok`, `code_i_qec` | **all four conjuncts in the kernel** (`decide` + `norm_num`) | **complete — no `native_decide` anywhere** | ~3 h |
 
-*All compile with **no errors and no `sorry`**; each reports `29/29 chunks OK`.
-The first three were timed 6-way parallel on a workstation, `pure/` 15-way on a
-56-core server; see [`VERIFICATION.md`](VERIFICATION.md) for the measured run.
+*Order-of-magnitude guidance only, at 6-way parallelism on a workstation; the
+`pure/` figure is the measured 15-way run. All four compile with **no errors and no
+`sorry`** and each reports `29/29 chunks OK` — see [`VERIFICATION.md`](VERIFICATION.md)
+for what was actually run, on what, and with which results.
 
 `full_native/` is the fastest to build and certifies every code. `kernel_b1b2/`
 moves the two kernel-tractable conditions (support membership and the
@@ -156,6 +157,7 @@ lean_certification/
 │   └── README.md
 └── pure/               all 14,116 codes, fully kernel-checked, no native_decide
     ├── Chunks/         Chunk000.lean … Chunk028.lean (+ per-code #print axioms)
+    ├── axioms/         archived audit: 14,116 `#print axioms` reports as emitted
     ├── compile_all.sh
     └── README.md
 ```
