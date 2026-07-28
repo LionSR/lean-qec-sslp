@@ -111,7 +111,7 @@ Under the complementary ansatz `|1_L⟩ = X^{⊗n}|0_L⟩`, the second logical s
 
 lemma bxor_ones_bxor (t x : BitString n) :
     bxor (bxor t (ones n)) x = bxor t (delta x) := by
-  funext i; simp [bxor, delta, ones, Bool.xor_assoc]
+  funext i; simp [bxor, delta, ones]
 
 /-- The logical `|1_L⟩` of the complementary ansatz. -/
 def flipState (ψ : State n ℂ) : State n ℂ := fun t => ψ (bxor t (ones n))

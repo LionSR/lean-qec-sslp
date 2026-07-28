@@ -121,8 +121,7 @@ lemma toC_neg (x : QSqrt23i) : toC (QSqrt23i.neg x) = -toC x := by
 
 lemma toC_conj (x : QSqrt23i) : toC (QSqrt23i.conj x) = star (toC x) := by
   apply Complex.ext <;>
-    simp [toC, reC, imC, QSqrt23i.conj, rp_neg, Complex.star_def,
-      Complex.conj_re, Complex.conj_im]
+    simp [toC, reC, imC, QSqrt23i.conj, rp_neg, Complex.conj_re, Complex.conj_im]
 
 /-- Easy faithfulness: all-zero coefficients give the complex number `0`. -/
 lemma toC_eq_zero_of_isZero {x : QSqrt23i} (h : x.isZero = true) : toC x = 0 := by
@@ -159,7 +158,7 @@ lemma toC_neg (x : QSqrt235i) : toC (QSqrt235i.neg x) = -toC x := by
 lemma _root_.SS.QSqrt23i.toC_smul (q : ℚ) (x : QSqrt23i) :
     QSqrt23i.toC (QSqrt23i.smul q x) = (q : ℂ) * QSqrt23i.toC x := by
   apply Complex.ext <;>
-    simp [QSqrt23i.toC, QSqrt23i.reC, QSqrt23i.imC, QSqrt23i.smul, rp] <;> push_cast <;> ring
+    simp [QSqrt23i.toC, QSqrt23i.reC, QSqrt23i.imC, QSqrt23i.smul, rp] <;> ring
 
 lemma toC_mul (x y : QSqrt235i) : toC (QSqrt235i.mul x y) = toC x * toC y := by
   have h5 : ((Real.sqrt 5 : ℝ) : ℂ) * ((Real.sqrt 5 : ℝ) : ℂ) = 5 := by
