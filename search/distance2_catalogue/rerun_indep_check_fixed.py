@@ -1,10 +1,11 @@
 """
 Re-run the independent KL/U checker on the full distance-2 catalogue with the
-CORRECTED matel_Yi (bug fix at indep_check_core_multi.py:192).
+corrected `matel_Yi` (it now carries the accumulated `factor` and uses the
+standard Y phase) and the strengthened transversal-phase check.
 
-Purpose: confirm that fixing the Y matrix-element phase does NOT change the
-pass/fail verdict of any of the ~111k catalogue codes, i.e. the 14,116 canonical
-results are unaffected.
+Purpose: confirm that these corrections do NOT change the pass/fail verdict of
+any of the ~111k catalogue records, i.e. that the 14,116 canonical results are
+unaffected.
 
 Usage:
     python rerun_indep_check_fixed.py [--limit N]
@@ -112,7 +113,7 @@ def main():
           f"failed_overall={total-passed}", flush=True)
     print(f"[RESULT] wall time = {time.time()-t0:.1f}s", flush=True)
     if failed_records:
-        print(f"[RESULT] {len(failed_records)} codes did NOT pass — see {args.out}", flush=True)
+        print(f"[RESULT] {len(failed_records)} codes did NOT pass -- see {args.out}", flush=True)
     else:
         print(f"[RESULT] ALL codes pass under the corrected checker.", flush=True)
 

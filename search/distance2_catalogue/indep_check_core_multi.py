@@ -336,7 +336,10 @@ def _qr_orthonormalize(states: List[np.ndarray]) -> Tuple[np.ndarray, int]:
     return Q, Q.shape[1]
 
 def weight_enumerators_fast_from_states(states: List[np.ndarray], n: int) -> Tuple[np.ndarray, np.ndarray]:
-    r"""return A_w, B_w（w=0..n）。not construct Kronecker matrix，compute on Q^\dagger E Q directly"""
+    r"""Return the weight enumerators A_w, B_w for w = 0..n.
+
+    Computed directly on Q^\dagger E Q; the Kronecker matrix is never formed.
+    """
     Q, r = _qr_orthonormalize(states)   # (2^n, r)
     QH = Q.conj().T                     # (r, 2^n)
     cache = _build_pauli_action_cache(n)

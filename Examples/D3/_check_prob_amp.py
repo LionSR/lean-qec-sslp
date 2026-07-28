@@ -81,5 +81,5 @@ for fn in sorted(glob.glob(os.path.join(os.path.dirname(__file__), "BD16v*.lean"
           + ("" if file_ok else f"  MISMATCH={mism}"))
 
 print("\n" + ("ALL 12 BD16 EXAMPLES CONSISTENT: prob(s) == |amp(s)|^2, sum=1"
-              if all_ok else "INCONSISTENCY FOUND — see FAIL rows"))
+              if all_ok else "INCONSISTENCY FOUND -- see FAIL rows"))
 sys.exit(0 if all_ok else 1)
