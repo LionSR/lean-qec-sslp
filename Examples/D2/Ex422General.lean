@@ -102,8 +102,7 @@ theorem ex422General_ok (p4 p5 : ℚ)
     · intro x hx
       simp [prob0, hx]
     · intro x hx
-      have : 0 ≤ (1 : ℚ) / 2 := by norm_num
-      simpa [prob0, hx] using this
+      simp [prob0, hx]
     · calc
         (∑ x ∈ supp0, prob0 x) = (1 : ℚ) / 2 + (1 : ℚ) / 2 := by
           unfold supp0
