@@ -251,3 +251,7 @@ On Windows, run the `.sh` scripts under Git Bash rather than WSL, so the `lake` 
 - The independent Python checker builds its state vectors from the numerical `P_list`
   while the exact-`Fraction` branch reads the separate `states` array; the two
   representations are not cross-checked against each other.
+- The distance-3 constructive files certify representative points of parameter
+  families, not every member (C.3).
+- Completeness of the distance-2 catalogue is a systematic bounded search over the
+  declared grid, not a proved classification (B.I.3).
