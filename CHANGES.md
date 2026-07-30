@@ -226,8 +226,8 @@ from a fresh clone: the catalogue details are read straight out of
 ```bash
 lake exe cache get                       # 10–25 min
 
-lake build SS Examples                   # whole library + every example and no-go
-lake build Catalogue                     # umbrella catalogue_all_ok
+lake build SS Examples                   # 7955 jobs; SS 38/38 and Examples 31/31 modules
+lake build Catalogue                     # 7946 jobs; umbrella catalogue_all_ok
 
 JOBS=15 bash search/distance2_catalogue/lean_certification/pure/compile_all.sh   # ~4 h
 python search/distance2_catalogue/rerun_indep_check_fixed.py                     # ~2 h

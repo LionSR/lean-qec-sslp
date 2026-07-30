@@ -19,14 +19,26 @@ here is reproducible from a fresh clone with the commands in the last section.
 Run from the repository root on the compute host:
 
 ```
-lake build SS Examples     ->  Build completed successfully (7947 jobs)
+lake build SS Examples     ->  Build completed successfully (7955 jobs)
 lake build Catalogue       ->  Build completed successfully (7946 jobs)
 ```
 
-The first covers the whole `SS` library — including the six bridge files — and every
-file under `Examples/`: the eight worked distance-2 examples, the twelve BD16
-distance-3 examples, and both no-go developments. The second builds the 29 packed
-chunks and the umbrella theorem `catalogue_all_ok`.
+Both report no errors and no warnings.
+
+The first command reaches **every module of both libraries**: 38 of 38 under `SS/`
+and 31 of 31 under `Examples/`, counted as the transitive import closure of the two
+library roots. That includes the six bridge files, the `SS/LambdaV2` families, the
+nine worked distance-2 examples, the twelve BD16 distance-3 examples, and both no-go
+developments. The second command builds the 29 packed chunks and the umbrella theorem
+`catalogue_all_ok`.
+
+Lake's default `globs` is `roots.map .one`, so a module reaches the build only if it
+is in the import closure of `SS.lean` or `Examples.lean`. Both roots are complete:
+
+```bash
+# every .lean under SS/ and Examples/ is imported, directly or transitively
+lake build SS Examples
+```
 
 No `sorry` and no custom `axiom` declaration appears anywhere in the branch.
 
