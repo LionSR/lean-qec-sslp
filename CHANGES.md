@@ -241,6 +241,23 @@ On Windows, run the `.sh` scripts under Git Bash rather than WSL, so the `lake` 
 
 ---
 
+## 4b. The declared search grid and what "distinct" means
+
+The catalogue is the output of a bounded search over the grid declared in
+`search/distance2_catalogue/run_search_multi.py`:
+
+```python
+N_LIST = [4, 5, 6]            # qubit numbers
+K_LIST = [2, 3, 4]            # code dimensions
+M_LIST = list(range(2, 21))   # moduli m = 2 .. 20
+```
+
+Deduplication is by `_hit_key` in `search/distance2_catalogue/sslp_search_multi.py`,
+the tuple `(n, m, K, a, s_list)` — qubit number, modulus, code dimension, site-weight
+vector, residue assignment — with no further identification, in particular none under
+qubit permutation. That is what "14,116 **distinct** records" means. The search is
+systematic within this grid; it is not a proved classification (see §5).
+
 ## 5. Known gaps
 
 - No Lean certificate for the controlled-phase `((6,4,2))` example (A.3(a)).
