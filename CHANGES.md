@@ -261,7 +261,6 @@ systematic within this grid; it is not a proved classification (see §5).
 ## 5. Known gaps
 
 - No Lean certificate for the controlled-phase `((6,4,2))` example (A.3(a)).
-- `BD16_1112226` has no KL-level reduction; it remains an algebraic `no_solution` (C.3).
 - No external QEC library is imported (B.III).
 - The correspondence between the manuscript's general Family II and the fixed-parameter
   `SS/LambdaV2` theorems has not been checked theorem by theorem (B.II.2).
