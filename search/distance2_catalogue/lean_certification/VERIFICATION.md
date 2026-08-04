@@ -4,6 +4,10 @@ What was actually compiled and measured for this branch, so that every claim mad
 the surrounding READMEs can be traced to a run rather than taken on trust. Everything
 here is reproducible from a fresh clone with the commands in the last section.
 
+This file is the single source for the measured figures of the branch: job counts,
+module counts, axiom-audit totals and re-verification counts. `CHANGES.md` explains
+what was changed and why, and points here rather than repeating the numbers.
+
 ## Environment
 
 | | |
@@ -12,23 +16,26 @@ here is reproducible from a fresh clone with the commands in the last section.
 | Mathlib | pinned at `fc278a179e431ed10630af63fc05481680c0c7bd` (`lake-manifest.json`) |
 | Compute host | 56-core Intel Xeon w9-3495x, 1 TB RAM, Windows |
 | Python host | Intel i9-12900KS, 128 GB RAM, Windows |
-| Dates | 2026-07-27 / 2026-07-28 |
+| Dates | 2026-07-27 / 2026-07-28; kernel-only distance-3 work 2026-08-03 / 2026-08-04 |
 
 ## Whole-library type-check
 
 Run from the repository root on the compute host:
 
 ```
-lake build SS Examples     ->  Build completed successfully (7955 jobs)
-lake build Catalogue       ->  Build completed successfully (7946 jobs)
+lake build SS Examples     ->  Build completed successfully (7972 jobs)
+lake build Catalogue       ->  Build completed successfully (7954 jobs)
 ```
 
 Both report no errors and no warnings.
 
-The first command reaches **every module of both libraries**: 38 of 38 under `SS/`
-and 31 of 31 under `Examples/`, counted as the transitive import closure of the two
-library roots. That includes the six bridge files, the `SS/LambdaV2` families, the
-nine worked distance-2 examples, the twelve BD16 distance-3 examples, and both no-go
+The first command reaches **every module of both libraries**: 40 of 40 under `SS/`
+and 44 of 44 under `Examples/`, counted as the transitive import closure of the two
+library roots. That includes the six bridge files, the `SS/FamilyI` and
+`SS/FamilyII` analytical families, the `SS/LambdaV2` families of the supplementary
+notes, the integer mirror (`SS/ZSqrt235i.lean`, `SS/ZFullKLEval.lean`), the worked
+distance-2 examples including the residue-degenerate `((6,4,2))` code, the twelve
+BD16 distance-3 examples with their kernel-only counterparts, and both no-go
 developments. The second command builds the 29 packed chunks and the umbrella theorem
 `catalogue_all_ok`.
 
@@ -102,7 +109,7 @@ catalogue, reading `data/codes_all_details_multi_allK.zip` in place.
 | Raw hits checked | 111,315 |
 | Passing | **111,315** |
 | Failing | 0 |
-| Wall clock | 8,147 s |
+| Wall clock | 6,587 s (two invocations covering the catalogue once: records 0-89999, then `--start 90000`) |
 
 Recorded in [`../rerun_fixed_summary.json`](../rerun_fixed_summary.json). The checker
 is numerical — Knill–Laflamme matrix elements, the transversal-phase check and the
@@ -110,6 +117,41 @@ weight enumerators are evaluated in `float64` against a `1e-8` tolerance — apa
 the cross-state Z-expectation equalities, which it compares in exact `Fraction`
 arithmetic. It is an independent check by a different method, not a second exact one;
 the exact-arithmetic guarantee is what `pure/` provides.
+
+The checker also compares its own two representations of a logical state against each
+other (`crosscheck_terms_vs_problist`): the vectors used for the Knill-Laflamme and
+transversality checks are built from the numerical `P_list`, while the exact
+Z-expectation branch reads the separate `states` dump, and nothing previously forced
+the two to describe the same state. Perturbing a single `prob_fraction` entry makes
+the record fail, so the comparison is not vacuous.
+
+## Kernel-only certification beyond the distance-2 catalogue
+
+The Lean kernel cannot reduce `Rat` arithmetic — even `(3 : ℚ) + 4 = 7` is not closed
+by `decide`, because every `Rat` operation rebuilds a structure carrying a coprimality
+proof — while `Int` arithmetic is GMP-backed and the enumeration of all 16,384 Pauli
+strings on seven qubits reduces without difficulty. Each remaining construction is
+therefore mirrored over the integers and transported back (`SS/ZSqrt235i.lean`,
+`SS/ZFullKLEval.lean`).
+
+| Object | Top-level theorem | Axioms |
+|---|---|---|
+| 12 distance-3 BD16 constructions | `BD16v*Kernel.qec_kernel` | `[propext, Classical.choice, Quot.sound]` |
+| 12 distance-3 certificates | `BD16v*Kernel.isDistance3_kernel` | same |
+| no-go `a = (1,1,1,2,2,2,6)` | `BD16_1112226.no_KL_state` | same |
+| no-go `a = (0,1,1,2,3,3,5)` | `BD16_0112335.no_KL_state` | same |
+| residue-degenerate `((6,4,2))` | `Ex642ControlledPhase.hasDistance_kernel` | same |
+| Family II (even parity) | `SS.FamilyII.detects` | same |
+
+`Lean.ofReduceBool` and `Lean.trustCompiler` occur in none of them. The `native_decide`
+originals are kept alongside: they build in seconds rather than minutes, so each file
+offers both routes.
+
+Two checks guard against a theorem that is true but empty. `BD16v7Kernel.qec_kernel`
+inhabits the same type as the original `BD16v7.qec`, so the kernel-only version states
+the same proposition rather than a weaker one; and `Ex642ControlledPhase.normalized`
+records that the logical states are unit vectors, without which `SS.Detects` would be
+satisfied vacuously by the zero family.
 
 ## Generator reproducibility
 

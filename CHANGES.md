@@ -10,6 +10,12 @@ B.III, C.2, C.3).
 
 ---
 
+This file explains what changed on the branch and why, organised by referee point.
+The measured figures it refers to — job counts, module counts, axiom-audit totals,
+re-verification counts — live in
+[`search/distance2_catalogue/lean_certification/VERIFICATION.md`](search/distance2_catalogue/lean_certification/VERIFICATION.md),
+which records what was actually run.
+
 ## 1. Read these six files
 
 Everything else is either a small edit or machine-generated. The substance of the
@@ -287,12 +293,15 @@ from a fresh clone: the catalogue details are read straight out of
 ```bash
 lake exe cache get                       # 10–25 min
 
-lake build SS Examples                   # 7955 jobs; SS 38/38 and Examples 31/31 modules
-lake build Catalogue                     # 7946 jobs; umbrella catalogue_all_ok
+lake build SS Examples                   # whole library and all examples
+lake build Catalogue                     # umbrella catalogue_all_ok
 
 JOBS=15 bash search/distance2_catalogue/lean_certification/pure/compile_all.sh   # ~4 h
 python search/distance2_catalogue/rerun_indep_check_fixed.py                     # ~2 h
 ```
+
+The job counts, module counts and timings these commands produce are recorded in
+[`VERIFICATION.md`](search/distance2_catalogue/lean_certification/VERIFICATION.md).
 
 Measured results, environment and versions:
 [`VERIFICATION.md`](search/distance2_catalogue/lean_certification/VERIFICATION.md).
@@ -316,17 +325,22 @@ M_LIST = list(range(2, 21))   # moduli m = 2 .. 20
 Deduplication is by `_hit_key` in `search/distance2_catalogue/sslp_search_multi.py`,
 the tuple `(n, m, K, a, s_list)` — qubit number, modulus, code dimension, site-weight
 vector, residue assignment — with no further identification, in particular none under
-qubit permutation. That is what "14,116 **distinct** records" means. The search is
-systematic within this grid; it is not a proved classification (see §5).
+qubit permutation. That is what "14,116 **distinct** records" means.
+
+What the number is, and what it is not: the enumeration visits every canonical parameter
+tuple in the declared ranges and retains what survives the guards, the linear-programming
+stage and exactification.  It is a systematic search over a bounded grid, not a
+classification theorem.  The feasibility stage is a numerical linear program, so a false
+negative near a feasibility boundary cannot be excluded from the output alone; and the
+nondegenerate-residue and union-distance conditions are part of the ansatz rather than of
+the problem, so codes outside them are not sought — the residue-degenerate ((6,4,2))
+construction of Sec. III C is one such code, and this sweep cannot find it (B.I.2, B.I.3).
 
 ## 5. Known gaps
 
-- No external QEC library is imported (B.III).
 - `SS/LambdaV2/FamilyA-E.lean` quantify over the amplitude parameter at fixed code
   parameters `(n, m, w, S)`, not over the code parameters themselves.  They formalize
   the lambda families of `notes/lambda_families/lambdav2.tex`, which are a different
   construction from the manuscript's Family II; the two should not be conflated.
 - The distance-3 constructive files certify representative points of parameter
   families, not every member (C.3).
-- Completeness of the distance-2 catalogue is a systematic bounded search over the
-  declared grid, not a proved classification (B.I.3).
