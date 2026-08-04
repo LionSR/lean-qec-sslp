@@ -271,6 +271,36 @@ def verify_transversal_U_multi(a: List[int], m: int, s_list: List[int],
 # Exact Z from terms (Fraction + tolerant fallback)
 # ----------------------------
 
+def crosscheck_terms_vs_problist(n: int,
+                                 bits: np.ndarray,
+                                 S_idx: np.ndarray,
+                                 terms: List[Dict[str, Any]],
+                                 p_num: np.ndarray,
+                                 tol: float) -> List[str]:
+    """Check the two state representations against each other.
+
+    The Knill--Laflamme and transversality checks run on state vectors built from
+    the numerical `P_list`; the exact `Z`-expectation branch reads the separate
+    `states` dump.  Nothing forced the two to describe the same state, so a
+    disagreement between them would have gone unnoticed.  This compares the exact
+    probabilities against the numerical ones on the support, and rejects any exact
+    mass sitting off the support.
+    """
+    problems: List[str] = []
+    prob_map, _ = terms_to_prob_map(terms)
+    support_kets = set()
+    for pos, idx in enumerate(S_idx.tolist()):
+        ket = "".join(str(int(b)) for b in bits[idx])
+        support_kets.add(ket)
+        pr_exact = float(prob_map.get(ket, Fraction(0, 1)))
+        if abs(pr_exact - float(p_num[pos])) > tol:
+            problems.append("terms_vs_P_list_mismatch")
+            break
+    if [k for k, v in prob_map.items() if k not in support_kets and v != 0]:
+        problems.append("terms_mass_off_support")
+    return problems
+
+
 def exact_Z_expectations_from_terms(n: int,
                                     bits: np.ndarray,
                                     S_idx: np.ndarray,
@@ -510,6 +540,11 @@ def check_one_hit_multi(h: Dict[str, Any],
         Z_exact_frac = []  # fraction version if all exact
 
         for j in range(K):
+            xprob = crosscheck_terms_vs_problist(n, bits, S_list[j], states_dump[j],
+                                                 P_list[j], TOL)
+            if xprob:
+                exact_ok = False
+                exact_reasons.extend(f"{r}_block_{j}" for r in xprob)
             Zj_frac, all_exact_j = exact_Z_expectations_from_terms(n, bits, S_list[j], states_dump[j])
             exact_all_frac = exact_all_frac and all_exact_j
             Z_exact_frac.append(Zj_frac)

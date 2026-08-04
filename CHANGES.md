@@ -181,6 +181,16 @@ precision. This is an overall sign on a single Pauli and changes no verdict — 
 checker only compares `|⟨j|Yᵢ|j⟩ − ⟨0|Yᵢ|0⟩|` and `|⟨r|Yᵢ|s⟩|` against a tolerance,
 and the enumerators use `|tr M|²` and `‖M‖_F²`.
 
+The checker also cross-checks its own two representations of a logical state, which it
+previously did not.  The Knill--Laflamme and transversality checks run on vectors built
+from the numerical `P_list`, while the exact `Z`-expectation branch reads the separate
+`states` dump; nothing forced the two to describe the same state, so a disagreement
+between them would have gone unnoticed.  `crosscheck_terms_vs_problist` now compares the
+exact probabilities against the numerical ones on the support and rejects exact mass
+sitting off the support.  Re-running the whole catalogue with the check in place gives
+111,315/111,315 passing, so the two representations do agree throughout; perturbing a
+single `prob_fraction` entry makes the record fail, so the check is not vacuous.
+
 `verify_transversal_U_multi` now checks the advertised logical phase directly:
 `U|ψ_j⟩` must equal `ω^{s_j}|ψ_j⟩` as a vector *and* the ratio
 `⟨ψ_j|U|ψ_j⟩ / ω^{s_j}` must equal 1.
@@ -316,9 +326,6 @@ systematic within this grid; it is not a proved classification (see §5).
   parameters `(n, m, w, S)`, not over the code parameters themselves.  They formalize
   the lambda families of `notes/lambda_families/lambdav2.tex`, which are a different
   construction from the manuscript's Family II; the two should not be conflated.
-- The independent Python checker builds its state vectors from the numerical `P_list`
-  while the exact-`Fraction` branch reads the separate `states` array; the two
-  representations are not cross-checked against each other.
 - The distance-3 constructive files certify representative points of parameter
   families, not every member (C.3).
 - Completeness of the distance-2 catalogue is a systematic bounded search over the

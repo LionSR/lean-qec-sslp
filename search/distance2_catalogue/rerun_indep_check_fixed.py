@@ -8,7 +8,7 @@ any of the ~111k catalogue records, i.e. that the 14,116 canonical results are
 unaffected.
 
 Usage:
-    python rerun_indep_check_fixed.py [--limit N]
+    python rerun_indep_check_fixed.py [--start K] [--limit N]
 Outputs a summary to stdout and writes rerun_fixed_summary.json.
 """
 import json, os, sys, argparse, time, zipfile
@@ -51,12 +51,16 @@ def main():
                          "shipped data/codes_all_details_multi_allK.zip is read "
                          "in place (or the extracted JSON if present)")
     ap.add_argument("--limit", type=int, default=0, help="0 = all")
+    ap.add_argument("--start", type=int, default=0,
+                    help="skip this many records; lets a long run be split")
     ap.add_argument("--out", default=os.path.join(HERE, "rerun_fixed_summary.json"))
     args = ap.parse_args()
 
     t0 = time.time()
     print(f"[load] {args.in_json or JSONZ}", flush=True)
     hits = load_hits(args.in_json)
+    if args.start:
+        hits = hits[args.start:]
     if args.limit:
         hits = hits[:args.limit]
     total = len(hits)
