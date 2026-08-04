@@ -89,7 +89,10 @@ This directory contains the shared formal machinery for:
 - diagonal action,
 - Z-type Knill-Laflamme constraints,
 - distance-3 verification support,
-- analytical family formalization.
+- analytical family formalization (`SS/FamilyI/` and `SS/FamilyII.lean`),
+- an integer mirror of the exact number field (`SS/ZSqrt235i.lean`,
+  `SS/ZFullKLEval.lean`) used to certify the distance-3 constructions in the Lean
+  kernel alone.
 
 ### 5. Lean formalization: concrete examples
 
@@ -100,8 +103,8 @@ The example-specific Lean certificates are in:
 
 Roughly:
 
-- `Examples/D2/` contains representative distance-2 examples corresponding to the catalogue side of the paper,
-- `Examples/D3/` contains exact BD16 distance-3 examples and no-go formalizations.
+- `Examples/D2/` contains representative distance-2 examples corresponding to the catalogue side of the paper, together with `Ex642ControlledPhase.lean`, the residue-degenerate `((6,4,2))` code of Sec. III C,
+- `Examples/D3/` contains exact BD16 distance-3 examples and no-go formalizations, together with the `*Kernel.lean` modules that certify each construction using the kernel alone.
 
 ### 6. Supplemental notes and historical working material
 

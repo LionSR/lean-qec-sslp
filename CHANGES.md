@@ -126,6 +126,29 @@ base and points to `pure/`.
    original `BD16v7.qec`, so the kernel-only version states the same proposition rather
    than a weaker one. The originals are left in place; they remain the cheaper route.
 
+5. **The two remaining constructions are certified as well.**
+
+   - `Examples/D2/Ex642ControlledPhase.lean`: the residue-degenerate `((6,4,2))`
+     controlled-phase code of Sec. III C.  Three of its four logical states share the
+     residue value 0, so `ExampleData.OK` -- whose second conjunct is the residue-shift
+     screen -- does not apply, and the Knill--Laflamme conditions are verified directly
+     in the Hilbert space.  The amplitudes are all `+-1/4`; the check runs over the
+     integer mirror and is transported by `innerC_eq`.  `hasDistance_kernel` states
+     `SS.HasDistance psi 2`, and `normalized` records that the states are unit vectors,
+     without which `Detects` would be satisfied vacuously by the zero family.
+   - `SS/FamilyII.lean`: the even-parity subset-sum family of Sec. III B, as a theorem
+     quantified over the code parameters `(n, m, K, w, S)` under two hypotheses --
+     distinct residues and column balance.  Every single-qubit `X` or `Y` error takes an
+     even-parity string to an odd-parity one, hence out of every support, so those
+     matrix elements vanish for combinatorial reasons (`hammingWt_flip`,
+     `innerC_of_flip`); the `Z` constraints follow from column balance
+     (`signed_count_zero`).  The statement is proved for arbitrary amplitudes that are
+     constant on each support and normalized, which covers the uniform superpositions of
+     the manuscript without introducing square roots.
+
+   With these, every construction, family and no-go result reported in the paper has a
+   Lean certificate whose trusted base is the kernel and the three Mathlib axioms.
+
 ### A.3(c) — linking probability and amplitude
 
 `SS/BD16Defs.lean` adds
@@ -288,10 +311,11 @@ systematic within this grid; it is not a proved classification (see §5).
 
 ## 5. Known gaps
 
-- No Lean certificate for the controlled-phase `((6,4,2))` example (A.3(a)).
 - No external QEC library is imported (B.III).
-- The correspondence between the manuscript's general Family II and the fixed-parameter
-  `SS/LambdaV2` theorems has not been checked theorem by theorem (B.II.2).
+- `SS/LambdaV2/FamilyA-E.lean` quantify over the amplitude parameter at fixed code
+  parameters `(n, m, w, S)`, not over the code parameters themselves.  They formalize
+  the lambda families of `notes/lambda_families/lambdav2.tex`, which are a different
+  construction from the manuscript's Family II; the two should not be conflated.
 - The independent Python checker builds its state vectors from the numerical `P_list`
   while the exact-`Fraction` branch reads the separate `states` array; the two
   representations are not cross-checked against each other.
