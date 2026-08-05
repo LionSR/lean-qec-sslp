@@ -141,11 +141,24 @@ therefore mirrored over the integers and transported back (`SS/ZSqrt235i.lean`,
 | no-go `a = (1,1,1,2,2,2,6)` | `BD16_1112226.no_KL_state` | same |
 | no-go `a = (0,1,1,2,3,3,5)` | `BD16_0112335.no_KL_state` | same |
 | residue-degenerate `((6,4,2))` | `Ex642ControlledPhase.hasDistance_kernel` | same |
+| Family I (`C₀ = {0ⁿ, 1ⁿ}`) | `SS.FamilyI.familyI_OK` | same |
 | Family II (even parity) | `SS.FamilyII.detects` | same |
 
 `Lean.ofReduceBool` and `Lean.trustCompiler` occur in none of them. The `native_decide`
 originals are kept alongside: they build in seconds rather than minutes, so each file
 offers both routes.
+
+These are not assertions of this document. `Examples/AxiomAudit.lean` prints the
+axiom dependency of all 31 theorems above, and its output is archived as
+`Examples/AxiomAudit.txt`. Measured 2026-08-05 on the pinned toolchain: 31 reports,
+all `[propext, Classical.choice, Quot.sound]`; `lake build Examples.AxiomAudit`
+completed 7,937 jobs in 7 min 53 s. To regenerate and check from a fresh clone:
+
+```bash
+lake env lean Examples/AxiomAudit.lean > Examples/AxiomAudit.txt
+grep -c 'depends on axioms'                Examples/AxiomAudit.txt   # 31
+grep -c 'ofReduceBool\|trustCompiler'      Examples/AxiomAudit.txt   # 0
+```
 
 Two checks guard against a theorem that is true but empty. `BD16v7Kernel.qec_kernel`
 inhabits the same type as the original `BD16v7.qec`, so the kernel-only version states

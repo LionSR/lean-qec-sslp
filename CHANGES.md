@@ -132,6 +132,12 @@ base and points to `pure/`.
    original `BD16v7.qec`, so the kernel-only version states the same proposition rather
    than a weaker one. The originals are left in place; they remain the cheaper route.
 
+   `Examples/AxiomAudit.lean` collects this audit for everything outside the distance-2
+   catalogue — the twenty-four theorems above, the `((6,4,2))` controlled-phase code, the
+   two no-go theorems and the two analytical families, thirty-one in all — and its output
+   is archived as `Examples/AxiomAudit.txt`. The catalogue's own per-record audit is
+   separate, in `search/distance2_catalogue/lean_certification/pure/axioms/`.
+
 5. **The two remaining constructions are certified as well.**
 
    - `Examples/D2/Ex642ControlledPhase.lean`: the residue-degenerate `((6,4,2))`
