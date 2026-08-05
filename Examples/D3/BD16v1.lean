@@ -28,6 +28,9 @@ From `4|0_L⟩ = 1, √3, √3, √2, √2, 1, 2i` on the 7 support strings:
 ## Expected results
 - Layer 1 (SS + BD + normalization + Z-balance): passes
 - Non-automatic weight-≤2 KL constraints: exactly 25 (Proposition 5.4)
+  Counted on the support this file uses, a 7-element subset of the 18-element
+  residue class.  The corresponding count on the residue class itself is 83;
+  that is the figure the classification table of the paper reports.
 - Layer 2 (full KL, weight ≤ 2): passes via `native_decide`
 -/
 

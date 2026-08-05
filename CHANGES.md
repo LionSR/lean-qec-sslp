@@ -258,6 +258,12 @@ actually run. Manuscript wording is not part of this branch.
 
 ### C.3 — scope of the distance-3 classification
 
+Two counts of "non-automatic weight-≤2 constraints" appear for the same weight
+vector and are not the same quantity.  Applied to the residue class $C_{S_0}$ the
+screen leaves 83 of the 210 constraints; applied to the support an exact solution
+actually occupies — a 7-element subset of that 18-element class — it leaves 25.
+`Examples/D3/BD16v1.lean` evaluates the 25, and its header now says so.
+
 For `a = (0,1,1,2,3,3,5)`, the no-go now reads at the level of quantum states rather
 than an algebraic system: `no_KL_state` in
 [`Examples/D3/NoGo/BD16_0112335.lean`](Examples/D3/NoGo/BD16_0112335.lean) says no
