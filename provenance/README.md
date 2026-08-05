@@ -36,10 +36,11 @@ read side by side with it.
 | Stage | Model | Form | Record |
 |---|---|---|---|
 | Distance-2 seed | GPT-5.0 | human posing a worked example directly; no agent | `seed_522.tex`; arXiv:2510.20728v1 §2.3 |
-| Distance-2 search and synthesis | GPT-5.0 | TeXRA | *(to be supplied)* |
-| Distance-3 and Lean formalization | GPT-5.2 | TeXRA, staged agents reporting per stage | *(to be supplied)* |
+| Distance-2 search and synthesis | GPT-5.0 | TeXRA | *(not retained)* |
+| Distance-3 and Lean formalization | GPT-5.2 | TeXRA, staged agents reporting per stage | *(not retained)* |
 
-Cells marked *(to be supplied)* are recorded as empty rather than reconstructed.
+Cells marked *(not retained)* are empty because the sessions were never exported;
+they are left empty rather than reconstructed after the fact.
 Lean entered the workflow only at the GPT-5.2 stage.
 
 ## TeXRA
