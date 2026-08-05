@@ -33,9 +33,11 @@ Two properties of the protocol matter more than the interface:
 The historical sessions themselves cannot be replayed: no prompt, sampling
 parameter, random seed, tool-permission snapshot, session transcript, or
 failed-attempt log was exported at the time, and none is reconstructed here. What
-is on record is the interface, the model version in use at each stage (GPT-5.0
-for the distance-2 work, GPT-5.2 for the distance-3 analysis and the Lean
-formalization), and the one contemporaneous input record that survives, released
+is on record is the interface, the model version in use at each stage as the
+interface reported it (GPT-5.0 for the distance-2 work, GPT-5.2 for the
+distance-3 analysis and the Lean formalization; these are the labels the
+interface exposed, not dated API snapshot identifiers), and the one
+contemporaneous input record that survives, released
 as [`provenance/seed_522.tex`](provenance/seed_522.tex).
 
 
