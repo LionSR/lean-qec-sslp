@@ -206,14 +206,15 @@ The same semantic core also covers distance 3:
 All four bridge files are pure-kernel and contain no `sorry`.
 
 The converse direction — a hypothetical code in the ansatz yields a solution of the
-reduced system — is formalized for **one** of the two distance-3 no-go cases:
+reduced system — is formalized for **both** distance-3 no-go cases:
 [`Examples/D3/NoGo/Bridge.lean`](../../../Examples/D3/NoGo/Bridge.lean) together with
-`KLSubsys_of_KL` and `no_KL_state` do it for `a = (0,1,1,2,3,3,5)`, so that result now
-reads "no quantum state satisfies the Knill–Laflamme conditions for the Pauli errors
-of weight ≤ 2" rather than "this algebraic system has no solution". The second case,
-`BD16_1112226`, still has only the algebraic `no_solution` on `Fin 10 → ℂ`; supplying
-its reduction would mean writing a derivation comparable to the 766-line one in
-`BD16_0112335_FromKL.lean`, and it has not been done.
+`KLSubsys_of_KL` and `no_KL_state` do it for `a = (0,1,1,2,3,3,5)`, and
+[`BD16_1112226_FromKL.lean`](../../../Examples/D3/NoGo/BD16_1112226_FromKL.lean)
+does the same for `a = (1,1,1,2,2,2,6)` over its own 17-constraint subsystem. Both
+results therefore read "no normalized state satisfies the Knill–Laflamme conditions
+for the Pauli errors of weight ≤ 2" rather than "this algebraic system has no
+solution", and both axiom reports are in
+[`Examples/AxiomAudit.txt`](../../../Examples/AxiomAudit.txt).
 
 ### Distance-3 examples also carry QEC statements
 

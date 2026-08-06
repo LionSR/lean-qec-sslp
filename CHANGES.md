@@ -282,9 +282,14 @@ weight ≤ 2. Its hypotheses are restricted to weight ≤ 2 deliberately; an unr
 version is contradicted by normalization alone and would rule out nothing. The
 docstring records why.
 
-The second exclusion, `BD16_1112226`, still stops at the algebraic `no_solution`. Its
-reduction would mean writing a derivation comparable to the 766-line one in
-`BD16_0112335_FromKL.lean`, and it has not been done.
+An earlier version of this section recorded that the second exclusion,
+`BD16_1112226`, stopped at the algebraic `no_solution`. Its reduction has since been
+written: [`Examples/D3/NoGo/BD16_1112226_FromKL.lean`](Examples/D3/NoGo/BD16_1112226_FromKL.lean)
+carries `KLSubsys` (17 constraints: normalization, seven diagonal `Z_j`, nine
+off-diagonal of weight ≤ 2), `KLSubsys_of_KL` reducing any genuine KL solution to it,
+and `no_KL_state`. The two exclusions therefore now have the same formal status,
+stated at the Knill–Laflamme level in both cases, with axiom reports in
+[`Examples/AxiomAudit.txt`](Examples/AxiomAudit.txt).
 
 ---
 
