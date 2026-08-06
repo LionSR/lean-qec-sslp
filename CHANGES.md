@@ -334,10 +334,30 @@ K_LIST = [2, 3, 4]            # code dimensions
 M_LIST = list(range(2, 21))   # moduli m = 2 .. 20
 ```
 
-Deduplication is by `_hit_key` in `search/distance2_catalogue/sslp_search_multi.py`,
-the tuple `(n, m, K, a, s_list)` — qubit number, modulus, code dimension, site-weight
-vector, residue assignment — with no further identification, in particular none under
-qubit permutation. That is what "14,116 **distinct** records" means.
+Deduplication happens in two stages, and an earlier version of this section described
+only the first and mislabelled it as the whole.
+
+`_hit_key` in `search/distance2_catalogue/sslp_search_multi.py` is the tuple
+`(n, m, K, a, s_list)` — qubit number, modulus, code dimension, site-weight vector,
+residue assignment. It guards the search loop against revisiting a parameter tuple, but
+it merges nothing: the sweep accepts **111,315** records and all 111,315 of these tuples
+are already distinct, because weight vectors are emitted in non-decreasing order and
+residue tuples increasing, so no two accepted records carry the same key.
+
+The reduction to the catalogue is by the **Shor–Laflamme weight enumerators** `(A, B)`,
+computed in `sslp_weight.py` and stored in every record: two records are identified when
+their enumerators agree. That is what takes 111,315 to **14,116**, and that is what
+"14,116 **distinct** codes" means.
+
+Because `A` and `B` are invariant under qubit permutations and under local unitaries,
+records with different enumerators are inequivalent codes, so the 14,116 are pairwise
+inequivalent. The converse does not hold — two inequivalent codes can share an
+enumerator — so 14,116 is a lower bound on the number of inequivalent codes the sweep
+reached, not a count of them.
+
+[`dedup_by_enumerator.py`](search/distance2_catalogue/dedup_by_enumerator.py) rebuilds
+`data/codes_summary_multi_allK_nondegenerate.csv` from the shipped record dump and
+reports both figures, so this paragraph can be checked rather than believed.
 
 What the number is, and what it is not: the enumeration visits every canonical parameter
 tuple in the declared ranges and retains what survives the guards, the linear-programming
