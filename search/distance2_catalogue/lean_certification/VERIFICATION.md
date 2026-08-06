@@ -99,10 +99,32 @@ cat Chunk*.txt | grep -c 'ofReduceBool\|trustCompiler'    # 0
 cat Chunk*.txt | sed 's/.*depends on axioms: //' | sort -u  # one line
 ```
 
+## The two catalogue counts
+
+The sweep and the catalogue are counted differently, and both numbers appear in the
+paper, so they are recorded together here.
+
+| | | measured by |
+|---|---|---|
+| Accepted records | 111,315 | `dedup_by_enumerator.py` |
+| Distinct `(n, m, K, a, s_list)` among them | 111,315 | same |
+| Distinct Shor–Laflamme enumerators `(A, B)` | **14,116** | same |
+| Rows in the shipped summary CSV | 14,116 | same, `--check` |
+
+The parameter-tuple key merges nothing — the sweep emits weight vectors in
+non-decreasing order and residue tuples increasing, so no two accepted records share
+one. The reduction to the catalogue is by the weight enumerators, and
+`dedup_by_enumerator.py --check` confirms that the enumerator set of the shipped CSV
+is exactly the enumerator set of the record dump. Since `A` and `B` are invariant
+under qubit permutations and local unitaries, the 14,116 are pairwise inequivalent;
+records sharing an enumerator were collapsed, so the number is a lower bound on the
+inequivalent codes the sweep reached rather than a classification.
+
 ## Independent Python re-verification
 
 `rerun_indep_check_fixed.py` re-runs the independent checker over the complete
-catalogue, reading `data/codes_all_details_multi_allK.zip` in place.
+catalogue, reading `data/codes_all_details_multi_allK.zip` in place. The 111,315 it
+checks are the accepted records above, not the 14,116 catalogue entries.
 
 | | |
 |---|---|

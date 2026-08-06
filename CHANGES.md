@@ -5,8 +5,8 @@ reports. It is organised so that each change can be traced to the point of the
 response letter it answers, and so that a reviewer can confirm the central claims by
 running a few commands rather than reading 14,116 generated code records.
 
-Section labels below are those of `response_to_referees.tex` (A.3(a)–(d), B.II.1–3,
-B.III, C.2, C.3).
+Section labels below are those of `response_to_referees.tex` (A.3(a)–(d), B.2.1–3,
+B.3, C.2, C.3).
 
 ---
 
@@ -66,10 +66,14 @@ kernel-check support and the residue screen, **seven** kernel-check normalizatio
 filtered residue class to which the explicit normalization lemmas do not apply. Each
 example's module docstring states its own split.
 
-**Not addressed on this branch:** no Lean certificate was added for the
-controlled-phase `((6,4,2))` example.
+An earlier version of this section recorded that no Lean certificate had been added
+for the controlled-phase `((6,4,2))` example. One has since been added:
+[`Examples/D2/Ex642ControlledPhase.lean`](Examples/D2/Ex642ControlledPhase.lean)
+proves `hasDistance_kernel` in the kernel alone, with `normalized` recording that the
+logical states are unit vectors so that `SS.Detects` is not satisfied vacuously. Its
+axiom report is in [`Examples/AxiomAudit.txt`](Examples/AxiomAudit.txt).
 
-### A.3(b) / B.II.1 — the `native_decide` trust boundary
+### A.3(b) / B.2.1 — the `native_decide` trust boundary
 
 Three things changed.
 
@@ -217,7 +221,7 @@ Per the letter, the READMEs no longer describe this path as exact rational
 verification: it is `float64` at `1e-8` throughout, except for the cross-state
 Z-expectation equalities, which use `Fraction`.
 
-### B.II.2 — what exactly is proved for all 14,116 records
+### B.2.2 — what exactly is proved for all 14,116 records
 
 The four artifact classes the letter distinguishes are now separate directories with
 separate READMEs, each stating its own packaging, mechanism and trust base:
@@ -237,7 +241,7 @@ between them, one per record. `lakefile.lean` exposes it as a `Catalogue` target
 The claim-to-theorem index the letter promises is this file together with
 [`VERIFICATION.md`](search/distance2_catalogue/lean_certification/VERIFICATION.md).
 
-### B.II.3 — small examples and a readable kernel/native decomposition
+### B.2.3 — small examples and a readable kernel/native decomposition
 
 The eight `Examples/D2/Ex*.lean` are restructured exactly along the referee's rewrite
 of `ex522_ok`: `ExampleData.OK` is split into its four conjuncts instead of one native
@@ -247,7 +251,7 @@ lemma. The lemmas are new in `SS/Verify.lean`
 `probTwo` … `probEight` combinators), so normalization of a K-point distribution is
 stated once rather than re-derived per example.
 
-### B.III — integration with external libraries
+### B.3 — integration with external libraries
 
 No external QEC library is imported. What changed is that `SS/HilbertKL.lean` now
 provides, inside this development, the general definitions such an integration needs —
@@ -366,7 +370,7 @@ classification theorem.  The feasibility stage is a numerical linear program, so
 negative near a feasibility boundary cannot be excluded from the output alone; and the
 nondegenerate-residue and union-distance conditions are part of the ansatz rather than of
 the problem, so codes outside them are not sought — the residue-degenerate ((6,4,2))
-construction of Sec. III C is one such code, and this sweep cannot find it (B.I.2, B.I.3).
+construction of Sec. III C is one such code, and this sweep cannot find it (B.1.2, B.1.3).
 
 ## 5. Known gaps
 
