@@ -1,0 +1,11795 @@
+import SS
+
+namespace Catalogue.Chunk018
+
+open SS SS.Verify
+
+/-- Catalogue code #9000: ((6,2,2)), m=14, a=[1, 5, 5, 7, 10, 13], S=[0, 11]. -/
+def code_9000 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, false, false, false, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, false, true], ![false, true, false, true, false, true], ![true, false, false, false, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9000_ok : code_9000.OK := by native_decide
+/-- Code #9000 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9000_qec :
+    ∃ ψ, SS.IsAmplitudes code_9000 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9000 code_9000_ok (by decide) (by decide)
+
+/-- Catalogue code #9001: ((6,2,2)), m=14, a=[1, 5, 5, 7, 11, 11], S=[0, 4]. -/
+def code_9001 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![false, true, true, true, true, false], ![true, false, true, false, true, true], ![true, true, false, false, true, true]}, {![false, false, false, true, false, true], ![false, true, true, false, true, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9001_ok : code_9001.OK := by native_decide
+/-- Code #9001 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9001_qec :
+    ∃ ψ, SS.IsAmplitudes code_9001 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9001 code_9001_ok (by decide) (by decide)
+
+/-- Catalogue code #9002: ((6,2,2)), m=14, a=[1, 5, 5, 7, 11, 11], S=[0, 8]. -/
+def code_9002 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, false], ![true, false, true, false, true, true], ![true, true, false, false, true, true]}, {![false, false, false, false, true, true], ![true, false, false, true, false, false], ![true, true, true, false, false, true], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9002_ok : code_9002.OK := by native_decide
+/-- Code #9002 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9002_qec :
+    ∃ ψ, SS.IsAmplitudes code_9002 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9002 code_9002_ok (by decide) (by decide)
+
+/-- Catalogue code #9003: ((6,2,2)), m=14, a=[1, 5, 5, 7, 12, 13], S=[0, 4]. -/
+def code_9003 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, false, false, false, true]}, {![false, false, false, true, true, true], ![false, false, true, false, false, true], ![false, true, false, false, false, true], ![true, false, true, false, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9003_ok : code_9003.OK := by native_decide
+/-- Code #9003 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9003_qec :
+    ∃ ψ, SS.IsAmplitudes code_9003 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9003 code_9003_ok (by decide) (by decide)
+
+/-- Catalogue code #9004: ((6,2,2)), m=14, a=[1, 5, 5, 7, 12, 13], S=[0, 11]. -/
+def code_9004 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, false, false, false, true]}, {![false, false, false, false, true, true], ![false, false, true, true, false, true], ![false, true, false, true, false, true], ![true, false, true, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9004_ok : code_9004.OK := by native_decide
+/-- Code #9004 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9004_qec :
+    ∃ ψ, SS.IsAmplitudes code_9004 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9004 code_9004_ok (by decide) (by decide)
+
+/-- Catalogue code #9005: ((6,2,2)), m=14, a=[1, 5, 5, 8, 10, 12], S=[0, 11]. -/
+def code_9005 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, false], ![true, false, true, false, true, true], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, true, true, false, true], ![true, false, false, false, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((4 : ℚ) / 7), ((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9005_ok : code_9005.OK := by native_decide
+/-- Code #9005 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9005_qec :
+    ∃ ψ, SS.IsAmplitudes code_9005 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9005 code_9005_ok (by decide) (by decide)
+
+/-- Catalogue code #9006: ((6,2,2)), m=14, a=[1, 5, 5, 8, 12, 12], S=[0, 4]. -/
+def code_9006 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, false, false], ![true, true, false, true, false, false]}, {![false, false, false, true, true, true], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9006_ok : code_9006.OK := by native_decide
+/-- Code #9006 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9006_qec :
+    ∃ ψ, SS.IsAmplitudes code_9006 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9006 code_9006_ok (by decide) (by decide)
+
+/-- Catalogue code #9007: ((6,2,2)), m=14, a=[1, 5, 5, 8, 12, 12], S=[0, 11]. -/
+def code_9007 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, true, false, true, false, false]}, {![false, false, true, true, false, true], ![false, true, false, true, false, true], ![false, true, false, true, true, false], ![true, false, false, false, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9007_ok : code_9007.OK := by native_decide
+/-- Code #9007 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9007_qec :
+    ∃ ψ, SS.IsAmplitudes code_9007 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9007 code_9007_ok (by decide) (by decide)
+
+/-- Catalogue code #9008: ((6,2,2)), m=14, a=[1, 5, 5, 10, 12, 13], S=[0, 11]. -/
+def code_9008 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![true, false, false, false, false, true], ![true, false, true, true, true, false], ![true, true, false, true, true, false]}, {![false, false, false, false, true, true], ![true, false, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((4 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9008_ok : code_9008.OK := by native_decide
+/-- Code #9008 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9008_qec :
+    ∃ ψ, SS.IsAmplitudes code_9008 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9008 code_9008_ok (by decide) (by decide)
+
+/-- Catalogue code #9009: ((6,2,2)), m=14, a=[1, 5, 5, 12, 12, 13], S=[0, 11]. -/
+def code_9009 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, true, true, true], ![true, false, false, false, false, true]}, {![false, false, false, false, true, true], ![false, false, false, true, false, true], ![true, false, false, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((4 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9009_ok : code_9009.OK := by native_decide
+/-- Code #9009 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9009_qec :
+    ∃ ψ, SS.IsAmplitudes code_9009 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9009 code_9009_ok (by decide) (by decide)
+
+/-- Catalogue code #9010: ((6,2,2)), m=14, a=[1, 5, 6, 6, 10, 12], S=[0, 11]. -/
+def code_9010 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, false, true, false, true, true], ![true, true, false, false, true, true], ![true, true, true, true, true, false]}, {![false, true, true, true, true, true], ![true, false, false, false, true, false], ![true, false, true, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-6 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9010_ok : code_9010.OK := by native_decide
+/-- Code #9010 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9010_qec :
+    ∃ ψ, SS.IsAmplitudes code_9010 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9010 code_9010_ok (by decide) (by decide)
+
+/-- Catalogue code #9011: ((6,2,2)), m=14, a=[1, 5, 6, 6, 10, 13], S=[0, 2]. -/
+def code_9011 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, false, false, false, true], ![true, true, true, true, true, false]}, {![false, false, true, false, true, false], ![false, true, true, true, false, true], ![true, false, false, true, true, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9011_ok : code_9011.OK := by native_decide
+/-- Code #9011 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9011_qec :
+    ∃ ψ, SS.IsAmplitudes code_9011 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9011 code_9011_ok (by decide) (by decide)
+
+/-- Catalogue code #9012: ((6,2,2)), m=14, a=[1, 5, 6, 6, 10, 13], S=[0, 11]. -/
+def code_9012 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, false, false, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, false, true], ![false, true, false, true, false, false], ![false, true, true, false, false, false], ![true, false, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7)]
+theorem code_9012_ok : code_9012.OK := by native_decide
+/-- Code #9012 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9012_qec :
+    ∃ ψ, SS.IsAmplitudes code_9012 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9012 code_9012_ok (by decide) (by decide)
+
+/-- Catalogue code #9013: ((6,2,2)), m=14, a=[1, 5, 6, 6, 12, 13], S=[0, 11]. -/
+def code_9013 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, false, false, false, true]}, {![false, false, false, false, true, true], ![false, false, true, true, false, true], ![false, true, false, true, false, false], ![false, true, true, false, false, false], ![true, false, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((6 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9013_ok : code_9013.OK := by native_decide
+/-- Code #9013 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9013_qec :
+    ∃ ψ, SS.IsAmplitudes code_9013 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9013 code_9013_ok (by decide) (by decide)
+
+/-- Catalogue code #9014: ((6,2,2)), m=14, a=[1, 5, 6, 7, 8, 10], S=[0, 12]. -/
+def code_9014 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, true, true, true, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}, {![false, true, false, true, false, false], ![false, true, true, true, true, false], ![true, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9014_ok : code_9014.OK := by native_decide
+/-- Code #9014 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9014_qec :
+    ∃ ψ, SS.IsAmplitudes code_9014 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9014 code_9014_ok (by decide) (by decide)
+
+/-- Catalogue code #9015: ((6,2,2)), m=14, a=[1, 5, 6, 7, 10, 12], S=[0, 3]. -/
+def code_9015 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![false, true, true, true, true, false], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, false, true, true, false], ![false, true, false, false, false, true], ![true, false, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((4 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9015_ok : code_9015.OK := by native_decide
+/-- Code #9015 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9015_qec :
+    ∃ ψ, SS.IsAmplitudes code_9015 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9015 code_9015_ok (by decide) (by decide)
+
+/-- Catalogue code #9016: ((6,2,2)), m=14, a=[1, 5, 6, 7, 10, 12], S=[0, 11]. -/
+def code_9016 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![false, true, true, true, true, false], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, true, true, false, true], ![false, true, true, false, false, false], ![true, false, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((4 : ℚ) / 7), ((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9016_ok : code_9016.OK := by native_decide
+/-- Code #9016 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9016_qec :
+    ∃ ψ, SS.IsAmplitudes code_9016 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9016 code_9016_ok (by decide) (by decide)
+
+/-- Catalogue code #9017: ((6,2,2)), m=14, a=[1, 5, 6, 7, 11, 11], S=[0, 4]. -/
+def code_9017 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, false, true, true, false], ![false, true, true, true, false, false], ![true, false, true, false, false, true], ![true, false, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((5 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9017_ok : code_9017.OK := by native_decide
+/-- Code #9017 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9017_qec :
+    ∃ ψ, SS.IsAmplitudes code_9017 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9017 code_9017_ok (by decide) (by decide)
+
+/-- Catalogue code #9018: ((6,2,2)), m=14, a=[1, 5, 6, 7, 11, 11], S=[0, 12]. -/
+def code_9018 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, true, false, true, false, false], ![false, true, true, true, true, true], ![true, false, false, false, false, true], ![true, false, false, false, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9018_ok : code_9018.OK := by native_decide
+/-- Code #9018 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9018_qec :
+    ∃ ψ, SS.IsAmplitudes code_9018 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9018 code_9018_ok (by decide) (by decide)
+
+/-- Catalogue code #9019: ((6,2,2)), m=14, a=[1, 5, 6, 7, 11, 13], S=[0, 12]. -/
+def code_9019 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, false, false, false, true], ![true, false, true, true, false, false]}, {![false, false, true, true, false, true], ![false, true, false, true, false, false], ![true, false, false, false, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9019_ok : code_9019.OK := by native_decide
+/-- Code #9019 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9019_qec :
+    ∃ ψ, SS.IsAmplitudes code_9019 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9019 code_9019_ok (by decide) (by decide)
+
+/-- Catalogue code #9020: ((6,2,2)), m=14, a=[1, 5, 6, 7, 12, 12], S=[0, 11]. -/
+def code_9020 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, false, false]}, {![false, false, true, true, false, true], ![false, false, true, true, true, false], ![false, true, true, false, false, false], ![true, false, false, false, true, true], ![true, true, false, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9020_ok : code_9020.OK := by native_decide
+/-- Code #9020 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9020_qec :
+    ∃ ψ, SS.IsAmplitudes code_9020 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9020 code_9020_ok (by decide) (by decide)
+
+/-- Catalogue code #9021: ((6,2,2)), m=14, a=[1, 5, 6, 9, 10, 11], S=[0, 2]. -/
+def code_9021 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, false], ![true, true, true, true, true, true]}, {![false, false, false, true, true, true], ![false, true, false, false, false, true], ![false, true, true, true, true, false], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9021_ok : code_9021.OK := by native_decide
+/-- Code #9021 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9021_qec :
+    ∃ ψ, SS.IsAmplitudes code_9021 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9021 code_9021_ok (by decide) (by decide)
+
+/-- Catalogue code #9022: ((6,2,2)), m=14, a=[1, 5, 6, 9, 10, 12], S=[0, 3]. -/
+def code_9022 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![false, true, true, true, true, true], ![true, false, true, true, false, true], ![true, true, false, false, true, true]}, {![false, false, false, true, true, true], ![false, true, false, false, false, true], ![true, false, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((4 : ℚ) / 7), ((-1 : ℚ) / 7), ((-2 : ℚ) / 7)]
+theorem code_9022_ok : code_9022.OK := by native_decide
+/-- Code #9022 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9022_qec :
+    ∃ ψ, SS.IsAmplitudes code_9022 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9022 code_9022_ok (by decide) (by decide)
+
+/-- Catalogue code #9023: ((6,2,2)), m=14, a=[1, 5, 6, 9, 11, 12], S=[0, 4]. -/
+def code_9023 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, true, false, false, true, true], ![false, true, false, true, false, false], ![true, false, true, true, false, true]}, {![false, false, false, true, true, true], ![false, true, true, true, false, true], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-5 : ℚ) / 7)]
+theorem code_9023_ok : code_9023.OK := by native_decide
+/-- Code #9023 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9023_qec :
+    ∃ ψ, SS.IsAmplitudes code_9023 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9023 code_9023_ok (by decide) (by decide)
+
+/-- Catalogue code #9024: ((6,2,2)), m=14, a=[1, 5, 6, 10, 12, 12], S=[0, 11]. -/
+def code_9024 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![true, true, false, true, false, true], ![true, true, false, true, true, false]}, {![false, true, false, true, true, true], ![false, true, true, false, false, false], ![true, false, false, false, true, true], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), ((4 : ℚ) / 7), ((-3 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9024_ok : code_9024.OK := by native_decide
+/-- Code #9024 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9024_qec :
+    ∃ ψ, SS.IsAmplitudes code_9024 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9024 code_9024_ok (by decide) (by decide)
+
+/-- Catalogue code #9025: ((6,2,2)), m=14, a=[1, 5, 6, 11, 11, 13], S=[0, 12]. -/
+def code_9025 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, false, false, true], ![true, false, true, true, true, true], ![true, true, false, true, true, false]}, {![false, true, false, true, true, true], ![true, false, false, false, true, false], ![true, false, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9025_ok : code_9025.OK := by native_decide
+/-- Code #9025 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9025_qec :
+    ∃ ψ, SS.IsAmplitudes code_9025 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9025 code_9025_ok (by decide) (by decide)
+
+/-- Catalogue code #9026: ((6,2,2)), m=14, a=[1, 5, 7, 8, 9, 11], S=[0, 10]. -/
+def code_9026 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, true, false, false, true, false], ![true, false, true, false, true, true], ![true, true, false, true, false, false]}, {![false, false, true, true, true, false], ![false, true, false, true, false, true], ![true, false, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9026_ok : code_9026.OK := by native_decide
+/-- Code #9026 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9026_qec :
+    ∃ ψ, SS.IsAmplitudes code_9026 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9026 code_9026_ok (by decide) (by decide)
+
+/-- Catalogue code #9027: ((6,2,2)), m=14, a=[1, 5, 7, 8, 10, 10], S=[0, 11]. -/
+def code_9027 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, false, true, false, true, true], ![true, true, false, true, false, false]}, {![false, false, true, true, true, false], ![false, true, false, false, true, true], ![true, false, false, false, false, true], ![true, false, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((5 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9027_ok : code_9027.OK := by native_decide
+/-- Code #9027 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9027_qec :
+    ∃ ψ, SS.IsAmplitudes code_9027 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9027 code_9027_ok (by decide) (by decide)
+
+/-- Catalogue code #9028: ((6,2,2)), m=14, a=[1, 5, 7, 8, 10, 11], S=[0, 2]. -/
+def code_9028 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, true, false, false], ![true, true, true, true, true, true]}, {![false, true, false, false, false, true], ![false, true, true, true, true, false], ![true, false, false, true, true, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9028_ok : code_9028.OK := by native_decide
+/-- Code #9028 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9028_qec :
+    ∃ ψ, SS.IsAmplitudes code_9028 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9028 code_9028_ok (by decide) (by decide)
+
+/-- Catalogue code #9029: ((6,2,2)), m=14, a=[1, 5, 7, 8, 10, 12], S=[0, 3]. -/
+def code_9029 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, false, true], ![true, true, false, false, true, true]}, {![false, false, true, false, true, false], ![false, true, false, false, false, true], ![true, false, false, true, true, true], ![true, true, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-2 : ℚ) / 7)]
+theorem code_9029_ok : code_9029.OK := by native_decide
+/-- Code #9029 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9029_qec :
+    ∃ ψ, SS.IsAmplitudes code_9029 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9029 code_9029_ok (by decide) (by decide)
+
+/-- Catalogue code #9030: ((6,2,2)), m=14, a=[1, 5, 7, 8, 10, 12], S=[0, 11]. -/
+def code_9030 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, false, true], ![true, true, false, false, true, true], ![true, true, false, true, false, false]}, {![false, true, false, true, false, true], ![true, false, false, false, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((-1 : ℚ) / 7), ((4 : ℚ) / 7), ((2 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9030_ok : code_9030.OK := by native_decide
+/-- Code #9030 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9030_qec :
+    ∃ ψ, SS.IsAmplitudes code_9030 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9030 code_9030_ok (by decide) (by decide)
+
+/-- Catalogue code #9031: ((6,2,2)), m=14, a=[1, 5, 7, 8, 11, 11], S=[0, 2]. -/
+def code_9031 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, true, false, false, true, true], ![true, true, false, true, false, false]}, {![false, false, false, true, true, true], ![false, true, false, false, false, true], ![false, true, false, false, true, false], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9031_ok : code_9031.OK := by native_decide
+/-- Code #9031 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9031_qec :
+    ∃ ψ, SS.IsAmplitudes code_9031 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9031 code_9031_ok (by decide) (by decide)
+
+/-- Catalogue code #9032: ((6,2,2)), m=14, a=[1, 5, 7, 8, 11, 11], S=[0, 10]. -/
+def code_9032 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, true, false, false, true, true], ![true, true, false, true, false, false]}, {![false, true, false, true, false, true], ![false, true, false, true, true, false], ![true, false, true, true, true, true], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-5 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9032_ok : code_9032.OK := by native_decide
+/-- Code #9032 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9032_qec :
+    ∃ ψ, SS.IsAmplitudes code_9032 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9032 code_9032_ok (by decide) (by decide)
+
+/-- Catalogue code #9033: ((6,2,2)), m=14, a=[1, 5, 7, 9, 10, 11], S=[0, 2]. -/
+def code_9033 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, false], ![false, true, true, true, true, true], ![true, false, true, true, false, true]}, {![false, false, false, true, true, true], ![false, false, true, true, false, false], ![false, true, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9033_ok : code_9033.OK := by native_decide
+/-- Code #9033 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9033_qec :
+    ∃ ψ, SS.IsAmplitudes code_9033 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9033 code_9033_ok (by decide) (by decide)
+
+/-- Catalogue code #9034: ((6,2,2)), m=14, a=[1, 5, 7, 9, 10, 12], S=[0, 3]. -/
+def code_9034 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![false, true, false, true, false, false], ![true, true, false, false, true, true]}, {![false, false, false, true, true, true], ![false, false, true, false, true, false], ![false, true, false, false, false, true], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), (0 : ℚ), ((3 : ℚ) / 7), ((-2 : ℚ) / 7)]
+theorem code_9034_ok : code_9034.OK := by native_decide
+/-- Code #9034 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9034_qec :
+    ∃ ψ, SS.IsAmplitudes code_9034 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9034 code_9034_ok (by decide) (by decide)
+
+/-- Catalogue code #9035: ((6,2,2)), m=14, a=[1, 5, 7, 9, 11, 11], S=[0, 6]. -/
+def code_9035 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, false], ![true, false, true, true, true, false], ![true, true, false, false, true, true]}, {![false, false, false, true, false, true], ![false, false, false, true, true, false], ![false, true, true, false, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9035_ok : code_9035.OK := by native_decide
+/-- Code #9035 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9035_qec :
+    ∃ ψ, SS.IsAmplitudes code_9035 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9035 code_9035_ok (by decide) (by decide)
+
+/-- Catalogue code #9036: ((6,2,2)), m=14, a=[1, 5, 7, 9, 11, 11], S=[0, 10]. -/
+def code_9036 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, false], ![true, false, true, true, false, true], ![true, false, true, true, true, false], ![true, true, false, false, true, true]}, {![false, false, true, true, true, true], ![true, false, false, true, false, false], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9036_ok : code_9036.OK := by native_decide
+/-- Code #9036 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9036_qec :
+    ∃ ψ, SS.IsAmplitudes code_9036 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9036 code_9036_ok (by decide) (by decide)
+
+/-- Catalogue code #9037: ((6,2,2)), m=14, a=[1, 5, 7, 9, 11, 12], S=[0, 4]. -/
+def code_9037 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![false, true, false, false, true, true], ![true, false, true, true, true, false]}, {![false, false, false, true, true, true], ![false, false, true, false, true, false], ![false, true, true, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9037_ok : code_9037.OK := by native_decide
+/-- Code #9037 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9037_qec :
+    ∃ ψ, SS.IsAmplitudes code_9037 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9037 code_9037_ok (by decide) (by decide)
+
+/-- Catalogue code #9038: ((6,2,2)), m=14, a=[1, 5, 7, 10, 10, 12], S=[0, 11]. -/
+def code_9038 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, false], ![true, true, false, true, false, true]}, {![false, false, true, true, true, true], ![false, true, false, true, true, false], ![true, false, false, false, true, false], ![true, false, false, true, false, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-3 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9038_ok : code_9038.OK := by native_decide
+/-- Code #9038 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9038_qec :
+    ∃ ψ, SS.IsAmplitudes code_9038 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9038 code_9038_ok (by decide) (by decide)
+
+/-- Catalogue code #9039: ((6,2,2)), m=14, a=[1, 5, 7, 10, 11, 11], S=[0, 8]. -/
+def code_9039 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![false, false, true, true, true, false], ![true, true, false, false, true, true]}, {![false, false, false, false, true, true], ![false, true, true, true, false, false], ![true, false, false, true, false, true], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9039_ok : code_9039.OK := by native_decide
+/-- Code #9039 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9039_qec :
+    ∃ ψ, SS.IsAmplitudes code_9039 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9039 code_9039_ok (by decide) (by decide)
+
+/-- Catalogue code #9040: ((6,2,2)), m=14, a=[1, 5, 7, 10, 12, 12], S=[0, 11]. -/
+def code_9040 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, true], ![true, true, false, true, false, true], ![true, true, false, true, true, false]}, {![false, true, false, true, true, true], ![true, false, false, false, true, true], ![true, false, false, true, false, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), (0 : ℚ), ((4 : ℚ) / 7), ((-3 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9040_ok : code_9040.OK := by native_decide
+/-- Code #9040 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9040_qec :
+    ∃ ψ, SS.IsAmplitudes code_9040 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9040 code_9040_ok (by decide) (by decide)
+
+/-- Catalogue code #9041: ((6,2,2)), m=14, a=[1, 5, 7, 10, 12, 13], S=[0, 11]. -/
+def code_9041 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, true, false, true], ![true, false, false, false, false, true], ![true, true, false, true, true, false]}, {![false, false, false, false, true, true], ![false, true, true, false, false, true], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((4 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9041_ok : code_9041.OK := by native_decide
+/-- Code #9041 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9041_qec :
+    ∃ ψ, SS.IsAmplitudes code_9041 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9041 code_9041_ok (by decide) (by decide)
+
+/-- Catalogue code #9042: ((6,2,2)), m=14, a=[1, 5, 7, 11, 11, 12], S=[0, 6]. -/
+def code_9042 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![false, true, false, true, false, true], ![true, false, true, true, true, true]}, {![false, false, false, true, true, true], ![false, true, true, true, true, false], ![true, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9042_ok : code_9042.OK := by native_decide
+/-- Code #9042 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9042_qec :
+    ∃ ψ, SS.IsAmplitudes code_9042 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9042 code_9042_ok (by decide) (by decide)
+
+/-- Catalogue code #9043: ((6,2,2)), m=14, a=[1, 5, 7, 11, 11, 13], S=[0, 8]. -/
+def code_9043 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, true, false]}, {![false, false, false, true, true, false], ![false, true, true, false, true, true], ![false, true, true, true, false, true], ![true, false, false, true, true, true], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9043_ok : code_9043.OK := by native_decide
+/-- Code #9043 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9043_qec :
+    ∃ ψ, SS.IsAmplitudes code_9043 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9043 code_9043_ok (by decide) (by decide)
+
+/-- Catalogue code #9044: ((6,2,2)), m=14, a=[1, 5, 7, 11, 11, 13], S=[0, 12]. -/
+def code_9044 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, false, false, false, false, true], ![true, true, false, true, true, false]}, {![false, true, false, true, true, true], ![false, true, true, false, false, false], ![true, false, false, false, true, false], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9044_ok : code_9044.OK := by native_decide
+/-- Code #9044 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9044_qec :
+    ∃ ψ, SS.IsAmplitudes code_9044 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9044 code_9044_ok (by decide) (by decide)
+
+/-- Catalogue code #9045: ((6,2,2)), m=14, a=[1, 5, 8, 8, 10, 12], S=[0, 3]. -/
+def code_9045 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![true, true, false, false, true, true]}, {![false, true, false, false, false, true], ![false, true, true, true, true, false], ![true, false, false, true, true, true], ![true, false, true, false, true, true], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 2)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), ((2 : ℚ) / 7), ((2 : ℚ) / 7), (0 : ℚ), ((-5 : ℚ) / 7)]
+theorem code_9045_ok : code_9045.OK := by native_decide
+/-- Code #9045 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9045_qec :
+    ∃ ψ, SS.IsAmplitudes code_9045 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9045 code_9045_ok (by decide) (by decide)
+
+/-- Catalogue code #9046: ((6,2,2)), m=14, a=[1, 5, 8, 8, 13, 13], S=[0, 3]. -/
+def code_9046 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, false, false, false, false, true], ![true, false, false, false, true, false], ![true, true, false, true, false, false], ![true, true, true, false, false, false]}, {![false, true, false, false, true, true], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9046_ok : code_9046.OK := by native_decide
+/-- Code #9046 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9046_qec :
+    ∃ ψ, SS.IsAmplitudes code_9046 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9046 code_9046_ok (by decide) (by decide)
+
+/-- Catalogue code #9047: ((6,2,2)), m=14, a=[1, 5, 8, 9, 11, 11], S=[0, 10]. -/
+def code_9047 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![false, true, false, true, false, false], ![true, true, false, false, true, true], ![true, true, true, false, false, false]}, {![false, true, true, false, false, true], ![false, true, true, false, true, false], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9047_ok : code_9047.OK := by native_decide
+/-- Code #9047 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9047_qec :
+    ∃ ψ, SS.IsAmplitudes code_9047 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9047 code_9047_ok (by decide) (by decide)
+
+/-- Catalogue code #9048: ((6,2,2)), m=14, a=[1, 5, 8, 9, 12, 12], S=[0, 4]. -/
+def code_9048 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, true], ![true, true, true, false, false, false]}, {![false, false, true, false, true, true], ![true, false, true, true, false, false], ![true, true, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9048_ok : code_9048.OK := by native_decide
+/-- Code #9048 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9048_qec :
+    ∃ ψ, SS.IsAmplitudes code_9048 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9048 code_9048_ok (by decide) (by decide)
+
+/-- Catalogue code #9049: ((6,2,2)), m=14, a=[1, 5, 8, 9, 12, 13], S=[0, 4]. -/
+def code_9049 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, false, true], ![true, true, true, false, false, false]}, {![false, true, false, false, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9049_ok : code_9049.OK := by native_decide
+/-- Code #9049 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9049_qec :
+    ∃ ψ, SS.IsAmplitudes code_9049 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9049 code_9049_ok (by decide) (by decide)
+
+/-- Catalogue code #9050: ((6,2,2)), m=14, a=[1, 5, 8, 10, 10, 12], S=[0, 11]. -/
+def code_9050 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![true, true, false, true, false, true], ![true, true, true, false, false, false]}, {![false, true, false, true, true, false], ![false, true, true, false, false, true], ![true, false, false, false, true, false], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((4 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9050_ok : code_9050.OK := by native_decide
+/-- Code #9050 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9050_qec :
+    ∃ ψ, SS.IsAmplitudes code_9050 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9050 code_9050_ok (by decide) (by decide)
+
+/-- Catalogue code #9051: ((6,2,2)), m=14, a=[1, 5, 8, 10, 12, 12], S=[0, 11]. -/
+def code_9051 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, true, false], ![true, true, true, false, false, false]}, {![false, true, true, false, false, true], ![false, true, true, false, true, false], ![true, false, false, false, true, true], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((4 : ℚ) / 7)]
+theorem code_9051_ok : code_9051.OK := by native_decide
+/-- Code #9051 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9051_qec :
+    ∃ ψ, SS.IsAmplitudes code_9051 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9051 code_9051_ok (by decide) (by decide)
+
+/-- Catalogue code #9052: ((6,2,2)), m=14, a=[1, 5, 8, 11, 11, 12], S=[0, 10]. -/
+def code_9052 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, true, false, true], ![true, true, false, true, true, false], ![true, true, true, false, false, false]}, {![false, true, true, true, false, false], ![true, false, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9052_ok : code_9052.OK := by native_decide
+/-- Code #9052 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9052_qec :
+    ∃ ψ, SS.IsAmplitudes code_9052 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9052 code_9052_ok (by decide) (by decide)
+
+/-- Catalogue code #9053: ((6,2,2)), m=14, a=[1, 5, 8, 12, 12, 13], S=[0, 4]. -/
+def code_9053 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, false, false, false]}, {![false, false, true, true, true, false], ![false, true, false, false, false, true], ![true, true, false, false, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9053_ok : code_9053.OK := by native_decide
+/-- Code #9053 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9053_qec :
+    ∃ ψ, SS.IsAmplitudes code_9053 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9053 code_9053_ok (by decide) (by decide)
+
+/-- Catalogue code #9054: ((6,2,2)), m=14, a=[1, 5, 9, 11, 11, 11], S=[0, 10]. -/
+def code_9054 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, true, false, false, false], ![true, true, false, false, true, true], ![true, true, false, true, false, true], ![true, true, false, true, true, false]}, {![false, true, false, true, true, true], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9054_ok : code_9054.OK := by native_decide
+/-- Code #9054 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9054_qec :
+    ∃ ψ, SS.IsAmplitudes code_9054 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9054 code_9054_ok (by decide) (by decide)
+
+/-- Catalogue code #9055: ((6,2,2)), m=14, a=[1, 5, 9, 12, 12, 13], S=[0, 4]. -/
+def code_9055 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, false, false, true]}, {![false, false, true, true, true, true], ![false, true, false, false, false, true], ![true, true, false, false, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9055_ok : code_9055.OK := by native_decide
+/-- Code #9055 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9055_qec :
+    ∃ ψ, SS.IsAmplitudes code_9055 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9055 code_9055_ok (by decide) (by decide)
+
+/-- Catalogue code #9056: ((6,2,2)), m=14, a=[1, 5, 10, 10, 11, 11], S=[0, 8]. -/
+def code_9056 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, false, true, true]}, {![false, false, false, false, true, true], ![false, true, true, true, false, true], ![true, false, false, true, true, false], ![true, false, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9056_ok : code_9056.OK := by native_decide
+/-- Code #9056 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9056_qec :
+    ∃ ψ, SS.IsAmplitudes code_9056 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9056 code_9056_ok (by decide) (by decide)
+
+/-- Catalogue code #9057: ((6,2,2)), m=14, a=[1, 5, 10, 10, 12, 12], S=[0, 6]. -/
+def code_9057 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, true, true, false], ![true, true, true, false, false, true], ![true, true, true, false, true, false]}, {![false, false, true, false, true, true], ![false, false, true, true, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9057_ok : code_9057.OK := by native_decide
+/-- Code #9057 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9057_qec :
+    ∃ ψ, SS.IsAmplitudes code_9057 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9057 code_9057_ok (by decide) (by decide)
+
+/-- Catalogue code #9058: ((6,2,2)), m=14, a=[1, 5, 10, 12, 12, 12], S=[0, 6]. -/
+def code_9058 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, true, true, true], ![true, true, true, false, false, true], ![true, true, true, true, false, false]}, {![false, false, true, false, true, true], ![false, false, true, true, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9058_ok : code_9058.OK := by native_decide
+/-- Code #9058 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9058_qec :
+    ∃ ψ, SS.IsAmplitudes code_9058 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9058 code_9058_ok (by decide) (by decide)
+
+/-- Catalogue code #9059: ((6,2,2)), m=14, a=[1, 5, 11, 11, 13, 13], S=[0, 6]. -/
+def code_9059 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (5 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![false, true, true, false, true, true], ![true, false, false, false, false, true], ![true, false, false, false, true, false], ![true, true, true, true, false, false]}, {![false, false, true, true, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9059_ok : code_9059.OK := by native_decide
+/-- Code #9059 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9059_qec :
+    ∃ ψ, SS.IsAmplitudes code_9059 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9059 code_9059_ok (by decide) (by decide)
+
+/-- Catalogue code #9060: ((6,2,2)), m=14, a=[1, 6, 6, 7, 11, 12], S=[0, 5]. -/
+def code_9060 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, false, false], ![true, true, false, true, false, false]}, {![false, false, false, true, false, true], ![false, true, true, true, false, false], ![true, false, false, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((-4 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9060_ok : code_9060.OK := by native_decide
+/-- Code #9060 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9060_qec :
+    ∃ ψ, SS.IsAmplitudes code_9060 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9060 code_9060_ok (by decide) (by decide)
+
+/-- Catalogue code #9061: ((6,2,2)), m=14, a=[1, 6, 6, 9, 12, 12], S=[0, 10]. -/
+def code_9061 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, false], ![true, true, false, true, false, true]}, {![false, false, false, false, true, true], ![false, true, true, false, false, true], ![false, true, true, false, true, false], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9061_ok : code_9061.OK := by native_decide
+/-- Code #9061 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9061_qec :
+    ∃ ψ, SS.IsAmplitudes code_9061 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9061 code_9061_ok (by decide) (by decide)
+
+/-- Catalogue code #9062: ((6,2,2)), m=14, a=[1, 6, 6, 10, 10, 11], S=[0, 12]. -/
+def code_9062 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, false, true], ![true, true, false, false, true, true], ![true, true, false, true, false, true]}, {![false, true, false, true, true, false], ![false, true, true, false, false, false], ![true, false, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9062_ok : code_9062.OK := by native_decide
+/-- Code #9062 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9062_qec :
+    ∃ ψ, SS.IsAmplitudes code_9062 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9062 code_9062_ok (by decide) (by decide)
+
+/-- Catalogue code #9063: ((6,2,2)), m=14, a=[1, 6, 6, 10, 12, 13], S=[0, 9]. -/
+def code_9063 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, true, true, true, false], ![false, true, false, true, true, false], ![true, false, false, false, false, true], ![true, false, true, true, true, true]}, {![false, false, false, true, false, true], ![false, true, true, false, true, true], ![true, false, false, true, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), (0 : ℚ)]
+theorem code_9063_ok : code_9063.OK := by native_decide
+/-- Code #9063 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9063_qec :
+    ∃ ψ, SS.IsAmplitudes code_9063 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9063 code_9063_ok (by decide) (by decide)
+
+/-- Catalogue code #9064: ((6,2,2)), m=14, a=[1, 6, 6, 10, 12, 13], S=[0, 11]. -/
+def code_9064 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![false, true, false, true, true, false], ![true, false, false, false, false, true]}, {![false, false, false, false, true, true], ![false, true, true, false, false, true], ![true, false, false, true, false, false], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 2)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((4 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9064_ok : code_9064.OK := by native_decide
+/-- Code #9064 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9064_qec :
+    ∃ ψ, SS.IsAmplitudes code_9064 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9064 code_9064_ok (by decide) (by decide)
+
+/-- Catalogue code #9065: ((6,2,2)), m=14, a=[1, 6, 7, 8, 9, 10], S=[0, 2]. -/
+def code_9065 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, false], ![true, false, false, true, true, true], ![true, true, true, false, false, false]}, {![false, true, false, false, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9065_ok : code_9065.OK := by native_decide
+/-- Code #9065 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9065_qec :
+    ∃ ψ, SS.IsAmplitudes code_9065 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9065 code_9065_ok (by decide) (by decide)
+
+/-- Catalogue code #9066: ((6,2,2)), m=14, a=[1, 6, 7, 8, 10, 10], S=[0, 2]. -/
+def code_9066 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, false], ![true, false, true, false, true, true], ![true, true, true, false, false, false]}, {![false, true, false, false, false, true], ![false, true, false, false, true, false], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9066_ok : code_9066.OK := by native_decide
+/-- Code #9066 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9066_qec :
+    ∃ ψ, SS.IsAmplitudes code_9066 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9066 code_9066_ok (by decide) (by decide)
+
+/-- Catalogue code #9067: ((6,2,2)), m=14, a=[1, 6, 7, 8, 10, 12], S=[0, 5]. -/
+def code_9067 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, true, true, false, true], ![true, true, true, false, false, false]}, {![false, false, true, false, false, true], ![false, true, true, true, false, true], ![true, false, false, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((2 : ℚ) / 7), (0 : ℚ), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9067_ok : code_9067.OK := by native_decide
+/-- Code #9067 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9067_qec :
+    ∃ ψ, SS.IsAmplitudes code_9067 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9067 code_9067_ok (by decide) (by decide)
+
+/-- Catalogue code #9068: ((6,2,2)), m=14, a=[1, 6, 7, 9, 9, 10], S=[0, 3]. -/
+def code_9068 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, false, false, false], ![true, true, true, true, true, true]}, {![false, false, true, false, false, true], ![false, true, true, true, true, false], ![true, false, true, false, true, false], ![true, false, true, true, false, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9068_ok : code_9068.OK := by native_decide
+/-- Code #9068 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9068_qec :
+    ∃ ψ, SS.IsAmplitudes code_9068 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9068 code_9068_ok (by decide) (by decide)
+
+/-- Catalogue code #9069: ((6,2,2)), m=14, a=[1, 6, 7, 9, 9, 11], S=[0, 4]. -/
+def code_9069 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, false, true, true], ![true, false, true, true, false, true]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![true, true, false, false, false, true], ![true, true, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9069_ok : code_9069.OK := by native_decide
+/-- Code #9069 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9069_qec :
+    ∃ ψ, SS.IsAmplitudes code_9069 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9069 code_9069_ok (by decide) (by decide)
+
+/-- Catalogue code #9070: ((6,2,2)), m=14, a=[1, 6, 7, 9, 10, 10], S=[0, 3]. -/
+def code_9070 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, false, true, true], ![true, true, true, false, false, false]}, {![false, false, true, false, false, true], ![false, false, true, false, true, false], ![true, false, true, true, false, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9070_ok : code_9070.OK := by native_decide
+/-- Code #9070 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9070_qec :
+    ∃ ψ, SS.IsAmplitudes code_9070 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9070 code_9070_ok (by decide) (by decide)
+
+/-- Catalogue code #9071: ((6,2,2)), m=14, a=[1, 6, 7, 9, 11, 11], S=[0, 2]. -/
+def code_9071 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, true, true, false, true], ![true, false, true, true, true, false], ![true, true, true, false, false, false]}, {![false, false, true, true, false, false], ![true, false, true, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9071_ok : code_9071.OK := by native_decide
+/-- Code #9071 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9071_qec :
+    ∃ ψ, SS.IsAmplitudes code_9071 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9071 code_9071_ok (by decide) (by decide)
+
+/-- Catalogue code #9072: ((6,2,2)), m=14, a=[1, 6, 7, 9, 11, 13], S=[0, 2]. -/
+def code_9072 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, true], ![true, false, true, true, true, false], ![true, true, true, false, false, false]}, {![false, false, true, true, false, false], ![false, true, false, false, true, true], ![true, false, true, true, false, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9072_ok : code_9072.OK := by native_decide
+/-- Code #9072 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9072_qec :
+    ∃ ψ, SS.IsAmplitudes code_9072 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9072 code_9072_ok (by decide) (by decide)
+
+/-- Catalogue code #9073: ((6,2,2)), m=14, a=[1, 6, 7, 9, 12, 13], S=[0, 3]. -/
+def code_9073 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, true, true, true, false], ![false, true, false, true, false, true], ![true, false, false, false, false, true], ![true, false, true, true, true, true], ![true, true, false, true, true, false], ![true, true, true, false, false, false]}, {![false, true, false, false, true, true], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9073_ok : code_9073.OK := by native_decide
+/-- Code #9073 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9073_qec :
+    ∃ ψ, SS.IsAmplitudes code_9073 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9073 code_9073_ok (by decide) (by decide)
+
+/-- Catalogue code #9074: ((6,2,2)), m=14, a=[1, 6, 7, 10, 11, 11], S=[0, 2]. -/
+def code_9074 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![false, true, false, false, true, true], ![true, true, false, true, false, true], ![true, true, true, false, false, false]}, {![false, true, false, true, false, false], ![true, false, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9074_ok : code_9074.OK := by native_decide
+/-- Code #9074 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9074_qec :
+    ∃ ψ, SS.IsAmplitudes code_9074 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9074 code_9074_ok (by decide) (by decide)
+
+/-- Catalogue code #9075: ((6,2,2)), m=14, a=[1, 6, 7, 10, 11, 11], S=[0, 9]. -/
+def code_9075 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![false, false, true, true, true, false], ![false, true, false, false, true, true], ![true, true, false, true, true, false], ![true, true, true, false, false, false]}, {![false, true, true, true, false, false], ![true, false, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9075_ok : code_9075.OK := by native_decide
+/-- Code #9075 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9075_qec :
+    ∃ ψ, SS.IsAmplitudes code_9075 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9075 code_9075_ok (by decide) (by decide)
+
+/-- Catalogue code #9076: ((6,2,2)), m=14, a=[1, 6, 7, 10, 12, 12], S=[0, 3]. -/
+def code_9076 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, true], ![false, true, false, true, true, false], ![true, false, true, true, true, true], ![true, true, true, false, false, false]}, {![false, false, true, true, false, false], ![true, true, false, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), (0 : ℚ), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9076_ok : code_9076.OK := by native_decide
+/-- Code #9076 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9076_qec :
+    ∃ ψ, SS.IsAmplitudes code_9076 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9076 code_9076_ok (by decide) (by decide)
+
+/-- Catalogue code #9077: ((6,2,2)), m=14, a=[1, 6, 7, 10, 12, 12], S=[0, 9]. -/
+def code_9077 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, true], ![true, false, true, true, true, true], ![true, true, true, false, false, false]}, {![false, true, true, false, true, true], ![false, true, true, true, false, false], ![true, false, false, true, false, true], ![true, false, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), (0 : ℚ), ((-3 : ℚ) / 7), ((2 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9077_ok : code_9077.OK := by native_decide
+/-- Code #9077 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9077_qec :
+    ∃ ψ, SS.IsAmplitudes code_9077 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9077 code_9077_ok (by decide) (by decide)
+
+/-- Catalogue code #9078: ((6,2,2)), m=14, a=[1, 6, 7, 10, 12, 12], S=[0, 11]. -/
+def code_9078 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, true], ![true, false, true, true, true, true], ![true, true, true, false, false, false]}, {![false, true, true, false, false, true], ![false, true, true, false, true, false], ![true, false, false, false, true, true], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9078_ok : code_9078.OK := by native_decide
+/-- Code #9078 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9078_qec :
+    ∃ ψ, SS.IsAmplitudes code_9078 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9078 code_9078_ok (by decide) (by decide)
+
+/-- Catalogue code #9079: ((6,2,2)), m=14, a=[1, 6, 7, 11, 11, 12], S=[0, 4]. -/
+def code_9079 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, false], ![true, false, true, true, true, true], ![true, true, true, false, false, false]}, {![false, false, true, true, false, false], ![false, true, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7)]
+theorem code_9079_ok : code_9079.OK := by native_decide
+/-- Code #9079 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9079_qec :
+    ∃ ψ, SS.IsAmplitudes code_9079 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9079 code_9079_ok (by decide) (by decide)
+
+/-- Catalogue code #9080: ((6,2,2)), m=14, a=[1, 6, 7, 11, 11, 12], S=[0, 5]. -/
+def code_9080 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, true], ![true, true, true, false, false, false]}, {![false, false, true, false, false, true], ![false, true, true, true, true, true], ![true, false, true, false, true, false], ![true, false, true, true, false, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-4 : ℚ) / 7), ((2 : ℚ) / 7), ((-4 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9080_ok : code_9080.OK := by native_decide
+/-- Code #9080 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9080_qec :
+    ∃ ψ, SS.IsAmplitudes code_9080 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9080 code_9080_ok (by decide) (by decide)
+
+/-- Catalogue code #9081: ((6,2,2)), m=14, a=[1, 6, 7, 11, 11, 13], S=[0, 2]. -/
+def code_9081 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, true, true, false], ![true, true, false, true, true, true], ![true, true, true, false, false, false]}, {![false, true, false, false, true, true], ![false, true, false, true, false, true], ![true, false, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9081_ok : code_9081.OK := by native_decide
+/-- Code #9081 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9081_qec :
+    ∃ ψ, SS.IsAmplitudes code_9081 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9081 code_9081_ok (by decide) (by decide)
+
+/-- Catalogue code #9082: ((6,2,2)), m=14, a=[1, 6, 7, 11, 11, 13], S=[0, 5]. -/
+def code_9082 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, false, false, false, false, true], ![true, true, false, true, true, true], ![true, true, true, false, false, false]}, {![false, true, false, false, false, true], ![true, false, true, false, true, false], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9082_ok : code_9082.OK := by native_decide
+/-- Code #9082 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9082_qec :
+    ∃ ψ, SS.IsAmplitudes code_9082 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9082 code_9082_ok (by decide) (by decide)
+
+/-- Catalogue code #9083: ((6,2,2)), m=14, a=[1, 6, 7, 11, 12, 13], S=[0, 5]. -/
+def code_9083 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, false, false, false, true], ![true, true, true, false, false, false]}, {![false, false, true, false, true, false], ![false, true, false, false, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9083_ok : code_9083.OK := by native_decide
+/-- Code #9083 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9083_qec :
+    ∃ ψ, SS.IsAmplitudes code_9083 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9083 code_9083_ok (by decide) (by decide)
+
+/-- Catalogue code #9084: ((6,2,2)), m=14, a=[1, 6, 8, 8, 9, 10], S=[0, 2]. -/
+def code_9084 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, false], ![false, true, true, false, false, false], ![true, false, false, true, true, true]}, {![false, false, true, true, false, false], ![false, true, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9084_ok : code_9084.OK := by native_decide
+/-- Code #9084 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9084_qec :
+    ∃ ψ, SS.IsAmplitudes code_9084 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9084 code_9084_ok (by decide) (by decide)
+
+/-- Catalogue code #9085: ((6,2,2)), m=14, a=[1, 6, 8, 8, 9, 10], S=[0, 12]. -/
+def code_9085 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, true, true, false, false, false], ![true, false, false, true, true, true], ![true, false, true, false, true, true], ![true, true, true, true, true, true]}, {![false, false, true, true, false, true], ![true, false, true, true, true, false], ![true, true, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9085_ok : code_9085.OK := by native_decide
+/-- Code #9085 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9085_qec :
+    ∃ ψ, SS.IsAmplitudes code_9085 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9085 code_9085_ok (by decide) (by decide)
+
+/-- Catalogue code #9086: ((6,2,2)), m=14, a=[1, 6, 8, 8, 10, 11], S=[0, 12]. -/
+def code_9086 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, false, true], ![true, true, false, false, true, true]}, {![false, false, true, true, true, false], ![true, false, false, false, false, true], ![true, true, false, true, false, true], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9086_ok : code_9086.OK := by native_decide
+/-- Code #9086 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9086_qec :
+    ∃ ψ, SS.IsAmplitudes code_9086 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9086 code_9086_ok (by decide) (by decide)
+
+/-- Catalogue code #9087: ((6,2,2)), m=14, a=[1, 6, 8, 9, 10, 11], S=[0, 2]. -/
+def code_9087 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, true, true, false, true], ![false, true, true, false, false, false], ![true, false, true, true, true, false], ![true, true, false, false, true, true]}, {![false, true, false, false, true, false], ![false, true, true, true, true, true], ![true, false, true, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9087_ok : code_9087.OK := by native_decide
+/-- Code #9087 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9087_qec :
+    ∃ ψ, SS.IsAmplitudes code_9087 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9087 code_9087_ok (by decide) (by decide)
+
+/-- Catalogue code #9088: ((6,2,2)), m=14, a=[1, 6, 8, 9, 10, 12], S=[0, 3]. -/
+def code_9088 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, true, false, false, true, true], ![true, false, true, true, true, false], ![true, true, false, true, false, true]}, {![false, false, false, true, true, true], ![false, false, true, true, false, false], ![false, true, true, true, true, true], ![true, false, true, false, true, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), ((-6 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9088_ok : code_9088.OK := by native_decide
+/-- Code #9088 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9088_qec :
+    ∃ ψ, SS.IsAmplitudes code_9088 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9088 code_9088_ok (by decide) (by decide)
+
+/-- Catalogue code #9089: ((6,2,2)), m=14, a=[1, 6, 8, 9, 10, 13], S=[0, 3]. -/
+def code_9089 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, true], ![false, true, true, false, false, false], ![true, false, true, true, true, false]}, {![false, false, true, false, true, true], ![false, false, true, true, false, false], ![true, false, true, true, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7)]
+theorem code_9089_ok : code_9089.OK := by native_decide
+/-- Code #9089 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9089_qec :
+    ∃ ψ, SS.IsAmplitudes code_9089 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9089 code_9089_ok (by decide) (by decide)
+
+/-- Catalogue code #9090: ((6,2,2)), m=14, a=[1, 6, 8, 9, 12, 12], S=[0, 4]. -/
+def code_9090 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, false, false], ![true, false, true, true, true, true], ![true, true, false, true, false, true]}, {![false, true, false, false, false, true], ![false, true, false, false, true, false], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9090_ok : code_9090.OK := by native_decide
+/-- Code #9090 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9090_qec :
+    ∃ ψ, SS.IsAmplitudes code_9090 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9090 code_9090_ok (by decide) (by decide)
+
+/-- Catalogue code #9091: ((6,2,2)), m=14, a=[1, 6, 8, 9, 12, 12], S=[0, 10]. -/
+def code_9091 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, true], ![true, true, false, true, false, true], ![true, true, false, true, true, false]}, {![false, false, false, false, true, true], ![false, true, true, false, true, true], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9091_ok : code_9091.OK := by native_decide
+/-- Code #9091 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9091_qec :
+    ∃ ψ, SS.IsAmplitudes code_9091 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9091 code_9091_ok (by decide) (by decide)
+
+/-- Catalogue code #9092: ((6,2,2)), m=14, a=[1, 6, 8, 9, 12, 13], S=[0, 3]. -/
+def code_9092 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, true, false, true], ![false, true, true, false, false, false], ![true, true, false, true, true, false]}, {![false, false, true, true, false, false], ![false, true, false, false, true, true], ![true, false, true, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((6 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9092_ok : code_9092.OK := by native_decide
+/-- Code #9092 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9092_qec :
+    ∃ ψ, SS.IsAmplitudes code_9092 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9092 code_9092_ok (by decide) (by decide)
+
+/-- Catalogue code #9093: ((6,2,2)), m=14, a=[1, 6, 8, 10, 10, 11], S=[0, 2]. -/
+def code_9093 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![false, true, true, false, false, false], ![true, true, false, true, false, true]}, {![false, true, false, true, false, false], ![true, false, true, false, true, true], ![true, false, true, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9093_ok : code_9093.OK := by native_decide
+/-- Code #9093 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9093_qec :
+    ∃ ψ, SS.IsAmplitudes code_9093 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9093 code_9093_ok (by decide) (by decide)
+
+/-- Catalogue code #9094: ((6,2,2)), m=14, a=[1, 6, 8, 10, 10, 11], S=[0, 12]. -/
+def code_9094 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![true, true, false, false, true, true], ![true, true, false, true, false, true]}, {![false, true, false, true, true, false], ![true, false, false, false, false, true], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9094_ok : code_9094.OK := by native_decide
+/-- Code #9094 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9094_qec :
+    ∃ ψ, SS.IsAmplitudes code_9094 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9094 code_9094_ok (by decide) (by decide)
+
+/-- Catalogue code #9095: ((6,2,2)), m=14, a=[1, 6, 8, 10, 11, 12], S=[0, 5]. -/
+def code_9095 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, true], ![true, false, true, true, true, true], ![true, true, false, true, true, false]}, {![false, false, false, true, true, true], ![false, true, true, true, true, true], ![true, false, true, true, false, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((2 : ℚ) / 7), ((1 : ℚ) / 7), ((-4 : ℚ) / 7), (0 : ℚ), ((-3 : ℚ) / 7)]
+theorem code_9095_ok : code_9095.OK := by native_decide
+/-- Code #9095 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9095_qec :
+    ∃ ψ, SS.IsAmplitudes code_9095 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9095 code_9095_ok (by decide) (by decide)
+
+/-- Catalogue code #9096: ((6,2,2)), m=14, a=[1, 6, 8, 10, 11, 13], S=[0, 5]. -/
+def code_9096 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, true, false, false, false], ![true, false, false, false, false, true], ![true, true, false, true, true, false]}, {![false, false, true, false, true, false], ![false, true, false, false, false, true], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9096_ok : code_9096.OK := by native_decide
+/-- Code #9096 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9096_qec :
+    ∃ ψ, SS.IsAmplitudes code_9096 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9096 code_9096_ok (by decide) (by decide)
+
+/-- Catalogue code #9097: ((6,2,2)), m=14, a=[1, 6, 8, 10, 12, 13], S=[0, 3]. -/
+def code_9097 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, true, false, true, true, false], ![false, true, true, false, false, false], ![true, false, false, false, false, true], ![true, true, false, true, true, true]}, {![false, false, true, true, false, true], ![false, true, false, false, true, true], ![true, false, true, true, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((-4 : ℚ) / 7), ((4 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9097_ok : code_9097.OK := by native_decide
+/-- Code #9097 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9097_qec :
+    ∃ ψ, SS.IsAmplitudes code_9097 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9097 code_9097_ok (by decide) (by decide)
+
+/-- Catalogue code #9098: ((6,2,2)), m=14, a=[1, 6, 8, 10, 12, 13], S=[0, 5]. -/
+def code_9098 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, true, false, true, true, false], ![false, true, true, false, false, false], ![true, false, false, false, false, true], ![true, true, false, true, true, true]}, {![false, false, true, false, true, true], ![false, true, false, false, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), (0 : ℚ)]
+theorem code_9098_ok : code_9098.OK := by native_decide
+/-- Code #9098 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9098_qec :
+    ∃ ψ, SS.IsAmplitudes code_9098 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9098 code_9098_ok (by decide) (by decide)
+
+/-- Catalogue code #9099: ((6,2,2)), m=14, a=[1, 6, 9, 9, 12, 12], S=[0, 11]. -/
+def code_9099 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, false, true], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}, {![false, true, false, true, true, true], ![true, false, false, false, true, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9099_ok : code_9099.OK := by native_decide
+/-- Code #9099 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9099_qec :
+    ∃ ψ, SS.IsAmplitudes code_9099 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9099 code_9099_ok (by decide) (by decide)
+
+/-- Catalogue code #9100: ((6,2,2)), m=14, a=[1, 6, 9, 10, 12, 13], S=[0, 3]. -/
+def code_9100 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, true, false, true, true, false], ![false, true, true, false, false, true], ![true, false, false, false, false, true], ![true, true, false, true, true, true], ![true, true, true, false, true, false]}, {![false, false, true, true, true, false], ![false, true, false, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((-4 : ℚ) / 7), ((4 : ℚ) / 7), ((-1 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9100_ok : code_9100.OK := by native_decide
+/-- Code #9100 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9100_qec :
+    ∃ ψ, SS.IsAmplitudes code_9100 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9100 code_9100_ok (by decide) (by decide)
+
+/-- Catalogue code #9101: ((6,2,2)), m=14, a=[1, 6, 9, 12, 12, 12], S=[0, 4]. -/
+def code_9101 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, false, true, false]}, {![false, true, false, false, false, true], ![false, true, false, false, true, false], ![false, true, false, true, false, false], ![true, false, true, true, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9101_ok : code_9101.OK := by native_decide
+/-- Code #9101 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9101_qec :
+    ∃ ψ, SS.IsAmplitudes code_9101 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9101 code_9101_ok (by decide) (by decide)
+
+/-- Catalogue code #9102: ((6,2,2)), m=14, a=[1, 6, 10, 10, 10, 11], S=[0, 12]. -/
+def code_9102 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, true], ![true, true, false, false, true, true], ![true, true, true, false, false, true]}, {![false, true, false, true, true, false], ![false, true, true, false, true, false], ![true, false, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9102_ok : code_9102.OK := by native_decide
+/-- Code #9102 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9102_qec :
+    ∃ ψ, SS.IsAmplitudes code_9102 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9102 code_9102_ok (by decide) (by decide)
+
+/-- Catalogue code #9103: ((6,2,2)), m=14, a=[1, 6, 10, 10, 11, 11], S=[0, 9]. -/
+def code_9103 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, false, true, true], ![true, true, false, true, false, true], ![true, true, true, false, true, false]}, {![false, true, true, true, false, true], ![false, true, true, true, true, false], ![true, false, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9103_ok : code_9103.OK := by native_decide
+/-- Code #9103 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9103_qec :
+    ∃ ψ, SS.IsAmplitudes code_9103 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9103 code_9103_ok (by decide) (by decide)
+
+/-- Catalogue code #9104: ((6,2,2)), m=14, a=[1, 6, 10, 11, 12, 13], S=[0, 5]. -/
+def code_9104 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, true, false, true, true, true], ![false, true, true, false, true, false], ![true, false, false, false, false, true], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![false, true, false, false, false, true], ![true, false, true, true, true, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-2 : ℚ) / 7)]
+theorem code_9104_ok : code_9104.OK := by native_decide
+/-- Code #9104 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9104_qec :
+    ∃ ψ, SS.IsAmplitudes code_9104 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9104 code_9104_ok (by decide) (by decide)
+
+/-- Catalogue code #9105: ((6,2,2)), m=14, a=[1, 6, 11, 11, 12, 13], S=[0, 5]. -/
+def code_9105 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (6 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![false, true, true, false, true, true], ![true, false, false, false, false, true], ![true, true, true, true, false, true]}, {![false, false, true, true, true, true], ![false, true, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((4 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-4 : ℚ) / 7)]
+theorem code_9105_ok : code_9105.OK := by native_decide
+/-- Code #9105 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9105_qec :
+    ∃ ψ, SS.IsAmplitudes code_9105 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9105 code_9105_ok (by decide) (by decide)
+
+/-- Catalogue code #9106: ((6,2,2)), m=14, a=[1, 7, 8, 8, 9, 11], S=[0, 12]. -/
+def code_9106 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, false, true], ![true, true, false, false, true, true]}, {![false, true, false, true, false, true], ![false, true, true, false, false, true], ![true, false, false, false, false, true], ![true, false, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9106_ok : code_9106.OK := by native_decide
+/-- Code #9106 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9106_qec :
+    ∃ ψ, SS.IsAmplitudes code_9106 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9106 code_9106_ok (by decide) (by decide)
+
+/-- Catalogue code #9107: ((6,2,2)), m=14, a=[1, 7, 8, 8, 10, 11], S=[0, 5]. -/
+def code_9107 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, true, true, false, true]}, {![false, false, false, true, false, true], ![false, false, true, false, false, true], ![false, true, true, true, true, false], ![true, false, false, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9107_ok : code_9107.OK := by native_decide
+/-- Code #9107 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9107_qec :
+    ∃ ψ, SS.IsAmplitudes code_9107 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9107 code_9107_ok (by decide) (by decide)
+
+/-- Catalogue code #9108: ((6,2,2)), m=14, a=[1, 7, 8, 8, 10, 11], S=[0, 12]. -/
+def code_9108 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, true, true, false, true]}, {![false, false, true, true, true, false], ![false, true, false, true, false, true], ![false, true, true, false, false, true], ![true, false, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9108_ok : code_9108.OK := by native_decide
+/-- Code #9108 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9108_qec :
+    ∃ ψ, SS.IsAmplitudes code_9108 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9108 code_9108_ok (by decide) (by decide)
+
+/-- Catalogue code #9109: ((6,2,2)), m=14, a=[1, 7, 8, 8, 11, 12], S=[0, 9]. -/
+def code_9109 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![true, false, true, true, true, false], ![true, true, false, true, false, true]}, {![false, false, false, false, true, true], ![false, true, true, true, false, false], ![true, false, false, true, false, false], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((4 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9109_ok : code_9109.OK := by native_decide
+/-- Code #9109 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9109_qec :
+    ∃ ψ, SS.IsAmplitudes code_9109 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9109 code_9109_ok (by decide) (by decide)
+
+/-- Catalogue code #9110: ((6,2,2)), m=14, a=[1, 7, 8, 9, 10, 11], S=[0, 2]. -/
+def code_9110 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![false, true, false, false, true, true], ![true, false, true, true, true, false], ![true, true, false, true, false, true]}, {![false, false, false, true, true, true], ![false, true, false, true, false, false], ![true, false, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9110_ok : code_9110.OK := by native_decide
+/-- Code #9110 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9110_qec :
+    ∃ ψ, SS.IsAmplitudes code_9110 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9110 code_9110_ok (by decide) (by decide)
+
+/-- Catalogue code #9111: ((6,2,2)), m=14, a=[1, 7, 8, 9, 10, 11], S=[0, 12]. -/
+def code_9111 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, true, true, true, false], ![true, true, false, true, false, true]}, {![false, true, false, true, true, false], ![false, true, true, false, false, true], ![true, false, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9111_ok : code_9111.OK := by native_decide
+/-- Code #9111 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9111_qec :
+    ∃ ψ, SS.IsAmplitudes code_9111 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9111 code_9111_ok (by decide) (by decide)
+
+/-- Catalogue code #9112: ((6,2,2)), m=14, a=[1, 7, 8, 9, 10, 12], S=[0, 3]. -/
+def code_9112 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, true], ![true, false, true, true, true, false], ![true, true, true, false, false, true]}, {![false, false, true, true, false, false], ![false, true, false, false, true, false], ![true, false, true, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9112_ok : code_9112.OK := by native_decide
+/-- Code #9112 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9112_qec :
+    ∃ ψ, SS.IsAmplitudes code_9112 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9112 code_9112_ok (by decide) (by decide)
+
+/-- Catalogue code #9113: ((6,2,2)), m=14, a=[1, 7, 8, 9, 11, 11], S=[0, 10]. -/
+def code_9113 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![true, true, false, true, false, true], ![true, true, false, true, true, false]}, {![false, true, false, true, true, true], ![false, true, true, true, false, false], ![true, false, false, true, false, false], ![true, true, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((-5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9113_ok : code_9113.OK := by native_decide
+/-- Code #9113 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9113_qec :
+    ∃ ψ, SS.IsAmplitudes code_9113 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9113 code_9113_ok (by decide) (by decide)
+
+/-- Catalogue code #9114: ((6,2,2)), m=14, a=[1, 7, 8, 9, 11, 12], S=[0, 4]. -/
+def code_9114 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}, {![false, false, false, true, true, true], ![false, true, false, false, true, false], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7)]
+theorem code_9114_ok : code_9114.OK := by native_decide
+/-- Code #9114 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9114_qec :
+    ∃ ψ, SS.IsAmplitudes code_9114 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9114 code_9114_ok (by decide) (by decide)
+
+/-- Catalogue code #9115: ((6,2,2)), m=14, a=[1, 7, 8, 9, 12, 12], S=[0, 3]. -/
+def code_9115 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, true], ![false, true, false, true, true, false], ![true, false, true, true, true, true], ![true, true, true, false, true, false]}, {![false, false, true, true, false, false], ![false, true, false, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9115_ok : code_9115.OK := by native_decide
+/-- Code #9115 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9115_qec :
+    ∃ ψ, SS.IsAmplitudes code_9115 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9115 code_9115_ok (by decide) (by decide)
+
+/-- Catalogue code #9116: ((6,2,2)), m=14, a=[1, 7, 8, 9, 12, 12], S=[0, 4]. -/
+def code_9116 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, true], ![true, true, true, false, false, true], ![true, true, true, false, true, false]}, {![false, false, true, false, true, true], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9116_ok : code_9116.OK := by native_decide
+/-- Code #9116 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9116_qec :
+    ∃ ψ, SS.IsAmplitudes code_9116 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9116 code_9116_ok (by decide) (by decide)
+
+/-- Catalogue code #9117: ((6,2,2)), m=14, a=[1, 7, 8, 9, 12, 13], S=[0, 11]. -/
+def code_9117 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, true, true, false], ![false, true, true, false, false, true], ![true, false, false, false, false, true], ![true, true, true, false, true, false]}, {![false, false, false, false, true, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9117_ok : code_9117.OK := by native_decide
+/-- Code #9117 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9117_qec :
+    ∃ ψ, SS.IsAmplitudes code_9117 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9117 code_9117_ok (by decide) (by decide)
+
+/-- Catalogue code #9118: ((6,2,2)), m=14, a=[1, 7, 8, 10, 10, 12], S=[0, 11]. -/
+def code_9118 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}, {![false, true, false, true, true, true], ![false, true, true, true, false, false], ![true, false, false, false, true, false], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7)]
+theorem code_9118_ok : code_9118.OK := by native_decide
+/-- Code #9118 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9118_qec :
+    ∃ ψ, SS.IsAmplitudes code_9118 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9118 code_9118_ok (by decide) (by decide)
+
+/-- Catalogue code #9119: ((6,2,2)), m=14, a=[1, 7, 8, 10, 11, 12], S=[0, 5]. -/
+def code_9119 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, false], ![true, false, true, true, true, true]}, {![false, false, false, true, true, true], ![false, false, true, false, true, false], ![false, true, false, false, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9119_ok : code_9119.OK := by native_decide
+/-- Code #9119 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9119_qec :
+    ∃ ψ, SS.IsAmplitudes code_9119 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9119 code_9119_ok (by decide) (by decide)
+
+/-- Catalogue code #9120: ((6,2,2)), m=14, a=[1, 7, 8, 10, 12, 12], S=[0, 3]. -/
+def code_9120 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, true, true], ![true, true, true, false, false, true]}, {![false, true, false, false, true, true], ![false, true, false, true, false, false], ![true, false, true, true, false, true], ![true, false, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), (0 : ℚ), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-4 : ℚ) / 7)]
+theorem code_9120_ok : code_9120.OK := by native_decide
+/-- Code #9120 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9120_qec :
+    ∃ ψ, SS.IsAmplitudes code_9120 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9120 code_9120_ok (by decide) (by decide)
+
+/-- Catalogue code #9121: ((6,2,2)), m=14, a=[1, 7, 8, 10, 12, 12], S=[0, 5]. -/
+def code_9121 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, true, true], ![true, true, true, false, true, false]}, {![false, true, false, false, false, true], ![false, true, false, false, true, false], ![true, false, true, false, true, true], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), (0 : ℚ), ((3 : ℚ) / 7), ((-2 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9121_ok : code_9121.OK := by native_decide
+/-- Code #9121 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9121_qec :
+    ∃ ψ, SS.IsAmplitudes code_9121 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9121 code_9121_ok (by decide) (by decide)
+
+/-- Catalogue code #9122: ((6,2,2)), m=14, a=[1, 7, 8, 10, 12, 12], S=[0, 11]. -/
+def code_9122 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, true, true], ![true, true, true, false, false, true], ![true, true, true, false, true, false]}, {![false, true, true, false, true, true], ![false, true, true, true, false, false], ![true, false, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 2)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9122_ok : code_9122.OK := by native_decide
+/-- Code #9122 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9122_qec :
+    ∃ ψ, SS.IsAmplitudes code_9122 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9122 code_9122_ok (by decide) (by decide)
+
+/-- Catalogue code #9123: ((6,2,2)), m=14, a=[1, 7, 8, 11, 11, 12], S=[0, 9]. -/
+def code_9123 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, true, true], ![true, true, true, false, false, true]}, {![false, false, false, false, true, true], ![false, false, false, true, false, true], ![false, true, true, true, true, false], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((4 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((-1 : ℚ) / 7)]
+theorem code_9123_ok : code_9123.OK := by native_decide
+/-- Code #9123 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9123_qec :
+    ∃ ψ, SS.IsAmplitudes code_9123 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9123 code_9123_ok (by decide) (by decide)
+
+/-- Catalogue code #9124: ((6,2,2)), m=14, a=[1, 7, 8, 11, 12, 12], S=[0, 5]. -/
+def code_9124 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, false, false, true]}, {![false, false, true, true, false, false], ![false, true, false, false, false, true], ![false, true, false, false, true, false], ![true, false, true, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-2 : ℚ) / 7)]
+theorem code_9124_ok : code_9124.OK := by native_decide
+/-- Code #9124 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9124_qec :
+    ∃ ψ, SS.IsAmplitudes code_9124 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9124 code_9124_ok (by decide) (by decide)
+
+/-- Catalogue code #9125: ((6,2,2)), m=14, a=[1, 7, 9, 9, 10, 11], S=[0, 8]. -/
+def code_9125 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![false, true, false, false, true, true], ![true, true, false, true, false, true], ![true, true, true, false, false, true]}, {![false, true, true, true, false, true], ![true, false, false, false, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9125_ok : code_9125.OK := by native_decide
+/-- Code #9125 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9125_qec :
+    ∃ ψ, SS.IsAmplitudes code_9125 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9125 code_9125_ok (by decide) (by decide)
+
+/-- Catalogue code #9126: ((6,2,2)), m=14, a=[1, 7, 9, 9, 11, 13], S=[0, 12]. -/
+def code_9126 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, false, false, false, false, true], ![true, true, false, true, true, false], ![true, true, true, false, true, false]}, {![false, true, true, false, true, true], ![true, false, false, false, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9126_ok : code_9126.OK := by native_decide
+/-- Code #9126 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9126_qec :
+    ∃ ψ, SS.IsAmplitudes code_9126 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9126 code_9126_ok (by decide) (by decide)
+
+/-- Catalogue code #9127: ((6,2,2)), m=14, a=[1, 7, 9, 10, 12, 12], S=[0, 3]. -/
+def code_9127 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, false, true], ![false, true, true, false, true, false], ![true, true, false, true, true, true]}, {![false, false, true, true, false, true], ![false, true, false, false, true, true], ![false, true, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-4 : ℚ) / 7), (0 : ℚ), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-2 : ℚ) / 7)]
+theorem code_9127_ok : code_9127.OK := by native_decide
+/-- Code #9127 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9127_qec :
+    ∃ ψ, SS.IsAmplitudes code_9127 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9127 code_9127_ok (by decide) (by decide)
+
+/-- Catalogue code #9128: ((6,2,2)), m=14, a=[1, 7, 9, 10, 12, 13], S=[0, 6]. -/
+def code_9128 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, false, true, true]}, {![false, false, true, false, true, true], ![false, true, false, false, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9128_ok : code_9128.OK := by native_decide
+/-- Code #9128 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9128_qec :
+    ∃ ψ, SS.IsAmplitudes code_9128 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9128 code_9128_ok (by decide) (by decide)
+
+/-- Catalogue code #9129: ((6,2,2)), m=14, a=[1, 7, 9, 11, 11, 12], S=[0, 8]. -/
+def code_9129 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, true, true, true], ![true, true, true, false, true, false], ![true, true, true, true, false, false]}, {![false, false, false, true, true, false], ![false, true, true, true, true, true], ![true, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9129_ok : code_9129.OK := by native_decide
+/-- Code #9129 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9129_qec :
+    ∃ ψ, SS.IsAmplitudes code_9129 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9129 code_9129_ok (by decide) (by decide)
+
+/-- Catalogue code #9130: ((6,2,2)), m=14, a=[1, 7, 9, 11, 11, 13], S=[0, 2]. -/
+def code_9130 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, false, true, false], ![true, true, true, true, false, false]}, {![false, false, true, true, true, true], ![false, true, true, false, false, false], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9130_ok : code_9130.OK := by native_decide
+/-- Code #9130 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9130_qec :
+    ∃ ψ, SS.IsAmplitudes code_9130 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9130 code_9130_ok (by decide) (by decide)
+
+/-- Catalogue code #9131: ((6,2,2)), m=14, a=[1, 7, 9, 11, 11, 13], S=[0, 8]. -/
+def code_9131 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, false, false, false, true], ![true, true, true, false, true, false], ![true, true, true, true, false, false]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9131_ok : code_9131.OK := by native_decide
+/-- Code #9131 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9131_qec :
+    ∃ ψ, SS.IsAmplitudes code_9131 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9131 code_9131_ok (by decide) (by decide)
+
+/-- Catalogue code #9132: ((6,2,2)), m=14, a=[1, 7, 9, 11, 12, 13], S=[0, 8]. -/
+def code_9132 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, false, false, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, true, true], ![false, false, true, false, false, true], ![true, false, true, false, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9132_ok : code_9132.OK := by native_decide
+/-- Code #9132 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9132_qec :
+    ∃ ψ, SS.IsAmplitudes code_9132 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9132 code_9132_ok (by decide) (by decide)
+
+/-- Catalogue code #9133: ((6,2,2)), m=14, a=[1, 7, 10, 11, 12, 12], S=[0, 5]. -/
+def code_9133 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![false, true, true, true, false, false], ![true, true, true, false, true, true]}, {![false, false, true, true, true, false], ![false, true, false, false, false, true], ![false, true, false, false, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((5 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), (0 : ℚ), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9133_ok : code_9133.OK := by native_decide
+/-- Code #9133 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9133_qec :
+    ∃ ψ, SS.IsAmplitudes code_9133 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9133 code_9133_ok (by decide) (by decide)
+
+/-- Catalogue code #9134: ((6,2,2)), m=14, a=[1, 7, 11, 11, 12, 12], S=[0, 4]. -/
+def code_9134 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, true, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, true], ![false, true, false, true, false, false], ![true, true, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9134_ok : code_9134.OK := by native_decide
+/-- Code #9134 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9134_qec :
+    ∃ ψ, SS.IsAmplitudes code_9134 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9134 code_9134_ok (by decide) (by decide)
+
+/-- Catalogue code #9135: ((6,2,2)), m=14, a=[1, 7, 11, 11, 12, 13], S=[0, 5]. -/
+def code_9135 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, false, false, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, true], ![false, true, false, false, true, false], ![true, true, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9135_ok : code_9135.OK := by native_decide
+/-- Code #9135 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9135_qec :
+    ∃ ψ, SS.IsAmplitudes code_9135 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9135 code_9135_ok (by decide) (by decide)
+
+/-- Catalogue code #9136: ((6,2,2)), m=14, a=[1, 7, 11, 11, 12, 13], S=[0, 8]. -/
+def code_9136 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, false, false, false, true], ![true, true, true, true, true, false]}, {![false, false, false, true, true, true], ![false, false, true, false, true, true], ![false, false, true, true, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9136_ok : code_9136.OK := by native_decide
+/-- Code #9136 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9136_qec :
+    ∃ ψ, SS.IsAmplitudes code_9136 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9136 code_9136_ok (by decide) (by decide)
+
+/-- Catalogue code #9137: ((6,2,2)), m=14, a=[1, 8, 8, 9, 11, 13], S=[0, 12]. -/
+def code_9137 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, true, true, true, false], ![false, true, false, true, true, false], ![true, false, false, false, false, true], ![true, true, true, false, true, false]}, {![false, true, true, false, true, true], ![true, false, false, false, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9137_ok : code_9137.OK := by native_decide
+/-- Code #9137 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9137_qec :
+    ∃ ψ, SS.IsAmplitudes code_9137 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9137 code_9137_ok (by decide) (by decide)
+
+/-- Catalogue code #9138: ((6,2,2)), m=14, a=[1, 8, 8, 10, 11, 12], S=[0, 9]. -/
+def code_9138 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, false, true], ![true, false, true, true, true, true], ![true, true, false, true, true, true]}, {![false, false, false, false, true, true], ![false, true, true, true, true, false], ![true, false, false, true, false, true], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((4 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((-1 : ℚ) / 7)]
+theorem code_9138_ok : code_9138.OK := by native_decide
+/-- Code #9138 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9138_qec :
+    ∃ ψ, SS.IsAmplitudes code_9138 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9138 code_9138_ok (by decide) (by decide)
+
+/-- Catalogue code #9139: ((6,2,2)), m=14, a=[1, 8, 8, 11, 11, 13], S=[0, 9]. -/
+def code_9139 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, false, false, true], ![true, true, true, false, true, false], ![true, true, true, true, false, false]}, {![false, true, true, true, true, true], ![true, false, false, true, true, false], ![true, false, true, false, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-4 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((4 : ℚ) / 7)]
+theorem code_9139_ok : code_9139.OK := by native_decide
+/-- Code #9139 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9139_qec :
+    ∃ ψ, SS.IsAmplitudes code_9139 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9139 code_9139_ok (by decide) (by decide)
+
+/-- Catalogue code #9140: ((6,2,2)), m=14, a=[1, 8, 8, 11, 13, 13], S=[0, 9]. -/
+def code_9140 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, false, false, false, false, true], ![true, false, false, false, true, false], ![true, true, true, true, false, false]}, {![false, false, false, true, true, true], ![true, false, true, false, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9140_ok : code_9140.OK := by native_decide
+/-- Code #9140 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9140_qec :
+    ∃ ψ, SS.IsAmplitudes code_9140 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9140 code_9140_ok (by decide) (by decide)
+
+/-- Catalogue code #9141: ((6,2,2)), m=14, a=[1, 8, 9, 10, 11, 13], S=[0, 2]. -/
+def code_9141 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (2 : ZMod 14)]
+  supp := ![{![false, true, false, true, true, true], ![false, true, true, false, true, false], ![true, false, false, false, false, true], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![false, true, true, false, false, true], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9141_ok : code_9141.OK := by native_decide
+/-- Code #9141 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9141_qec :
+    ∃ ψ, SS.IsAmplitudes code_9141 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9141 code_9141_ok (by decide) (by decide)
+
+/-- Catalogue code #9142: ((6,2,2)), m=14, a=[1, 8, 9, 10, 12, 12], S=[0, 3]. -/
+def code_9142 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![false, true, true, false, false, false], ![true, true, false, true, false, true], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((-4 : ℚ) / 7), (0 : ℚ), ((-3 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9142_ok : code_9142.OK := by native_decide
+/-- Code #9142 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9142_qec :
+    ∃ ψ, SS.IsAmplitudes code_9142 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9142 code_9142_ok (by decide) (by decide)
+
+/-- Catalogue code #9143: ((6,2,2)), m=14, a=[1, 8, 9, 10, 12, 13], S=[0, 3]. -/
+def code_9143 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, true, false, true, false, true], ![false, true, true, false, false, false], ![true, false, true, true, true, true], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-4 : ℚ) / 7), ((-4 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9143_ok : code_9143.OK := by native_decide
+/-- Code #9143 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9143_qec :
+    ∃ ψ, SS.IsAmplitudes code_9143 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9143 code_9143_ok (by decide) (by decide)
+
+/-- Catalogue code #9144: ((6,2,2)), m=14, a=[1, 8, 9, 12, 12, 13], S=[0, 4]. -/
+def code_9144 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![false, true, true, true, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, true], ![false, true, false, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9144_ok : code_9144.OK := by native_decide
+/-- Code #9144 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9144_qec :
+    ∃ ψ, SS.IsAmplitudes code_9144 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9144 code_9144_ok (by decide) (by decide)
+
+/-- Catalogue code #9145: ((6,2,2)), m=14, a=[1, 8, 10, 11, 12, 12], S=[0, 5]. -/
+def code_9145 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, true, true, true, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, false], ![false, true, false, true, false, false], ![true, true, false, false, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), (0 : ℚ), ((-1 : ℚ) / 7), ((4 : ℚ) / 7)]
+theorem code_9145_ok : code_9145.OK := by native_decide
+/-- Code #9145 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9145_qec :
+    ∃ ψ, SS.IsAmplitudes code_9145 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9145 code_9145_ok (by decide) (by decide)
+
+/-- Catalogue code #9146: ((6,2,2)), m=14, a=[1, 8, 10, 11, 12, 13], S=[0, 5]. -/
+def code_9146 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, false], ![false, true, false, false, true, true], ![false, true, false, true, false, false], ![true, false, true, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((4 : ℚ) / 7)]
+theorem code_9146_ok : code_9146.OK := by native_decide
+/-- Code #9146 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9146_qec :
+    ∃ ψ, SS.IsAmplitudes code_9146 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9146 code_9146_ok (by decide) (by decide)
+
+/-- Catalogue code #9147: ((6,2,2)), m=14, a=[1, 8, 10, 12, 12, 13], S=[0, 5]. -/
+def code_9147 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, false], ![true, true, true, true, true, true]}, {![false, false, true, true, true, true], ![false, true, false, false, true, true], ![false, true, false, true, false, true], ![true, true, false, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 2)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![(0 : ℚ), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), (0 : ℚ)]
+theorem code_9147_ok : code_9147.OK := by native_decide
+/-- Code #9147 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9147_qec :
+    ∃ ψ, SS.IsAmplitudes code_9147 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9147 code_9147_ok (by decide) (by decide)
+
+/-- Catalogue code #9148: ((6,2,2)), m=14, a=[1, 8, 11, 11, 13, 13], S=[0, 9]. -/
+def code_9148 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, false, false, false, true], ![true, false, false, false, true, false]}, {![false, false, false, true, true, true], ![false, false, true, false, true, true], ![true, false, true, true, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9148_ok : code_9148.OK := by native_decide
+/-- Code #9148 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9148_qec :
+    ∃ ψ, SS.IsAmplitudes code_9148 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9148 code_9148_ok (by decide) (by decide)
+
+/-- Catalogue code #9149: ((6,2,2)), m=14, a=[1, 9, 9, 9, 11, 13], S=[0, 12]. -/
+def code_9149 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (12 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, true, true, true], ![false, true, true, false, true, true], ![true, false, false, false, false, true], ![true, true, true, true, false, false]}, {![false, true, true, true, false, true], ![true, false, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9149_ok : code_9149.OK := by native_decide
+/-- Code #9149 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9149_qec :
+    ∃ ψ, SS.IsAmplitudes code_9149 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9149 code_9149_ok (by decide) (by decide)
+
+/-- Catalogue code #9150: ((6,2,2)), m=14, a=[1, 9, 10, 11, 12, 13], S=[0, 6]. -/
+def code_9150 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, false], ![true, true, true, true, true, true]}, {![false, false, true, true, false, true], ![false, true, false, false, true, true], ![false, true, false, true, false, false], ![true, false, true, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9150_ok : code_9150.OK := by native_decide
+/-- Code #9150 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9150_qec :
+    ∃ ψ, SS.IsAmplitudes code_9150 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9150 code_9150_ok (by decide) (by decide)
+
+/-- Catalogue code #9151: ((6,2,2)), m=14, a=[1, 9, 11, 11, 12, 13], S=[0, 8]. -/
+def code_9151 : ExampleData 6 14 2 where
+  a := ![(1 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, false, false, false, true]}, {![false, false, false, true, true, true], ![false, false, true, false, true, true], ![false, false, true, true, false, false], ![false, true, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9151_ok : code_9151.OK := by native_decide
+/-- Code #9151 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9151_qec :
+    ∃ ψ, SS.IsAmplitudes code_9151 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9151 code_9151_ok (by decide) (by decide)
+
+/-- Catalogue code #9152: ((6,2,2)), m=14, a=[2, 2, 2, 2, 3, 3], S=[0, 6]. -/
+def code_9152 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, true, true]}, {![false, false, false, false, true, true], ![false, true, true, true, false, false], ![true, false, true, true, false, false], ![true, true, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9152_ok : code_9152.OK := by native_decide
+/-- Code #9152 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9152_qec :
+    ∃ ψ, SS.IsAmplitudes code_9152 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9152 code_9152_ok (by decide) (by decide)
+
+/-- Catalogue code #9153: ((6,2,2)), m=14, a=[2, 2, 2, 3, 3, 4], S=[0, 6]. -/
+def code_9153 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, true], ![true, true, false, true, true, true]}, {![false, false, false, true, true, false], ![false, true, false, false, false, true], ![true, false, false, false, false, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((3 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9153_ok : code_9153.OK := by native_decide
+/-- Code #9153 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9153_qec :
+    ∃ ψ, SS.IsAmplitudes code_9153 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9153 code_9153_ok (by decide) (by decide)
+
+/-- Catalogue code #9154: ((6,2,2)), m=14, a=[2, 2, 2, 3, 3, 8], S=[0, 10]. -/
+def code_9154 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, true, true, false, false, true]}, {![false, false, true, false, false, true], ![false, true, false, false, false, true], ![true, false, false, false, false, true], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9154_ok : code_9154.OK := by native_decide
+/-- Code #9154 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9154_qec :
+    ∃ ψ, SS.IsAmplitudes code_9154 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9154 code_9154_ok (by decide) (by decide)
+
+/-- Catalogue code #9155: ((6,2,2)), m=14, a=[2, 2, 2, 3, 4, 4], S=[0, 6]. -/
+def code_9155 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, false, true, true]}, {![false, false, true, false, false, true], ![false, true, false, false, true, false], ![true, false, false, false, false, true], ![true, false, false, false, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), (1 : ℚ), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9155_ok : code_9155.OK := by native_decide
+/-- Code #9155 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9155_qec :
+    ∃ ψ, SS.IsAmplitudes code_9155 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9155 code_9155_ok (by decide) (by decide)
+
+/-- Catalogue code #9156: ((6,2,2)), m=14, a=[2, 2, 2, 3, 4, 4], S=[0, 8]. -/
+def code_9156 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, false, true, true]}, {![false, false, false, false, true, true], ![false, true, true, false, true, false], ![true, false, true, false, false, true], ![true, true, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), (1 : ℚ), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9156_ok : code_9156.OK := by native_decide
+/-- Code #9156 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9156_qec :
+    ∃ ψ, SS.IsAmplitudes code_9156 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9156 code_9156_ok (by decide) (by decide)
+
+/-- Catalogue code #9157: ((6,2,2)), m=14, a=[2, 2, 2, 3, 4, 5], S=[0, 8]. -/
+def code_9157 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, false, false, true, true, true], ![true, true, true, true, false, true]}, {![false, false, false, true, false, true], ![false, true, true, false, true, false], ![true, false, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9157_ok : code_9157.OK := by native_decide
+/-- Code #9157 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9157_qec :
+    ∃ ψ, SS.IsAmplitudes code_9157 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9157 code_9157_ok (by decide) (by decide)
+
+/-- Catalogue code #9158: ((6,2,2)), m=14, a=[2, 2, 2, 3, 5, 8], S=[0, 4]. -/
+def code_9158 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, false, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, true], ![false, true, true, false, false, false], ![true, false, true, false, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9158_ok : code_9158.OK := by native_decide
+/-- Code #9158 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9158_qec :
+    ∃ ψ, SS.IsAmplitudes code_9158 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9158 code_9158_ok (by decide) (by decide)
+
+/-- Catalogue code #9159: ((6,2,2)), m=14, a=[2, 2, 2, 3, 5, 10], S=[0, 6]. -/
+def code_9159 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, false, false, true], ![true, true, false, false, false, true], ![true, true, true, true, true, false]}, {![false, true, false, true, true, true], ![true, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-5 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9159_ok : code_9159.OK := by native_decide
+/-- Code #9159 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9159_qec :
+    ∃ ψ, SS.IsAmplitudes code_9159 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9159 code_9159_ok (by decide) (by decide)
+
+/-- Catalogue code #9160: ((6,2,2)), m=14, a=[2, 2, 2, 3, 5, 12], S=[0, 6]. -/
+def code_9160 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, false, true], ![false, true, false, false, false, true], ![true, false, false, false, false, true], ![true, true, true, true, true, false]}, {![false, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9160_ok : code_9160.OK := by native_decide
+/-- Code #9160 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9160_qec :
+    ∃ ψ, SS.IsAmplitudes code_9160 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9160 code_9160_ok (by decide) (by decide)
+
+/-- Catalogue code #9161: ((6,2,2)), m=14, a=[2, 2, 2, 3, 6, 8], S=[0, 10]. -/
+def code_9161 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, false, true, true], ![true, true, true, false, false, true]}, {![false, false, true, false, false, true], ![false, true, false, false, false, true], ![true, false, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), (1 : ℚ), ((3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9161_ok : code_9161.OK := by native_decide
+/-- Code #9161 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9161_qec :
+    ∃ ψ, SS.IsAmplitudes code_9161 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9161 code_9161_ok (by decide) (by decide)
+
+/-- Catalogue code #9162: ((6,2,2)), m=14, a=[2, 2, 2, 3, 7, 10], S=[0, 6]. -/
+def code_9162 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, false, true], ![true, false, true, true, true, false], ![true, true, false, false, false, true], ![true, true, false, true, true, false]}, {![false, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9162_ok : code_9162.OK := by native_decide
+/-- Code #9162 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9162_qec :
+    ∃ ψ, SS.IsAmplitudes code_9162 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9162 code_9162_ok (by decide) (by decide)
+
+/-- Catalogue code #9163: ((6,2,2)), m=14, a=[2, 2, 2, 4, 4, 5], S=[0, 6]. -/
+def code_9163 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, true, false]}, {![false, false, true, false, true, false], ![false, true, false, true, false, false], ![true, false, false, false, true, false], ![true, false, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), (1 : ℚ)]
+theorem code_9163_ok : code_9163.OK := by native_decide
+/-- Code #9163 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9163_qec :
+    ∃ ψ, SS.IsAmplitudes code_9163 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9163 code_9163_ok (by decide) (by decide)
+
+/-- Catalogue code #9164: ((6,2,2)), m=14, a=[2, 2, 2, 4, 4, 5], S=[0, 8]. -/
+def code_9164 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, true, false]}, {![false, false, false, true, true, false], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, true, false, false, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), (1 : ℚ)]
+theorem code_9164_ok : code_9164.OK := by native_decide
+/-- Code #9164 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9164_qec :
+    ∃ ψ, SS.IsAmplitudes code_9164 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9164 code_9164_ok (by decide) (by decide)
+
+/-- Catalogue code #9165: ((6,2,2)), m=14, a=[2, 2, 2, 4, 5, 13], S=[0, 6]. -/
+def code_9165 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, true, true]}, {![false, false, true, false, true, true], ![false, true, false, true, false, false], ![true, false, false, false, true, true], ![true, false, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9165_ok : code_9165.OK := by native_decide
+/-- Code #9165 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9165_qec :
+    ∃ ψ, SS.IsAmplitudes code_9165 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9165 code_9165_ok (by decide) (by decide)
+
+/-- Catalogue code #9166: ((6,2,2)), m=14, a=[2, 2, 2, 4, 5, 13], S=[0, 8]. -/
+def code_9166 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, true, true]}, {![false, false, false, true, true, true], ![false, true, true, true, false, false], ![true, false, true, false, true, true], ![true, true, false, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9166_ok : code_9166.OK := by native_decide
+/-- Code #9166 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9166_qec :
+    ∃ ψ, SS.IsAmplitudes code_9166 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9166 code_9166_ok (by decide) (by decide)
+
+/-- Catalogue code #9167: ((6,2,2)), m=14, a=[2, 2, 2, 4, 7, 13], S=[0, 6]. -/
+def code_9167 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, true], ![true, true, false, true, true, true]}, {![false, false, false, false, true, true], ![false, true, false, true, false, false], ![true, false, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((3 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9167_ok : code_9167.OK := by native_decide
+/-- Code #9167 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9167_qec :
+    ∃ ψ, SS.IsAmplitudes code_9167 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9167 code_9167_ok (by decide) (by decide)
+
+/-- Catalogue code #9168: ((6,2,2)), m=14, a=[2, 2, 2, 5, 6, 13], S=[0, 10]. -/
+def code_9168 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, true, true], ![true, true, false, true, true, true]}, {![false, false, false, true, true, true], ![true, false, true, false, true, false], ![true, true, true, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9168_ok : code_9168.OK := by native_decide
+/-- Code #9168 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9168_qec :
+    ∃ ψ, SS.IsAmplitudes code_9168 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9168 code_9168_ok (by decide) (by decide)
+
+/-- Catalogue code #9169: ((6,2,2)), m=14, a=[2, 2, 2, 5, 8, 13], S=[0, 10]. -/
+def code_9169 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, true, false, true, false]}, {![false, false, true, false, true, false], ![false, true, false, false, true, false], ![true, false, false, false, true, false], ![true, true, true, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9169_ok : code_9169.OK := by native_decide
+/-- Code #9169 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9169_qec :
+    ∃ ψ, SS.IsAmplitudes code_9169 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9169 code_9169_ok (by decide) (by decide)
+
+/-- Catalogue code #9170: ((6,2,2)), m=14, a=[2, 2, 2, 6, 7, 11], S=[0, 10]. -/
+def code_9170 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, true, true], ![true, true, false, true, true, true]}, {![false, false, false, true, true, true], ![true, true, false, true, false, false], ![true, true, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9170_ok : code_9170.OK := by native_decide
+/-- Code #9170 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9170_qec :
+    ∃ ψ, SS.IsAmplitudes code_9170 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9170 code_9170_ok (by decide) (by decide)
+
+/-- Catalogue code #9171: ((6,2,2)), m=14, a=[2, 2, 2, 6, 9, 13], S=[0, 10]. -/
+def code_9171 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, true, true, false, true, true]}, {![false, false, true, false, true, true], ![false, true, false, false, true, true], ![true, false, false, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9171_ok : code_9171.OK := by native_decide
+/-- Code #9171 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9171_qec :
+    ∃ ψ, SS.IsAmplitudes code_9171 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9171 code_9171_ok (by decide) (by decide)
+
+/-- Catalogue code #9172: ((6,2,2)), m=14, a=[2, 2, 2, 8, 8, 9], S=[0, 4]. -/
+def code_9172 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, false, true, false], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![false, true, true, false, false, false], ![true, false, true, false, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), (1 : ℚ)]
+theorem code_9172_ok : code_9172.OK := by native_decide
+/-- Code #9172 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9172_qec :
+    ∃ ψ, SS.IsAmplitudes code_9172 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9172 code_9172_ok (by decide) (by decide)
+
+/-- Catalogue code #9173: ((6,2,2)), m=14, a=[2, 2, 2, 8, 9, 9], S=[0, 10]. -/
+def code_9173 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, false, false], ![false, true, false, true, false, false], ![true, false, false, true, false, false], ![true, true, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9173_ok : code_9173.OK := by native_decide
+/-- Code #9173 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9173_qec :
+    ∃ ψ, SS.IsAmplitudes code_9173 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9173 code_9173_ok (by decide) (by decide)
+
+/-- Catalogue code #9174: ((6,2,2)), m=14, a=[2, 2, 2, 8, 11, 13], S=[0, 4]. -/
+def code_9174 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, true, true], ![false, true, true, false, false, false], ![true, false, true, false, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9174_ok : code_9174.OK := by native_decide
+/-- Code #9174 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9174_qec :
+    ∃ ψ, SS.IsAmplitudes code_9174 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9174 code_9174_ok (by decide) (by decide)
+
+/-- Catalogue code #9175: ((6,2,2)), m=14, a=[2, 2, 2, 9, 12, 13], S=[0, 6]. -/
+def code_9175 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, false], ![false, true, false, false, true, false], ![true, false, false, false, true, false], ![true, true, true, true, false, true]}, {![false, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9175_ok : code_9175.OK := by native_decide
+/-- Code #9175 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9175_qec :
+    ∃ ψ, SS.IsAmplitudes code_9175 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9175 code_9175_ok (by decide) (by decide)
+
+/-- Catalogue code #9176: ((6,2,2)), m=14, a=[2, 2, 2, 10, 11, 11], S=[0, 6]. -/
+def code_9176 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (2 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, false, false], ![true, true, false, true, false, false], ![true, true, true, false, true, true]}, {![false, true, false, true, true, true], ![true, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-5 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9176_ok : code_9176.OK := by native_decide
+/-- Code #9176 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9176_qec :
+    ∃ ψ, SS.IsAmplitudes code_9176 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9176 code_9176_ok (by decide) (by decide)
+
+/-- Catalogue code #9177: ((6,2,2)), m=14, a=[2, 2, 3, 3, 4, 4], S=[0, 8]. -/
+def code_9177 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, false, true], ![true, true, true, true, true, false]}, {![false, false, false, false, true, true], ![false, true, true, true, false, false], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7)]
+theorem code_9177_ok : code_9177.OK := by native_decide
+/-- Code #9177 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9177_qec :
+    ∃ ψ, SS.IsAmplitudes code_9177 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9177 code_9177_ok (by decide) (by decide)
+
+/-- Catalogue code #9178: ((6,2,2)), m=14, a=[2, 2, 3, 3, 4, 12], S=[0, 8]. -/
+def code_9178 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, false, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false], ![true, true, true, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9178_ok : code_9178.OK := by native_decide
+/-- Code #9178 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9178_qec :
+    ∃ ψ, SS.IsAmplitudes code_9178 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9178 code_9178_ok (by decide) (by decide)
+
+/-- Catalogue code #9179: ((6,2,2)), m=14, a=[2, 2, 3, 3, 6, 6], S=[0, 4]. -/
+def code_9179 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![false, true, true, true, true, false], ![true, false, false, false, true, true], ![true, false, true, true, false, true]}, {![false, false, true, true, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9179_ok : code_9179.OK := by native_decide
+/-- Code #9179 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9179_qec :
+    ∃ ψ, SS.IsAmplitudes code_9179 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9179 code_9179_ok (by decide) (by decide)
+
+/-- Catalogue code #9180: ((6,2,2)), m=14, a=[2, 2, 3, 3, 7, 13], S=[0, 10]. -/
+def code_9180 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, true, true], ![true, true, true, false, true, false]}, {![false, false, true, false, true, false], ![true, true, false, false, true, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9180_ok : code_9180.OK := by native_decide
+/-- Code #9180 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9180_qec :
+    ∃ ψ, SS.IsAmplitudes code_9180 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9180 code_9180_ok (by decide) (by decide)
+
+/-- Catalogue code #9181: ((6,2,2)), m=14, a=[2, 2, 3, 3, 8, 13], S=[0, 10]. -/
+def code_9181 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![true, true, true, false, true, true]}, {![false, false, true, false, true, true], ![false, true, false, false, true, false], ![true, false, false, false, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9181_ok : code_9181.OK := by native_decide
+/-- Code #9181 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9181_qec :
+    ∃ ψ, SS.IsAmplitudes code_9181 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9181 code_9181_ok (by decide) (by decide)
+
+/-- Catalogue code #9182: ((6,2,2)), m=14, a=[2, 2, 3, 3, 10, 10], S=[0, 6]. -/
+def code_9182 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, true, true]}, {![false, false, false, false, true, true], ![false, false, true, true, false, false], ![true, true, true, true, false, true], ![true, true, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9182_ok : code_9182.OK := by native_decide
+/-- Code #9182 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9182_qec :
+    ∃ ψ, SS.IsAmplitudes code_9182 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9182 code_9182_ok (by decide) (by decide)
+
+/-- Catalogue code #9183: ((6,2,2)), m=14, a=[2, 2, 3, 3, 10, 10], S=[0, 8]. -/
+def code_9183 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, true], ![true, true, false, false, false, true], ![true, true, false, false, true, false]}, {![false, true, false, false, true, true], ![true, false, false, false, true, true], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9183_ok : code_9183.OK := by native_decide
+/-- Code #9183 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9183_qec :
+    ∃ ψ, SS.IsAmplitudes code_9183 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9183 code_9183_ok (by decide) (by decide)
+
+/-- Catalogue code #9184: ((6,2,2)), m=14, a=[2, 2, 3, 4, 4, 4], S=[0, 8]. -/
+def code_9184 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, false, true, true, true]}, {![false, false, false, false, true, true], ![false, false, false, true, false, true], ![false, false, false, true, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), (1 : ℚ), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9184_ok : code_9184.OK := by native_decide
+/-- Code #9184 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9184_qec :
+    ∃ ψ, SS.IsAmplitudes code_9184 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9184 code_9184_ok (by decide) (by decide)
+
+/-- Catalogue code #9185: ((6,2,2)), m=14, a=[2, 2, 3, 4, 4, 5], S=[0, 8]. -/
+def code_9185 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, true, false, true, true], ![true, false, true, true, false, true]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9185_ok : code_9185.OK := by native_decide
+/-- Code #9185 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9185_qec :
+    ∃ ψ, SS.IsAmplitudes code_9185 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9185 code_9185_ok (by decide) (by decide)
+
+/-- Catalogue code #9186: ((6,2,2)), m=14, a=[2, 2, 3, 4, 4, 13], S=[0, 6]. -/
+def code_9186 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, true, true]}, {![false, false, true, false, true, true], ![false, true, false, true, false, false], ![true, false, false, false, true, false], ![true, false, false, true, false, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9186_ok : code_9186.OK := by native_decide
+/-- Code #9186 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9186_qec :
+    ∃ ψ, SS.IsAmplitudes code_9186 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9186 code_9186_ok (by decide) (by decide)
+
+/-- Catalogue code #9187: ((6,2,2)), m=14, a=[2, 2, 3, 4, 4, 13], S=[0, 8]. -/
+def code_9187 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, true, true]}, {![false, false, false, true, true, false], ![false, true, true, true, false, true], ![true, false, true, false, true, true], ![true, true, false, false, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9187_ok : code_9187.OK := by native_decide
+/-- Code #9187 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9187_qec :
+    ∃ ψ, SS.IsAmplitudes code_9187 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9187 code_9187_ok (by decide) (by decide)
+
+/-- Catalogue code #9188: ((6,2,2)), m=14, a=[2, 2, 3, 4, 5, 5], S=[0, 13]. -/
+def code_9188 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, true, true, true, true, false], ![true, false, true, true, true, false], ![true, true, false, false, true, true]}, {![false, false, true, false, true, true], ![true, true, false, true, false, true], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 2)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-6 : ℚ) / 7), (0 : ℚ)]
+theorem code_9188_ok : code_9188.OK := by native_decide
+/-- Code #9188 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9188_qec :
+    ∃ ψ, SS.IsAmplitudes code_9188 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9188 code_9188_ok (by decide) (by decide)
+
+/-- Catalogue code #9189: ((6,2,2)), m=14, a=[2, 2, 3, 4, 5, 6], S=[0, 13]. -/
+def code_9189 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, true, false, true, false, true]}, {![false, false, true, true, false, true], ![false, true, false, false, true, true], ![true, false, false, false, true, true], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), ((1 : ℚ) / 7), (0 : ℚ), ((-6 : ℚ) / 7)]
+theorem code_9189_ok : code_9189.OK := by native_decide
+/-- Code #9189 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9189_qec :
+    ∃ ψ, SS.IsAmplitudes code_9189 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9189 code_9189_ok (by decide) (by decide)
+
+/-- Catalogue code #9190: ((6,2,2)), m=14, a=[2, 2, 3, 4, 5, 10], S=[0, 6]. -/
+def code_9190 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, false, true], ![false, true, true, true, true, false], ![true, false, true, true, true, false], ![true, true, false, false, false, true]}, {![false, true, false, true, false, false], ![true, false, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9190_ok : code_9190.OK := by native_decide
+/-- Code #9190 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9190_qec :
+    ∃ ψ, SS.IsAmplitudes code_9190 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9190 code_9190_ok (by decide) (by decide)
+
+/-- Catalogue code #9191: ((6,2,2)), m=14, a=[2, 2, 3, 4, 5, 10], S=[0, 8]. -/
+def code_9191 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, true, true, true, true, false], ![true, false, true, true, true, false], ![true, true, false, false, false, true]}, {![false, false, true, false, true, false], ![false, false, true, true, true, true], ![true, true, false, true, false, false], ![true, true, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9191_ok : code_9191.OK := by native_decide
+/-- Code #9191 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9191_qec :
+    ∃ ψ, SS.IsAmplitudes code_9191 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9191 code_9191_ok (by decide) (by decide)
+
+/-- Catalogue code #9192: ((6,2,2)), m=14, a=[2, 2, 3, 4, 6, 7], S=[0, 9]. -/
+def code_9192 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}, {![false, false, true, false, true, false], ![false, true, false, false, false, true], ![false, true, true, true, false, false], ![true, false, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), ((5 : ℚ) / 7), (0 : ℚ)]
+theorem code_9192_ok : code_9192.OK := by native_decide
+/-- Code #9192 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9192_qec :
+    ∃ ψ, SS.IsAmplitudes code_9192 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9192 code_9192_ok (by decide) (by decide)
+
+/-- Catalogue code #9193: ((6,2,2)), m=14, a=[2, 2, 3, 4, 6, 13], S=[0, 9]. -/
+def code_9193 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, true, true], ![true, true, false, true, true, false]}, {![false, false, false, true, true, true], ![false, false, true, false, true, false], ![false, true, true, true, false, false], ![true, true, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((4 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), (0 : ℚ)]
+theorem code_9193_ok : code_9193.OK := by native_decide
+/-- Code #9193 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9193_qec :
+    ∃ ψ, SS.IsAmplitudes code_9193 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9193 code_9193_ok (by decide) (by decide)
+
+/-- Catalogue code #9194: ((6,2,2)), m=14, a=[2, 2, 3, 4, 7, 10], S=[0, 6]. -/
+def code_9194 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, false, true], ![false, false, true, true, true, false], ![true, true, false, false, false, true]}, {![false, false, true, false, true, true], ![false, true, false, true, false, false], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9194_ok : code_9194.OK := by native_decide
+/-- Code #9194 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9194_qec :
+    ∃ ψ, SS.IsAmplitudes code_9194 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9194 code_9194_ok (by decide) (by decide)
+
+/-- Catalogue code #9195: ((6,2,2)), m=14, a=[2, 2, 3, 4, 7, 12], S=[0, 8]. -/
+def code_9195 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, true, true, true, false], ![false, true, false, false, false, true], ![false, true, true, true, true, true], ![true, false, false, false, false, true], ![true, true, true, false, true, false]}, {![false, false, true, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9195_ok : code_9195.OK := by native_decide
+/-- Code #9195 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9195_qec :
+    ∃ ψ, SS.IsAmplitudes code_9195 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9195 code_9195_ok (by decide) (by decide)
+
+/-- Catalogue code #9196: ((6,2,2)), m=14, a=[2, 2, 3, 4, 7, 13], S=[0, 9]. -/
+def code_9196 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![true, true, false, true, true, true], ![true, true, true, false, true, false]}, {![false, false, true, false, true, true], ![false, true, false, false, true, false], ![false, true, true, true, false, false], ![true, false, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), ((5 : ℚ) / 7)]
+theorem code_9196_ok : code_9196.OK := by native_decide
+/-- Code #9196 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9196_qec :
+    ∃ ψ, SS.IsAmplitudes code_9196 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9196 code_9196_ok (by decide) (by decide)
+
+/-- Catalogue code #9197: ((6,2,2)), m=14, a=[2, 2, 3, 4, 9, 10], S=[0, 8]. -/
+def code_9197 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, true, false, true], ![false, true, true, false, true, false], ![false, true, true, true, true, true], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}, {![false, false, true, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9197_ok : code_9197.OK := by native_decide
+/-- Code #9197 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9197_qec :
+    ∃ ψ, SS.IsAmplitudes code_9197 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9197 code_9197_ok (by decide) (by decide)
+
+/-- Catalogue code #9198: ((6,2,2)), m=14, a=[2, 2, 3, 5, 5, 6], S=[0, 10]. -/
+def code_9198 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![false, false, true, true, false, true], ![true, true, false, true, true, false]}, {![false, false, false, true, true, false], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9198_ok : code_9198.OK := by native_decide
+/-- Code #9198 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9198_qec :
+    ∃ ψ, SS.IsAmplitudes code_9198 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9198 code_9198_ok (by decide) (by decide)
+
+/-- Catalogue code #9199: ((6,2,2)), m=14, a=[2, 2, 3, 5, 5, 6], S=[0, 13]. -/
+def code_9199 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![false, false, true, true, false, true], ![true, true, false, true, true, false]}, {![false, false, true, true, true, false], ![false, true, false, true, false, true], ![true, false, false, false, true, true], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9199_ok : code_9199.OK := by native_decide
+/-- Code #9199 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9199_qec :
+    ∃ ψ, SS.IsAmplitudes code_9199 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9199 code_9199_ok (by decide) (by decide)
+
+/-- Catalogue code #9200: ((6,2,2)), m=14, a=[2, 2, 3, 5, 5, 9], S=[0, 13]. -/
+def code_9200 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, false, true, true], ![false, false, false, true, false, true], ![false, true, true, false, false, true], ![true, false, true, false, false, true], ![true, true, false, true, true, false]}, {![false, false, true, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9200_ok : code_9200.OK := by native_decide
+/-- Code #9200 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9200_qec :
+    ∃ ψ, SS.IsAmplitudes code_9200 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9200 code_9200_ok (by decide) (by decide)
+
+/-- Catalogue code #9201: ((6,2,2)), m=14, a=[2, 2, 3, 5, 7, 13], S=[0, 10]. -/
+def code_9201 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, true, false, true, false]}, {![false, false, true, false, true, false], ![false, true, true, true, false, false], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9201_ok : code_9201.OK := by native_decide
+/-- Code #9201 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9201_qec :
+    ∃ ψ, SS.IsAmplitudes code_9201 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9201 code_9201_ok (by decide) (by decide)
+
+/-- Catalogue code #9202: ((6,2,2)), m=14, a=[2, 2, 3, 5, 8, 8], S=[0, 4]. -/
+def code_9202 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, true, true]}, {![false, true, true, true, false, true], ![false, true, true, true, true, false], ![true, false, false, false, true, true], ![true, false, true, true, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9202_ok : code_9202.OK := by native_decide
+/-- Code #9202 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9202_qec :
+    ∃ ψ, SS.IsAmplitudes code_9202 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9202 code_9202_ok (by decide) (by decide)
+
+/-- Catalogue code #9203: ((6,2,2)), m=14, a=[2, 2, 3, 5, 8, 8], S=[0, 10]. -/
+def code_9203 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, true, true]}, {![false, false, true, true, true, true], ![false, true, false, false, true, false], ![false, true, true, true, false, false], ![true, false, false, false, false, true], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9203_ok : code_9203.OK := by native_decide
+/-- Code #9203 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9203_qec :
+    ∃ ψ, SS.IsAmplitudes code_9203 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9203 code_9203_ok (by decide) (by decide)
+
+/-- Catalogue code #9204: ((6,2,2)), m=14, a=[2, 2, 3, 5, 10, 10], S=[0, 6]. -/
+def code_9204 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, false, true, false]}, {![false, false, false, false, true, true], ![false, true, true, true, false, true], ![false, true, true, true, true, false], ![true, false, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-5 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9204_ok : code_9204.OK := by native_decide
+/-- Code #9204 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9204_qec :
+    ∃ ψ, SS.IsAmplitudes code_9204 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9204 code_9204_ok (by decide) (by decide)
+
+/-- Catalogue code #9205: ((6,2,2)), m=14, a=[2, 2, 3, 6, 6, 6], S=[0, 4]. -/
+def code_9205 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, true], ![false, true, false, true, true, false], ![true, false, false, false, true, true], ![true, false, false, true, false, true]}, {![false, false, false, true, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), (1 : ℚ), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9205_ok : code_9205.OK := by native_decide
+/-- Code #9205 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9205_qec :
+    ∃ ψ, SS.IsAmplitudes code_9205 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9205 code_9205_ok (by decide) (by decide)
+
+/-- Catalogue code #9206: ((6,2,2)), m=14, a=[2, 2, 3, 6, 6, 7], S=[0, 4]. -/
+def code_9206 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, false], ![true, true, true, false, false, true]}, {![false, true, true, false, true, true], ![false, true, true, true, false, true], ![true, false, true, false, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-5 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9206_ok : code_9206.OK := by native_decide
+/-- Code #9206 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9206_qec :
+    ∃ ψ, SS.IsAmplitudes code_9206 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9206 code_9206_ok (by decide) (by decide)
+
+/-- Catalogue code #9207: ((6,2,2)), m=14, a=[2, 2, 3, 6, 6, 7], S=[0, 10]. -/
+def code_9207 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, false], ![true, false, false, true, true, false], ![true, true, true, false, false, true]}, {![false, false, true, false, false, true], ![true, true, false, false, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9207_ok : code_9207.OK := by native_decide
+/-- Code #9207 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9207_qec :
+    ∃ ψ, SS.IsAmplitudes code_9207 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9207 code_9207_ok (by decide) (by decide)
+
+/-- Catalogue code #9208: ((6,2,2)), m=14, a=[2, 2, 3, 6, 6, 9], S=[0, 4]. -/
+def code_9208 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, false, true], ![true, false, false, true, true, false], ![true, false, true, false, false, true]}, {![false, false, true, false, true, true], ![false, false, true, true, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9208_ok : code_9208.OK := by native_decide
+/-- Code #9208 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9208_qec :
+    ∃ ψ, SS.IsAmplitudes code_9208 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9208 code_9208_ok (by decide) (by decide)
+
+/-- Catalogue code #9209: ((6,2,2)), m=14, a=[2, 2, 3, 6, 7, 8], S=[0, 4]. -/
+def code_9209 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, false, true], ![true, true, true, true, true, true]}, {![false, false, true, false, true, true], ![false, true, true, true, true, false], ![true, false, true, true, true, false], ![true, true, false, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9209_ok : code_9209.OK := by native_decide
+/-- Code #9209 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9209_qec :
+    ∃ ψ, SS.IsAmplitudes code_9209 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9209 code_9209_ok (by decide) (by decide)
+
+/-- Catalogue code #9210: ((6,2,2)), m=14, a=[2, 2, 3, 6, 7, 11], S=[0, 4]. -/
+def code_9210 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, true, true, true], ![true, true, true, false, true, false]}, {![false, false, false, false, true, true], ![false, true, true, true, true, false], ![true, false, true, true, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9210_ok : code_9210.OK := by native_decide
+/-- Code #9210 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9210_qec :
+    ∃ ψ, SS.IsAmplitudes code_9210 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9210 code_9210_ok (by decide) (by decide)
+
+/-- Catalogue code #9211: ((6,2,2)), m=14, a=[2, 2, 3, 6, 7, 12], S=[0, 10]. -/
+def code_9211 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, true, true, true, true], ![true, false, false, false, false, true], ![true, true, true, false, true, false]}, {![false, false, true, false, true, false], ![false, true, true, false, true, true], ![true, false, true, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9211_ok : code_9211.OK := by native_decide
+/-- Code #9211 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9211_qec :
+    ∃ ψ, SS.IsAmplitudes code_9211 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9211 code_9211_ok (by decide) (by decide)
+
+/-- Catalogue code #9212: ((6,2,2)), m=14, a=[2, 2, 3, 6, 7, 13], S=[0, 9]. -/
+def code_9212 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, false, true, false]}, {![false, false, true, false, true, true], ![false, false, true, true, false, false], ![false, true, false, false, true, false], ![true, false, false, false, true, false], ![true, true, false, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-2 : ℚ) / 7), ((3 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9212_ok : code_9212.OK := by native_decide
+/-- Code #9212 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9212_qec :
+    ∃ ψ, SS.IsAmplitudes code_9212 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9212 code_9212_ok (by decide) (by decide)
+
+/-- Catalogue code #9213: ((6,2,2)), m=14, a=[2, 2, 3, 6, 7, 13], S=[0, 10]. -/
+def code_9213 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, false, true, true, true], ![true, true, true, false, true, false]}, {![false, false, true, false, true, false], ![true, true, false, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9213_ok : code_9213.OK := by native_decide
+/-- Code #9213 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9213_qec :
+    ∃ ψ, SS.IsAmplitudes code_9213 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9213 code_9213_ok (by decide) (by decide)
+
+/-- Catalogue code #9214: ((6,2,2)), m=14, a=[2, 2, 3, 6, 8, 13], S=[0, 10]. -/
+def code_9214 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, false], ![true, true, true, false, true, true]}, {![false, false, true, false, true, true], ![false, true, false, false, true, false], ![true, false, false, false, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9214_ok : code_9214.OK := by native_decide
+/-- Code #9214 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9214_qec :
+    ∃ ψ, SS.IsAmplitudes code_9214 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9214 code_9214_ok (by decide) (by decide)
+
+/-- Catalogue code #9215: ((6,2,2)), m=14, a=[2, 2, 3, 6, 9, 9], S=[0, 13]. -/
+def code_9215 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, false, true], ![true, false, true, false, false, true], ![true, true, false, true, true, true]}, {![false, false, true, true, true, true], ![true, true, false, false, false, true], ![true, true, false, false, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-5 : ℚ) / 7)]
+theorem code_9215_ok : code_9215.OK := by native_decide
+/-- Code #9215 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9215_qec :
+    ∃ ψ, SS.IsAmplitudes code_9215 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9215 code_9215_ok (by decide) (by decide)
+
+/-- Catalogue code #9216: ((6,2,2)), m=14, a=[2, 2, 3, 6, 9, 10], S=[0, 13]. -/
+def code_9216 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, false, false, true]}, {![false, false, true, false, false, true], ![false, true, false, true, true, true], ![true, false, false, true, true, true], ![true, true, false, false, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((2 : ℚ) / 7), (0 : ℚ), (0 : ℚ), (0 : ℚ), ((-5 : ℚ) / 7)]
+theorem code_9216_ok : code_9216.OK := by native_decide
+/-- Code #9216 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9216_qec :
+    ∃ ψ, SS.IsAmplitudes code_9216 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9216 code_9216_ok (by decide) (by decide)
+
+/-- Catalogue code #9217: ((6,2,2)), m=14, a=[2, 2, 3, 7, 8, 8], S=[0, 4]. -/
+def code_9217 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, false, true], ![false, false, true, true, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9217_ok : code_9217.OK := by native_decide
+/-- Code #9217 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9217_qec :
+    ∃ ψ, SS.IsAmplitudes code_9217 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9217 code_9217_ok (by decide) (by decide)
+
+/-- Catalogue code #9218: ((6,2,2)), m=14, a=[2, 2, 3, 7, 8, 8], S=[0, 10]. -/
+def code_9218 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, false, false], ![false, true, false, false, true, false], ![true, false, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9218_ok : code_9218.OK := by native_decide
+/-- Code #9218 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9218_qec :
+    ∃ ψ, SS.IsAmplitudes code_9218 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9218 code_9218_ok (by decide) (by decide)
+
+/-- Catalogue code #9219: ((6,2,2)), m=14, a=[2, 2, 3, 7, 8, 9], S=[0, 4]. -/
+def code_9219 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, true, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![false, true, false, true, false, true], ![true, false, false, true, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9219_ok : code_9219.OK := by native_decide
+/-- Code #9219 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9219_qec :
+    ∃ ψ, SS.IsAmplitudes code_9219 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9219 code_9219_ok (by decide) (by decide)
+
+/-- Catalogue code #9220: ((6,2,2)), m=14, a=[2, 2, 3, 7, 8, 10], S=[0, 5]. -/
+def code_9220 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, false, false, true], ![true, true, true, true, false, false]}, {![false, true, true, false, false, false], ![true, false, false, true, false, true], ![true, false, true, false, false, false], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((5 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9220_ok : code_9220.OK := by native_decide
+/-- Code #9220 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9220_qec :
+    ∃ ψ, SS.IsAmplitudes code_9220 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9220 code_9220_ok (by decide) (by decide)
+
+/-- Catalogue code #9221: ((6,2,2)), m=14, a=[2, 2, 3, 7, 8, 13], S=[0, 4]. -/
+def code_9221 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![false, true, true, false, false, true], ![true, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9221_ok : code_9221.OK := by native_decide
+/-- Code #9221 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9221_qec :
+    ∃ ψ, SS.IsAmplitudes code_9221 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9221 code_9221_ok (by decide) (by decide)
+
+/-- Catalogue code #9222: ((6,2,2)), m=14, a=[2, 2, 3, 7, 8, 13], S=[0, 10]. -/
+def code_9222 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, false, false], ![false, true, false, false, true, false], ![true, false, false, false, true, false], ![true, true, false, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9222_ok : code_9222.OK := by native_decide
+/-- Code #9222 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9222_qec :
+    ∃ ψ, SS.IsAmplitudes code_9222 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9222 code_9222_ok (by decide) (by decide)
+
+/-- Catalogue code #9223: ((6,2,2)), m=14, a=[2, 2, 3, 7, 11, 13], S=[0, 4]. -/
+def code_9223 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, false, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, true, false], ![false, true, true, false, false, true], ![true, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9223_ok : code_9223.OK := by native_decide
+/-- Code #9223 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9223_qec :
+    ∃ ψ, SS.IsAmplitudes code_9223 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9223 code_9223_ok (by decide) (by decide)
+
+/-- Catalogue code #9224: ((6,2,2)), m=14, a=[2, 2, 3, 8, 8, 8], S=[0, 4]. -/
+def code_9224 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, true, true, true]}, {![false, true, false, false, true, true], ![false, true, false, true, true, false], ![true, false, false, false, true, true], ![true, false, false, true, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), (1 : ℚ), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9224_ok : code_9224.OK := by native_decide
+/-- Code #9224 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9224_qec :
+    ∃ ψ, SS.IsAmplitudes code_9224 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9224 code_9224_ok (by decide) (by decide)
+
+/-- Catalogue code #9225: ((6,2,2)), m=14, a=[2, 2, 3, 9, 9, 10], S=[0, 13]. -/
+def code_9225 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (3 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, true, true, true, false, false], ![true, false, true, true, false, false], ![true, true, false, false, false, true]}, {![false, false, true, false, false, true], ![true, true, false, false, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), ((6 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9225_ok : code_9225.OK := by native_decide
+/-- Code #9225 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9225_qec :
+    ∃ ψ, SS.IsAmplitudes code_9225 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9225 code_9225_ok (by decide) (by decide)
+
+/-- Catalogue code #9226: ((6,2,2)), m=14, a=[2, 2, 4, 4, 5, 11], S=[0, 6]. -/
+def code_9226 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, true, true]}, {![false, false, false, true, true, true], ![false, true, true, false, false, false], ![true, false, false, true, false, false], ![true, false, true, false, false, false], ![true, true, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9226_ok : code_9226.OK := by native_decide
+/-- Code #9226 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9226_qec :
+    ∃ ψ, SS.IsAmplitudes code_9226 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9226 code_9226_ok (by decide) (by decide)
+
+/-- Catalogue code #9227: ((6,2,2)), m=14, a=[2, 2, 4, 4, 5, 11], S=[0, 8]. -/
+def code_9227 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, true, true]}, {![false, false, true, true, false, false], ![false, true, true, false, true, true], ![true, false, false, true, true, true], ![true, true, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9227_ok : code_9227.OK := by native_decide
+/-- Code #9227 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9227_qec :
+    ∃ ψ, SS.IsAmplitudes code_9227 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9227 code_9227_ok (by decide) (by decide)
+
+/-- Catalogue code #9228: ((6,2,2)), m=14, a=[2, 2, 4, 4, 5, 13], S=[0, 8]. -/
+def code_9228 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, true, true]}, {![false, false, false, true, true, true], ![false, false, true, false, true, true], ![false, false, true, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9228_ok : code_9228.OK := by native_decide
+/-- Code #9228 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9228_qec :
+    ∃ ψ, SS.IsAmplitudes code_9228 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9228 code_9228_ok (by decide) (by decide)
+
+/-- Catalogue code #9229: ((6,2,2)), m=14, a=[2, 2, 4, 4, 7, 13], S=[0, 6]. -/
+def code_9229 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, true, false, true, true]}, {![false, false, false, false, true, true], ![false, true, false, true, false, false], ![false, true, true, false, false, false], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9229_ok : code_9229.OK := by native_decide
+/-- Code #9229 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9229_qec :
+    ∃ ψ, SS.IsAmplitudes code_9229 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9229 code_9229_ok (by decide) (by decide)
+
+/-- Catalogue code #9230: ((6,2,2)), m=14, a=[2, 2, 4, 4, 7, 13], S=[0, 8]. -/
+def code_9230 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, true, true, true], ![true, true, true, false, true, true]}, {![false, false, true, true, false, false], ![false, true, false, false, true, true], ![true, false, false, false, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9230_ok : code_9230.OK := by native_decide
+/-- Code #9230 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9230_qec :
+    ∃ ψ, SS.IsAmplitudes code_9230 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9230 code_9230_ok (by decide) (by decide)
+
+/-- Catalogue code #9231: ((6,2,2)), m=14, a=[2, 2, 4, 4, 9, 13], S=[0, 8]. -/
+def code_9231 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, true, false, true, true]}, {![false, false, false, false, true, true], ![false, false, true, true, false, false], ![true, true, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9231_ok : code_9231.OK := by native_decide
+/-- Code #9231 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9231_qec :
+    ∃ ψ, SS.IsAmplitudes code_9231 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9231 code_9231_ok (by decide) (by decide)
+
+/-- Catalogue code #9232: ((6,2,2)), m=14, a=[2, 2, 4, 5, 5, 6], S=[0, 11]. -/
+def code_9232 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}, {![false, false, false, false, true, true], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-3 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((3 : ℚ) / 7)]
+theorem code_9232_ok : code_9232.OK := by native_decide
+/-- Code #9232 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9232_qec :
+    ∃ ψ, SS.IsAmplitudes code_9232 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9232 code_9232_ok (by decide) (by decide)
+
+/-- Catalogue code #9233: ((6,2,2)), m=14, a=[2, 2, 4, 5, 5, 6], S=[0, 13]. -/
+def code_9233 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}, {![false, true, false, true, false, true], ![true, false, false, true, false, true], ![true, true, true, false, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-4 : ℚ) / 7), ((-4 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7)]
+theorem code_9233_ok : code_9233.OK := by native_decide
+/-- Code #9233 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9233_qec :
+    ∃ ψ, SS.IsAmplitudes code_9233 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9233 code_9233_ok (by decide) (by decide)
+
+/-- Catalogue code #9234: ((6,2,2)), m=14, a=[2, 2, 4, 5, 5, 8], S=[0, 13]. -/
+def code_9234 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![false, true, true, false, false, true], ![true, false, true, false, false, true], ![true, true, false, true, true, false]}, {![false, false, false, false, true, true], ![true, true, true, false, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7)]
+theorem code_9234_ok : code_9234.OK := by native_decide
+/-- Code #9234 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9234_qec :
+    ∃ ψ, SS.IsAmplitudes code_9234 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9234 code_9234_ok (by decide) (by decide)
+
+/-- Catalogue code #9235: ((6,2,2)), m=14, a=[2, 2, 4, 5, 5, 10], S=[0, 6]. -/
+def code_9235 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, false, true], ![false, false, true, true, true, false], ![true, true, false, false, false, true]}, {![false, false, false, true, true, true], ![false, true, true, false, false, false], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9235_ok : code_9235.OK := by native_decide
+/-- Code #9235 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9235_qec :
+    ∃ ψ, SS.IsAmplitudes code_9235 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9235 code_9235_ok (by decide) (by decide)
+
+/-- Catalogue code #9236: ((6,2,2)), m=14, a=[2, 2, 4, 5, 5, 12], S=[0, 8]. -/
+def code_9236 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, true, true, true, false], ![false, true, false, false, false, true], ![false, true, true, true, true, true], ![true, false, false, false, false, true], ![true, true, false, true, true, false]}, {![false, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9236_ok : code_9236.OK := by native_decide
+/-- Code #9236 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9236_qec :
+    ∃ ψ, SS.IsAmplitudes code_9236 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9236 code_9236_ok (by decide) (by decide)
+
+/-- Catalogue code #9237: ((6,2,2)), m=14, a=[2, 2, 4, 5, 6, 7], S=[0, 11]. -/
+def code_9237 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, false, true], ![true, false, false, true, false, true], ![true, true, true, false, true, false]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![false, true, true, true, false, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-2 : ℚ) / 7), ((3 : ℚ) / 7), (0 : ℚ), ((3 : ℚ) / 7), (0 : ℚ)]
+theorem code_9237_ok : code_9237.OK := by native_decide
+/-- Code #9237 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9237_qec :
+    ∃ ψ, SS.IsAmplitudes code_9237 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9237 code_9237_ok (by decide) (by decide)
+
+/-- Catalogue code #9238: ((6,2,2)), m=14, a=[2, 2, 4, 5, 6, 9], S=[0, 1]. -/
+def code_9238 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, false, true, false], ![true, true, true, true, true, true]}, {![false, false, false, false, true, true], ![false, false, true, true, true, false], ![false, true, true, false, false, true], ![true, false, true, false, false, true], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 2)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ), ((-1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9238_ok : code_9238.OK := by native_decide
+/-- Code #9238 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9238_qec :
+    ∃ ψ, SS.IsAmplitudes code_9238 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9238 code_9238_ok (by decide) (by decide)
+
+/-- Catalogue code #9239: ((6,2,2)), m=14, a=[2, 2, 4, 5, 6, 13], S=[0, 11]. -/
+def code_9239 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, true, true], ![true, true, true, false, true, false]}, {![false, false, false, true, true, false], ![false, true, true, false, true, true], ![false, true, true, true, false, false], ![true, false, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-3 : ℚ) / 7), (0 : ℚ), ((-4 : ℚ) / 7), (0 : ℚ)]
+theorem code_9239_ok : code_9239.OK := by native_decide
+/-- Code #9239 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9239_qec :
+    ∃ ψ, SS.IsAmplitudes code_9239 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9239 code_9239_ok (by decide) (by decide)
+
+/-- Catalogue code #9240: ((6,2,2)), m=14, a=[2, 2, 4, 5, 7, 10], S=[0, 8]. -/
+def code_9240 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, true, false, false, true], ![false, true, false, true, true, false], ![false, true, true, true, true, true], ![true, false, false, true, true, false], ![true, true, false, false, false, true]}, {![false, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9240_ok : code_9240.OK := by native_decide
+/-- Code #9240 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9240_qec :
+    ∃ ψ, SS.IsAmplitudes code_9240 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9240 code_9240_ok (by decide) (by decide)
+
+/-- Catalogue code #9241: ((6,2,2)), m=14, a=[2, 2, 4, 5, 7, 13], S=[0, 11]. -/
+def code_9241 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, false], ![true, false, false, true, true, false], ![true, true, true, false, true, true]}, {![false, false, false, true, true, true], ![false, false, true, false, true, false], ![false, true, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-2 : ℚ) / 7), ((3 : ℚ) / 7), (0 : ℚ), ((-4 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9241_ok : code_9241.OK := by native_decide
+/-- Code #9241 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9241_qec :
+    ∃ ψ, SS.IsAmplitudes code_9241 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9241 code_9241_ok (by decide) (by decide)
+
+/-- Catalogue code #9242: ((6,2,2)), m=14, a=[2, 2, 4, 5, 8, 9], S=[0, 3]. -/
+def code_9242 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, false, true], ![false, true, true, true, true, true], ![true, false, true, false, true, false]}, {![false, false, false, false, true, true], ![false, false, true, true, true, false], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-3 : ℚ) / 7), (0 : ℚ), ((-3 : ℚ) / 7), (0 : ℚ)]
+theorem code_9242_ok : code_9242.OK := by native_decide
+/-- Code #9242 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9242_qec :
+    ∃ ψ, SS.IsAmplitudes code_9242 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9242 code_9242_ok (by decide) (by decide)
+
+/-- Catalogue code #9243: ((6,2,2)), m=14, a=[2, 2, 4, 5, 8, 9], S=[0, 13]. -/
+def code_9243 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, false, true], ![false, true, true, true, true, true], ![true, false, true, false, true, false]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![true, true, false, false, false, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((4 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), ((1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9243_ok : code_9243.OK := by native_decide
+/-- Code #9243 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9243_qec :
+    ∃ ψ, SS.IsAmplitudes code_9243 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9243 code_9243_ok (by decide) (by decide)
+
+/-- Catalogue code #9244: ((6,2,2)), m=14, a=[2, 2, 4, 5, 8, 11], S=[0, 13]. -/
+def code_9244 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, true, true]}, {![false, false, false, true, true, false], ![false, true, false, false, false, true], ![true, false, false, false, false, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((2 : ℚ) / 7), ((5 : ℚ) / 7), (0 : ℚ), (0 : ℚ), (0 : ℚ)]
+theorem code_9244_ok : code_9244.OK := by native_decide
+/-- Code #9244 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9244_qec :
+    ∃ ψ, SS.IsAmplitudes code_9244 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9244 code_9244_ok (by decide) (by decide)
+
+/-- Catalogue code #9245: ((6,2,2)), m=14, a=[2, 2, 4, 5, 9, 11], S=[0, 13]. -/
+def code_9245 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, false], ![true, true, true, false, true, true]}, {![false, false, true, false, true, false], ![false, true, false, false, false, true], ![true, false, false, true, true, true], ![true, true, false, false, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9245_ok : code_9245.OK := by native_decide
+/-- Code #9245 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9245_qec :
+    ∃ ψ, SS.IsAmplitudes code_9245 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9245 code_9245_ok (by decide) (by decide)
+
+/-- Catalogue code #9246: ((6,2,2)), m=14, a=[2, 2, 4, 5, 10, 12], S=[0, 8]. -/
+def code_9246 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, true, false, true, false], ![false, true, false, false, false, true], ![false, true, true, false, true, true], ![true, false, false, false, false, true], ![true, true, false, false, true, false]}, {![false, false, false, false, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), (1 : ℚ), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9246_ok : code_9246.OK := by native_decide
+/-- Code #9246 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9246_qec :
+    ∃ ψ, SS.IsAmplitudes code_9246 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9246 code_9246_ok (by decide) (by decide)
+
+/-- Catalogue code #9247: ((6,2,2)), m=14, a=[2, 2, 4, 6, 7, 9], S=[0, 3]. -/
+def code_9247 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![true, false, false, true, false, true], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), (0 : ℚ), (0 : ℚ)]
+theorem code_9247_ok : code_9247.OK := by native_decide
+/-- Code #9247 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9247_qec :
+    ∃ ψ, SS.IsAmplitudes code_9247 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9247 code_9247_ok (by decide) (by decide)
+
+/-- Catalogue code #9248: ((6,2,2)), m=14, a=[2, 2, 4, 6, 7, 11], S=[0, 5]. -/
+def code_9248 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, true, true], ![true, true, true, true, false, false]}, {![false, true, true, true, true, false], ![true, false, false, true, false, true], ![true, false, true, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-2 : ℚ) / 7), ((-5 : ℚ) / 7), (0 : ℚ), (0 : ℚ)]
+theorem code_9248_ok : code_9248.OK := by native_decide
+/-- Code #9248 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9248_qec :
+    ∃ ψ, SS.IsAmplitudes code_9248 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9248 code_9248_ok (by decide) (by decide)
+
+/-- Catalogue code #9249: ((6,2,2)), m=14, a=[2, 2, 4, 6, 7, 13], S=[0, 3]. -/
+def code_9249 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, false, true, true, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![true, true, false, false, false, true], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), (0 : ℚ)]
+theorem code_9249_ok : code_9249.OK := by native_decide
+/-- Code #9249 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9249_qec :
+    ∃ ψ, SS.IsAmplitudes code_9249 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9249 code_9249_ok (by decide) (by decide)
+
+/-- Catalogue code #9250: ((6,2,2)), m=14, a=[2, 2, 4, 6, 7, 13], S=[0, 9]. -/
+def code_9250 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, false, true], ![false, true, false, false, true, false], ![true, false, false, false, true, false], ![true, true, false, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-2 : ℚ) / 7), ((3 : ℚ) / 7), (0 : ℚ), (0 : ℚ), (0 : ℚ)]
+theorem code_9250_ok : code_9250.OK := by native_decide
+/-- Code #9250 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9250_qec :
+    ∃ ψ, SS.IsAmplitudes code_9250 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9250 code_9250_ok (by decide) (by decide)
+
+/-- Catalogue code #9251: ((6,2,2)), m=14, a=[2, 2, 4, 6, 7, 13], S=[0, 11]. -/
+def code_9251 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, true, false, true, false], ![false, true, true, true, false, true], ![true, false, true, true, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-4 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), (0 : ℚ)]
+theorem code_9251_ok : code_9251.OK := by native_decide
+/-- Code #9251 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9251_qec :
+    ∃ ψ, SS.IsAmplitudes code_9251 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9251 code_9251_ok (by decide) (by decide)
+
+/-- Catalogue code #9252: ((6,2,2)), m=14, a=[2, 2, 4, 6, 9, 9], S=[0, 1]. -/
+def code_9252 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, false, true], ![false, false, false, true, true, false], ![false, true, true, false, true, false], ![true, false, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((4 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ), (0 : ℚ)]
+theorem code_9252_ok : code_9252.OK := by native_decide
+/-- Code #9252 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9252_qec :
+    ∃ ψ, SS.IsAmplitudes code_9252 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9252 code_9252_ok (by decide) (by decide)
+
+/-- Catalogue code #9253: ((6,2,2)), m=14, a=[2, 2, 4, 6, 9, 9], S=[0, 3]. -/
+def code_9253 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, true, true], ![true, true, true, true, false, false]}, {![false, true, false, true, false, true], ![true, false, false, true, false, true], ![true, false, false, true, true, false], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), (0 : ℚ), (0 : ℚ)]
+theorem code_9253_ok : code_9253.OK := by native_decide
+/-- Code #9253 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9253_qec :
+    ∃ ψ, SS.IsAmplitudes code_9253 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9253 code_9253_ok (by decide) (by decide)
+
+/-- Catalogue code #9254: ((6,2,2)), m=14, a=[2, 2, 4, 6, 9, 11], S=[0, 1]. -/
+def code_9254 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![false, true, true, false, true, false], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((6 : ℚ) / 7), (0 : ℚ), (0 : ℚ)]
+theorem code_9254_ok : code_9254.OK := by native_decide
+/-- Code #9254 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9254_qec :
+    ∃ ψ, SS.IsAmplitudes code_9254 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9254 code_9254_ok (by decide) (by decide)
+
+/-- Catalogue code #9255: ((6,2,2)), m=14, a=[2, 2, 4, 6, 9, 13], S=[0, 3]. -/
+def code_9255 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, false, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, true, false, false, true], ![false, true, false, true, true, false], ![true, false, false, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), (0 : ℚ)]
+theorem code_9255_ok : code_9255.OK := by native_decide
+/-- Code #9255 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9255_qec :
+    ∃ ψ, SS.IsAmplitudes code_9255 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9255 code_9255_ok (by decide) (by decide)
+
+/-- Catalogue code #9256: ((6,2,2)), m=14, a=[2, 2, 4, 6, 11, 13], S=[0, 5]. -/
+def code_9256 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, true, false, false, true, true], ![true, true, true, true, false, false]}, {![false, true, true, false, false, true], ![true, false, false, true, true, false], ![true, false, true, false, false, true], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), (0 : ℚ), (0 : ℚ)]
+theorem code_9256_ok : code_9256.OK := by native_decide
+/-- Code #9256 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9256_qec :
+    ∃ ψ, SS.IsAmplitudes code_9256 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9256 code_9256_ok (by decide) (by decide)
+
+/-- Catalogue code #9257: ((6,2,2)), m=14, a=[2, 2, 4, 7, 8, 9], S=[0, 3]. -/
+def code_9257 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, false, true, false, true, false], ![true, true, false, true, true, true]}, {![false, false, false, false, true, true], ![false, true, false, true, true, false], ![true, false, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), (0 : ℚ), ((-3 : ℚ) / 7), (0 : ℚ)]
+theorem code_9257_ok : code_9257.OK := by native_decide
+/-- Code #9257 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9257_qec :
+    ∃ ψ, SS.IsAmplitudes code_9257 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9257 code_9257_ok (by decide) (by decide)
+
+/-- Catalogue code #9258: ((6,2,2)), m=14, a=[2, 2, 4, 7, 8, 11], S=[0, 5]. -/
+def code_9258 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, false, true, true, true], ![true, false, true, false, true, false]}, {![false, false, false, false, true, true], ![false, false, true, true, true, false], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), (0 : ℚ), ((-5 : ℚ) / 7), (0 : ℚ)]
+theorem code_9258_ok : code_9258.OK := by native_decide
+/-- Code #9258 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9258_qec :
+    ∃ ψ, SS.IsAmplitudes code_9258 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9258 code_9258_ok (by decide) (by decide)
+
+/-- Catalogue code #9259: ((6,2,2)), m=14, a=[2, 2, 4, 7, 8, 13], S=[0, 3]. -/
+def code_9259 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, false, true, false, true, false], ![true, true, true, true, false, true]}, {![false, false, true, false, false, true], ![false, true, false, true, true, false], ![true, false, false, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), (0 : ℚ)]
+theorem code_9259_ok : code_9259.OK := by native_decide
+/-- Code #9259 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9259_qec :
+    ∃ ψ, SS.IsAmplitudes code_9259 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9259 code_9259_ok (by decide) (by decide)
+
+/-- Catalogue code #9260: ((6,2,2)), m=14, a=[2, 2, 4, 7, 8, 13], S=[0, 5]. -/
+def code_9260 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, false, true, false, true, false], ![true, true, true, true, false, true]}, {![false, false, true, true, true, false], ![false, true, true, false, false, true], ![true, false, true, false, false, true], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((2 : ℚ) / 7), ((-3 : ℚ) / 7), (0 : ℚ), (0 : ℚ), (0 : ℚ)]
+theorem code_9260_ok : code_9260.OK := by native_decide
+/-- Code #9260 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9260_qec :
+    ∃ ψ, SS.IsAmplitudes code_9260 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9260 code_9260_ok (by decide) (by decide)
+
+/-- Catalogue code #9261: ((6,2,2)), m=14, a=[2, 2, 4, 7, 8, 13], S=[0, 11]. -/
+def code_9261 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, true, true, false, true, false], ![true, false, true, false, true, false], ![true, true, true, true, false, true]}, {![false, false, true, false, true, true], ![false, false, true, true, false, false], ![true, true, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), (0 : ℚ)]
+theorem code_9261_ok : code_9261.OK := by native_decide
+/-- Code #9261 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9261_qec :
+    ∃ ψ, SS.IsAmplitudes code_9261 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9261 code_9261_ok (by decide) (by decide)
+
+/-- Catalogue code #9262: ((6,2,2)), m=14, a=[2, 2, 4, 7, 9, 13], S=[0, 3]. -/
+def code_9262 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, false, true, false, true, true], ![true, true, true, true, false, true]}, {![false, false, true, false, false, true], ![false, true, false, true, true, true], ![true, true, false, false, false, true], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((4 : ℚ) / 7), (0 : ℚ), ((-3 : ℚ) / 7)]
+theorem code_9262_ok : code_9262.OK := by native_decide
+/-- Code #9262 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9262_qec :
+    ∃ ψ, SS.IsAmplitudes code_9262 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9262 code_9262_ok (by decide) (by decide)
+
+/-- Catalogue code #9263: ((6,2,2)), m=14, a=[2, 2, 4, 7, 10, 13], S=[0, 6]. -/
+def code_9263 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, false], ![true, true, true, true, false, true]}, {![false, false, false, true, false, true], ![false, true, true, false, false, false], ![true, false, true, false, false, false], ![true, true, false, true, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9263_ok : code_9263.OK := by native_decide
+/-- Code #9263 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9263_qec :
+    ∃ ψ, SS.IsAmplitudes code_9263 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9263 code_9263_ok (by decide) (by decide)
+
+/-- Catalogue code #9264: ((6,2,2)), m=14, a=[2, 2, 4, 7, 10, 13], S=[0, 8]. -/
+def code_9264 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, false, true, false], ![true, true, true, true, false, true]}, {![false, true, false, true, false, true], ![true, false, false, true, false, true], ![true, false, true, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9264_ok : code_9264.OK := by native_decide
+/-- Code #9264 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9264_qec :
+    ∃ ψ, SS.IsAmplitudes code_9264 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9264 code_9264_ok (by decide) (by decide)
+
+/-- Catalogue code #9265: ((6,2,2)), m=14, a=[2, 2, 4, 7, 11, 13], S=[0, 5]. -/
+def code_9265 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, true, false, false, true, true], ![true, true, true, true, false, true]}, {![false, true, false, true, true, true], ![false, true, true, false, false, true], ![true, false, true, false, false, true], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), (0 : ℚ), ((-5 : ℚ) / 7)]
+theorem code_9265_ok : code_9265.OK := by native_decide
+/-- Code #9265 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9265_qec :
+    ∃ ψ, SS.IsAmplitudes code_9265 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9265 code_9265_ok (by decide) (by decide)
+
+/-- Catalogue code #9266: ((6,2,2)), m=14, a=[2, 2, 4, 7, 12, 13], S=[0, 8]. -/
+def code_9266 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, false, true, false], ![true, true, true, true, false, true]}, {![false, false, true, true, true, true], ![false, true, false, true, false, true], ![true, false, false, true, false, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9266_ok : code_9266.OK := by native_decide
+/-- Code #9266 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9266_qec :
+    ∃ ψ, SS.IsAmplitudes code_9266 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9266 code_9266_ok (by decide) (by decide)
+
+/-- Catalogue code #9267: ((6,2,2)), m=14, a=[2, 2, 4, 8, 9, 11], S=[0, 13]. -/
+def code_9267 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, true, true, false, true, true]}, {![false, false, true, false, true, false], ![false, true, false, false, false, true], ![true, false, false, false, false, true], ![true, true, false, false, true, false], ![true, true, true, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((6 : ℚ) / 7), (0 : ℚ), (0 : ℚ)]
+theorem code_9267_ok : code_9267.OK := by native_decide
+/-- Code #9267 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9267_qec :
+    ∃ ψ, SS.IsAmplitudes code_9267 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9267 code_9267_ok (by decide) (by decide)
+
+/-- Catalogue code #9268: ((6,2,2)), m=14, a=[2, 2, 4, 8, 9, 13], S=[0, 3]. -/
+def code_9268 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, false, true, false, true, true], ![true, false, true, true, false, false]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![true, true, false, false, false, true], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-3 : ℚ) / 7), ((4 : ℚ) / 7), (0 : ℚ), (0 : ℚ)]
+theorem code_9268_ok : code_9268.OK := by native_decide
+/-- Code #9268 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9268_qec :
+    ∃ ψ, SS.IsAmplitudes code_9268 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9268 code_9268_ok (by decide) (by decide)
+
+/-- Catalogue code #9269: ((6,2,2)), m=14, a=[2, 2, 4, 8, 11, 13], S=[0, 5]. -/
+def code_9269 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, false, true, true, false], ![false, true, true, false, false, true], ![true, false, true, false, false, true], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((4 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), (0 : ℚ), (0 : ℚ)]
+theorem code_9269_ok : code_9269.OK := by native_decide
+/-- Code #9269 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9269_qec :
+    ∃ ψ, SS.IsAmplitudes code_9269 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9269 code_9269_ok (by decide) (by decide)
+
+/-- Catalogue code #9270: ((6,2,2)), m=14, a=[2, 2, 4, 9, 10, 13], S=[0, 6]. -/
+def code_9270 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, false], ![false, true, true, true, false, true], ![true, false, true, true, false, true], ![true, true, false, false, true, false]}, {![false, true, false, true, true, true], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9270_ok : code_9270.OK := by native_decide
+/-- Code #9270 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9270_qec :
+    ∃ ψ, SS.IsAmplitudes code_9270 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9270 code_9270_ok (by decide) (by decide)
+
+/-- Catalogue code #9271: ((6,2,2)), m=14, a=[2, 2, 4, 9, 10, 13], S=[0, 8]. -/
+def code_9271 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, true, true, true, false, true], ![true, false, true, true, false, true], ![true, true, false, false, true, false]}, {![false, false, false, true, false, true], ![false, false, true, true, true, true], ![true, true, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9271_ok : code_9271.OK := by native_decide
+/-- Code #9271 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9271_qec :
+    ∃ ψ, SS.IsAmplitudes code_9271 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9271 code_9271_ok (by decide) (by decide)
+
+/-- Catalogue code #9272: ((6,2,2)), m=14, a=[2, 2, 4, 9, 11, 12], S=[0, 8]. -/
+def code_9272 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, false, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, true], ![false, true, false, true, true, false], ![true, false, false, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7)]
+theorem code_9272_ok : code_9272.OK := by native_decide
+/-- Code #9272 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9272_qec :
+    ∃ ψ, SS.IsAmplitudes code_9272 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9272 code_9272_ok (by decide) (by decide)
+
+/-- Catalogue code #9273: ((6,2,2)), m=14, a=[2, 2, 4, 10, 11, 11], S=[0, 8]. -/
+def code_9273 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, true, true, false, true, true], ![true, false, true, false, true, true], ![true, true, false, true, false, false]}, {![false, false, false, false, true, true], ![false, false, true, true, true, true], ![true, true, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9273_ok : code_9273.OK := by native_decide
+/-- Code #9273 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9273_qec :
+    ∃ ψ, SS.IsAmplitudes code_9273 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9273 code_9273_ok (by decide) (by decide)
+
+/-- Catalogue code #9274: ((6,2,2)), m=14, a=[2, 2, 4, 10, 11, 12], S=[0, 8]. -/
+def code_9274 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, true, true, false, false], ![false, true, false, false, false, true], ![false, true, true, true, false, true], ![true, false, false, false, false, true], ![true, true, false, true, false, false]}, {![false, false, false, true, false, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), (1 : ℚ), ((-1 : ℚ) / 7)]
+theorem code_9274_ok : code_9274.OK := by native_decide
+/-- Code #9274 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9274_qec :
+    ∃ ψ, SS.IsAmplitudes code_9274 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9274 code_9274_ok (by decide) (by decide)
+
+/-- Catalogue code #9275: ((6,2,2)), m=14, a=[2, 2, 4, 10, 11, 13], S=[0, 6]. -/
+def code_9275 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![false, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, false, true, true, true], ![false, true, true, false, false, false], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9275_ok : code_9275.OK := by native_decide
+/-- Code #9275 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9275_qec :
+    ∃ ψ, SS.IsAmplitudes code_9275 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9275 code_9275_ok (by decide) (by decide)
+
+/-- Catalogue code #9276: ((6,2,2)), m=14, a=[2, 2, 4, 10, 12, 13], S=[0, 8]. -/
+def code_9276 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, true, true, false, false], ![false, true, false, false, true, false], ![false, true, true, true, true, false], ![true, false, false, false, true, false], ![true, true, false, true, false, false]}, {![false, false, false, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), (1 : ℚ)]
+theorem code_9276_ok : code_9276.OK := by native_decide
+/-- Code #9276 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9276_qec :
+    ∃ ψ, SS.IsAmplitudes code_9276 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9276 code_9276_ok (by decide) (by decide)
+
+/-- Catalogue code #9277: ((6,2,2)), m=14, a=[2, 2, 4, 10, 13, 13], S=[0, 8]. -/
+def code_9277 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, true, true, false, false], ![false, true, false, false, true, true], ![false, true, true, true, true, true], ![true, false, false, false, true, true], ![true, true, false, true, false, false]}, {![false, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9277_ok : code_9277.OK := by native_decide
+/-- Code #9277 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9277_qec :
+    ∃ ψ, SS.IsAmplitudes code_9277 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9277 code_9277_ok (by decide) (by decide)
+
+/-- Catalogue code #9278: ((6,2,2)), m=14, a=[2, 2, 4, 11, 12, 13], S=[0, 8]. -/
+def code_9278 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (4 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, true, true, false, true], ![false, true, false, false, true, false], ![false, true, true, true, true, true], ![true, false, false, false, true, false], ![true, true, false, true, false, true]}, {![false, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9278_ok : code_9278.OK := by native_decide
+/-- Code #9278 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9278_qec :
+    ∃ ψ, SS.IsAmplitudes code_9278 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9278 code_9278_ok (by decide) (by decide)
+
+/-- Catalogue code #9279: ((6,2,2)), m=14, a=[2, 2, 5, 5, 5, 11], S=[0, 1]. -/
+def code_9279 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, true, true], ![true, true, false, true, true, false], ![true, true, true, false, true, false], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9279_ok : code_9279.OK := by native_decide
+/-- Code #9279 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9279_qec :
+    ∃ ψ, SS.IsAmplitudes code_9279 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9279 code_9279_ok (by decide) (by decide)
+
+/-- Catalogue code #9280: ((6,2,2)), m=14, a=[2, 2, 5, 5, 5, 13], S=[0, 3]. -/
+def code_9280 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, true, false], ![true, true, true, false, true, false], ![true, true, true, true, false, false]}, {![false, true, true, true, true, false], ![true, false, true, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9280_ok : code_9280.OK := by native_decide
+/-- Code #9280 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9280_qec :
+    ∃ ψ, SS.IsAmplitudes code_9280 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9280 code_9280_ok (by decide) (by decide)
+
+/-- Catalogue code #9281: ((6,2,2)), m=14, a=[2, 2, 5, 5, 6, 6], S=[0, 4]. -/
+def code_9281 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, true, true, true, false, false]}, {![false, true, true, true, false, true], ![false, true, true, true, true, false], ![true, false, true, true, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9281_ok : code_9281.OK := by native_decide
+/-- Code #9281 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9281_qec :
+    ∃ ψ, SS.IsAmplitudes code_9281 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9281 code_9281_ok (by decide) (by decide)
+
+/-- Catalogue code #9282: ((6,2,2)), m=14, a=[2, 2, 5, 5, 6, 6], S=[0, 10]. -/
+def code_9282 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, false, false, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, false, false], ![true, true, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9282_ok : code_9282.OK := by native_decide
+/-- Code #9282 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9282_qec :
+    ∃ ψ, SS.IsAmplitudes code_9282 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9282 code_9282_ok (by decide) (by decide)
+
+/-- Catalogue code #9283: ((6,2,2)), m=14, a=[2, 2, 5, 5, 6, 8], S=[0, 4]. -/
+def code_9283 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, false, true, true], ![true, true, true, true, true, true]}, {![false, false, true, true, false, true], ![false, true, true, true, true, false], ![true, false, true, true, true, false], ![true, true, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9283_ok : code_9283.OK := by native_decide
+/-- Code #9283 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9283_qec :
+    ∃ ψ, SS.IsAmplitudes code_9283 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9283 code_9283_ok (by decide) (by decide)
+
+/-- Catalogue code #9284: ((6,2,2)), m=14, a=[2, 2, 5, 5, 6, 8], S=[0, 10]. -/
+def code_9284 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, false, false], ![true, true, true, true, true, true]}, {![false, false, true, true, false, false], ![false, true, false, false, false, true], ![true, false, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9284_ok : code_9284.OK := by native_decide
+/-- Code #9284 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9284_qec :
+    ∃ ψ, SS.IsAmplitudes code_9284 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9284 code_9284_ok (by decide) (by decide)
+
+/-- Catalogue code #9285: ((6,2,2)), m=14, a=[2, 2, 5, 5, 6, 12], S=[0, 10]. -/
+def code_9285 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, true, true, true, true], ![true, false, false, false, false, true], ![true, true, true, true, false, false]}, {![false, false, true, true, false, false], ![false, true, true, true, false, true], ![true, false, true, true, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9285_ok : code_9285.OK := by native_decide
+/-- Code #9285 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9285_qec :
+    ∃ ψ, SS.IsAmplitudes code_9285 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9285 code_9285_ok (by decide) (by decide)
+
+/-- Catalogue code #9286: ((6,2,2)), m=14, a=[2, 2, 5, 5, 6, 13], S=[0, 4]. -/
+def code_9286 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, true, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, false, true], ![false, true, true, true, true, false], ![true, false, true, true, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9286_ok : code_9286.OK := by native_decide
+/-- Code #9286 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9286_qec :
+    ∃ ψ, SS.IsAmplitudes code_9286 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9286 code_9286_ok (by decide) (by decide)
+
+/-- Catalogue code #9287: ((6,2,2)), m=14, a=[2, 2, 5, 5, 8, 10], S=[0, 1]. -/
+def code_9287 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, false, false, true], ![true, true, true, true, false, false]}, {![false, false, false, true, false, true], ![false, false, true, false, false, true], ![false, true, true, false, true, false], ![true, false, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((4 : ℚ) / 7), ((4 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9287_ok : code_9287.OK := by native_decide
+/-- Code #9287 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9287_qec :
+    ∃ ψ, SS.IsAmplitudes code_9287 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9287 code_9287_ok (by decide) (by decide)
+
+/-- Catalogue code #9288: ((6,2,2)), m=14, a=[2, 2, 5, 5, 8, 10], S=[0, 3]. -/
+def code_9288 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, false, false, true], ![true, true, true, true, false, false]}, {![false, true, false, true, false, true], ![false, true, true, false, false, true], ![true, false, true, false, false, true], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((-2 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9288_ok : code_9288.OK := by native_decide
+/-- Code #9288 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9288_qec :
+    ∃ ψ, SS.IsAmplitudes code_9288 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9288 code_9288_ok (by decide) (by decide)
+
+/-- Catalogue code #9289: ((6,2,2)), m=14, a=[2, 2, 5, 5, 8, 11], S=[0, 1]. -/
+def code_9289 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, true, true, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, true, true], ![false, true, true, false, true, false], ![true, false, false, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9289_ok : code_9289.OK := by native_decide
+/-- Code #9289 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9289_qec :
+    ∃ ψ, SS.IsAmplitudes code_9289 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9289 code_9289_ok (by decide) (by decide)
+
+/-- Catalogue code #9290: ((6,2,2)), m=14, a=[2, 2, 5, 5, 8, 11], S=[0, 4]. -/
+def code_9290 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, true, true, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![false, true, true, false, false, true], ![true, false, false, true, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9290_ok : code_9290.OK := by native_decide
+/-- Code #9290 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9290_qec :
+    ∃ ψ, SS.IsAmplitudes code_9290 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9290 code_9290_ok (by decide) (by decide)
+
+/-- Catalogue code #9291: ((6,2,2)), m=14, a=[2, 2, 5, 5, 8, 13], S=[0, 3]. -/
+def code_9291 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![false, true, true, false, true, true], ![true, false, false, true, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, true, true], ![true, true, false, false, false, true], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9291_ok : code_9291.OK := by native_decide
+/-- Code #9291 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9291_qec :
+    ∃ ψ, SS.IsAmplitudes code_9291 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9291 code_9291_ok (by decide) (by decide)
+
+/-- Catalogue code #9292: ((6,2,2)), m=14, a=[2, 2, 5, 5, 10, 11], S=[0, 1]. -/
+def code_9292 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, false, true, true, true], ![true, true, false, false, true, false], ![true, true, true, true, false, false]}, {![false, false, false, true, true, false], ![false, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((6 : ℚ) / 7), (0 : ℚ), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9292_ok : code_9292.OK := by native_decide
+/-- Code #9292 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9292_qec :
+    ∃ ψ, SS.IsAmplitudes code_9292 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9292 code_9292_ok (by decide) (by decide)
+
+/-- Catalogue code #9293: ((6,2,2)), m=14, a=[2, 2, 5, 5, 10, 13], S=[0, 3]. -/
+def code_9293 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, false, true, false, true, true], ![true, true, false, false, true, false], ![true, true, true, true, false, false]}, {![false, true, true, false, true, false], ![true, false, false, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9293_ok : code_9293.OK := by native_decide
+/-- Code #9293 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9293_qec :
+    ∃ ψ, SS.IsAmplitudes code_9293 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9293 code_9293_ok (by decide) (by decide)
+
+/-- Catalogue code #9294: ((6,2,2)), m=14, a=[2, 2, 5, 5, 11, 13], S=[0, 4]. -/
+def code_9294 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, false, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, false, true], ![false, true, true, false, true, false], ![true, false, true, false, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9294_ok : code_9294.OK := by native_decide
+/-- Code #9294 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9294_qec :
+    ∃ ψ, SS.IsAmplitudes code_9294 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9294 code_9294_ok (by decide) (by decide)
+
+/-- Catalogue code #9295: ((6,2,2)), m=14, a=[2, 2, 5, 5, 13, 13], S=[0, 3]. -/
+def code_9295 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, false, false, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, true, true], ![false, false, true, false, true, true], ![true, true, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((4 : ℚ) / 7), ((4 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9295_ok : code_9295.OK := by native_decide
+/-- Code #9295 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9295_qec :
+    ∃ ψ, SS.IsAmplitudes code_9295 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9295 code_9295_ok (by decide) (by decide)
+
+/-- Catalogue code #9296: ((6,2,2)), m=14, a=[2, 2, 5, 5, 13, 13], S=[0, 4]. -/
+def code_9296 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, false, false, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9296_ok : code_9296.OK := by native_decide
+/-- Code #9296 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9296_qec :
+    ∃ ψ, SS.IsAmplitudes code_9296 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9296 code_9296_ok (by decide) (by decide)
+
+/-- Catalogue code #9297: ((6,2,2)), m=14, a=[2, 2, 5, 6, 6, 13], S=[0, 4]. -/
+def code_9297 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, true, true, false], ![true, true, true, false, true, true], ![true, true, true, true, false, true]}, {![false, true, true, true, true, true], ![true, false, true, true, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9297_ok : code_9297.OK := by native_decide
+/-- Code #9297 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9297_qec :
+    ∃ ψ, SS.IsAmplitudes code_9297 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9297 code_9297_ok (by decide) (by decide)
+
+/-- Catalogue code #9298: ((6,2,2)), m=14, a=[2, 2, 5, 6, 6, 13], S=[0, 10]. -/
+def code_9298 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, false], ![true, false, false, true, true, false], ![true, true, true, false, true, true], ![true, true, true, true, false, true]}, {![false, false, true, true, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9298_ok : code_9298.OK := by native_decide
+/-- Code #9298 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9298_qec :
+    ∃ ψ, SS.IsAmplitudes code_9298 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9298 code_9298_ok (by decide) (by decide)
+
+/-- Catalogue code #9299: ((6,2,2)), m=14, a=[2, 2, 5, 6, 7, 10], S=[0, 3]. -/
+def code_9299 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}, {![false, false, false, false, true, true], ![false, true, true, false, false, true], ![true, false, true, false, false, true], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), ((3 : ℚ) / 7), (0 : ℚ), ((-3 : ℚ) / 7)]
+theorem code_9299_ok : code_9299.OK := by native_decide
+/-- Code #9299 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9299_qec :
+    ∃ ψ, SS.IsAmplitudes code_9299 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9299 code_9299_ok (by decide) (by decide)
+
+/-- Catalogue code #9300: ((6,2,2)), m=14, a=[2, 2, 5, 6, 7, 11], S=[0, 4]. -/
+def code_9300 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, false], ![true, false, true, false, true, false], ![true, true, false, true, true, true]}, {![false, false, false, false, true, true], ![false, false, true, true, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9300_ok : code_9300.OK := by native_decide
+/-- Code #9300 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9300_qec :
+    ∃ ψ, SS.IsAmplitudes code_9300 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9300 code_9300_ok (by decide) (by decide)
+
+/-- Catalogue code #9301: ((6,2,2)), m=14, a=[2, 2, 5, 6, 7, 13], S=[0, 3]. -/
+def code_9301 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, false, true, true, true], ![true, false, true, false, true, false], ![true, true, true, true, false, true]}, {![false, false, true, true, true, true], ![true, true, false, false, false, true], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9301_ok : code_9301.OK := by native_decide
+/-- Code #9301 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9301_qec :
+    ∃ ψ, SS.IsAmplitudes code_9301 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9301 code_9301_ok (by decide) (by decide)
+
+/-- Catalogue code #9302: ((6,2,2)), m=14, a=[2, 2, 5, 6, 7, 13], S=[0, 4]. -/
+def code_9302 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, false], ![true, false, true, false, true, false], ![true, true, true, true, false, true]}, {![false, false, true, false, false, true], ![false, false, true, true, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9302_ok : code_9302.OK := by native_decide
+/-- Code #9302 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9302_qec :
+    ∃ ψ, SS.IsAmplitudes code_9302 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9302 code_9302_ok (by decide) (by decide)
+
+/-- Catalogue code #9303: ((6,2,2)), m=14, a=[2, 2, 5, 6, 8, 13], S=[0, 4]. -/
+def code_9303 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, false, true, false, true, true], ![true, true, true, true, false, true]}, {![false, false, true, false, false, true], ![false, false, true, true, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9303_ok : code_9303.OK := by native_decide
+/-- Code #9303 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9303_qec :
+    ∃ ψ, SS.IsAmplitudes code_9303 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9303 code_9303_ok (by decide) (by decide)
+
+/-- Catalogue code #9304: ((6,2,2)), m=14, a=[2, 2, 5, 6, 8, 13], S=[0, 10]. -/
+def code_9304 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, false], ![true, false, true, false, true, true], ![true, true, true, true, false, true]}, {![false, false, true, true, false, true], ![false, true, false, false, true, false], ![true, false, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9304_ok : code_9304.OK := by native_decide
+/-- Code #9304 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9304_qec :
+    ∃ ψ, SS.IsAmplitudes code_9304 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9304 code_9304_ok (by decide) (by decide)
+
+/-- Catalogue code #9305: ((6,2,2)), m=14, a=[2, 2, 5, 6, 9, 13], S=[0, 10]. -/
+def code_9305 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, true, true, true, false, true]}, {![false, false, true, true, false, true], ![false, true, false, false, true, true], ![true, false, false, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9305_ok : code_9305.OK := by native_decide
+/-- Code #9305 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9305_qec :
+    ∃ ψ, SS.IsAmplitudes code_9305 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9305 code_9305_ok (by decide) (by decide)
+
+/-- Catalogue code #9306: ((6,2,2)), m=14, a=[2, 2, 5, 6, 10, 13], S=[0, 3]. -/
+def code_9306 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, true, false, false, true, false], ![true, true, true, true, false, true]}, {![false, true, true, false, true, false], ![true, false, false, true, true, true], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((-2 : ℚ) / 7), (0 : ℚ), ((4 : ℚ) / 7), ((-3 : ℚ) / 7), (0 : ℚ)]
+theorem code_9306_ok : code_9306.OK := by native_decide
+/-- Code #9306 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9306_qec :
+    ∃ ψ, SS.IsAmplitudes code_9306 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9306 code_9306_ok (by decide) (by decide)
+
+/-- Catalogue code #9307: ((6,2,2)), m=14, a=[2, 2, 5, 6, 11, 13], S=[0, 4]. -/
+def code_9307 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, false, true, true], ![true, true, true, true, false, true]}, {![false, false, true, false, false, true], ![false, true, false, true, true, true], ![true, false, false, true, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9307_ok : code_9307.OK := by native_decide
+/-- Code #9307 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9307_qec :
+    ∃ ψ, SS.IsAmplitudes code_9307 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9307 code_9307_ok (by decide) (by decide)
+
+/-- Catalogue code #9308: ((6,2,2)), m=14, a=[2, 2, 5, 6, 12, 13], S=[0, 4]. -/
+def code_9308 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, false], ![true, false, false, false, true, false], ![true, true, true, true, false, true]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9308_ok : code_9308.OK := by native_decide
+/-- Code #9308 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9308_qec :
+    ∃ ψ, SS.IsAmplitudes code_9308 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9308 code_9308_ok (by decide) (by decide)
+
+/-- Catalogue code #9309: ((6,2,2)), m=14, a=[2, 2, 5, 7, 10, 13], S=[0, 3]. -/
+def code_9309 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![false, true, true, true, false, false], ![true, true, false, false, true, false]}, {![false, false, false, true, true, false], ![false, true, true, false, true, false], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-2 : ℚ) / 7), (0 : ℚ), ((4 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9309_ok : code_9309.OK := by native_decide
+/-- Code #9309 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9309_qec :
+    ∃ ψ, SS.IsAmplitudes code_9309 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9309 code_9309_ok (by decide) (by decide)
+
+/-- Catalogue code #9310: ((6,2,2)), m=14, a=[2, 2, 5, 7, 11, 13], S=[0, 4]. -/
+def code_9310 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, false], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9310_ok : code_9310.OK := by native_decide
+/-- Code #9310 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9310_qec :
+    ∃ ψ, SS.IsAmplitudes code_9310 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9310 code_9310_ok (by decide) (by decide)
+
+/-- Catalogue code #9311: ((6,2,2)), m=14, a=[2, 2, 5, 8, 8, 13], S=[0, 4]. -/
+def code_9311 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, true, false, true, true]}, {![false, false, true, false, false, true], ![false, true, false, true, true, false], ![true, false, false, true, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9311_ok : code_9311.OK := by native_decide
+/-- Code #9311 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9311_qec :
+    ∃ ψ, SS.IsAmplitudes code_9311 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9311 code_9311_ok (by decide) (by decide)
+
+/-- Catalogue code #9312: ((6,2,2)), m=14, a=[2, 2, 5, 8, 9, 11], S=[0, 10]. -/
+def code_9312 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, false, true, false, true, false], ![true, true, true, true, false, true]}, {![false, false, true, true, false, true], ![false, true, true, true, true, false], ![true, false, false, true, false, false], ![true, true, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9312_ok : code_9312.OK := by native_decide
+/-- Code #9312 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9312_qec :
+    ∃ ψ, SS.IsAmplitudes code_9312 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9312 code_9312_ok (by decide) (by decide)
+
+/-- Catalogue code #9313: ((6,2,2)), m=14, a=[2, 2, 5, 8, 9, 11], S=[0, 13]. -/
+def code_9313 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, false, true, false, true, false], ![true, true, true, true, false, true]}, {![false, false, true, true, false, false], ![false, true, true, false, true, true], ![true, false, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9313_ok : code_9313.OK := by native_decide
+/-- Code #9313 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9313_qec :
+    ∃ ψ, SS.IsAmplitudes code_9313 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9313 code_9313_ok (by decide) (by decide)
+
+/-- Catalogue code #9314: ((6,2,2)), m=14, a=[2, 2, 5, 8, 10, 11], S=[0, 1]. -/
+def code_9314 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, false, true, false, true, true], ![true, true, false, false, true, false], ![true, true, true, true, false, true]}, {![false, false, false, true, true, true], ![false, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), ((6 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9314_ok : code_9314.OK := by native_decide
+/-- Code #9314 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9314_qec :
+    ∃ ψ, SS.IsAmplitudes code_9314 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9314 code_9314_ok (by decide) (by decide)
+
+/-- Catalogue code #9315: ((6,2,2)), m=14, a=[2, 2, 5, 8, 10, 13], S=[0, 3]. -/
+def code_9315 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, false, true, true, false, true], ![true, true, false, false, true, false]}, {![false, false, false, true, true, true], ![false, true, true, false, true, false], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), ((4 : ℚ) / 7), ((-3 : ℚ) / 7), (0 : ℚ)]
+theorem code_9315_ok : code_9315.OK := by native_decide
+/-- Code #9315 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9315_qec :
+    ∃ ψ, SS.IsAmplitudes code_9315 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9315 code_9315_ok (by decide) (by decide)
+
+/-- Catalogue code #9316: ((6,2,2)), m=14, a=[2, 2, 5, 8, 11, 13], S=[0, 4]. -/
+def code_9316 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, true, true, false, true], ![true, true, false, false, true, true]}, {![false, false, false, true, true, true], ![false, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9316_ok : code_9316.OK := by native_decide
+/-- Code #9316 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9316_qec :
+    ∃ ψ, SS.IsAmplitudes code_9316 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9316 code_9316_ok (by decide) (by decide)
+
+/-- Catalogue code #9317: ((6,2,2)), m=14, a=[2, 2, 5, 10, 10, 13], S=[0, 6]. -/
+def code_9317 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![false, false, true, true, false, true], ![true, true, false, false, true, false]}, {![false, false, false, true, true, false], ![false, true, true, false, false, true], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9317_ok : code_9317.OK := by native_decide
+/-- Code #9317 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9317_qec :
+    ∃ ψ, SS.IsAmplitudes code_9317 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9317 code_9317_ok (by decide) (by decide)
+
+/-- Catalogue code #9318: ((6,2,2)), m=14, a=[2, 2, 5, 10, 12, 13], S=[0, 8]. -/
+def code_9318 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, true, true, false, true], ![false, true, false, false, true, false], ![false, true, true, true, true, true], ![true, false, false, false, true, false], ![true, true, false, true, false, false]}, {![false, false, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9318_ok : code_9318.OK := by native_decide
+/-- Code #9318 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9318_qec :
+    ∃ ψ, SS.IsAmplitudes code_9318 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9318 code_9318_ok (by decide) (by decide)
+
+/-- Catalogue code #9319: ((6,2,2)), m=14, a=[2, 2, 6, 6, 6, 7], S=[0, 4]. -/
+def code_9319 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, false], ![false, true, true, true, false, false], ![true, false, false, true, true, false], ![true, false, true, false, true, false]}, {![false, false, true, true, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), (1 : ℚ)]
+theorem code_9319_ok : code_9319.OK := by native_decide
+/-- Code #9319 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9319_qec :
+    ∃ ψ, SS.IsAmplitudes code_9319 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9319 code_9319_ok (by decide) (by decide)
+
+/-- Catalogue code #9320: ((6,2,2)), m=14, a=[2, 2, 6, 6, 7, 11], S=[0, 4]. -/
+def code_9320 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, false, false], ![true, true, false, true, true, true], ![true, true, true, false, true, true]}, {![false, true, true, true, true, true], ![true, false, true, true, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9320_ok : code_9320.OK := by native_decide
+/-- Code #9320 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9320_qec :
+    ∃ ψ, SS.IsAmplitudes code_9320 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9320 code_9320_ok (by decide) (by decide)
+
+/-- Catalogue code #9321: ((6,2,2)), m=14, a=[2, 2, 6, 6, 7, 11], S=[0, 10]. -/
+def code_9321 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, false], ![true, false, true, true, false, false], ![true, true, false, true, true, true], ![true, true, true, false, true, true]}, {![false, false, true, false, true, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9321_ok : code_9321.OK := by native_decide
+/-- Code #9321 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9321_qec :
+    ∃ ψ, SS.IsAmplitudes code_9321 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9321 code_9321_ok (by decide) (by decide)
+
+/-- Catalogue code #9322: ((6,2,2)), m=14, a=[2, 2, 6, 6, 7, 12], S=[0, 4]. -/
+def code_9322 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, false, true], ![false, true, true, true, false, false], ![true, false, false, false, false, true]}, {![false, false, false, true, false, true], ![false, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), (1 : ℚ), ((-1 : ℚ) / 7)]
+theorem code_9322_ok : code_9322.OK := by native_decide
+/-- Code #9322 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9322_qec :
+    ∃ ψ, SS.IsAmplitudes code_9322 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9322 code_9322_ok (by decide) (by decide)
+
+/-- Catalogue code #9323: ((6,2,2)), m=14, a=[2, 2, 6, 6, 7, 13], S=[0, 4]. -/
+def code_9323 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![false, true, true, true, false, false], ![true, false, false, true, true, true], ![true, false, true, false, true, true]}, {![false, false, true, true, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9323_ok : code_9323.OK := by native_decide
+/-- Code #9323 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9323_qec :
+    ∃ ψ, SS.IsAmplitudes code_9323 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9323 code_9323_ok (by decide) (by decide)
+
+/-- Catalogue code #9324: ((6,2,2)), m=14, a=[2, 2, 6, 6, 11, 13], S=[0, 4]. -/
+def code_9324 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, false], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, true, false, true, true, true], ![true, false, true, false, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9324_ok : code_9324.OK := by native_decide
+/-- Code #9324 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9324_qec :
+    ∃ ψ, SS.IsAmplitudes code_9324 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9324 code_9324_ok (by decide) (by decide)
+
+/-- Catalogue code #9325: ((6,2,2)), m=14, a=[2, 2, 6, 6, 11, 13], S=[0, 10]. -/
+def code_9325 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, false], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, false, false, true, true], ![true, true, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9325_ok : code_9325.OK := by native_decide
+/-- Code #9325 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9325_qec :
+    ∃ ψ, SS.IsAmplitudes code_9325 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9325 code_9325_ok (by decide) (by decide)
+
+/-- Catalogue code #9326: ((6,2,2)), m=14, a=[2, 2, 6, 6, 13, 13], S=[0, 4]. -/
+def code_9326 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![false, true, true, true, false, false], ![true, false, false, false, true, true]}, {![false, false, false, true, true, true], ![false, false, true, false, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9326_ok : code_9326.OK := by native_decide
+/-- Code #9326 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9326_qec :
+    ∃ ψ, SS.IsAmplitudes code_9326 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9326 code_9326_ok (by decide) (by decide)
+
+/-- Catalogue code #9327: ((6,2,2)), m=14, a=[2, 2, 6, 7, 8, 9], S=[0, 10]. -/
+def code_9327 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, false], ![true, true, false, true, true, true]}, {![false, false, false, true, true, true], ![false, true, false, false, true, false], ![true, false, false, false, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9327_ok : code_9327.OK := by native_decide
+/-- Code #9327 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9327_qec :
+    ∃ ψ, SS.IsAmplitudes code_9327 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9327 code_9327_ok (by decide) (by decide)
+
+/-- Catalogue code #9328: ((6,2,2)), m=14, a=[2, 2, 6, 7, 8, 11], S=[0, 4]. -/
+def code_9328 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, false, true, true, true], ![true, true, true, true, false, true]}, {![false, false, false, true, false, true], ![false, false, true, true, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9328_ok : code_9328.OK := by native_decide
+/-- Code #9328 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9328_qec :
+    ∃ ψ, SS.IsAmplitudes code_9328 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9328 code_9328_ok (by decide) (by decide)
+
+/-- Catalogue code #9329: ((6,2,2)), m=14, a=[2, 2, 6, 7, 8, 11], S=[0, 10]. -/
+def code_9329 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, false], ![true, false, false, true, true, true], ![true, true, true, true, false, true]}, {![false, false, true, true, false, true], ![false, true, false, false, true, false], ![true, false, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9329_ok : code_9329.OK := by native_decide
+/-- Code #9329 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9329_qec :
+    ∃ ψ, SS.IsAmplitudes code_9329 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9329 code_9329_ok (by decide) (by decide)
+
+/-- Catalogue code #9330: ((6,2,2)), m=14, a=[2, 2, 6, 7, 9, 11], S=[0, 10]. -/
+def code_9330 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, false, true, false, true, true], ![true, true, true, true, false, true]}, {![false, false, true, true, false, true], ![true, true, false, false, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9330_ok : code_9330.OK := by native_decide
+/-- Code #9330 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9330_qec :
+    ∃ ψ, SS.IsAmplitudes code_9330 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9330 code_9330_ok (by decide) (by decide)
+
+/-- Catalogue code #9331: ((6,2,2)), m=14, a=[2, 2, 6, 7, 10, 11], S=[0, 9]. -/
+def code_9331 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, true, false, false, true, false], ![true, true, true, true, false, true]}, {![false, false, true, true, true, false], ![false, true, false, false, true, true], ![false, true, false, true, false, false], ![true, false, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), (0 : ℚ), ((-2 : ℚ) / 7), (0 : ℚ)]
+theorem code_9331_ok : code_9331.OK := by native_decide
+/-- Code #9331 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9331_qec :
+    ∃ ψ, SS.IsAmplitudes code_9331 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9331 code_9331_ok (by decide) (by decide)
+
+/-- Catalogue code #9332: ((6,2,2)), m=14, a=[2, 2, 6, 7, 10, 13], S=[0, 3]. -/
+def code_9332 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, true, true, false, true], ![true, true, false, false, true, false]}, {![false, false, false, true, true, false], ![false, true, true, false, true, true], ![true, true, false, false, false, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-4 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9332_ok : code_9332.OK := by native_decide
+/-- Code #9332 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9332_qec :
+    ∃ ψ, SS.IsAmplitudes code_9332 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9332 code_9332_ok (by decide) (by decide)
+
+/-- Catalogue code #9333: ((6,2,2)), m=14, a=[2, 2, 6, 7, 10, 13], S=[0, 9]. -/
+def code_9333 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, true, true, false, true], ![true, true, false, false, true, false]}, {![false, false, false, false, true, true], ![false, false, true, true, true, false], ![false, true, false, true, false, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((-3 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((3 : ℚ) / 7), (0 : ℚ)]
+theorem code_9333_ok : code_9333.OK := by native_decide
+/-- Code #9333 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9333_qec :
+    ∃ ψ, SS.IsAmplitudes code_9333 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9333 code_9333_ok (by decide) (by decide)
+
+/-- Catalogue code #9334: ((6,2,2)), m=14, a=[2, 2, 6, 7, 11, 11], S=[0, 10]. -/
+def code_9334 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, false], ![false, true, false, false, true, true], ![true, false, false, false, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9334_ok : code_9334.OK := by native_decide
+/-- Code #9334 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9334_qec :
+    ∃ ψ, SS.IsAmplitudes code_9334 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9334 code_9334_ok (by decide) (by decide)
+
+/-- Catalogue code #9335: ((6,2,2)), m=14, a=[2, 2, 6, 7, 11, 12], S=[0, 4]. -/
+def code_9335 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, false, true], ![true, false, false, false, false, true], ![true, true, true, true, true, false]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9335_ok : code_9335.OK := by native_decide
+/-- Code #9335 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9335_qec :
+    ∃ ψ, SS.IsAmplitudes code_9335 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9335 code_9335_ok (by decide) (by decide)
+
+/-- Catalogue code #9336: ((6,2,2)), m=14, a=[2, 2, 6, 7, 11, 13], S=[0, 4]. -/
+def code_9336 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, false, false, true, true], ![true, true, true, true, true, false]}, {![false, false, false, true, true, false], ![false, true, true, false, true, true], ![true, false, true, false, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9336_ok : code_9336.OK := by native_decide
+/-- Code #9336 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9336_qec :
+    ∃ ψ, SS.IsAmplitudes code_9336 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9336 code_9336_ok (by decide) (by decide)
+
+/-- Catalogue code #9337: ((6,2,2)), m=14, a=[2, 2, 6, 7, 11, 13], S=[0, 9]. -/
+def code_9337 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, true, true, false, true], ![true, true, false, false, true, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, true], ![false, true, false, true, false, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((-3 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((3 : ℚ) / 7), ((-2 : ℚ) / 7)]
+theorem code_9337_ok : code_9337.OK := by native_decide
+/-- Code #9337 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9337_qec :
+    ∃ ψ, SS.IsAmplitudes code_9337 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9337 code_9337_ok (by decide) (by decide)
+
+/-- Catalogue code #9338: ((6,2,2)), m=14, a=[2, 2, 6, 7, 12, 13], S=[0, 4]. -/
+def code_9338 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, false], ![false, true, true, true, false, true], ![true, false, false, false, true, false]}, {![false, false, false, true, true, true], ![false, false, true, false, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9338_ok : code_9338.OK := by native_decide
+/-- Code #9338 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9338_qec :
+    ∃ ψ, SS.IsAmplitudes code_9338 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9338 code_9338_ok (by decide) (by decide)
+
+/-- Catalogue code #9339: ((6,2,2)), m=14, a=[2, 2, 6, 7, 12, 13], S=[0, 10]. -/
+def code_9339 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, true, true, true, false, true], ![true, false, false, false, true, false], ![true, false, true, true, false, true], ![true, true, true, true, true, true]}, {![false, false, true, true, true, true], ![true, true, false, true, false, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9339_ok : code_9339.OK := by native_decide
+/-- Code #9339 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9339_qec :
+    ∃ ψ, SS.IsAmplitudes code_9339 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9339 code_9339_ok (by decide) (by decide)
+
+/-- Catalogue code #9340: ((6,2,2)), m=14, a=[2, 2, 6, 8, 9, 9], S=[0, 4]. -/
+def code_9340 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, false, true, true, true], ![true, true, true, false, true, true]}, {![false, false, false, false, true, true], ![false, false, true, true, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9340_ok : code_9340.OK := by native_decide
+/-- Code #9340 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9340_qec :
+    ∃ ψ, SS.IsAmplitudes code_9340 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9340 code_9340_ok (by decide) (by decide)
+
+/-- Catalogue code #9341: ((6,2,2)), m=14, a=[2, 2, 6, 8, 11, 13], S=[0, 4]. -/
+def code_9341 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, false], ![true, true, true, true, true, true]}, {![false, false, false, true, true, true], ![false, true, true, false, true, true], ![true, false, true, false, true, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9341_ok : code_9341.OK := by native_decide
+/-- Code #9341 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9341_qec :
+    ∃ ψ, SS.IsAmplitudes code_9341 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9341 code_9341_ok (by decide) (by decide)
+
+/-- Catalogue code #9342: ((6,2,2)), m=14, a=[2, 2, 6, 9, 9, 10], S=[0, 11]. -/
+def code_9342 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, true, false, false, false, true], ![true, true, true, true, true, false]}, {![false, false, true, false, true, true], ![false, true, false, true, false, false], ![true, false, false, false, true, false], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((2 : ℚ) / 7), ((3 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((3 : ℚ) / 7)]
+theorem code_9342_ok : code_9342.OK := by native_decide
+/-- Code #9342 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9342_qec :
+    ∃ ψ, SS.IsAmplitudes code_9342 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9342 code_9342_ok (by decide) (by decide)
+
+/-- Catalogue code #9343: ((6,2,2)), m=14, a=[2, 2, 6, 9, 9, 10], S=[0, 13]. -/
+def code_9343 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, true, false, false, false, true], ![true, true, true, true, true, false]}, {![false, true, true, true, false, true], ![true, false, true, true, false, true], ![true, true, false, false, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-4 : ℚ) / 7), ((-4 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7)]
+theorem code_9343_ok : code_9343.OK := by native_decide
+/-- Code #9343 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9343_qec :
+    ∃ ψ, SS.IsAmplitudes code_9343 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9343 code_9343_ok (by decide) (by decide)
+
+/-- Catalogue code #9344: ((6,2,2)), m=14, a=[2, 2, 6, 9, 9, 11], S=[0, 1]. -/
+def code_9344 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, false, true, false, true, true], ![true, true, true, true, true, false]}, {![false, false, false, true, true, true], ![false, false, true, false, true, false], ![false, false, true, true, false, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9344_ok : code_9344.OK := by native_decide
+/-- Code #9344 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9344_qec :
+    ∃ ψ, SS.IsAmplitudes code_9344 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9344 code_9344_ok (by decide) (by decide)
+
+/-- Catalogue code #9345: ((6,2,2)), m=14, a=[2, 2, 6, 9, 9, 11], S=[0, 10]. -/
+def code_9345 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, false, true, false, true, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, false], ![true, true, false, false, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9345_ok : code_9345.OK := by native_decide
+/-- Code #9345 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9345_qec :
+    ∃ ψ, SS.IsAmplitudes code_9345 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9345 code_9345_ok (by decide) (by decide)
+
+/-- Catalogue code #9346: ((6,2,2)), m=14, a=[2, 2, 6, 9, 9, 13], S=[0, 3]. -/
+def code_9346 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![false, false, true, true, false, true], ![true, true, true, true, true, false]}, {![false, false, false, true, true, true], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9346_ok : code_9346.OK := by native_decide
+/-- Code #9346 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9346_qec :
+    ∃ ψ, SS.IsAmplitudes code_9346 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9346 code_9346_ok (by decide) (by decide)
+
+/-- Catalogue code #9347: ((6,2,2)), m=14, a=[2, 2, 6, 9, 9, 13], S=[0, 10]. -/
+def code_9347 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![false, false, true, true, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, false], ![false, true, false, true, false, true], ![true, false, false, false, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9347_ok : code_9347.OK := by native_decide
+/-- Code #9347 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9347_qec :
+    ∃ ψ, SS.IsAmplitudes code_9347 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9347 code_9347_ok (by decide) (by decide)
+
+/-- Catalogue code #9348: ((6,2,2)), m=14, a=[2, 2, 6, 9, 11, 13], S=[0, 10]. -/
+def code_9348 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![true, true, false, false, true, true]}, {![false, false, false, false, true, true], ![false, true, false, true, false, true], ![true, false, false, true, false, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9348_ok : code_9348.OK := by native_decide
+/-- Code #9348 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9348_qec :
+    ∃ ψ, SS.IsAmplitudes code_9348 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9348 code_9348_ok (by decide) (by decide)
+
+/-- Catalogue code #9349: ((6,2,2)), m=14, a=[2, 2, 6, 10, 11, 13], S=[0, 9]. -/
+def code_9349 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, true, false, false, true, true], ![true, true, false, true, false, false]}, {![false, false, false, true, false, true], ![false, true, false, true, true, false], ![true, false, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-4 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), (0 : ℚ), (0 : ℚ)]
+theorem code_9349_ok : code_9349.OK := by native_decide
+/-- Code #9349 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9349_qec :
+    ∃ ψ, SS.IsAmplitudes code_9349 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9349 code_9349_ok (by decide) (by decide)
+
+/-- Catalogue code #9350: ((6,2,2)), m=14, a=[2, 2, 6, 10, 13, 13], S=[0, 9]. -/
+def code_9350 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, false, true, true], ![true, false, false, false, true, true], ![true, true, false, true, false, false]}, {![false, false, false, true, false, true], ![false, false, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), (0 : ℚ), (0 : ℚ)]
+theorem code_9350_ok : code_9350.OK := by native_decide
+/-- Code #9350 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9350_qec :
+    ∃ ψ, SS.IsAmplitudes code_9350 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9350 code_9350_ok (by decide) (by decide)
+
+/-- Catalogue code #9351: ((6,2,2)), m=14, a=[2, 2, 6, 11, 12, 13], S=[0, 10]. -/
+def code_9351 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (6 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, true, true, true, true], ![true, false, false, false, true, false], ![true, true, false, true, false, true]}, {![false, false, false, true, false, true], ![false, true, false, true, true, true], ![true, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9351_ok : code_9351.OK := by native_decide
+/-- Code #9351 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9351_qec :
+    ∃ ψ, SS.IsAmplitudes code_9351 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9351 code_9351_ok (by decide) (by decide)
+
+/-- Catalogue code #9352: ((6,2,2)), m=14, a=[2, 2, 7, 8, 9, 10], S=[0, 11]. -/
+def code_9352 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (11 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, true, false, false, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, false, true], ![false, true, false, false, true, false], ![true, false, false, false, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ), ((3 : ℚ) / 7), (0 : ℚ), ((3 : ℚ) / 7)]
+theorem code_9352_ok : code_9352.OK := by native_decide
+/-- Code #9352 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9352_qec :
+    ∃ ψ, SS.IsAmplitudes code_9352 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9352 code_9352_ok (by decide) (by decide)
+
+/-- Catalogue code #9353: ((6,2,2)), m=14, a=[2, 2, 7, 8, 9, 13], S=[0, 3]. -/
+def code_9353 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![true, true, true, true, true, false]}, {![false, false, false, true, true, false], ![false, true, true, true, false, false], ![true, false, true, false, true, true], ![true, false, true, true, false, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9353_ok : code_9353.OK := by native_decide
+/-- Code #9353 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9353_qec :
+    ∃ ψ, SS.IsAmplitudes code_9353 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9353 code_9353_ok (by decide) (by decide)
+
+/-- Catalogue code #9354: ((6,2,2)), m=14, a=[2, 2, 7, 8, 10, 13], S=[0, 3]. -/
+def code_9354 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (3 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![true, true, true, true, true, true]}, {![false, false, false, true, true, true], ![false, false, true, false, true, false], ![false, true, true, true, false, false], ![true, false, true, true, false, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9354_ok : code_9354.OK := by native_decide
+/-- Code #9354 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9354_qec :
+    ∃ ψ, SS.IsAmplitudes code_9354 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9354 code_9354_ok (by decide) (by decide)
+
+/-- Catalogue code #9355: ((6,2,2)), m=14, a=[2, 2, 7, 8, 11, 13], S=[0, 5]. -/
+def code_9355 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![false, true, true, true, true, false], ![true, false, true, true, true, false], ![true, true, false, false, true, true]}, {![false, false, false, true, true, false], ![false, true, true, false, true, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-3 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9355_ok : code_9355.OK := by native_decide
+/-- Code #9355 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9355_qec :
+    ∃ ψ, SS.IsAmplitudes code_9355 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9355 code_9355_ok (by decide) (by decide)
+
+/-- Catalogue code #9356: ((6,2,2)), m=14, a=[2, 2, 7, 9, 10, 10], S=[0, 6]. -/
+def code_9356 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, true, true, true, false], ![true, true, false, false, false, true], ![true, true, false, false, true, false]}, {![false, false, false, false, true, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9356_ok : code_9356.OK := by native_decide
+/-- Code #9356 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9356_qec :
+    ∃ ψ, SS.IsAmplitudes code_9356 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9356 code_9356_ok (by decide) (by decide)
+
+/-- Catalogue code #9357: ((6,2,2)), m=14, a=[2, 2, 7, 9, 11, 13], S=[0, 10]. -/
+def code_9357 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, true, true], ![true, true, false, false, true, true]}, {![false, false, false, false, true, true], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9357_ok : code_9357.OK := by native_decide
+/-- Code #9357 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9357_qec :
+    ∃ ψ, SS.IsAmplitudes code_9357 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9357 code_9357_ok (by decide) (by decide)
+
+/-- Catalogue code #9358: ((6,2,2)), m=14, a=[2, 2, 7, 10, 10, 13], S=[0, 6]. -/
+def code_9358 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, true, true, true]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![true, true, true, false, true, true], ![true, true, true, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9358_ok : code_9358.OK := by native_decide
+/-- Code #9358 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9358_qec :
+    ∃ ψ, SS.IsAmplitudes code_9358 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9358 code_9358_ok (by decide) (by decide)
+
+/-- Catalogue code #9359: ((6,2,2)), m=14, a=[2, 2, 7, 10, 10, 13], S=[0, 8]. -/
+def code_9359 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, true], ![true, true, false, false, true, false], ![true, true, false, true, false, false]}, {![false, true, false, true, true, false], ![true, false, false, true, true, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9359_ok : code_9359.OK := by native_decide
+/-- Code #9359 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9359_qec :
+    ∃ ψ, SS.IsAmplitudes code_9359 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9359 code_9359_ok (by decide) (by decide)
+
+/-- Catalogue code #9360: ((6,2,2)), m=14, a=[2, 2, 7, 10, 11, 13], S=[0, 9]. -/
+def code_9360 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![true, true, false, false, true, true], ![true, true, false, true, false, false]}, {![false, false, false, true, false, true], ![false, true, false, true, true, false], ![false, true, true, false, false, false], ![true, false, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), (0 : ℚ), ((5 : ℚ) / 7)]
+theorem code_9360_ok : code_9360.OK := by native_decide
+/-- Code #9360 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9360_qec :
+    ∃ ψ, SS.IsAmplitudes code_9360 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9360 code_9360_ok (by decide) (by decide)
+
+/-- Catalogue code #9361: ((6,2,2)), m=14, a=[2, 2, 7, 10, 12, 13], S=[0, 8]. -/
+def code_9361 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, false, true, false], ![true, true, false, true, false, false]}, {![false, false, false, true, true, false], ![false, true, true, false, false, true], ![true, true, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9361_ok : code_9361.OK := by native_decide
+/-- Code #9361 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9361_qec :
+    ∃ ψ, SS.IsAmplitudes code_9361 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9361 code_9361_ok (by decide) (by decide)
+
+/-- Catalogue code #9362: ((6,2,2)), m=14, a=[2, 2, 7, 11, 11, 13], S=[0, 10]. -/
+def code_9362 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (7 : ZMod 14), (11 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, false, true]}, {![false, false, false, true, false, true], ![false, true, false, true, true, false], ![true, false, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9362_ok : code_9362.OK := by native_decide
+/-- Code #9362 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9362_qec :
+    ∃ ψ, SS.IsAmplitudes code_9362 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9362 code_9362_ok (by decide) (by decide)
+
+/-- Catalogue code #9363: ((6,2,2)), m=14, a=[2, 2, 8, 8, 8, 9], S=[0, 4]. -/
+def code_9363 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, true, true, true, true, false]}, {![false, true, true, false, true, false], ![false, true, true, true, false, false], ![true, false, false, true, true, false], ![true, false, true, false, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), (1 : ℚ)]
+theorem code_9363_ok : code_9363.OK := by native_decide
+/-- Code #9363 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9363_qec :
+    ∃ ψ, SS.IsAmplitudes code_9363 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9363 code_9363_ok (by decide) (by decide)
+
+/-- Catalogue code #9364: ((6,2,2)), m=14, a=[2, 2, 8, 8, 11, 13], S=[0, 10]. -/
+def code_9364 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, true], ![true, true, false, false, true, true]}, {![false, false, false, false, true, true], ![false, true, false, true, false, false], ![true, false, false, true, false, false], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((5 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9364_ok : code_9364.OK := by native_decide
+/-- Code #9364 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9364_qec :
+    ∃ ψ, SS.IsAmplitudes code_9364 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9364 code_9364_ok (by decide) (by decide)
+
+/-- Catalogue code #9365: ((6,2,2)), m=14, a=[2, 2, 8, 9, 9, 10], S=[0, 13]. -/
+def code_9365 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, true, true, true, true, false], ![true, false, true, true, true, false], ![true, true, false, false, false, true]}, {![false, false, true, true, false, true], ![true, true, false, false, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7)]
+theorem code_9365_ok : code_9365.OK := by native_decide
+/-- Code #9365 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9365_qec :
+    ∃ ψ, SS.IsAmplitudes code_9365 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9365 code_9365_ok (by decide) (by decide)
+
+/-- Catalogue code #9366: ((6,2,2)), m=14, a=[2, 2, 8, 10, 11, 13], S=[0, 9]. -/
+def code_9366 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, false, true, true], ![true, true, false, true, false, false]}, {![false, false, false, true, false, true], ![false, true, false, true, true, false], ![false, true, true, false, false, true], ![true, false, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), (0 : ℚ), (0 : ℚ)]
+theorem code_9366_ok : code_9366.OK := by native_decide
+/-- Code #9366 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9366_qec :
+    ∃ ψ, SS.IsAmplitudes code_9366 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9366 code_9366_ok (by decide) (by decide)
+
+/-- Catalogue code #9367: ((6,2,2)), m=14, a=[2, 2, 9, 9, 10, 10], S=[0, 6]. -/
+def code_9367 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![false, false, true, true, true, false], ![true, true, false, false, false, true]}, {![false, false, false, false, true, true], ![false, true, true, true, false, false], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9367_ok : code_9367.OK := by native_decide
+/-- Code #9367 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9367_qec :
+    ∃ ψ, SS.IsAmplitudes code_9367 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9367 code_9367_ok (by decide) (by decide)
+
+/-- Catalogue code #9368: ((6,2,2)), m=14, a=[2, 2, 9, 9, 10, 12], S=[0, 8]. -/
+def code_9368 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, true, true, true, false], ![false, true, false, false, false, true], ![false, true, true, true, true, true], ![true, false, false, false, false, true], ![true, true, false, false, true, false]}, {![false, false, false, false, true, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9368_ok : code_9368.OK := by native_decide
+/-- Code #9368 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9368_qec :
+    ∃ ψ, SS.IsAmplitudes code_9368 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9368 code_9368_ok (by decide) (by decide)
+
+/-- Catalogue code #9369: ((6,2,2)), m=14, a=[2, 2, 9, 10, 10, 13], S=[0, 6]. -/
+def code_9369 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, true, false, false]}, {![false, false, false, true, true, false], ![false, true, true, false, true, true], ![false, true, true, true, false, true], ![true, false, true, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9369_ok : code_9369.OK := by native_decide
+/-- Code #9369 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9369_qec :
+    ∃ ψ, SS.IsAmplitudes code_9369 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9369 code_9369_ok (by decide) (by decide)
+
+/-- Catalogue code #9370: ((6,2,2)), m=14, a=[2, 2, 9, 10, 11, 12], S=[0, 8]. -/
+def code_9370 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (2 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, false, false, true], ![true, true, false, true, false, false]}, {![false, false, false, true, false, true], ![false, true, true, false, true, false], ![true, true, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9370_ok : code_9370.OK := by native_decide
+/-- Code #9370 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9370_qec :
+    ∃ ψ, SS.IsAmplitudes code_9370 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9370 code_9370_ok (by decide) (by decide)
+
+/-- Catalogue code #9371: ((6,2,2)), m=14, a=[2, 3, 3, 4, 4, 4], S=[0, 8]. -/
+def code_9371 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, false, true, true, true]}, {![false, false, false, false, true, true], ![false, false, false, true, false, true], ![false, false, false, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9371_ok : code_9371.OK := by native_decide
+/-- Code #9371 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9371_qec :
+    ∃ ψ, SS.IsAmplitudes code_9371 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9371 code_9371_ok (by decide) (by decide)
+
+/-- Catalogue code #9372: ((6,2,2)), m=14, a=[2, 3, 3, 4, 4, 5], S=[0, 13]. -/
+def code_9372 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, false], ![true, false, true, true, false, true], ![true, true, false, false, true, true]}, {![false, false, false, true, true, true], ![true, false, true, true, true, false], ![true, true, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9372_ok : code_9372.OK := by native_decide
+/-- Code #9372 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9372_qec :
+    ∃ ψ, SS.IsAmplitudes code_9372 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9372 code_9372_ok (by decide) (by decide)
+
+/-- Catalogue code #9373: ((6,2,2)), m=14, a=[2, 3, 3, 4, 4, 6], S=[0, 9]. -/
+def code_9373 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, true, true, true, true, false], ![true, true, true, false, false, true]}, {![false, false, true, false, false, true], ![false, true, false, false, false, true], ![true, true, false, false, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((4 : ℚ) / 7), ((4 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9373_ok : code_9373.OK := by native_decide
+/-- Code #9373 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9373_qec :
+    ∃ ψ, SS.IsAmplitudes code_9373 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9373 code_9373_ok (by decide) (by decide)
+
+/-- Catalogue code #9374: ((6,2,2)), m=14, a=[2, 3, 3, 4, 4, 6], S=[0, 13]. -/
+def code_9374 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, true, true, true, true, false], ![true, true, true, false, false, true]}, {![false, false, true, false, true, true], ![false, true, false, false, true, true], ![false, true, false, true, false, true], ![true, false, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9374_ok : code_9374.OK := by native_decide
+/-- Code #9374 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9374_qec :
+    ∃ ψ, SS.IsAmplitudes code_9374 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9374 code_9374_ok (by decide) (by decide)
+
+/-- Catalogue code #9375: ((6,2,2)), m=14, a=[2, 3, 3, 4, 4, 8], S=[0, 5]. -/
+def code_9375 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, false, true], ![false, true, true, true, true, false], ![true, false, false, false, true, true], ![true, false, false, true, false, true]}, {![false, false, true, true, true, true], ![false, true, false, true, true, true], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9375_ok : code_9375.OK := by native_decide
+/-- Code #9375 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9375_qec :
+    ∃ ψ, SS.IsAmplitudes code_9375 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9375 code_9375_ok (by decide) (by decide)
+
+/-- Catalogue code #9376: ((6,2,2)), m=14, a=[2, 3, 3, 4, 4, 9], S=[0, 6]. -/
+def code_9376 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, false], ![true, true, false, false, false, true]}, {![false, true, false, true, true, true], ![false, true, true, false, false, false], ![true, false, false, false, true, false], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9376_ok : code_9376.OK := by native_decide
+/-- Code #9376 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9376_qec :
+    ∃ ψ, SS.IsAmplitudes code_9376 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9376 code_9376_ok (by decide) (by decide)
+
+/-- Catalogue code #9377: ((6,2,2)), m=14, a=[2, 3, 3, 4, 4, 12], S=[0, 6]. -/
+def code_9377 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, false, false, true], ![true, true, true, true, true, true]}, {![false, false, false, true, true, true], ![true, false, false, false, true, false], ![true, false, false, true, false, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9377_ok : code_9377.OK := by native_decide
+/-- Code #9377 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9377_qec :
+    ∃ ψ, SS.IsAmplitudes code_9377 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9377 code_9377_ok (by decide) (by decide)
+
+/-- Catalogue code #9378: ((6,2,2)), m=14, a=[2, 3, 3, 4, 5, 6], S=[0, 13]. -/
+def code_9378 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![false, true, false, false, true, true], ![true, false, true, true, true, false], ![true, true, true, false, false, true]}, {![false, false, true, true, false, true], ![true, false, false, false, true, true], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((-4 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9378_ok : code_9378.OK := by native_decide
+/-- Code #9378 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9378_qec :
+    ∃ ψ, SS.IsAmplitudes code_9378 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9378 code_9378_ok (by decide) (by decide)
+
+/-- Catalogue code #9379: ((6,2,2)), m=14, a=[2, 3, 3, 4, 6, 8], S=[0, 13]. -/
+def code_9379 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, false, true, true], ![false, true, true, false, false, true], ![true, false, false, true, false, true], ![true, true, true, false, true, false]}, {![false, true, false, true, true, false], ![true, false, true, false, false, true], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7)]
+theorem code_9379_ok : code_9379.OK := by native_decide
+/-- Code #9379 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9379_qec :
+    ∃ ψ, SS.IsAmplitudes code_9379 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9379 code_9379_ok (by decide) (by decide)
+
+/-- Catalogue code #9380: ((6,2,2)), m=14, a=[2, 3, 3, 4, 9, 9], S=[0, 6]. -/
+def code_9380 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}, {![false, true, true, false, false, false], ![true, false, false, false, true, true], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9380_ok : code_9380.OK := by native_decide
+/-- Code #9380 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9380_qec :
+    ∃ ψ, SS.IsAmplitudes code_9380 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9380 code_9380_ok (by decide) (by decide)
+
+/-- Catalogue code #9381: ((6,2,2)), m=14, a=[2, 3, 3, 4, 10, 12], S=[0, 8]. -/
+def code_9381 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, false, false, false, false, true], ![true, false, false, true, true, true]}, {![false, false, false, false, true, true], ![false, true, true, true, false, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9381_ok : code_9381.OK := by native_decide
+/-- Code #9381 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9381_qec :
+    ∃ ψ, SS.IsAmplitudes code_9381 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9381 code_9381_ok (by decide) (by decide)
+
+/-- Catalogue code #9382: ((6,2,2)), m=14, a=[2, 3, 3, 5, 6, 7], S=[0, 13]. -/
+def code_9382 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![false, true, false, true, true, false], ![true, false, false, true, false, true], ![true, true, true, false, true, false]}, {![false, false, false, false, true, true], ![true, false, false, true, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-2 : ℚ) / 7), ((-1 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9382_ok : code_9382.OK := by native_decide
+/-- Code #9382 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9382_qec :
+    ∃ ψ, SS.IsAmplitudes code_9382 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9382 code_9382_ok (by decide) (by decide)
+
+/-- Catalogue code #9383: ((6,2,2)), m=14, a=[2, 3, 3, 5, 7, 8], S=[0, 1]. -/
+def code_9383 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, true, true, false], ![true, true, true, true, true, true]}, {![false, false, false, false, true, true], ![false, false, true, true, true, false], ![false, true, false, true, true, false], ![true, false, false, true, false, true], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9383_ok : code_9383.OK := by native_decide
+/-- Code #9383 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9383_qec :
+    ∃ ψ, SS.IsAmplitudes code_9383 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9383 code_9383_ok (by decide) (by decide)
+
+/-- Catalogue code #9384: ((6,2,2)), m=14, a=[2, 3, 3, 5, 7, 13], S=[0, 6]. -/
+def code_9384 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, true, true, true], ![true, false, false, true, true, false], ![true, true, true, false, true, true]}, {![false, false, false, false, true, true], ![true, false, false, true, false, true], ![true, true, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-5 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9384_ok : code_9384.OK := by native_decide
+/-- Code #9384 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9384_qec :
+    ∃ ψ, SS.IsAmplitudes code_9384 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9384 code_9384_ok (by decide) (by decide)
+
+/-- Catalogue code #9385: ((6,2,2)), m=14, a=[2, 3, 3, 5, 8, 10], S=[0, 13]. -/
+def code_9385 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, false], ![true, true, false, true, true, true]}, {![false, false, false, true, true, false], ![false, true, false, false, false, true], ![true, false, true, false, true, false], ![true, true, false, false, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((4 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9385_ok : code_9385.OK := by native_decide
+/-- Code #9385 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9385_qec :
+    ∃ ψ, SS.IsAmplitudes code_9385 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9385 code_9385_ok (by decide) (by decide)
+
+/-- Catalogue code #9386: ((6,2,2)), m=14, a=[2, 3, 3, 5, 10, 10], S=[0, 6]. -/
+def code_9386 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, true, false, true, true]}, {![false, false, false, false, true, true], ![false, true, true, false, false, false], ![true, false, true, true, false, true], ![true, false, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9386_ok : code_9386.OK := by native_decide
+/-- Code #9386 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9386_qec :
+    ∃ ψ, SS.IsAmplitudes code_9386 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9386 code_9386_ok (by decide) (by decide)
+
+/-- Catalogue code #9387: ((6,2,2)), m=14, a=[2, 3, 3, 5, 10, 10], S=[0, 13]. -/
+def code_9387 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, false, true, true]}, {![false, false, true, false, false, true], ![false, true, false, false, false, true], ![false, true, false, false, true, false], ![true, false, false, true, true, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9387_ok : code_9387.OK := by native_decide
+/-- Code #9387 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9387_qec :
+    ∃ ψ, SS.IsAmplitudes code_9387 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9387 code_9387_ok (by decide) (by decide)
+
+/-- Catalogue code #9388: ((6,2,2)), m=14, a=[2, 3, 3, 6, 6, 10], S=[0, 1]. -/
+def code_9388 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, false, true, true, false], ![true, true, true, false, true, false], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![false, true, false, true, true, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9388_ok : code_9388.OK := by native_decide
+/-- Code #9388 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9388_qec :
+    ∃ ψ, SS.IsAmplitudes code_9388 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9388 code_9388_ok (by decide) (by decide)
+
+/-- Catalogue code #9389: ((6,2,2)), m=14, a=[2, 3, 3, 6, 7, 9], S=[0, 1]. -/
+def code_9389 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, false, false, true], ![true, true, false, false, false, true], ![true, true, true, true, false, false]}, {![false, false, false, true, false, true], ![false, true, true, false, false, true], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7)]
+theorem code_9389_ok : code_9389.OK := by native_decide
+/-- Code #9389 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9389_qec :
+    ∃ ψ, SS.IsAmplitudes code_9389 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9389 code_9389_ok (by decide) (by decide)
+
+/-- Catalogue code #9390: ((6,2,2)), m=14, a=[2, 3, 3, 6, 7, 12], S=[0, 4]. -/
+def code_9390 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, false, false, false, false, true], ![true, true, true, true, false, false]}, {![false, false, false, true, false, true], ![false, true, true, false, false, true], ![true, false, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9390_ok : code_9390.OK := by native_decide
+/-- Code #9390 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9390_qec :
+    ∃ ψ, SS.IsAmplitudes code_9390 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9390 code_9390_ok (by decide) (by decide)
+
+/-- Catalogue code #9391: ((6,2,2)), m=14, a=[2, 3, 3, 6, 7, 13], S=[0, 4]. -/
+def code_9391 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, true, true, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, true, true, true, true, true], ![true, false, true, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-5 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9391_ok : code_9391.OK := by native_decide
+/-- Code #9391 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9391_qec :
+    ∃ ψ, SS.IsAmplitudes code_9391 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9391 code_9391_ok (by decide) (by decide)
+
+/-- Catalogue code #9392: ((6,2,2)), m=14, a=[2, 3, 3, 6, 7, 13], S=[0, 5]. -/
+def code_9392 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, true, true, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, false, true], ![false, true, true, true, true, false], ![true, false, true, false, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7), ((4 : ℚ) / 7), ((4 : ℚ) / 7)]
+theorem code_9392_ok : code_9392.OK := by native_decide
+/-- Code #9392 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9392_qec :
+    ∃ ψ, SS.IsAmplitudes code_9392 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9392 code_9392_ok (by decide) (by decide)
+
+/-- Catalogue code #9393: ((6,2,2)), m=14, a=[2, 3, 3, 6, 8, 12], S=[0, 10]. -/
+def code_9393 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, true, true, false], ![false, true, true, false, true, false], ![true, false, false, false, false, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, true, true, true, false, true], ![true, false, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9393_ok : code_9393.OK := by native_decide
+/-- Code #9393 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9393_qec :
+    ∃ ψ, SS.IsAmplitudes code_9393 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9393 code_9393_ok (by decide) (by decide)
+
+/-- Catalogue code #9394: ((6,2,2)), m=14, a=[2, 3, 3, 6, 9, 10], S=[0, 1]. -/
+def code_9394 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, true, true, true], ![true, false, true, false, true, false], ![true, true, true, true, false, false]}, {![false, false, false, true, true, false], ![false, true, true, false, true, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((4 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9394_ok : code_9394.OK := by native_decide
+/-- Code #9394 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9394_qec :
+    ∃ ψ, SS.IsAmplitudes code_9394 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9394 code_9394_ok (by decide) (by decide)
+
+/-- Catalogue code #9395: ((6,2,2)), m=14, a=[2, 3, 3, 6, 9, 13], S=[0, 4]. -/
+def code_9395 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, true, true, false, true, true], ![true, false, true, false, true, false], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![false, true, false, true, true, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9395_ok : code_9395.OK := by native_decide
+/-- Code #9395 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9395_qec :
+    ∃ ψ, SS.IsAmplitudes code_9395 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9395 code_9395_ok (by decide) (by decide)
+
+/-- Catalogue code #9396: ((6,2,2)), m=14, a=[2, 3, 3, 6, 10, 10], S=[0, 1]. -/
+def code_9396 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, true, true, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, true, false, true, true, true], ![true, false, true, false, false, true], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((3 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7)]
+theorem code_9396_ok : code_9396.OK := by native_decide
+/-- Code #9396 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9396_qec :
+    ∃ ψ, SS.IsAmplitudes code_9396 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9396 code_9396_ok (by decide) (by decide)
+
+/-- Catalogue code #9397: ((6,2,2)), m=14, a=[2, 3, 3, 6, 10, 10], S=[0, 5]. -/
+def code_9397 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, true, true, true], ![true, true, true, false, true, true], ![true, true, true, true, false, false]}, {![false, true, false, true, false, true], ![false, true, false, true, true, false], ![true, false, true, false, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7), ((4 : ℚ) / 7), ((4 : ℚ) / 7)]
+theorem code_9397_ok : code_9397.OK := by native_decide
+/-- Code #9397 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9397_qec :
+    ∃ ψ, SS.IsAmplitudes code_9397 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9397 code_9397_ok (by decide) (by decide)
+
+/-- Catalogue code #9398: ((6,2,2)), m=14, a=[2, 3, 3, 6, 10, 13], S=[0, 5]. -/
+def code_9398 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, false, true], ![false, true, false, true, true, false], ![false, true, true, false, false, true], ![true, false, true, false, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((4 : ℚ) / 7), ((4 : ℚ) / 7)]
+theorem code_9398_ok : code_9398.OK := by native_decide
+/-- Code #9398 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9398_qec :
+    ∃ ψ, SS.IsAmplitudes code_9398 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9398 code_9398_ok (by decide) (by decide)
+
+/-- Catalogue code #9399: ((6,2,2)), m=14, a=[2, 3, 3, 6, 12, 13], S=[0, 4]. -/
+def code_9399 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, false, false, false, true, false], ![true, true, true, true, false, false]}, {![false, false, false, true, true, false], ![false, true, true, false, true, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9399_ok : code_9399.OK := by native_decide
+/-- Code #9399 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9399_qec :
+    ∃ ψ, SS.IsAmplitudes code_9399 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9399 code_9399_ok (by decide) (by decide)
+
+/-- Catalogue code #9400: ((6,2,2)), m=14, a=[2, 3, 3, 6, 13, 13], S=[0, 5]. -/
+def code_9400 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (6 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, false, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, false, true], ![false, false, false, true, true, false], ![false, true, true, false, false, true], ![true, false, true, false, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((4 : ℚ) / 7), ((4 : ℚ) / 7)]
+theorem code_9400_ok : code_9400.OK := by native_decide
+/-- Code #9400 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9400_qec :
+    ∃ ψ, SS.IsAmplitudes code_9400 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9400 code_9400_ok (by decide) (by decide)
+
+/-- Catalogue code #9401: ((6,2,2)), m=14, a=[2, 3, 3, 7, 8, 13], S=[0, 9]. -/
+def code_9401 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, true, true, true, false, true]}, {![false, false, true, true, false, true], ![false, true, false, true, false, true], ![true, false, false, false, true, true], ![true, false, false, true, false, false], ![true, true, true, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-4 : ℚ) / 7), ((2 : ℚ) / 7), ((-4 : ℚ) / 7)]
+theorem code_9401_ok : code_9401.OK := by native_decide
+/-- Code #9401 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9401_qec :
+    ∃ ψ, SS.IsAmplitudes code_9401 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9401 code_9401_ok (by decide) (by decide)
+
+/-- Catalogue code #9402: ((6,2,2)), m=14, a=[2, 3, 3, 7, 8, 13], S=[0, 10]. -/
+def code_9402 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, true, true, false, true, false], ![true, true, true, true, false, true]}, {![false, false, true, true, false, false], ![false, true, false, false, true, true], ![true, false, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9402_ok : code_9402.OK := by native_decide
+/-- Code #9402 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9402_qec :
+    ∃ ψ, SS.IsAmplitudes code_9402 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9402 code_9402_ok (by decide) (by decide)
+
+/-- Catalogue code #9403: ((6,2,2)), m=14, a=[2, 3, 3, 7, 9, 13], S=[0, 8]. -/
+def code_9403 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, false, true, false], ![true, true, false, false, true, false], ![true, true, true, true, false, true]}, {![false, false, false, false, true, true], ![false, true, true, true, true, false], ![true, false, false, true, false, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9403_ok : code_9403.OK := by native_decide
+/-- Code #9403 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9403_qec :
+    ∃ ψ, SS.IsAmplitudes code_9403 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9403 code_9403_ok (by decide) (by decide)
+
+/-- Catalogue code #9404: ((6,2,2)), m=14, a=[2, 3, 3, 7, 12, 13], S=[0, 4]. -/
+def code_9404 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, false, false, false, true, false], ![true, true, true, true, false, true]}, {![false, false, false, true, true, true], ![false, true, true, false, true, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9404_ok : code_9404.OK := by native_decide
+/-- Code #9404 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9404_qec :
+    ∃ ψ, SS.IsAmplitudes code_9404 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9404 code_9404_ok (by decide) (by decide)
+
+/-- Catalogue code #9405: ((6,2,2)), m=14, a=[2, 3, 3, 7, 13, 13], S=[0, 5]. -/
+def code_9405 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, false, true, true], ![true, true, true, true, false, true], ![true, true, true, true, true, false]}, {![false, false, false, true, true, true], ![false, true, true, false, true, false], ![true, false, true, false, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9405_ok : code_9405.OK := by native_decide
+/-- Code #9405 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9405_qec :
+    ∃ ψ, SS.IsAmplitudes code_9405 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9405 code_9405_ok (by decide) (by decide)
+
+/-- Catalogue code #9406: ((6,2,2)), m=14, a=[2, 3, 3, 7, 13, 13], S=[0, 8]. -/
+def code_9406 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, false, true, true], ![true, true, true, true, false, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, true], ![false, true, false, true, true, true], ![true, false, false, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9406_ok : code_9406.OK := by native_decide
+/-- Code #9406 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9406_qec :
+    ∃ ψ, SS.IsAmplitudes code_9406 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9406 code_9406_ok (by decide) (by decide)
+
+/-- Catalogue code #9407: ((6,2,2)), m=14, a=[2, 3, 3, 8, 8, 12], S=[0, 4]. -/
+def code_9407 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, false, true, true, true], ![false, true, true, false, true, false], ![false, true, true, true, false, false], ![true, false, false, false, false, true], ![true, true, true, false, true, true]}, {![false, true, true, false, false, true], ![true, false, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9407_ok : code_9407.OK := by native_decide
+/-- Code #9407 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9407_qec :
+    ∃ ψ, SS.IsAmplitudes code_9407 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9407 code_9407_ok (by decide) (by decide)
+
+/-- Catalogue code #9408: ((6,2,2)), m=14, a=[2, 3, 3, 8, 9, 9], S=[0, 10]. -/
+def code_9408 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, false], ![true, false, false, true, true, true], ![true, false, true, false, false, true], ![true, true, false, false, true, false]}, {![false, true, true, false, true, true], ![true, false, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9408_ok : code_9408.OK := by native_decide
+/-- Code #9408 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9408_qec :
+    ∃ ψ, SS.IsAmplitudes code_9408 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9408 code_9408_ok (by decide) (by decide)
+
+/-- Catalogue code #9409: ((6,2,2)), m=14, a=[2, 3, 3, 8, 10, 10], S=[0, 13]. -/
+def code_9409 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, true, true, true, false, false], ![true, true, true, false, true, true]}, {![false, false, true, false, false, true], ![false, true, false, false, false, true], ![false, true, false, false, true, false], ![true, false, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((3 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9409_ok : code_9409.OK := by native_decide
+/-- Code #9409 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9409_qec :
+    ∃ ψ, SS.IsAmplitudes code_9409 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9409 code_9409_ok (by decide) (by decide)
+
+/-- Catalogue code #9410: ((6,2,2)), m=14, a=[2, 3, 3, 9, 10, 10], S=[0, 1]. -/
+def code_9410 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, false, false], ![true, true, true, false, true, true]}, {![false, false, false, true, true, true], ![false, true, true, true, false, false], ![true, false, true, false, false, true], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9410_ok : code_9410.OK := by native_decide
+/-- Code #9410 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9410_qec :
+    ∃ ψ, SS.IsAmplitudes code_9410 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9410 code_9410_ok (by decide) (by decide)
+
+/-- Catalogue code #9411: ((6,2,2)), m=14, a=[2, 3, 3, 9, 10, 10], S=[0, 8]. -/
+def code_9411 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, false, false], ![true, true, false, true, false, false], ![true, true, true, false, true, true]}, {![false, false, true, true, false, true], ![false, true, false, true, true, false], ![true, false, false, false, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9411_ok : code_9411.OK := by native_decide
+/-- Code #9411 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9411_qec :
+    ∃ ψ, SS.IsAmplitudes code_9411 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9411 code_9411_ok (by decide) (by decide)
+
+/-- Catalogue code #9412: ((6,2,2)), m=14, a=[2, 3, 3, 9, 10, 13], S=[0, 8]. -/
+def code_9412 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, false, true, false, true], ![false, false, true, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9412_ok : code_9412.OK := by native_decide
+/-- Code #9412 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9412_qec :
+    ∃ ψ, SS.IsAmplitudes code_9412 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9412 code_9412_ok (by decide) (by decide)
+
+/-- Catalogue code #9413: ((6,2,2)), m=14, a=[2, 3, 3, 9, 13, 13], S=[0, 8]. -/
+def code_9413 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, false, false, true, true], ![true, false, true, true, false, false], ![true, true, false, true, false, false]}, {![false, false, false, true, false, true], ![false, false, false, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9413_ok : code_9413.OK := by native_decide
+/-- Code #9413 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9413_qec :
+    ∃ ψ, SS.IsAmplitudes code_9413 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9413 code_9413_ok (by decide) (by decide)
+
+/-- Catalogue code #9414: ((6,2,2)), m=14, a=[2, 3, 3, 10, 10, 12], S=[0, 6]. -/
+def code_9414 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![false, true, true, true, false, true], ![true, false, false, false, false, true], ![true, true, true, true, true, false]}, {![false, true, true, false, false, false], ![true, false, false, true, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9414_ok : code_9414.OK := by native_decide
+/-- Code #9414 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9414_qec :
+    ∃ ψ, SS.IsAmplitudes code_9414 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9414 code_9414_ok (by decide) (by decide)
+
+/-- Catalogue code #9415: ((6,2,2)), m=14, a=[2, 3, 3, 10, 10, 12], S=[0, 8]. -/
+def code_9415 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, false, false, false, true], ![true, true, true, true, true, false]}, {![false, false, false, false, true, true], ![false, false, false, true, false, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9415_ok : code_9415.OK := by native_decide
+/-- Code #9415 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9415_qec :
+    ∃ ψ, SS.IsAmplitudes code_9415 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9415 code_9415_ok (by decide) (by decide)
+
+/-- Catalogue code #9416: ((6,2,2)), m=14, a=[2, 3, 3, 10, 10, 13], S=[0, 5]. -/
+def code_9416 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, false, true, true], ![true, false, true, true, false, true], ![true, true, true, true, true, false]}, {![false, false, false, true, true, true], ![false, true, true, false, false, true], ![true, false, true, false, false, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((5 : ℚ) / 7), ((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9416_ok : code_9416.OK := by native_decide
+/-- Code #9416 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9416_qec :
+    ∃ ψ, SS.IsAmplitudes code_9416 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9416 code_9416_ok (by decide) (by decide)
+
+/-- Catalogue code #9417: ((6,2,2)), m=14, a=[2, 3, 3, 10, 10, 13], S=[0, 8]. -/
+def code_9417 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, false, true], ![true, true, false, false, true, true], ![true, true, true, true, true, false]}, {![false, false, true, true, true, true], ![false, true, false, true, true, true], ![true, false, false, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9417_ok : code_9417.OK := by native_decide
+/-- Code #9417 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9417_qec :
+    ∃ ψ, SS.IsAmplitudes code_9417 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9417 code_9417_ok (by decide) (by decide)
+
+/-- Catalogue code #9418: ((6,2,2)), m=14, a=[2, 3, 3, 12, 12, 12], S=[0, 8]. -/
+def code_9418 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (3 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, false, false, false, true], ![true, false, false, false, true, false], ![true, false, false, true, false, false]}, {![false, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9418_ok : code_9418.OK := by native_decide
+/-- Code #9418 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9418_qec :
+    ∃ ψ, SS.IsAmplitudes code_9418 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9418 code_9418_ok (by decide) (by decide)
+
+/-- Catalogue code #9419: ((6,2,2)), m=14, a=[2, 3, 4, 4, 4, 5], S=[0, 6]. -/
+def code_9419 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, false], ![true, true, true, false, false, true]}, {![false, true, true, true, true, true], ![true, false, false, false, true, false], ![true, false, false, true, false, false], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9419_ok : code_9419.OK := by native_decide
+/-- Code #9419 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9419_qec :
+    ∃ ψ, SS.IsAmplitudes code_9419 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9419 code_9419_ok (by decide) (by decide)
+
+/-- Catalogue code #9420: ((6,2,2)), m=14, a=[2, 3, 4, 4, 4, 9], S=[0, 6]. -/
+def code_9420 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, false], ![true, true, false, false, false, true]}, {![false, true, false, true, true, true], ![true, false, false, false, true, false], ![true, false, false, true, false, false], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9420_ok : code_9420.OK := by native_decide
+/-- Code #9420 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9420_qec :
+    ∃ ψ, SS.IsAmplitudes code_9420 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9420 code_9420_ok (by decide) (by decide)
+
+/-- Catalogue code #9421: ((6,2,2)), m=14, a=[2, 3, 4, 4, 5, 6], S=[0, 13]. -/
+def code_9421 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, false, true], ![false, true, false, false, true, true], ![true, true, false, true, true, false]}, {![false, false, true, true, true, false], ![false, true, false, true, false, true], ![false, true, true, false, false, true], ![true, false, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((4 : ℚ) / 7), (0 : ℚ), ((1 : ℚ) / 7), ((-2 : ℚ) / 7), (0 : ℚ), ((-3 : ℚ) / 7)]
+theorem code_9421_ok : code_9421.OK := by native_decide
+/-- Code #9421 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9421_qec :
+    ∃ ψ, SS.IsAmplitudes code_9421 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9421 code_9421_ok (by decide) (by decide)
+
+/-- Catalogue code #9422: ((6,2,2)), m=14, a=[2, 3, 4, 4, 5, 12], S=[0, 8]. -/
+def code_9422 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, true, false, true, true, false], ![true, true, true, false, true, false]}, {![false, false, true, true, false, false], ![false, true, false, false, true, false], ![true, true, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9422_ok : code_9422.OK := by native_decide
+/-- Code #9422 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9422_qec :
+    ∃ ψ, SS.IsAmplitudes code_9422 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9422 code_9422_ok (by decide) (by decide)
+
+/-- Catalogue code #9423: ((6,2,2)), m=14, a=[2, 3, 4, 4, 8, 9], S=[0, 13]. -/
+def code_9423 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}, {![false, false, true, false, false, true], ![true, false, true, true, true, true], ![true, true, false, false, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), (0 : ℚ), ((-1 : ℚ) / 7), ((4 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9423_ok : code_9423.OK := by native_decide
+/-- Code #9423 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9423_qec :
+    ∃ ψ, SS.IsAmplitudes code_9423 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9423 code_9423_ok (by decide) (by decide)
+
+/-- Catalogue code #9424: ((6,2,2)), m=14, a=[2, 3, 4, 4, 8, 11], S=[0, 5]. -/
+def code_9424 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, false, true], ![true, false, true, false, true, false], ![true, true, false, true, true, true]}, {![false, false, false, false, true, true], ![false, false, true, true, false, true], ![false, true, true, true, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), (0 : ℚ), ((4 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9424_ok : code_9424.OK := by native_decide
+/-- Code #9424 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9424_qec :
+    ∃ ψ, SS.IsAmplitudes code_9424 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9424 code_9424_ok (by decide) (by decide)
+
+/-- Catalogue code #9425: ((6,2,2)), m=14, a=[2, 3, 4, 4, 8, 11], S=[0, 13]. -/
+def code_9425 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, false, true], ![true, false, true, false, true, false], ![true, true, false, true, true, true]}, {![false, false, true, true, true, true], ![true, false, false, false, false, true], ![true, true, false, false, true, false], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-3 : ℚ) / 7), (0 : ℚ)]
+theorem code_9425_ok : code_9425.OK := by native_decide
+/-- Code #9425 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9425_qec :
+    ∃ ψ, SS.IsAmplitudes code_9425 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9425 code_9425_ok (by decide) (by decide)
+
+/-- Catalogue code #9426: ((6,2,2)), m=14, a=[2, 3, 4, 4, 9, 9], S=[0, 6]. -/
+def code_9426 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, true, true], ![true, true, false, false, true, false]}, {![false, true, true, true, true, false], ![true, false, false, false, true, true], ![true, false, false, true, false, false], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9426_ok : code_9426.OK := by native_decide
+/-- Code #9426 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9426_qec :
+    ∃ ψ, SS.IsAmplitudes code_9426 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9426 code_9426_ok (by decide) (by decide)
+
+/-- Catalogue code #9427: ((6,2,2)), m=14, a=[2, 3, 4, 4, 9, 11], S=[0, 6]. -/
+def code_9427 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, true, false, false, true, false]}, {![false, false, false, false, true, true], ![false, true, true, true, true, false], ![true, false, false, true, false, false], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9427_ok : code_9427.OK := by native_decide
+/-- Code #9427 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9427_qec :
+    ∃ ψ, SS.IsAmplitudes code_9427 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9427 code_9427_ok (by decide) (by decide)
+
+/-- Catalogue code #9428: ((6,2,2)), m=14, a=[2, 3, 4, 4, 9, 11], S=[0, 13]. -/
+def code_9428 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, true, true, true, true], ![false, true, false, false, false, true], ![true, true, false, false, true, false]}, {![false, false, false, true, true, false], ![false, true, false, true, true, true], ![false, true, true, false, true, true], ![true, false, false, false, false, true], ![true, true, true, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9428_ok : code_9428.OK := by native_decide
+/-- Code #9428 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9428_qec :
+    ∃ ψ, SS.IsAmplitudes code_9428 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9428 code_9428_ok (by decide) (by decide)
+
+/-- Catalogue code #9429: ((6,2,2)), m=14, a=[2, 3, 4, 5, 5, 6], S=[0, 13]. -/
+def code_9429 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![false, true, false, false, true, true], ![false, true, false, true, false, true], ![true, true, true, false, true, false]}, {![false, true, false, true, true, false], ![false, true, true, false, false, true], ![true, false, false, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((4 : ℚ) / 7), ((-4 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9429_ok : code_9429.OK := by native_decide
+/-- Code #9429 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9429_qec :
+    ∃ ψ, SS.IsAmplitudes code_9429 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9429 code_9429_ok (by decide) (by decide)
+
+/-- Catalogue code #9430: ((6,2,2)), m=14, a=[2, 3, 4, 5, 5, 7], S=[0, 6]. -/
+def code_9430 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![false, true, true, false, false, true], ![true, false, false, false, true, true], ![true, true, true, true, false, false]}, {![false, true, false, true, true, true], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9430_ok : code_9430.OK := by native_decide
+/-- Code #9430 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9430_qec :
+    ∃ ψ, SS.IsAmplitudes code_9430 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9430 code_9430_ok (by decide) (by decide)
+
+/-- Catalogue code #9431: ((6,2,2)), m=14, a=[2, 3, 4, 5, 5, 7], S=[0, 13]. -/
+def code_9431 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, false], ![false, true, true, false, false, true], ![true, false, false, false, true, true], ![true, false, false, true, false, true], ![true, true, true, true, false, false]}, {![false, true, false, true, true, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9431_ok : code_9431.OK := by native_decide
+/-- Code #9431 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9431_qec :
+    ∃ ψ, SS.IsAmplitudes code_9431 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9431 code_9431_ok (by decide) (by decide)
+
+/-- Catalogue code #9432: ((6,2,2)), m=14, a=[2, 3, 4, 5, 6, 8], S=[0, 1]. -/
+def code_9432 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, true, false, true, true, false], ![true, false, true, false, false, true], ![true, true, true, true, false, false], ![true, true, true, true, true, true]}, {![false, false, true, true, true, false], ![false, true, true, false, false, true], ![true, false, false, true, false, true], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), (0 : ℚ), ((-2 : ℚ) / 7), (0 : ℚ), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9432_ok : code_9432.OK := by native_decide
+/-- Code #9432 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9432_qec :
+    ∃ ψ, SS.IsAmplitudes code_9432 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9432 code_9432_ok (by decide) (by decide)
+
+/-- Catalogue code #9433: ((6,2,2)), m=14, a=[2, 3, 4, 5, 7, 9], S=[0, 1]. -/
+def code_9433 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, true, false, true], ![false, true, true, false, true, false], ![false, true, true, true, true, true], ![true, false, false, true, true, false], ![true, true, false, false, false, true], ![true, true, true, true, false, false]}, {![false, true, false, true, true, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9433_ok : code_9433.OK := by native_decide
+/-- Code #9433 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9433_qec :
+    ∃ ψ, SS.IsAmplitudes code_9433 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9433 code_9433_ok (by decide) (by decide)
+
+/-- Catalogue code #9434: ((6,2,2)), m=14, a=[2, 3, 4, 5, 7, 9], S=[0, 8]. -/
+def code_9434 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, false, true, true, false], ![true, true, false, false, false, true], ![true, true, true, true, false, false]}, {![false, true, false, true, false, false], ![true, false, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9434_ok : code_9434.OK := by native_decide
+/-- Code #9434 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9434_qec :
+    ∃ ψ, SS.IsAmplitudes code_9434 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9434 code_9434_ok (by decide) (by decide)
+
+/-- Catalogue code #9435: ((6,2,2)), m=14, a=[2, 3, 4, 5, 8, 9], S=[0, 1]. -/
+def code_9435 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, false, true, false], ![true, false, true, true, true, true], ![true, true, false, false, false, true], ![true, true, true, true, false, false]}, {![false, true, true, true, true, true], ![true, false, false, true, true, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-4 : ℚ) / 7), ((4 : ℚ) / 7), ((-2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-2 : ℚ) / 7)]
+theorem code_9435_ok : code_9435.OK := by native_decide
+/-- Code #9435 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9435_qec :
+    ∃ ψ, SS.IsAmplitudes code_9435 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9435 code_9435_ok (by decide) (by decide)
+
+/-- Catalogue code #9436: ((6,2,2)), m=14, a=[2, 3, 4, 5, 8, 10], S=[0, 1]. -/
+def code_9436 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, false, true], ![true, true, false, true, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, false, true], ![false, true, true, false, true, false], ![true, false, false, true, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![(0 : ℚ), (0 : ℚ), ((4 : ℚ) / 7), (0 : ℚ), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9436_ok : code_9436.OK := by native_decide
+/-- Code #9436 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9436_qec :
+    ∃ ψ, SS.IsAmplitudes code_9436 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9436 code_9436_ok (by decide) (by decide)
+
+/-- Catalogue code #9437: ((6,2,2)), m=14, a=[2, 3, 4, 5, 8, 11], S=[0, 1]. -/
+def code_9437 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, false, false, false, true], ![true, false, true, false, true, false], ![true, true, true, true, false, false]}, {![false, false, true, false, false, true], ![false, true, true, false, true, false], ![true, false, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((4 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9437_ok : code_9437.OK := by native_decide
+/-- Code #9437 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9437_qec :
+    ∃ ψ, SS.IsAmplitudes code_9437 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9437 code_9437_ok (by decide) (by decide)
+
+/-- Catalogue code #9438: ((6,2,2)), m=14, a=[2, 3, 4, 5, 8, 12], S=[0, 1]. -/
+def code_9438 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (8 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, true, false, true, true, true], ![true, false, true, false, true, false], ![true, true, true, true, false, false]}, {![false, false, true, true, true, true], ![false, true, false, false, false, true], ![false, true, true, false, true, false], ![true, false, false, true, true, false], ![true, true, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), (0 : ℚ), ((-1 : ℚ) / 7), (0 : ℚ), ((-6 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9438_ok : code_9438.OK := by native_decide
+/-- Code #9438 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9438_qec :
+    ∃ ψ, SS.IsAmplitudes code_9438 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9438 code_9438_ok (by decide) (by decide)
+
+/-- Catalogue code #9439: ((6,2,2)), m=14, a=[2, 3, 4, 5, 9, 12], S=[0, 1]. -/
+def code_9439 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, false, false, false, false, true], ![true, true, false, false, true, false], ![true, true, true, true, false, false]}, {![false, true, false, false, false, true], ![false, true, false, true, true, true], ![true, false, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((6 : ℚ) / 7), (0 : ℚ), ((-1 : ℚ) / 7)]
+theorem code_9439_ok : code_9439.OK := by native_decide
+/-- Code #9439 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9439_qec :
+    ∃ ψ, SS.IsAmplitudes code_9439 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9439 code_9439_ok (by decide) (by decide)
+
+/-- Catalogue code #9440: ((6,2,2)), m=14, a=[2, 3, 4, 5, 10, 10], S=[0, 8]. -/
+def code_9440 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, true, true, true, false, false]}, {![false, true, false, true, false, false], ![false, true, true, true, false, true], ![false, true, true, true, true, false], ![true, false, false, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9440_ok : code_9440.OK := by native_decide
+/-- Code #9440 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9440_qec :
+    ∃ ψ, SS.IsAmplitudes code_9440 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9440 code_9440_ok (by decide) (by decide)
+
+/-- Catalogue code #9441: ((6,2,2)), m=14, a=[2, 3, 4, 5, 10, 11], S=[0, 1]. -/
+def code_9441 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, false], ![false, true, true, false, true, true], ![true, false, false, true, true, true], ![true, true, true, true, false, false]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9441_ok : code_9441.OK := by native_decide
+/-- Code #9441 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9441_qec :
+    ∃ ψ, SS.IsAmplitudes code_9441 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9441 code_9441_ok (by decide) (by decide)
+
+/-- Catalogue code #9442: ((6,2,2)), m=14, a=[2, 3, 4, 5, 10, 12], S=[0, 6]. -/
+def code_9442 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, false, true, true], ![true, true, true, true, false, false]}, {![false, true, false, true, false, true], ![false, true, true, true, true, true], ![true, false, true, false, false, false], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9442_ok : code_9442.OK := by native_decide
+/-- Code #9442 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9442_qec :
+    ∃ ψ, SS.IsAmplitudes code_9442 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9442 code_9442_ok (by decide) (by decide)
+
+/-- Catalogue code #9443: ((6,2,2)), m=14, a=[2, 3, 4, 5, 10, 13], S=[0, 6]. -/
+def code_9443 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![true, true, false, false, true, true], ![true, true, true, true, false, false]}, {![false, true, true, false, false, true], ![true, false, false, true, false, true], ![true, false, true, false, false, false], ![true, true, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9443_ok : code_9443.OK := by native_decide
+/-- Code #9443 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9443_qec :
+    ∃ ψ, SS.IsAmplitudes code_9443 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9443 code_9443_ok (by decide) (by decide)
+
+/-- Catalogue code #9444: ((6,2,2)), m=14, a=[2, 3, 4, 5, 11, 13], S=[0, 6]. -/
+def code_9444 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, true, true, true, false, false]}, {![false, false, true, true, true, false], ![false, true, true, false, false, true], ![true, false, false, true, false, true], ![true, false, true, false, false, false], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9444_ok : code_9444.OK := by native_decide
+/-- Code #9444 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9444_qec :
+    ∃ ψ, SS.IsAmplitudes code_9444 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9444 code_9444_ok (by decide) (by decide)
+
+/-- Catalogue code #9445: ((6,2,2)), m=14, a=[2, 3, 4, 5, 12, 12], S=[0, 6]. -/
+def code_9445 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (5 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, false, false, false, true, false], ![true, true, true, true, false, false]}, {![false, true, false, true, true, false], ![true, false, true, false, false, false], ![true, true, false, true, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((5 : ℚ) / 7)]
+theorem code_9445_ok : code_9445.OK := by native_decide
+/-- Code #9445 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9445_qec :
+    ∃ ψ, SS.IsAmplitudes code_9445 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9445 code_9445_ok (by decide) (by decide)
+
+/-- Catalogue code #9446: ((6,2,2)), m=14, a=[2, 3, 4, 6, 6, 7], S=[0, 5]. -/
+def code_9446 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, true, true, false], ![true, true, true, true, true, true]}, {![false, false, false, true, true, true], ![false, true, true, true, true, false], ![true, false, true, false, true, true], ![true, false, true, true, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 2)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9446_ok : code_9446.OK := by native_decide
+/-- Code #9446 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9446_qec :
+    ∃ ψ, SS.IsAmplitudes code_9446 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9446 code_9446_ok (by decide) (by decide)
+
+/-- Catalogue code #9447: ((6,2,2)), m=14, a=[2, 3, 4, 6, 6, 9], S=[0, 1]. -/
+def code_9447 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, false, true, true, false], ![true, true, false, false, false, true]}, {![false, false, false, false, true, true], ![false, false, false, true, false, true], ![false, true, false, true, true, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9447_ok : code_9447.OK := by native_decide
+/-- Code #9447 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9447_qec :
+    ∃ ψ, SS.IsAmplitudes code_9447 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9447 code_9447_ok (by decide) (by decide)
+
+/-- Catalogue code #9448: ((6,2,2)), m=14, a=[2, 3, 4, 6, 6, 13], S=[0, 5]. -/
+def code_9448 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, false, true, true, false], ![true, true, true, true, false, true]}, {![false, false, false, true, false, true], ![false, true, true, true, true, false], ![true, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((4 : ℚ) / 7), (0 : ℚ)]
+theorem code_9448_ok : code_9448.OK := by native_decide
+/-- Code #9448 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9448_qec :
+    ∃ ψ, SS.IsAmplitudes code_9448 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9448 code_9448_ok (by decide) (by decide)
+
+/-- Catalogue code #9449: ((6,2,2)), m=14, a=[2, 3, 4, 6, 7, 9], S=[0, 13]. -/
+def code_9449 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, false], ![true, false, true, true, true, true]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, true, false, true, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((4 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9449_ok : code_9449.OK := by native_decide
+/-- Code #9449 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9449_qec :
+    ∃ ψ, SS.IsAmplitudes code_9449 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9449 code_9449_ok (by decide) (by decide)
+
+/-- Catalogue code #9450: ((6,2,2)), m=14, a=[2, 3, 4, 6, 7, 10], S=[0, 13]. -/
+def code_9450 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, false, true], ![false, true, true, false, true, false], ![true, true, false, true, true, true]}, {![false, false, false, true, true, false], ![false, true, false, false, false, true], ![false, true, true, true, false, false], ![true, false, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), ((3 : ℚ) / 7), (0 : ℚ), ((1 : ℚ) / 7)]
+theorem code_9450_ok : code_9450.OK := by native_decide
+/-- Code #9450 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9450_qec :
+    ∃ ψ, SS.IsAmplitudes code_9450 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9450 code_9450_ok (by decide) (by decide)
+
+/-- Catalogue code #9451: ((6,2,2)), m=14, a=[2, 3, 4, 6, 7, 12], S=[0, 5]. -/
+def code_9451 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, false, false, false, true], ![true, true, true, false, true, true]}, {![false, false, false, false, true, true], ![false, true, true, false, false, true], ![true, false, true, true, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), ((5 : ℚ) / 7), (0 : ℚ), ((-1 : ℚ) / 7)]
+theorem code_9451_ok : code_9451.OK := by native_decide
+/-- Code #9451 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9451_qec :
+    ∃ ψ, SS.IsAmplitudes code_9451 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9451 code_9451_ok (by decide) (by decide)
+
+/-- Catalogue code #9452: ((6,2,2)), m=14, a=[2, 3, 4, 6, 7, 13], S=[0, 5]. -/
+def code_9452 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, true, true, true], ![true, true, true, true, false, true]}, {![false, false, false, true, false, true], ![false, true, true, true, true, true], ![true, false, true, false, false, true], ![true, false, true, true, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((4 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9452_ok : code_9452.OK := by native_decide
+/-- Code #9452 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9452_qec :
+    ∃ ψ, SS.IsAmplitudes code_9452 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9452 code_9452_ok (by decide) (by decide)
+
+/-- Catalogue code #9453: ((6,2,2)), m=14, a=[2, 3, 4, 6, 8, 13], S=[0, 9]. -/
+def code_9453 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, false], ![false, true, true, false, true, true], ![true, true, true, true, false, true]}, {![false, false, true, true, false, true], ![false, true, false, true, false, false], ![true, false, false, false, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((-1 : ℚ) / 7), ((4 : ℚ) / 7), (0 : ℚ)]
+theorem code_9453_ok : code_9453.OK := by native_decide
+/-- Code #9453 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9453_qec :
+    ∃ ψ, SS.IsAmplitudes code_9453 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9453 code_9453_ok (by decide) (by decide)
+
+/-- Catalogue code #9454: ((6,2,2)), m=14, a=[2, 3, 4, 6, 9, 10], S=[0, 13]. -/
+def code_9454 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, false, true], ![false, true, false, true, true, true], ![true, true, true, false, true, true]}, {![false, false, true, false, true, false], ![false, true, false, false, false, true], ![false, true, true, true, false, false], ![true, false, false, true, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((4 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), ((3 : ℚ) / 7), (0 : ℚ), ((-2 : ℚ) / 7)]
+theorem code_9454_ok : code_9454.OK := by native_decide
+/-- Code #9454 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9454_qec :
+    ∃ ψ, SS.IsAmplitudes code_9454 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9454 code_9454_ok (by decide) (by decide)
+
+/-- Catalogue code #9455: ((6,2,2)), m=14, a=[2, 3, 4, 6, 12, 13], S=[0, 5]. -/
+def code_9455 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, false, false, true, false], ![true, true, true, true, false, true]}, {![false, false, false, true, false, true], ![false, true, true, false, true, false], ![true, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((4 : ℚ) / 7), (0 : ℚ)]
+theorem code_9455_ok : code_9455.OK := by native_decide
+/-- Code #9455 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9455_qec :
+    ∃ ψ, SS.IsAmplitudes code_9455 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9455 code_9455_ok (by decide) (by decide)
+
+/-- Catalogue code #9456: ((6,2,2)), m=14, a=[2, 3, 4, 6, 13, 13], S=[0, 5]. -/
+def code_9456 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (6 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, false, true, true], ![true, true, true, true, false, true], ![true, true, true, true, true, false]}, {![false, false, false, true, false, true], ![false, true, true, false, true, true], ![true, false, true, false, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9456_ok : code_9456.OK := by native_decide
+/-- Code #9456 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9456_qec :
+    ∃ ψ, SS.IsAmplitudes code_9456 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9456 code_9456_ok (by decide) (by decide)
+
+/-- Catalogue code #9457: ((6,2,2)), m=14, a=[2, 3, 4, 7, 8, 8], S=[0, 5]. -/
+def code_9457 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, true, false, true, true, true]}, {![false, false, true, true, false, true], ![false, false, true, true, true, false], ![false, true, false, false, true, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7), ((4 : ℚ) / 7)]
+theorem code_9457_ok : code_9457.OK := by native_decide
+/-- Code #9457 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9457_qec :
+    ∃ ψ, SS.IsAmplitudes code_9457 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9457 code_9457_ok (by decide) (by decide)
+
+/-- Catalogue code #9458: ((6,2,2)), m=14, a=[2, 3, 4, 7, 8, 8], S=[0, 9]. -/
+def code_9458 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, false], ![true, false, true, false, false, true], ![true, false, true, false, true, false], ![true, true, false, true, true, true]}, {![false, false, false, true, true, true], ![true, false, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), (0 : ℚ), (0 : ℚ), (0 : ℚ), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9458_ok : code_9458.OK := by native_decide
+/-- Code #9458 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9458_qec :
+    ∃ ψ, SS.IsAmplitudes code_9458 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9458 code_9458_ok (by decide) (by decide)
+
+/-- Catalogue code #9459: ((6,2,2)), m=14, a=[2, 3, 4, 7, 8, 8], S=[0, 13]. -/
+def code_9459 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, true, false, true, true, true]}, {![false, false, true, true, true, true], ![true, false, true, true, false, false], ![true, true, false, false, false, true], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), (0 : ℚ), (0 : ℚ), (0 : ℚ), ((-3 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9459_ok : code_9459.OK := by native_decide
+/-- Code #9459 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9459_qec :
+    ∃ ψ, SS.IsAmplitudes code_9459 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9459 code_9459_ok (by decide) (by decide)
+
+/-- Catalogue code #9460: ((6,2,2)), m=14, a=[2, 3, 4, 7, 8, 9], S=[0, 1]. -/
+def code_9460 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}, {![false, false, false, true, true, false], ![false, true, true, false, true, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((4 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9460_ok : code_9460.OK := by native_decide
+/-- Code #9460 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9460_qec :
+    ∃ ψ, SS.IsAmplitudes code_9460 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9460 code_9460_ok (by decide) (by decide)
+
+/-- Catalogue code #9461: ((6,2,2)), m=14, a=[2, 3, 4, 7, 8, 9], S=[0, 13]. -/
+def code_9461 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, true, true, false, false], ![true, true, false, false, false, true]}, {![false, false, true, false, false, true], ![false, true, false, true, true, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9461_ok : code_9461.OK := by native_decide
+/-- Code #9461 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9461_qec :
+    ∃ ψ, SS.IsAmplitudes code_9461 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9461 code_9461_ok (by decide) (by decide)
+
+/-- Catalogue code #9462: ((6,2,2)), m=14, a=[2, 3, 4, 7, 8, 10], S=[0, 1]. -/
+def code_9462 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![false, true, true, true, false, false], ![true, false, true, false, true, false]}, {![false, false, false, true, true, false], ![false, false, true, true, true, true], ![false, true, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), (0 : ℚ), ((-3 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9462_ok : code_9462.OK := by native_decide
+/-- Code #9462 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9462_qec :
+    ∃ ψ, SS.IsAmplitudes code_9462 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9462 code_9462_ok (by decide) (by decide)
+
+/-- Catalogue code #9463: ((6,2,2)), m=14, a=[2, 3, 4, 7, 8, 12], S=[0, 9]. -/
+def code_9463 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, true, true, true, false, true]}, {![false, false, true, true, false, true], ![false, true, false, false, true, true], ![true, false, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), (0 : ℚ), ((-2 : ℚ) / 7), (0 : ℚ), ((5 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9463_ok : code_9463.OK := by native_decide
+/-- Code #9463 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9463_qec :
+    ∃ ψ, SS.IsAmplitudes code_9463 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9463 code_9463_ok (by decide) (by decide)
+
+/-- Catalogue code #9464: ((6,2,2)), m=14, a=[2, 3, 4, 7, 9, 10], S=[0, 1]. -/
+def code_9464 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, false], ![true, false, false, true, true, true], ![true, true, false, false, true, false], ![true, true, true, false, true, true]}, {![false, true, false, true, true, true], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-3 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9464_ok : code_9464.OK := by native_decide
+/-- Code #9464 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9464_qec :
+    ∃ ψ, SS.IsAmplitudes code_9464 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9464 code_9464_ok (by decide) (by decide)
+
+/-- Catalogue code #9465: ((6,2,2)), m=14, a=[2, 3, 4, 7, 9, 13], S=[0, 6]. -/
+def code_9465 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, false], ![true, false, true, false, true, true]}, {![false, false, true, true, true, false], ![false, true, true, false, false, true], ![true, false, true, false, false, false], ![true, true, false, true, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-5 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9465_ok : code_9465.OK := by native_decide
+/-- Code #9465 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9465_qec :
+    ∃ ψ, SS.IsAmplitudes code_9465 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9465 code_9465_ok (by decide) (by decide)
+
+/-- Catalogue code #9466: ((6,2,2)), m=14, a=[2, 3, 4, 7, 12, 12], S=[0, 6]. -/
+def code_9466 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![true, false, false, false, true, false], ![true, true, true, true, false, true], ![true, true, true, true, true, false]}, {![false, true, false, true, true, true], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9466_ok : code_9466.OK := by native_decide
+/-- Code #9466 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9466_qec :
+    ∃ ψ, SS.IsAmplitudes code_9466 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9466 code_9466_ok (by decide) (by decide)
+
+/-- Catalogue code #9467: ((6,2,2)), m=14, a=[2, 3, 4, 7, 12, 13], S=[0, 5]. -/
+def code_9467 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, false, false, true, false], ![true, true, true, true, true, false]}, {![false, false, false, true, true, false], ![false, true, true, false, true, false], ![true, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7)]
+theorem code_9467_ok : code_9467.OK := by native_decide
+/-- Code #9467 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9467_qec :
+    ∃ ψ, SS.IsAmplitudes code_9467 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9467 code_9467_ok (by decide) (by decide)
+
+/-- Catalogue code #9468: ((6,2,2)), m=14, a=[2, 3, 4, 7, 13, 13], S=[0, 5]. -/
+def code_9468 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, false, false, true, true], ![true, true, true, true, true, true]}, {![false, false, false, true, true, true], ![false, true, true, false, true, true], ![true, false, true, false, false, true], ![true, false, true, false, true, false], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9468_ok : code_9468.OK := by native_decide
+/-- Code #9468 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9468_qec :
+    ∃ ψ, SS.IsAmplitudes code_9468 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9468 code_9468_ok (by decide) (by decide)
+
+/-- Catalogue code #9469: ((6,2,2)), m=14, a=[2, 3, 4, 8, 8, 9], S=[0, 13]. -/
+def code_9469 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, true, true, true], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}, {![false, false, true, false, false, true], ![true, false, false, true, true, true], ![true, true, false, false, true, false], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), ((4 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9469_ok : code_9469.OK := by native_decide
+/-- Code #9469 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9469_qec :
+    ∃ ψ, SS.IsAmplitudes code_9469 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9469 code_9469_ok (by decide) (by decide)
+
+/-- Catalogue code #9470: ((6,2,2)), m=14, a=[2, 3, 4, 8, 9, 11], S=[0, 13]. -/
+def code_9470 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, true], ![false, true, false, false, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}, {![false, false, true, false, true, false], ![true, false, false, false, false, true], ![true, true, false, true, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7), ((4 : ℚ) / 7)]
+theorem code_9470_ok : code_9470.OK := by native_decide
+/-- Code #9470 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9470_qec :
+    ∃ ψ, SS.IsAmplitudes code_9470 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9470 code_9470_ok (by decide) (by decide)
+
+/-- Catalogue code #9471: ((6,2,2)), m=14, a=[2, 3, 4, 8, 9, 12], S=[0, 1]. -/
+def code_9471 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (9 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, true, true, false, true, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}, {![false, false, false, true, true, true], ![false, true, false, false, false, true], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, true, true, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), (0 : ℚ), ((-5 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((2 : ℚ) / 7)]
+theorem code_9471_ok : code_9471.OK := by native_decide
+/-- Code #9471 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9471_qec :
+    ∃ ψ, SS.IsAmplitudes code_9471 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9471 code_9471_ok (by decide) (by decide)
+
+/-- Catalogue code #9472: ((6,2,2)), m=14, a=[2, 3, 4, 8, 10, 11], S=[0, 1]. -/
+def code_9472 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, false, true], ![false, true, true, false, true, true], ![true, false, true, true, false, false]}, {![false, false, false, true, true, true], ![false, false, true, false, false, true], ![false, true, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), (0 : ℚ), ((-2 : ℚ) / 7), ((3 : ℚ) / 7), ((2 : ℚ) / 7), (0 : ℚ)]
+theorem code_9472_ok : code_9472.OK := by native_decide
+/-- Code #9472 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9472_qec :
+    ∃ ψ, SS.IsAmplitudes code_9472 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9472 code_9472_ok (by decide) (by decide)
+
+/-- Catalogue code #9473: ((6,2,2)), m=14, a=[2, 3, 4, 8, 10, 11], S=[0, 9]. -/
+def code_9473 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, true, false, false, false, true], ![false, true, true, false, true, true], ![true, false, true, true, false, false], ![true, true, true, true, false, true]}, {![false, false, true, true, false, true], ![true, false, false, false, true, true], ![true, true, false, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), (0 : ℚ), ((-4 : ℚ) / 7), ((-1 : ℚ) / 7), ((4 : ℚ) / 7), (0 : ℚ)]
+theorem code_9473_ok : code_9473.OK := by native_decide
+/-- Code #9473 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9473_qec :
+    ∃ ψ, SS.IsAmplitudes code_9473 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9473 code_9473_ok (by decide) (by decide)
+
+/-- Catalogue code #9474: ((6,2,2)), m=14, a=[2, 3, 4, 8, 10, 13], S=[0, 9]. -/
+def code_9474 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, true, true, true, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, false, false, true, true], ![true, false, false, true, false, true], ![true, false, true, true, true, true], ![true, true, false, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-6 : ℚ) / 7), (0 : ℚ), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9474_ok : code_9474.OK := by native_decide
+/-- Code #9474 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9474_qec :
+    ∃ ψ, SS.IsAmplitudes code_9474 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9474 code_9474_ok (by decide) (by decide)
+
+/-- Catalogue code #9475: ((6,2,2)), m=14, a=[2, 3, 4, 8, 11, 13], S=[0, 9]. -/
+def code_9475 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, true, false, true, true], ![false, true, false, false, true, false], ![false, true, true, true, false, true], ![true, false, true, true, false, false], ![true, true, true, true, true, false]}, {![false, false, true, true, true, false], ![true, false, false, true, false, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 2)
+      else       if s = (![true, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((-4 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((4 : ℚ) / 7)]
+theorem code_9475_ok : code_9475.OK := by native_decide
+/-- Code #9475 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9475_qec :
+    ∃ ψ, SS.IsAmplitudes code_9475 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9475 code_9475_ok (by decide) (by decide)
+
+/-- Catalogue code #9476: ((6,2,2)), m=14, a=[2, 3, 4, 8, 12, 13], S=[0, 5]. -/
+def code_9476 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (5 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, false, false, true, true], ![true, false, false, false, true, false], ![true, true, true, true, true, true]}, {![false, false, false, true, true, true], ![false, true, true, false, true, false], ![true, false, true, false, false, true], ![true, true, false, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), (0 : ℚ), ((2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9476_ok : code_9476.OK := by native_decide
+/-- Code #9476 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9476_qec :
+    ∃ ψ, SS.IsAmplitudes code_9476 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9476 code_9476_ok (by decide) (by decide)
+
+/-- Catalogue code #9477: ((6,2,2)), m=14, a=[2, 3, 4, 8, 12, 13], S=[0, 9]. -/
+def code_9477 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (8 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, true, true, true, false, true], ![true, false, false, false, true, false], ![true, false, true, true, false, false], ![true, true, true, true, true, true]}, {![false, false, true, true, true, true], ![false, true, false, true, true, false], ![true, false, false, true, false, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, true, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), (0 : ℚ), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7), ((1 : ℚ) / 7), (0 : ℚ)]
+theorem code_9477_ok : code_9477.OK := by native_decide
+/-- Code #9477 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9477_qec :
+    ∃ ψ, SS.IsAmplitudes code_9477 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9477 code_9477_ok (by decide) (by decide)
+
+/-- Catalogue code #9478: ((6,2,2)), m=14, a=[2, 3, 4, 9, 10, 12], S=[0, 6]. -/
+def code_9478 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, true, false, true, false], ![false, true, true, true, false, true], ![true, false, false, false, false, true], ![true, false, true, false, true, true], ![true, true, false, true, false, false]}, {![false, true, false, true, true, true], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9478_ok : code_9478.OK := by native_decide
+/-- Code #9478 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9478_qec :
+    ∃ ψ, SS.IsAmplitudes code_9478 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9478 code_9478_ok (by decide) (by decide)
+
+/-- Catalogue code #9479: ((6,2,2)), m=14, a=[2, 3, 4, 9, 10, 13], S=[0, 6]. -/
+def code_9479 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, false], ![true, false, true, true, false, true], ![true, true, false, false, true, true]}, {![false, true, true, false, false, true], ![true, false, false, true, true, true], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9479_ok : code_9479.OK := by native_decide
+/-- Code #9479 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9479_qec :
+    ∃ ψ, SS.IsAmplitudes code_9479 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9479 code_9479_ok (by decide) (by decide)
+
+/-- Catalogue code #9480: ((6,2,2)), m=14, a=[2, 3, 4, 9, 13, 13], S=[0, 8]. -/
+def code_9480 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, true, true], ![true, false, false, false, true, true], ![true, false, true, true, false, true], ![true, true, false, true, false, false]}, {![false, false, false, true, false, true], ![false, false, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9480_ok : code_9480.OK := by native_decide
+/-- Code #9480 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9480_qec :
+    ∃ ψ, SS.IsAmplitudes code_9480 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9480 code_9480_ok (by decide) (by decide)
+
+/-- Catalogue code #9481: ((6,2,2)), m=14, a=[2, 3, 4, 10, 10, 13], S=[0, 6]. -/
+def code_9481 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, false], ![false, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, false, true, true, false], ![false, true, true, false, false, true], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9481_ok : code_9481.OK := by native_decide
+/-- Code #9481 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9481_qec :
+    ∃ ψ, SS.IsAmplitudes code_9481 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9481 code_9481_ok (by decide) (by decide)
+
+/-- Catalogue code #9482: ((6,2,2)), m=14, a=[2, 3, 4, 10, 11, 13], S=[0, 6]. -/
+def code_9482 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, true, false, true, true], ![false, false, true, true, false, false], ![false, true, false, false, true, false], ![true, true, false, true, false, true]}, {![false, false, false, true, true, true], ![false, true, true, false, false, true], ![true, false, true, false, false, false], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7)]
+theorem code_9482_ok : code_9482.OK := by native_decide
+/-- Code #9482 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9482_qec :
+    ∃ ψ, SS.IsAmplitudes code_9482 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9482 code_9482_ok (by decide) (by decide)
+
+/-- Catalogue code #9483: ((6,2,2)), m=14, a=[2, 3, 4, 10, 11, 13], S=[0, 9]. -/
+def code_9483 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (10 : ZMod 14), (11 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (9 : ZMod 14)]
+  supp := ![{![false, false, true, false, true, true], ![false, false, true, true, false, false], ![false, true, false, false, true, false], ![true, true, false, true, false, true]}, {![false, false, false, true, false, true], ![false, true, false, true, true, true], ![true, false, false, true, true, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9483_ok : code_9483.OK := by native_decide
+/-- Code #9483 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9483_qec :
+    ∃ ψ, SS.IsAmplitudes code_9483 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9483 code_9483_ok (by decide) (by decide)
+
+/-- Catalogue code #9484: ((6,2,2)), m=14, a=[2, 3, 4, 10, 12, 12], S=[0, 6]. -/
+def code_9484 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, true, false, true, true], ![false, false, true, true, false, false], ![true, false, false, false, false, true], ![true, false, false, false, true, false], ![true, false, true, true, false, true]}, {![false, false, false, true, true, true], ![true, false, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), (1 : ℚ), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9484_ok : code_9484.OK := by native_decide
+/-- Code #9484 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9484_qec :
+    ∃ ψ, SS.IsAmplitudes code_9484 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9484 code_9484_ok (by decide) (by decide)
+
+/-- Catalogue code #9485: ((6,2,2)), m=14, a=[2, 3, 4, 10, 12, 13], S=[0, 8]. -/
+def code_9485 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (4 : ZMod 14), (10 : ZMod 14), (12 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, true, true, false, false], ![false, true, false, false, true, true], ![false, true, true, true, true, true], ![true, false, false, false, true, false], ![true, true, false, true, false, true]}, {![false, false, false, true, true, false], ![true, true, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9485_ok : code_9485.OK := by native_decide
+/-- Code #9485 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9485_qec :
+    ∃ ψ, SS.IsAmplitudes code_9485 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9485 code_9485_ok (by decide) (by decide)
+
+/-- Catalogue code #9486: ((6,2,2)), m=14, a=[2, 3, 5, 6, 6, 12], S=[0, 10]. -/
+def code_9486 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (6 : ZMod 14), (12 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, false], ![true, false, false, false, false, true], ![true, false, false, true, true, false], ![true, true, true, true, false, true]}, {![false, false, false, true, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((4 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9486_ok : code_9486.OK := by native_decide
+/-- Code #9486 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9486_qec :
+    ∃ ψ, SS.IsAmplitudes code_9486 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9486 code_9486_ok (by decide) (by decide)
+
+/-- Catalogue code #9487: ((6,2,2)), m=14, a=[2, 3, 5, 6, 7, 8], S=[0, 13]. -/
+def code_9487 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, false, true], ![false, true, true, true, false, false], ![true, false, true, true, true, true]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![true, false, true, true, false, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((5 : ℚ) / 7), (0 : ℚ), ((-1 : ℚ) / 7), ((2 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9487_ok : code_9487.OK := by native_decide
+/-- Code #9487 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9487_qec :
+    ∃ ψ, SS.IsAmplitudes code_9487 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9487 code_9487_ok (by decide) (by decide)
+
+/-- Catalogue code #9488: ((6,2,2)), m=14, a=[2, 3, 5, 6, 7, 10], S=[0, 1]. -/
+def code_9488 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, true, false, true, true, true]}, {![false, false, true, false, false, true], ![false, true, true, false, true, false], ![true, false, false, true, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((4 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-2 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9488_ok : code_9488.OK := by native_decide
+/-- Code #9488 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9488_qec :
+    ∃ ψ, SS.IsAmplitudes code_9488 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9488 code_9488_ok (by decide) (by decide)
+
+/-- Catalogue code #9489: ((6,2,2)), m=14, a=[2, 3, 5, 6, 7, 10], S=[0, 13]. -/
+def code_9489 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![false, true, true, true, false, false], ![true, true, false, true, true, true]}, {![false, false, false, true, true, false], ![false, true, false, false, false, true], ![true, false, true, true, false, false], ![true, true, true, false, true, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9489_ok : code_9489.OK := by native_decide
+/-- Code #9489 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9489_qec :
+    ∃ ψ, SS.IsAmplitudes code_9489 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9489 code_9489_ok (by decide) (by decide)
+
+/-- Catalogue code #9490: ((6,2,2)), m=14, a=[2, 3, 5, 6, 8, 10], S=[0, 13]. -/
+def code_9490 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (13 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, false, true, true, false], ![false, true, true, true, false, false], ![true, true, true, false, true, true]}, {![false, false, true, false, true, false], ![false, true, false, false, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((4 : ℚ) / 7), ((1 : ℚ) / 7), ((2 : ℚ) / 7)]
+theorem code_9490_ok : code_9490.OK := by native_decide
+/-- Code #9490 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9490_qec :
+    ∃ ψ, SS.IsAmplitudes code_9490 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9490 code_9490_ok (by decide) (by decide)
+
+/-- Catalogue code #9491: ((6,2,2)), m=14, a=[2, 3, 5, 6, 9, 11], S=[0, 4]. -/
+def code_9491 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (9 : ZMod 14), (11 : ZMod 14)]
+  S := ![(0 : ZMod 14), (4 : ZMod 14)]
+  supp := ![{![false, false, true, false, true, false], ![false, true, false, false, false, true], ![false, true, true, true, false, false], ![true, false, false, true, true, true], ![true, true, false, false, true, false]}, {![false, true, false, true, true, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, true, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, false, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, true, false] : BitString 6) then ((4 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9491_ok : code_9491.OK := by native_decide
+/-- Code #9491 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9491_qec :
+    ∃ ψ, SS.IsAmplitudes code_9491 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9491 code_9491_ok (by decide) (by decide)
+
+/-- Catalogue code #9492: ((6,2,2)), m=14, a=[2, 3, 5, 6, 10, 10], S=[0, 1]. -/
+def code_9492 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (6 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![false, true, true, true, false, false], ![true, false, false, true, true, true]}, {![false, false, true, false, false, true], ![false, false, true, false, true, false], ![false, true, false, true, true, true], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, false, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((4 : ℚ) / 7), (0 : ℚ), (0 : ℚ), ((3 : ℚ) / 7), ((-2 : ℚ) / 7), ((-2 : ℚ) / 7)]
+theorem code_9492_ok : code_9492.OK := by native_decide
+/-- Code #9492 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9492_qec :
+    ∃ ψ, SS.IsAmplitudes code_9492 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9492 code_9492_ok (by decide) (by decide)
+
+/-- Catalogue code #9493: ((6,2,2)), m=14, a=[2, 3, 5, 7, 8, 8], S=[0, 1]. -/
+def code_9493 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (8 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, true, true, true], ![true, false, true, true, false, false], ![true, true, false, true, true, true]}, {![false, false, false, true, false, true], ![false, false, false, true, true, false], ![false, true, true, true, false, false], ![true, false, true, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, false, true, true, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, false, true, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, false, true, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((5 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((2 : ℚ) / 7), ((5 : ℚ) / 7), (0 : ℚ), ((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9493_ok : code_9493.OK := by native_decide
+/-- Code #9493 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9493_qec :
+    ∃ ψ, SS.IsAmplitudes code_9493 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9493 code_9493_ok (by decide) (by decide)
+
+/-- Catalogue code #9494: ((6,2,2)), m=14, a=[2, 3, 5, 7, 8, 10], S=[0, 1]. -/
+def code_9494 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (8 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![true, false, true, true, false, false], ![true, true, true, false, true, true]}, {![false, false, false, true, true, false], ![false, false, true, false, false, true], ![false, true, true, true, false, false], ![true, false, true, false, true, false], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, true, false] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-2 : ℚ) / 7), ((1 : ℚ) / 7), ((-2 : ℚ) / 7), ((4 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9494_ok : code_9494.OK := by native_decide
+/-- Code #9494 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9494_qec :
+    ∃ ψ, SS.IsAmplitudes code_9494 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9494 code_9494_ok (by decide) (by decide)
+
+/-- Catalogue code #9495: ((6,2,2)), m=14, a=[2, 3, 5, 7, 9, 13], S=[0, 10]. -/
+def code_9495 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (9 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, false]}, {![false, true, false, true, false, false], ![false, true, true, true, true, false], ![true, false, false, false, true, true], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((3 : ℚ) / 7)]
+theorem code_9495_ok : code_9495.OK := by native_decide
+/-- Code #9495 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9495_qec :
+    ∃ ψ, SS.IsAmplitudes code_9495 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9495 code_9495_ok (by decide) (by decide)
+
+/-- Catalogue code #9496: ((6,2,2)), m=14, a=[2, 3, 5, 7, 10, 10], S=[0, 1]. -/
+def code_9496 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (10 : ZMod 14)]
+  S := ![(0 : ZMod 14), (1 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, false, true, true], ![true, false, true, true, false, false]}, {![false, false, true, false, false, true], ![false, false, true, false, true, false], ![false, true, true, true, false, false], ![true, false, false, true, true, true], ![true, true, false, false, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, false, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, false] : BitString 6) then ((5 : ℚ) / 14)
+      else       if s = (![false, true, true, true, false, false] : BitString 6) then ((3 : ℚ) / 14)
+      else       if s = (![true, false, false, true, true, true] : BitString 6) then ((1 : ℚ) / 14)
+      else       if s = (![true, true, false, false, false, true] : BitString 6) then ((3 : ℚ) / 14)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((1 : ℚ) / 7), ((-3 : ℚ) / 7), ((3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9496_ok : code_9496.OK := by native_decide
+/-- Code #9496 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9496_qec :
+    ∃ ψ, SS.IsAmplitudes code_9496 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9496 code_9496_ok (by decide) (by decide)
+
+/-- Catalogue code #9497: ((6,2,2)), m=14, a=[2, 3, 5, 7, 10, 13], S=[0, 6]. -/
+def code_9497 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (6 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, false, true, false, true, true], ![false, true, true, true, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, false, true, false, true], ![true, false, true, false, false, true], ![true, true, true, false, true, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, false, true, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((2 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, true, false, false, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, true, true, false, true, false] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7)]
+theorem code_9497_ok : code_9497.OK := by native_decide
+/-- Code #9497 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9497_qec :
+    ∃ ψ, SS.IsAmplitudes code_9497 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9497 code_9497_ok (by decide) (by decide)
+
+/-- Catalogue code #9498: ((6,2,2)), m=14, a=[2, 3, 5, 7, 10, 13], S=[0, 8]. -/
+def code_9498 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (10 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (8 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![true, false, true, true, false, false], ![true, true, false, false, true, true]}, {![false, false, true, true, true, false], ![false, true, true, false, false, false], ![true, false, false, true, false, true]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, false, false, false] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![true, false, false, true, false, true] : BitString 6) then ((3 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((1 : ℚ) / 7), ((1 : ℚ) / 7), ((-1 : ℚ) / 7), ((-1 : ℚ) / 7), ((5 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9498_ok : code_9498.OK := by native_decide
+/-- Code #9498 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9498_qec :
+    ∃ ψ, SS.IsAmplitudes code_9498 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9498 code_9498_ok (by decide) (by decide)
+
+/-- Catalogue code #9499: ((6,2,2)), m=14, a=[2, 3, 5, 7, 13, 13], S=[0, 10]. -/
+def code_9499 : ExampleData 6 14 2 where
+  a := ![(2 : ZMod 14), (3 : ZMod 14), (5 : ZMod 14), (7 : ZMod 14), (13 : ZMod 14), (13 : ZMod 14)]
+  S := ![(0 : ZMod 14), (10 : ZMod 14)]
+  supp := ![{![false, false, false, false, false, false], ![false, true, true, true, false, true], ![false, true, true, true, true, false], ![true, false, false, false, true, true], ![true, false, true, true, false, false]}, {![false, false, true, true, true, true], ![false, true, false, true, false, false], ![true, true, true, false, false, false]}]
+  prob := ![(fun s : BitString 6 =>
+      if s = (![false, false, false, false, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![false, true, true, true, false, true] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![false, true, true, true, true, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, false, false, false, true, true] : BitString 6) then ((1 : ℚ) / 7)
+      else       if s = (![true, false, true, true, false, false] : BitString 6) then ((1 : ℚ) / 7)
+      else 0), (fun s : BitString 6 =>
+      if s = (![false, false, true, true, true, true] : BitString 6) then ((3 : ℚ) / 7)
+      else       if s = (![false, true, false, true, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else       if s = (![true, true, true, false, false, false] : BitString 6) then ((2 : ℚ) / 7)
+      else 0)]
+  targetZ := ![((3 : ℚ) / 7), ((-1 : ℚ) / 7), ((-3 : ℚ) / 7), ((-3 : ℚ) / 7), ((1 : ℚ) / 7), ((1 : ℚ) / 7)]
+theorem code_9499_ok : code_9499.OK := by native_decide
+/-- Code #9499 is a genuine distance-2 quantum code: logical states
+    realizing its probabilities exist and detect every weight-1 Pauli error. -/
+theorem code_9499_qec :
+    ∃ ψ, SS.IsAmplitudes code_9499 ψ ∧ SS.HasDistance ψ 2 :=
+  SS.OK_hasDistance2 code_9499 code_9499_ok (by decide) (by decide)
+
+end Catalogue.Chunk018

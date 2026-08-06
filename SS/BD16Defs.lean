@@ -58,9 +58,28 @@ def BD16Code.numNonAuto (code : BD16Code) (w : ℕ) : ℕ :=
 def BD16Code.layer2OK (code : BD16Code) (w : ℕ) : Prop :=
   AllKLSatisfied code.supp code.amp w
 
-/-- Full distance-3 verification: Layer 1 + Layer 2 (weight ≤ 2). -/
+/-- **Probability–amplitude consistency.**
+For every support string `s`, the declared probability equals the squared modulus
+of the exact amplitude, `prob s = |amp s|² = conj(amp s) · amp s`, computed exactly
+in `QSqrt235i`.  This ties the two data fields together: `layer1OK` normalizes
+`prob`, so once `prob s = |amp s|²` holds on the support, the amplitudes are pinned
+to the right scale there, `∑_{s ∈ supp} |amp s|² = 1`.  Without this predicate an
+arbitrarily rescaled (unnormalized) `amp` could in principle pass Layer 2 in
+isolation.
+
+Note that this fixes the amplitudes only *on* the support.  Normalization of the
+state as a vector additionally needs `amp` to vanish off the support, which
+`isDistance3` does not imply; that condition is carried separately as `amp_vanish`
+in each example and is a hypothesis of the bridge (see `SS/BridgeBD16.lean`). -/
+def BD16Code.probAmpConsistent (code : BD16Code) : Prop :=
+  ∀ s ∈ code.supp,
+    QSqrt235i.mul (QSqrt235i.conj (code.amp s)) (code.amp s)
+      = QSqrt235i.ofRat (code.prob s)
+
+/-- Full distance-3 verification: probability–amplitude consistency,
+Layer 1 (finite rational checks), and Layer 2 (weight-≤ 2 exact KL). -/
 def BD16Code.isDistance3 (code : BD16Code) : Prop :=
-  code.layer1OK ∧ code.layer2OK 2
+  code.probAmpConsistent ∧ code.layer1OK ∧ code.layer2OK 2
 
 -- Decidability instances
 
@@ -69,6 +88,10 @@ instance (code : BD16Code) : Decidable code.layer1OK :=
 
 instance (code : BD16Code) (w : ℕ) : Decidable (code.layer2OK w) :=
   inferInstanceAs (Decidable (AllKLSatisfied code.supp code.amp w))
+
+instance (code : BD16Code) : Decidable code.probAmpConsistent := by
+  unfold BD16Code.probAmpConsistent
+  infer_instance
 
 instance (code : BD16Code) : Decidable code.isDistance3 := by
   dsimp [BD16Code.isDistance3]

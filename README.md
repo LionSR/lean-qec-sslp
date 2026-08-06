@@ -1,6 +1,46 @@
 # Repository Guide for "Lean-Verified Multi-Agent Discovery of Exact Nonadditive Quantum Codes"
 
 
+## The Agent Workflow, TeXRA, and What This Repository Contains
+
+The paper describes a role-separated agent workflow, and TeXRA is the interactive
+VS Code interface through which that work was carried out
+(<https://texra.ai>, Ref. [19] of the paper). TeXRA does not appear anywhere in
+the code here, and that is not an oversight in the artifacts: **nothing in this
+repository imports TeXRA, requires it to be installed, or contacts a commercial
+model.** Every build and audit command below runs under the pinned Lean toolchain
+and a standard Python environment alone.
+
+What TeXRA supplied was the *session structure*, not the computation. Stated as a
+protocol that can be re-implemented in any framework offering role-specific
+sessions with per-role tool permissions over a shared directory:
+
+| Role | Mode and context | Tool permissions | Produces |
+| --- | --- | --- | --- |
+| Synthesis | derivation-then-edit; SSLP literature and the manuscript draft as context | editing the shared directory | symbolic reformulations, parameter templates, proof goals; after the sweep, closed-form families and no-go arguments |
+| Search | tool-use loop | writing and executing Python | canonical enumeration, residue classes, Z-type linear programs, rational reconstruction, recorded outputs |
+| Verification | separate tool-use session; **not** given the search transcripts | the Lean 4 compiler and the proof library in `SS/` | Lean sources and the proof terms the kernel accepts |
+
+Two properties of the protocol matter more than the interface:
+
+- **Handoff is by file, not by conversation.** Each role reads what the others
+  wrote to the shared project directory. The verification role receives exported
+  exact data (supports, rational probabilities, algebraic amplitudes) together
+  with a proof goal, rather than the reasoning that produced them.
+- **Acceptance is decided by a checker, not by a model.** A result enters the
+  paper only after the Lean compiler accepts the corresponding proof term.
+
+The historical sessions themselves cannot be replayed: no prompt, sampling
+parameter, random seed, tool-permission snapshot, session transcript, or
+failed-attempt log was exported at the time, and none is reconstructed here. What
+is on record is the interface, the model version in use at each stage as the
+interface reported it (GPT-5.0 for the distance-2 work, GPT-5.2 for the
+distance-3 analysis and the Lean formalization; these are the labels the
+interface exposed, not dated API snapshot identifiers), and the one
+contemporaneous input record that survives, released
+as [`provenance/seed_522.tex`](provenance/seed_522.tex).
+
+
 ## How This Repository Maps to the Paper
 
 ### 1. Current manuscript source
@@ -51,7 +91,10 @@ This directory contains the shared formal machinery for:
 - diagonal action,
 - Z-type Knill-Laflamme constraints,
 - distance-3 verification support,
-- analytical family formalization.
+- analytical family formalization (`SS/FamilyI/` and `SS/FamilyII.lean`),
+- an integer mirror of the exact number field (`SS/ZSqrt235i.lean`,
+  `SS/ZFullKLEval.lean`) used to certify the distance-3 constructions in the Lean
+  kernel alone.
 
 ### 5. Lean formalization: concrete examples
 
@@ -62,8 +105,8 @@ The example-specific Lean certificates are in:
 
 Roughly:
 
-- `Examples/D2/` contains representative distance-2 examples corresponding to the catalogue side of the paper,
-- `Examples/D3/` contains exact BD16 distance-3 examples and no-go formalizations.
+- `Examples/D2/` contains representative distance-2 examples corresponding to the catalogue side of the paper, together with `Ex642ControlledPhase.lean`, the residue-degenerate `((6,4,2))` code of Sec. III C,
+- `Examples/D3/` contains exact BD16 distance-3 examples and no-go formalizations, together with the `*Kernel.lean` modules that certify each construction using the kernel alone.
 
 ### 6. Supplemental notes and historical working material
 

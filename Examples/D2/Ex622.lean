@@ -22,8 +22,15 @@ Residues:
 
 Probabilities are the closed-form rationals from Methods (lines 670–681).
 
-As in `Examples/D2/Ex522.lean`, this file is *data-only*: all checks are discharged by one
-`native_decide` proof of `ex.OK`.
+As in `Examples/D2/Ex522.lean`, this file is *data-only*.
+
+The support condition and the residue-shift screen are discharged in the Lean kernel
+by `decide`; normalization and `ZTypeKL'` use `native_decide`.  Unlike the sibling
+examples, normalization is not done by an `isNormalizedProb_prob*` lemma here,
+because this example's support is a `Finset.univ.filter` and its probabilities are
+conditional on membership, so the `probK` combinators those lemmas are stated for do
+not apply.  For the full catalogue with every conjunct discharged in the kernel, see
+`search/distance2_catalogue/lean_certification/pure/`.
 -/
 
 local notation "n" => 6
@@ -81,7 +88,11 @@ def ex622 : ExampleData n m K :=
 
 /-- One-line verification of the full example bundle. -/
 theorem ex622_ok : ex622.OK := by
-  native_decide
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · decide                -- SSConditionSupport'  (kernel)
+  · decide                -- ResidueShiftScreen   (kernel)
+  · native_decide         -- IsNormalizedProb
+  · native_decide         -- ZTypeKL'
 
 end WorkedExample_6_2_2_FamilyI
 

@@ -19,7 +19,12 @@ Parameters:
 We pick a concrete rational point in the reported affine family so that all
 probabilities are nonnegative.
 
-All checks are discharged by a single `native_decide` proof of `ex.OK`.
+The support condition and the residue-shift screen are discharged in the Lean
+kernel by `decide`, and normalization by an explicit `isNormalizedProb_prob*`
+lemma; only the `ZTypeKL'` conjunct still uses `native_decide` (which is why
+`Lean.ofReduceBool` and `Lean.trustCompiler` still appear in `#print axioms`).
+For the same codes with every conjunct in the kernel, see
+`search/distance2_catalogue/lean_certification/pure/`.
 -/
 
 local notation "n" => 6
@@ -77,44 +82,19 @@ def supp3 : Finset (BitString n) := {x000011, x110101, x110110, x111001, x111010
 
 /-- probabilities for $|0_L⟩$ (a concrete rational point in the affine family) -/
 def prob0 : BitString n → ℚ :=
-  fun s =>
-    if s = x000000 then (1 : ℚ) / 6
-    else if s = x011101 then (1 : ℚ) / 12
-    else if s = x011110 then (1 : ℚ) / 12
-    else if s = x101101 then (1 : ℚ) / 12
-    else if s = x101110 then (1 : ℚ) / 12
-    else if s = x110011 then (1 : ℚ) / 2
-    else 0
+  probSix x000000 x011101 x011110 x101101 x101110 x110011 (1/6) (1/12) (1/12) (1/12) (1/12) (1/2)
 
 /-- probabilities for $|1_L⟩$ -/
 def prob1 : BitString n → ℚ :=
-  fun s =>
-    if s = x010111 then (1 : ℚ) / 6
-    else if s = x011011 then (1 : ℚ) / 6
-    else if s = x100111 then (1 : ℚ) / 6
-    else if s = x101011 then (1 : ℚ) / 6
-    else if s = x110000 then (1 : ℚ) / 3
-    else 0
+  probFive x010111 x011011 x100111 x101011 x110000 (1/6) (1/6) (1/6) (1/6) (1/3)
 
 /-- probabilities for $|2_L⟩$ -/
 def prob2 : BitString n → ℚ :=
-  fun s =>
-    if s = x010001 then (1 : ℚ) / 6
-    else if s = x010010 then (1 : ℚ) / 6
-    else if s = x100001 then (1 : ℚ) / 6
-    else if s = x100010 then (1 : ℚ) / 6
-    else if s = x111111 then (1 : ℚ) / 3
-    else 0
+  probFive x010001 x010010 x100001 x100010 x111111 (1/6) (1/6) (1/6) (1/6) (1/3)
 
 /-- probabilities for $|3_L⟩$ -/
 def prob3 : BitString n → ℚ :=
-  fun s =>
-    if s = x000011 then (1 : ℚ) / 3
-    else if s = x110101 then (1 : ℚ) / 6
-    else if s = x110110 then (1 : ℚ) / 6
-    else if s = x111001 then (1 : ℚ) / 6
-    else if s = x111010 then (1 : ℚ) / 6
-    else 0
+  probFive x000011 x110101 x110110 x111001 x111010 (1/3) (1/6) (1/6) (1/6) (1/6)
 
 /-- common Z-expectation target (verified by `native_decide`) -/
 def targetZ : Fin n → ℚ :=
@@ -130,7 +110,21 @@ def ex642 : ExampleData n m K :=
 
 /-- One-line verification of the full example bundle. -/
 theorem ex642_ok : ex642.OK := by
-  native_decide
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · decide                -- SSConditionSupport'  (kernel)
+  · decide                -- ResidueShiftScreen   (kernel)
+  · -- IsNormalizedProb  (kernel, via explicit lemmas)
+    intro k
+    fin_cases k
+    · exact isNormalizedProb_probSix x000000 x011101 x011110 x101101 x101110 x110011 _ _ _ _ _ _
+        (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+    · exact isNormalizedProb_probFive x010111 x011011 x100111 x101011 x110000 _ _ _ _ _
+        (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+    · exact isNormalizedProb_probFive x010001 x010010 x100001 x100010 x111111 _ _ _ _ _
+        (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+    · exact isNormalizedProb_probFive x000011 x110101 x110110 x111001 x111010 _ _ _ _ _
+        (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by decide) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  · native_decide         -- ZTypeKL'
 
 end CatalogueExample_6_4_2
 

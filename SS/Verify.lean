@@ -102,7 +102,17 @@ structure ExampleData (n m K : ℕ) [NeZero m] where
   prob : Fin K → BitString n → ℚ
   targetZ : Fin n → ℚ
 
-/-- The bundled verification goals for an example. -/
+/-- The bundled verification goals for an example.
+
+The semantic content of this predicate is given by `SS.OK_detects_weight1`
+(`SS/BridgeD2.lean`), which derives the Hilbert-space Knill--Laflamme conditions for
+all weight-one Pauli errors.  That theorem also takes two decidable structural
+hypotheses on the parameters --- `∀ i, ex.a i ≠ 0` and `Function.Injective ex.S` ---
+which are standard for the SSLP construction.  They are discharged in the kernel by
+`decide` wherever the bridge is applied, i.e. in every per-code `code_i_qec` of the
+`full_native/`, `kernel_b1b2/` and `pure/` catalogue builds; the `packed/` build
+certifies `OK` alone and does not instantiate the bridge.  Both hypotheses should be
+supplied when applying `OK` to new data. -/
 def ExampleData.OK {n m K : ℕ} [NeZero m] (ex : ExampleData n m K) : Prop :=
   (∀ k : Fin K, SSConditionSupport' (m := m) ex.a (ex.S k) (ex.supp k)) ∧
   ResidueShiftScreen (m := m) ex.a ex.S ∧
@@ -272,6 +282,259 @@ lemma isNormalizedProb_probFour (x1 x2 x3 x4 : BitString n) (p1 p2 p3 p4 : ℚ)
           simp [probFour, hx2x1, hx3x1, hx3x2, hx4x1, hx4x2, hx4x3, add_assoc]
       _ = 1 := by
           simpa [add_assoc] using hsum
+
+/-- Probability function supported on two explicit basis strings. -/
+def probTwo (x1 x2 : BitString n) (p1 p2 : ℚ) : BitString n → ℚ :=
+  fun x => if x = x1 then p1 else if x = x2 then p2 else 0
+
+/-- Show `IsNormalizedProb` for a 2-element support and `probTwo`. -/
+lemma isNormalizedProb_probTwo (x1 x2 : BitString n) (p1 p2 : ℚ)
+    (h12 : x1 ≠ x2)
+    (hp1 : 0 ≤ p1) (hp2 : 0 ≤ p2) (hsum : p1 + p2 = 1) :
+    IsNormalizedProb (n := n) ({x1, x2} : Finset (BitString n))
+      (probTwo x1 x2 p1 p2) := by
+  classical
+  refine ⟨?_, ?_, ?_⟩
+  · intro x hx
+    have hx1 : x ≠ x1 := by intro h; apply hx; simp [h]
+    have hx2 : x ≠ x2 := by intro h; apply hx; simp [h]
+    simp [probTwo, hx1, hx2]
+  · intro x hx
+    have hx' : x = x1 ∨ x = x2 := by simpa using hx
+    rcases hx' with rfl | rfl
+    · simpa [probTwo] using hp1
+    · simpa [probTwo, h12.symm] using hp2
+  · have hx1 : x1 ∉ ({x2} : Finset (BitString n)) := by simp [h12]
+    calc
+      (∑ x ∈ ({x1, x2} : Finset (BitString n)), probTwo x1 x2 p1 p2 x)
+          = probTwo x1 x2 p1 p2 x1 + probTwo x1 x2 p1 p2 x2 := by
+                simp [Finset.sum_insert, Finset.sum_singleton, hx1]
+      _ = p1 + p2 := by
+          have hx2x1 : x2 ≠ x1 := by simpa using h12.symm
+          simp [probTwo, hx2x1]
+      _ = 1 := hsum
+
+/-- Probability function supported on five explicit basis strings. -/
+def probFive (x1 x2 x3 x4 x5 : BitString n) (p1 p2 p3 p4 p5 : ℚ) : BitString n → ℚ :=
+  fun x =>
+    if x = x1 then p1 else if x = x2 then p2 else if x = x3 then p3
+    else if x = x4 then p4 else if x = x5 then p5 else 0
+
+/-- Show `IsNormalizedProb` for a 5-element support and `probFive`. -/
+lemma isNormalizedProb_probFive (x1 x2 x3 x4 x5 : BitString n) (p1 p2 p3 p4 p5 : ℚ)
+    (h12 : x1 ≠ x2) (h13 : x1 ≠ x3) (h14 : x1 ≠ x4) (h15 : x1 ≠ x5)
+    (h23 : x2 ≠ x3) (h24 : x2 ≠ x4) (h25 : x2 ≠ x5)
+    (h34 : x3 ≠ x4) (h35 : x3 ≠ x5) (h45 : x4 ≠ x5)
+    (hp1 : 0 ≤ p1) (hp2 : 0 ≤ p2) (hp3 : 0 ≤ p3) (hp4 : 0 ≤ p4) (hp5 : 0 ≤ p5)
+    (hsum : p1 + p2 + p3 + p4 + p5 = 1) :
+    IsNormalizedProb (n := n) ({x1, x2, x3, x4, x5} : Finset (BitString n))
+      (probFive x1 x2 x3 x4 x5 p1 p2 p3 p4 p5) := by
+  classical
+  refine ⟨?_, ?_, ?_⟩
+  · intro x hx
+    have hx1 : x ≠ x1 := by intro h; apply hx; simp [h]
+    have hx2 : x ≠ x2 := by intro h; apply hx; simp [h]
+    have hx3 : x ≠ x3 := by intro h; apply hx; simp [h]
+    have hx4 : x ≠ x4 := by intro h; apply hx; simp [h]
+    have hx5 : x ≠ x5 := by intro h; apply hx; simp [h]
+    simp [probFive, hx1, hx2, hx3, hx4, hx5]
+  · intro x hx
+    have hx' : x = x1 ∨ x = x2 ∨ x = x3 ∨ x = x4 ∨ x = x5 := by simpa using hx
+    rcases hx' with rfl | rfl | rfl | rfl | rfl
+    · simpa [probFive] using hp1
+    · simpa [probFive, h12.symm] using hp2
+    · simpa [probFive, h13.symm, h23.symm] using hp3
+    · simpa [probFive, h14.symm, h24.symm, h34.symm] using hp4
+    · simpa [probFive, h15.symm, h25.symm, h35.symm, h45.symm] using hp5
+  · have hx1 : x1 ∉ ({x2, x3, x4, x5} : Finset (BitString n)) := by simp [h12, h13, h14, h15]
+    have hx2' : x2 ∉ ({x3, x4, x5} : Finset (BitString n)) := by simp [h23, h24, h25]
+    have hx3' : x3 ∉ ({x4, x5} : Finset (BitString n)) := by simp [h34, h35]
+    have hx4' : x4 ∉ ({x5} : Finset (BitString n)) := by simp [h45]
+    calc
+      (∑ x ∈ ({x1, x2, x3, x4, x5} : Finset (BitString n)),
+            probFive x1 x2 x3 x4 x5 p1 p2 p3 p4 p5 x)
+          = probFive x1 x2 x3 x4 x5 p1 p2 p3 p4 p5 x1
+              + probFive x1 x2 x3 x4 x5 p1 p2 p3 p4 p5 x2
+              + probFive x1 x2 x3 x4 x5 p1 p2 p3 p4 p5 x3
+              + probFive x1 x2 x3 x4 x5 p1 p2 p3 p4 p5 x4
+              + probFive x1 x2 x3 x4 x5 p1 p2 p3 p4 p5 x5 := by
+                simp [Finset.sum_insert, Finset.sum_singleton, hx1, hx2', hx3', hx4', add_assoc]
+      _ = p1 + p2 + p3 + p4 + p5 := by
+          have h21 : x2 ≠ x1 := by simpa using h12.symm
+          have h31 : x3 ≠ x1 := by simpa using h13.symm
+          have h32 : x3 ≠ x2 := by simpa using h23.symm
+          have h41 : x4 ≠ x1 := by simpa using h14.symm
+          have h42 : x4 ≠ x2 := by simpa using h24.symm
+          have h43 : x4 ≠ x3 := by simpa using h34.symm
+          have h51 : x5 ≠ x1 := by simpa using h15.symm
+          have h52 : x5 ≠ x2 := by simpa using h25.symm
+          have h53 : x5 ≠ x3 := by simpa using h35.symm
+          have h54 : x5 ≠ x4 := by simpa using h45.symm
+          simp [probFive, h21, h31, h32, h41, h42, h43, h51, h52, h53, h54, add_assoc]
+      _ = 1 := by simpa [add_assoc] using hsum
+
+/-- Probability function supported on six explicit basis strings. -/
+def probSix (x1 x2 x3 x4 x5 x6 : BitString n) (p1 p2 p3 p4 p5 p6 : ℚ) : BitString n → ℚ :=
+  fun x =>
+    if x = x1 then p1 else if x = x2 then p2 else if x = x3 then p3
+    else if x = x4 then p4 else if x = x5 then p5 else if x = x6 then p6 else 0
+
+/-- Show `IsNormalizedProb` for a 6-element support and `probSix`. -/
+lemma isNormalizedProb_probSix (x1 x2 x3 x4 x5 x6 : BitString n) (p1 p2 p3 p4 p5 p6 : ℚ)
+    (h12 : x1 ≠ x2) (h13 : x1 ≠ x3) (h14 : x1 ≠ x4) (h15 : x1 ≠ x5) (h16 : x1 ≠ x6)
+    (h23 : x2 ≠ x3) (h24 : x2 ≠ x4) (h25 : x2 ≠ x5) (h26 : x2 ≠ x6)
+    (h34 : x3 ≠ x4) (h35 : x3 ≠ x5) (h36 : x3 ≠ x6)
+    (h45 : x4 ≠ x5) (h46 : x4 ≠ x6) (h56 : x5 ≠ x6)
+    (hp1 : 0 ≤ p1) (hp2 : 0 ≤ p2) (hp3 : 0 ≤ p3) (hp4 : 0 ≤ p4) (hp5 : 0 ≤ p5) (hp6 : 0 ≤ p6)
+    (hsum : p1 + p2 + p3 + p4 + p5 + p6 = 1) :
+    IsNormalizedProb (n := n) ({x1, x2, x3, x4, x5, x6} : Finset (BitString n))
+      (probSix x1 x2 x3 x4 x5 x6 p1 p2 p3 p4 p5 p6) := by
+  classical
+  refine ⟨?_, ?_, ?_⟩
+  · intro x hx
+    have hx1 : x ≠ x1 := by intro h; apply hx; simp [h]
+    have hx2 : x ≠ x2 := by intro h; apply hx; simp [h]
+    have hx3 : x ≠ x3 := by intro h; apply hx; simp [h]
+    have hx4 : x ≠ x4 := by intro h; apply hx; simp [h]
+    have hx5 : x ≠ x5 := by intro h; apply hx; simp [h]
+    have hx6 : x ≠ x6 := by intro h; apply hx; simp [h]
+    simp [probSix, hx1, hx2, hx3, hx4, hx5, hx6]
+  · intro x hx
+    have hx' : x = x1 ∨ x = x2 ∨ x = x3 ∨ x = x4 ∨ x = x5 ∨ x = x6 := by simpa using hx
+    rcases hx' with rfl | rfl | rfl | rfl | rfl | rfl
+    · simpa [probSix] using hp1
+    · simpa [probSix, h12.symm] using hp2
+    · simpa [probSix, h13.symm, h23.symm] using hp3
+    · simpa [probSix, h14.symm, h24.symm, h34.symm] using hp4
+    · simpa [probSix, h15.symm, h25.symm, h35.symm, h45.symm] using hp5
+    · simpa [probSix, h16.symm, h26.symm, h36.symm, h46.symm, h56.symm] using hp6
+  · have hx1 : x1 ∉ ({x2, x3, x4, x5, x6} : Finset (BitString n)) := by
+      simp [h12, h13, h14, h15, h16]
+    have hx2' : x2 ∉ ({x3, x4, x5, x6} : Finset (BitString n)) := by simp [h23, h24, h25, h26]
+    have hx3' : x3 ∉ ({x4, x5, x6} : Finset (BitString n)) := by simp [h34, h35, h36]
+    have hx4' : x4 ∉ ({x5, x6} : Finset (BitString n)) := by simp [h45, h46]
+    have hx5' : x5 ∉ ({x6} : Finset (BitString n)) := by simp [h56]
+    calc
+      (∑ x ∈ ({x1, x2, x3, x4, x5, x6} : Finset (BitString n)),
+            probSix x1 x2 x3 x4 x5 x6 p1 p2 p3 p4 p5 p6 x)
+          = probSix x1 x2 x3 x4 x5 x6 p1 p2 p3 p4 p5 p6 x1
+              + probSix x1 x2 x3 x4 x5 x6 p1 p2 p3 p4 p5 p6 x2
+              + probSix x1 x2 x3 x4 x5 x6 p1 p2 p3 p4 p5 p6 x3
+              + probSix x1 x2 x3 x4 x5 x6 p1 p2 p3 p4 p5 p6 x4
+              + probSix x1 x2 x3 x4 x5 x6 p1 p2 p3 p4 p5 p6 x5
+              + probSix x1 x2 x3 x4 x5 x6 p1 p2 p3 p4 p5 p6 x6 := by
+                simp [Finset.sum_insert, Finset.sum_singleton, hx1, hx2', hx3', hx4', hx5',
+                  add_assoc]
+      _ = p1 + p2 + p3 + p4 + p5 + p6 := by
+          have h21 : x2 ≠ x1 := by simpa using h12.symm
+          have h31 : x3 ≠ x1 := by simpa using h13.symm
+          have h32 : x3 ≠ x2 := by simpa using h23.symm
+          have h41 : x4 ≠ x1 := by simpa using h14.symm
+          have h42 : x4 ≠ x2 := by simpa using h24.symm
+          have h43 : x4 ≠ x3 := by simpa using h34.symm
+          have h51 : x5 ≠ x1 := by simpa using h15.symm
+          have h52 : x5 ≠ x2 := by simpa using h25.symm
+          have h53 : x5 ≠ x3 := by simpa using h35.symm
+          have h54 : x5 ≠ x4 := by simpa using h45.symm
+          have h61 : x6 ≠ x1 := by simpa using h16.symm
+          have h62 : x6 ≠ x2 := by simpa using h26.symm
+          have h63 : x6 ≠ x3 := by simpa using h36.symm
+          have h64 : x6 ≠ x4 := by simpa using h46.symm
+          have h65 : x6 ≠ x5 := by simpa using h56.symm
+          simp [probSix, h21, h31, h32, h41, h42, h43, h51, h52, h53, h54,
+            h61, h62, h63, h64, h65, add_assoc]
+      _ = 1 := by simpa [add_assoc] using hsum
+
+/-- Probability function supported on eight explicit basis strings. -/
+def probEight (x1 x2 x3 x4 x5 x6 x7 x8 : BitString n) (p1 p2 p3 p4 p5 p6 p7 p8 : ℚ) : BitString n → ℚ :=
+  fun x =>
+    if x = x1 then p1 else if x = x2 then p2 else if x = x3 then p3 else if x = x4 then p4 else if x = x5 then p5 else if x = x6 then p6 else if x = x7 then p7 else if x = x8 then p8 else 0
+
+/-- Show `IsNormalizedProb` for an 8-element support and `probEight`. -/
+lemma isNormalizedProb_probEight (x1 x2 x3 x4 x5 x6 x7 x8 : BitString n) (p1 p2 p3 p4 p5 p6 p7 p8 : ℚ)
+    (h12 : x1 ≠ x2) (h13 : x1 ≠ x3) (h14 : x1 ≠ x4) (h15 : x1 ≠ x5) (h16 : x1 ≠ x6)
+    (h17 : x1 ≠ x7) (h18 : x1 ≠ x8) (h23 : x2 ≠ x3) (h24 : x2 ≠ x4) (h25 : x2 ≠ x5)
+    (h26 : x2 ≠ x6) (h27 : x2 ≠ x7) (h28 : x2 ≠ x8) (h34 : x3 ≠ x4) (h35 : x3 ≠ x5)
+    (h36 : x3 ≠ x6) (h37 : x3 ≠ x7) (h38 : x3 ≠ x8) (h45 : x4 ≠ x5) (h46 : x4 ≠ x6)
+    (h47 : x4 ≠ x7) (h48 : x4 ≠ x8) (h56 : x5 ≠ x6) (h57 : x5 ≠ x7) (h58 : x5 ≠ x8)
+    (h67 : x6 ≠ x7) (h68 : x6 ≠ x8) (h78 : x7 ≠ x8)
+    (hp1 : 0 ≤ p1) (hp2 : 0 ≤ p2) (hp3 : 0 ≤ p3) (hp4 : 0 ≤ p4) (hp5 : 0 ≤ p5) (hp6 : 0 ≤ p6) (hp7 : 0 ≤ p7) (hp8 : 0 ≤ p8)
+    (hsum : p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 = 1) :
+    IsNormalizedProb (n := n) ({x1, x2, x3, x4, x5, x6, x7, x8} : Finset (BitString n))
+      (probEight x1 x2 x3 x4 x5 x6 x7 x8 p1 p2 p3 p4 p5 p6 p7 p8) := by
+  classical
+  refine ⟨?_, ?_, ?_⟩
+  · intro x hx
+    have hx1 : x ≠ x1 := by intro h; apply hx; simp [h]
+    have hx2 : x ≠ x2 := by intro h; apply hx; simp [h]
+    have hx3 : x ≠ x3 := by intro h; apply hx; simp [h]
+    have hx4 : x ≠ x4 := by intro h; apply hx; simp [h]
+    have hx5 : x ≠ x5 := by intro h; apply hx; simp [h]
+    have hx6 : x ≠ x6 := by intro h; apply hx; simp [h]
+    have hx7 : x ≠ x7 := by intro h; apply hx; simp [h]
+    have hx8 : x ≠ x8 := by intro h; apply hx; simp [h]
+    simp [probEight, hx1, hx2, hx3, hx4, hx5, hx6, hx7, hx8]
+  · intro x hx
+    have hx' : x = x1 ∨ x = x2 ∨ x = x3 ∨ x = x4 ∨ x = x5 ∨ x = x6 ∨ x = x7 ∨ x = x8 := by simpa using hx
+    rcases hx' with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+    · simpa [probEight] using hp1
+    · simpa [probEight, h12.symm] using hp2
+    · simpa [probEight, h13.symm, h23.symm] using hp3
+    · simpa [probEight, h14.symm, h24.symm, h34.symm] using hp4
+    · simpa [probEight, h15.symm, h25.symm, h35.symm, h45.symm] using hp5
+    · simpa [probEight, h16.symm, h26.symm, h36.symm, h46.symm, h56.symm] using hp6
+    · simpa [probEight, h17.symm, h27.symm, h37.symm, h47.symm, h57.symm, h67.symm] using hp7
+    · simpa [probEight, h18.symm, h28.symm, h38.symm, h48.symm, h58.symm, h68.symm, h78.symm] using hp8
+  · have hx1 : x1 ∉ ({x2, x3, x4, x5, x6, x7, x8} : Finset (BitString n)) := by
+      simp [h12, h13, h14, h15, h16, h17, h18]
+    have hx2' : x2 ∉ ({x3, x4, x5, x6, x7, x8} : Finset (BitString n)) := by simp [h23, h24, h25, h26, h27, h28]
+    have hx3' : x3 ∉ ({x4, x5, x6, x7, x8} : Finset (BitString n)) := by simp [h34, h35, h36, h37, h38]
+    have hx4' : x4 ∉ ({x5, x6, x7, x8} : Finset (BitString n)) := by simp [h45, h46, h47, h48]
+    have hx5' : x5 ∉ ({x6, x7, x8} : Finset (BitString n)) := by simp [h56, h57, h58]
+    have hx6' : x6 ∉ ({x7, x8} : Finset (BitString n)) := by simp [h67, h68]
+    have hx7' : x7 ∉ ({x8} : Finset (BitString n)) := by simp [h78]
+    calc
+      (∑ x ∈ ({x1, x2, x3, x4, x5, x6, x7, x8} : Finset (BitString n)), probEight x1 x2 x3 x4 x5 x6 x7 x8 p1 p2 p3 p4 p5 p6 p7 p8 x)
+          = probEight x1 x2 x3 x4 x5 x6 x7 x8 p1 p2 p3 p4 p5 p6 p7 p8 x1
+              + probEight x1 x2 x3 x4 x5 x6 x7 x8 p1 p2 p3 p4 p5 p6 p7 p8 x2
+              + probEight x1 x2 x3 x4 x5 x6 x7 x8 p1 p2 p3 p4 p5 p6 p7 p8 x3
+              + probEight x1 x2 x3 x4 x5 x6 x7 x8 p1 p2 p3 p4 p5 p6 p7 p8 x4
+              + probEight x1 x2 x3 x4 x5 x6 x7 x8 p1 p2 p3 p4 p5 p6 p7 p8 x5
+              + probEight x1 x2 x3 x4 x5 x6 x7 x8 p1 p2 p3 p4 p5 p6 p7 p8 x6
+              + probEight x1 x2 x3 x4 x5 x6 x7 x8 p1 p2 p3 p4 p5 p6 p7 p8 x7
+              + probEight x1 x2 x3 x4 x5 x6 x7 x8 p1 p2 p3 p4 p5 p6 p7 p8 x8 := by
+                simp [Finset.sum_insert, Finset.sum_singleton, hx1, hx2', hx3', hx4', hx5', hx6', hx7', add_assoc]
+      _ = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 := by
+          have h21 : x2 ≠ x1 := by simpa using h12.symm
+          have h31 : x3 ≠ x1 := by simpa using h13.symm
+          have h32 : x3 ≠ x2 := by simpa using h23.symm
+          have h41 : x4 ≠ x1 := by simpa using h14.symm
+          have h42 : x4 ≠ x2 := by simpa using h24.symm
+          have h43 : x4 ≠ x3 := by simpa using h34.symm
+          have h51 : x5 ≠ x1 := by simpa using h15.symm
+          have h52 : x5 ≠ x2 := by simpa using h25.symm
+          have h53 : x5 ≠ x3 := by simpa using h35.symm
+          have h54 : x5 ≠ x4 := by simpa using h45.symm
+          have h61 : x6 ≠ x1 := by simpa using h16.symm
+          have h62 : x6 ≠ x2 := by simpa using h26.symm
+          have h63 : x6 ≠ x3 := by simpa using h36.symm
+          have h64 : x6 ≠ x4 := by simpa using h46.symm
+          have h65 : x6 ≠ x5 := by simpa using h56.symm
+          have h71 : x7 ≠ x1 := by simpa using h17.symm
+          have h72 : x7 ≠ x2 := by simpa using h27.symm
+          have h73 : x7 ≠ x3 := by simpa using h37.symm
+          have h74 : x7 ≠ x4 := by simpa using h47.symm
+          have h75 : x7 ≠ x5 := by simpa using h57.symm
+          have h76 : x7 ≠ x6 := by simpa using h67.symm
+          have h81 : x8 ≠ x1 := by simpa using h18.symm
+          have h82 : x8 ≠ x2 := by simpa using h28.symm
+          have h83 : x8 ≠ x3 := by simpa using h38.symm
+          have h84 : x8 ≠ x4 := by simpa using h48.symm
+          have h85 : x8 ≠ x5 := by simpa using h58.symm
+          have h86 : x8 ≠ x6 := by simpa using h68.symm
+          have h87 : x8 ≠ x7 := by simpa using h78.symm
+          simp [probEight, h21, h31, h32, h41, h42, h43, h51, h52, h53, h54, h61, h62, h63, h64, h65, h71, h72, h73, h74, h75, h76, h81, h82, h83, h84, h85, h86, h87, add_assoc]
+      _ = 1 := by simpa [add_assoc] using hsum
 
 end SmallSupport
 

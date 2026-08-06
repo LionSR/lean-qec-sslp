@@ -82,133 +82,133 @@ def coeff (c : Fin 14 → ℂ) (s : SS.BitString 7) : ℂ :=
 @[simp] lemma coeff_s0  (c : Fin 14 → ℂ) : coeff c s0  = c 0  := by simp [coeff]
 
 @[simp] lemma coeff_s1  (c : Fin 14 → ℂ) : coeff c s1  = c 1  := by
-  unfold coeff; rw [if_neg (show s1 ≠ s0 from by native_decide)]; rfl
+  unfold coeff; rw [if_neg (show s1 ≠ s0 from by decide)]; rfl
 
 @[simp] lemma coeff_s2  (c : Fin 14 → ℂ) : coeff c s2  = c 2  := by
   unfold coeff
-  rw [if_neg (show s2 ≠ s0 from by native_decide),
-      if_neg (show s2 ≠ s1 from by native_decide)]; rfl
+  rw [if_neg (show s2 ≠ s0 from by decide),
+      if_neg (show s2 ≠ s1 from by decide)]; rfl
 
 @[simp] lemma coeff_s3  (c : Fin 14 → ℂ) : coeff c s3  = c 3  := by
   unfold coeff
-  rw [if_neg (show s3 ≠ s0 from by native_decide),
-      if_neg (show s3 ≠ s1 from by native_decide),
-      if_neg (show s3 ≠ s2 from by native_decide)]; rfl
+  rw [if_neg (show s3 ≠ s0 from by decide),
+      if_neg (show s3 ≠ s1 from by decide),
+      if_neg (show s3 ≠ s2 from by decide)]; rfl
 
 @[simp] lemma coeff_s4  (c : Fin 14 → ℂ) : coeff c s4  = c 4  := by
   unfold coeff
-  rw [if_neg (show s4 ≠ s0 from by native_decide),
-      if_neg (show s4 ≠ s1 from by native_decide),
-      if_neg (show s4 ≠ s2 from by native_decide),
-      if_neg (show s4 ≠ s3 from by native_decide)]; rfl
+  rw [if_neg (show s4 ≠ s0 from by decide),
+      if_neg (show s4 ≠ s1 from by decide),
+      if_neg (show s4 ≠ s2 from by decide),
+      if_neg (show s4 ≠ s3 from by decide)]; rfl
 
 @[simp] lemma coeff_s5  (c : Fin 14 → ℂ) : coeff c s5  = c 5  := by
   unfold coeff
-  rw [if_neg (show s5 ≠ s0 from by native_decide),
-      if_neg (show s5 ≠ s1 from by native_decide),
-      if_neg (show s5 ≠ s2 from by native_decide),
-      if_neg (show s5 ≠ s3 from by native_decide),
-      if_neg (show s5 ≠ s4 from by native_decide)]; rfl
+  rw [if_neg (show s5 ≠ s0 from by decide),
+      if_neg (show s5 ≠ s1 from by decide),
+      if_neg (show s5 ≠ s2 from by decide),
+      if_neg (show s5 ≠ s3 from by decide),
+      if_neg (show s5 ≠ s4 from by decide)]; rfl
 
 @[simp] lemma coeff_s6  (c : Fin 14 → ℂ) : coeff c s6  = c 6  := by
   unfold coeff
-  rw [if_neg (show s6 ≠ s0 from by native_decide),
-      if_neg (show s6 ≠ s1 from by native_decide),
-      if_neg (show s6 ≠ s2 from by native_decide),
-      if_neg (show s6 ≠ s3 from by native_decide),
-      if_neg (show s6 ≠ s4 from by native_decide),
-      if_neg (show s6 ≠ s5 from by native_decide)]; rfl
+  rw [if_neg (show s6 ≠ s0 from by decide),
+      if_neg (show s6 ≠ s1 from by decide),
+      if_neg (show s6 ≠ s2 from by decide),
+      if_neg (show s6 ≠ s3 from by decide),
+      if_neg (show s6 ≠ s4 from by decide),
+      if_neg (show s6 ≠ s5 from by decide)]; rfl
 
 @[simp] lemma coeff_s7  (c : Fin 14 → ℂ) : coeff c s7  = c 7  := by
   unfold coeff
-  rw [if_neg (show s7 ≠ s0 from by native_decide),
-      if_neg (show s7 ≠ s1 from by native_decide),
-      if_neg (show s7 ≠ s2 from by native_decide),
-      if_neg (show s7 ≠ s3 from by native_decide),
-      if_neg (show s7 ≠ s4 from by native_decide),
-      if_neg (show s7 ≠ s5 from by native_decide),
-      if_neg (show s7 ≠ s6 from by native_decide)]; rfl
+  rw [if_neg (show s7 ≠ s0 from by decide),
+      if_neg (show s7 ≠ s1 from by decide),
+      if_neg (show s7 ≠ s2 from by decide),
+      if_neg (show s7 ≠ s3 from by decide),
+      if_neg (show s7 ≠ s4 from by decide),
+      if_neg (show s7 ≠ s5 from by decide),
+      if_neg (show s7 ≠ s6 from by decide)]; rfl
 
 @[simp] lemma coeff_s8  (c : Fin 14 → ℂ) : coeff c s8  = c 8  := by
   unfold coeff
-  rw [if_neg (show s8 ≠ s0 from by native_decide),
-      if_neg (show s8 ≠ s1 from by native_decide),
-      if_neg (show s8 ≠ s2 from by native_decide),
-      if_neg (show s8 ≠ s3 from by native_decide),
-      if_neg (show s8 ≠ s4 from by native_decide),
-      if_neg (show s8 ≠ s5 from by native_decide),
-      if_neg (show s8 ≠ s6 from by native_decide),
-      if_neg (show s8 ≠ s7 from by native_decide)]; rfl
+  rw [if_neg (show s8 ≠ s0 from by decide),
+      if_neg (show s8 ≠ s1 from by decide),
+      if_neg (show s8 ≠ s2 from by decide),
+      if_neg (show s8 ≠ s3 from by decide),
+      if_neg (show s8 ≠ s4 from by decide),
+      if_neg (show s8 ≠ s5 from by decide),
+      if_neg (show s8 ≠ s6 from by decide),
+      if_neg (show s8 ≠ s7 from by decide)]; rfl
 
 @[simp] lemma coeff_s9  (c : Fin 14 → ℂ) : coeff c s9  = c 9  := by
   unfold coeff
-  rw [if_neg (show s9 ≠ s0 from by native_decide),
-      if_neg (show s9 ≠ s1 from by native_decide),
-      if_neg (show s9 ≠ s2 from by native_decide),
-      if_neg (show s9 ≠ s3 from by native_decide),
-      if_neg (show s9 ≠ s4 from by native_decide),
-      if_neg (show s9 ≠ s5 from by native_decide),
-      if_neg (show s9 ≠ s6 from by native_decide),
-      if_neg (show s9 ≠ s7 from by native_decide),
-      if_neg (show s9 ≠ s8 from by native_decide)]; rfl
+  rw [if_neg (show s9 ≠ s0 from by decide),
+      if_neg (show s9 ≠ s1 from by decide),
+      if_neg (show s9 ≠ s2 from by decide),
+      if_neg (show s9 ≠ s3 from by decide),
+      if_neg (show s9 ≠ s4 from by decide),
+      if_neg (show s9 ≠ s5 from by decide),
+      if_neg (show s9 ≠ s6 from by decide),
+      if_neg (show s9 ≠ s7 from by decide),
+      if_neg (show s9 ≠ s8 from by decide)]; rfl
 
 @[simp] lemma coeff_s10 (c : Fin 14 → ℂ) : coeff c s10 = c 10 := by
   unfold coeff
-  rw [if_neg (show s10 ≠ s0 from by native_decide),
-      if_neg (show s10 ≠ s1 from by native_decide),
-      if_neg (show s10 ≠ s2 from by native_decide),
-      if_neg (show s10 ≠ s3 from by native_decide),
-      if_neg (show s10 ≠ s4 from by native_decide),
-      if_neg (show s10 ≠ s5 from by native_decide),
-      if_neg (show s10 ≠ s6 from by native_decide),
-      if_neg (show s10 ≠ s7 from by native_decide),
-      if_neg (show s10 ≠ s8 from by native_decide),
-      if_neg (show s10 ≠ s9 from by native_decide)]; rfl
+  rw [if_neg (show s10 ≠ s0 from by decide),
+      if_neg (show s10 ≠ s1 from by decide),
+      if_neg (show s10 ≠ s2 from by decide),
+      if_neg (show s10 ≠ s3 from by decide),
+      if_neg (show s10 ≠ s4 from by decide),
+      if_neg (show s10 ≠ s5 from by decide),
+      if_neg (show s10 ≠ s6 from by decide),
+      if_neg (show s10 ≠ s7 from by decide),
+      if_neg (show s10 ≠ s8 from by decide),
+      if_neg (show s10 ≠ s9 from by decide)]; rfl
 
 @[simp] lemma coeff_s11 (c : Fin 14 → ℂ) : coeff c s11 = c 11 := by
   unfold coeff
-  rw [if_neg (show s11 ≠ s0 from by native_decide),
-      if_neg (show s11 ≠ s1 from by native_decide),
-      if_neg (show s11 ≠ s2 from by native_decide),
-      if_neg (show s11 ≠ s3 from by native_decide),
-      if_neg (show s11 ≠ s4 from by native_decide),
-      if_neg (show s11 ≠ s5 from by native_decide),
-      if_neg (show s11 ≠ s6 from by native_decide),
-      if_neg (show s11 ≠ s7 from by native_decide),
-      if_neg (show s11 ≠ s8 from by native_decide),
-      if_neg (show s11 ≠ s9 from by native_decide),
-      if_neg (show s11 ≠ s10 from by native_decide)]; rfl
+  rw [if_neg (show s11 ≠ s0 from by decide),
+      if_neg (show s11 ≠ s1 from by decide),
+      if_neg (show s11 ≠ s2 from by decide),
+      if_neg (show s11 ≠ s3 from by decide),
+      if_neg (show s11 ≠ s4 from by decide),
+      if_neg (show s11 ≠ s5 from by decide),
+      if_neg (show s11 ≠ s6 from by decide),
+      if_neg (show s11 ≠ s7 from by decide),
+      if_neg (show s11 ≠ s8 from by decide),
+      if_neg (show s11 ≠ s9 from by decide),
+      if_neg (show s11 ≠ s10 from by decide)]; rfl
 
 @[simp] lemma coeff_s12 (c : Fin 14 → ℂ) : coeff c s12 = c 12 := by
   unfold coeff
-  rw [if_neg (show s12 ≠ s0 from by native_decide),
-      if_neg (show s12 ≠ s1 from by native_decide),
-      if_neg (show s12 ≠ s2 from by native_decide),
-      if_neg (show s12 ≠ s3 from by native_decide),
-      if_neg (show s12 ≠ s4 from by native_decide),
-      if_neg (show s12 ≠ s5 from by native_decide),
-      if_neg (show s12 ≠ s6 from by native_decide),
-      if_neg (show s12 ≠ s7 from by native_decide),
-      if_neg (show s12 ≠ s8 from by native_decide),
-      if_neg (show s12 ≠ s9 from by native_decide),
-      if_neg (show s12 ≠ s10 from by native_decide),
-      if_neg (show s12 ≠ s11 from by native_decide)]; rfl
+  rw [if_neg (show s12 ≠ s0 from by decide),
+      if_neg (show s12 ≠ s1 from by decide),
+      if_neg (show s12 ≠ s2 from by decide),
+      if_neg (show s12 ≠ s3 from by decide),
+      if_neg (show s12 ≠ s4 from by decide),
+      if_neg (show s12 ≠ s5 from by decide),
+      if_neg (show s12 ≠ s6 from by decide),
+      if_neg (show s12 ≠ s7 from by decide),
+      if_neg (show s12 ≠ s8 from by decide),
+      if_neg (show s12 ≠ s9 from by decide),
+      if_neg (show s12 ≠ s10 from by decide),
+      if_neg (show s12 ≠ s11 from by decide)]; rfl
 
 @[simp] lemma coeff_s13 (c : Fin 14 → ℂ) : coeff c s13 = c 13 := by
   unfold coeff
-  rw [if_neg (show s13 ≠ s0 from by native_decide),
-      if_neg (show s13 ≠ s1 from by native_decide),
-      if_neg (show s13 ≠ s2 from by native_decide),
-      if_neg (show s13 ≠ s3 from by native_decide),
-      if_neg (show s13 ≠ s4 from by native_decide),
-      if_neg (show s13 ≠ s5 from by native_decide),
-      if_neg (show s13 ≠ s6 from by native_decide),
-      if_neg (show s13 ≠ s7 from by native_decide),
-      if_neg (show s13 ≠ s8 from by native_decide),
-      if_neg (show s13 ≠ s9 from by native_decide),
-      if_neg (show s13 ≠ s10 from by native_decide),
-      if_neg (show s13 ≠ s11 from by native_decide),
-      if_neg (show s13 ≠ s12 from by native_decide)]; rfl
+  rw [if_neg (show s13 ≠ s0 from by decide),
+      if_neg (show s13 ≠ s1 from by decide),
+      if_neg (show s13 ≠ s2 from by decide),
+      if_neg (show s13 ≠ s3 from by decide),
+      if_neg (show s13 ≠ s4 from by decide),
+      if_neg (show s13 ≠ s5 from by decide),
+      if_neg (show s13 ≠ s6 from by decide),
+      if_neg (show s13 ≠ s7 from by decide),
+      if_neg (show s13 ≠ s8 from by decide),
+      if_neg (show s13 ≠ s9 from by decide),
+      if_neg (show s13 ≠ s10 from by decide),
+      if_neg (show s13 ≠ s11 from by decide),
+      if_neg (show s13 ≠ s12 from by decide)]; rfl
 
 /-!
 ## The Pauli bitstrings used in the subsystem
@@ -294,61 +294,61 @@ section Helpers
 
 @[simp] lemma bxor_s_b0 (s : SS.BitString 7) : SS.bxor s b0 = s := SS.bxor_zero s
 
-@[simp] lemma diagIntersection_b0 : SS.diagIntersection S0 b0 = S0 := by native_decide
-@[simp] lemma diagIntersection_e1 : SS.diagIntersection S0 e1 = S0 := by native_decide
+@[simp] lemma diagIntersection_b0 : SS.diagIntersection S0 b0 = S0 := by decide
+@[simp] lemma diagIntersection_e1 : SS.diagIntersection S0 e1 = S0 := by decide
 
 @[simp] lemma offdiagIntersection_e2 :
     SS.offdiagIntersection S0 e2 = ({s5, s6, s12, s13} : Finset (SS.BitString 7)) := by
-  native_decide
+  decide
 @[simp] lemma offdiagIntersection_e3 :
     SS.offdiagIntersection S0 e3 = ({s4, s6, s11, s13} : Finset (SS.BitString 7)) := by
-  native_decide
+  decide
 @[simp] lemma offdiagIntersection_x12 :
     SS.offdiagIntersection S0 x12 = ({s5, s6, s12, s13} : Finset (SS.BitString 7)) := by
-  native_decide
+  decide
 @[simp] lemma offdiagIntersection_x13 :
     SS.offdiagIntersection S0 x13 = ({s4, s6, s11, s13} : Finset (SS.BitString 7)) := by
-  native_decide
+  decide
 
 -- e1 XOR partners (for Y₁ diagonal block)
-@[simp] lemma bxor_s0_e1  : SS.bxor s0 e1 = s7  := by native_decide
-@[simp] lemma bxor_s7_e1  : SS.bxor s7 e1 = s0  := by native_decide
-@[simp] lemma bxor_s1_e1  : SS.bxor s1 e1 = s8  := by native_decide
-@[simp] lemma bxor_s8_e1  : SS.bxor s8 e1 = s1  := by native_decide
-@[simp] lemma bxor_s2_e1  : SS.bxor s2 e1 = s9  := by native_decide
-@[simp] lemma bxor_s9_e1  : SS.bxor s9 e1 = s2  := by native_decide
-@[simp] lemma bxor_s3_e1  : SS.bxor s3 e1 = s10 := by native_decide
-@[simp] lemma bxor_s10_e1 : SS.bxor s10 e1 = s3 := by native_decide
-@[simp] lemma bxor_s4_e1  : SS.bxor s4 e1 = s11 := by native_decide
-@[simp] lemma bxor_s11_e1 : SS.bxor s11 e1 = s4 := by native_decide
-@[simp] lemma bxor_s5_e1  : SS.bxor s5 e1 = s12 := by native_decide
-@[simp] lemma bxor_s12_e1 : SS.bxor s12 e1 = s5 := by native_decide
-@[simp] lemma bxor_s6_e1  : SS.bxor s6 e1 = s13 := by native_decide
-@[simp] lemma bxor_s13_e1 : SS.bxor s13 e1 = s6 := by native_decide
+@[simp] lemma bxor_s0_e1  : SS.bxor s0 e1 = s7  := by decide
+@[simp] lemma bxor_s7_e1  : SS.bxor s7 e1 = s0  := by decide
+@[simp] lemma bxor_s1_e1  : SS.bxor s1 e1 = s8  := by decide
+@[simp] lemma bxor_s8_e1  : SS.bxor s8 e1 = s1  := by decide
+@[simp] lemma bxor_s2_e1  : SS.bxor s2 e1 = s9  := by decide
+@[simp] lemma bxor_s9_e1  : SS.bxor s9 e1 = s2  := by decide
+@[simp] lemma bxor_s3_e1  : SS.bxor s3 e1 = s10 := by decide
+@[simp] lemma bxor_s10_e1 : SS.bxor s10 e1 = s3 := by decide
+@[simp] lemma bxor_s4_e1  : SS.bxor s4 e1 = s11 := by decide
+@[simp] lemma bxor_s11_e1 : SS.bxor s11 e1 = s4 := by decide
+@[simp] lemma bxor_s5_e1  : SS.bxor s5 e1 = s12 := by decide
+@[simp] lemma bxor_s12_e1 : SS.bxor s12 e1 = s5 := by decide
+@[simp] lemma bxor_s6_e1  : SS.bxor s6 e1 = s13 := by decide
+@[simp] lemma bxor_s13_e1 : SS.bxor s13 e1 = s6 := by decide
 
 -- delta(e2) XOR partners
-@[simp] lemma bxor_s5_de2  : SS.bxor s5 (SS.delta e2) = s13 := by native_decide
-@[simp] lemma bxor_s13_de2 : SS.bxor s13 (SS.delta e2) = s5 := by native_decide
-@[simp] lemma bxor_s6_de2  : SS.bxor s6 (SS.delta e2) = s12 := by native_decide
-@[simp] lemma bxor_s12_de2 : SS.bxor s12 (SS.delta e2) = s6 := by native_decide
+@[simp] lemma bxor_s5_de2  : SS.bxor s5 (SS.delta e2) = s13 := by decide
+@[simp] lemma bxor_s13_de2 : SS.bxor s13 (SS.delta e2) = s5 := by decide
+@[simp] lemma bxor_s6_de2  : SS.bxor s6 (SS.delta e2) = s12 := by decide
+@[simp] lemma bxor_s12_de2 : SS.bxor s12 (SS.delta e2) = s6 := by decide
 
 -- delta(e3) XOR partners
-@[simp] lemma bxor_s4_de3  : SS.bxor s4 (SS.delta e3) = s13 := by native_decide
-@[simp] lemma bxor_s13_de3 : SS.bxor s13 (SS.delta e3) = s4 := by native_decide
-@[simp] lemma bxor_s6_de3  : SS.bxor s6 (SS.delta e3) = s11 := by native_decide
-@[simp] lemma bxor_s11_de3 : SS.bxor s11 (SS.delta e3) = s6 := by native_decide
+@[simp] lemma bxor_s4_de3  : SS.bxor s4 (SS.delta e3) = s13 := by decide
+@[simp] lemma bxor_s13_de3 : SS.bxor s13 (SS.delta e3) = s4 := by decide
+@[simp] lemma bxor_s6_de3  : SS.bxor s6 (SS.delta e3) = s11 := by decide
+@[simp] lemma bxor_s11_de3 : SS.bxor s11 (SS.delta e3) = s6 := by decide
 
 -- delta(x12) XOR partners
-@[simp] lemma bxor_s5_dx12  : SS.bxor s5 (SS.delta x12) = s6  := by native_decide
-@[simp] lemma bxor_s6_dx12  : SS.bxor s6 (SS.delta x12) = s5  := by native_decide
-@[simp] lemma bxor_s12_dx12 : SS.bxor s12 (SS.delta x12) = s13 := by native_decide
-@[simp] lemma bxor_s13_dx12 : SS.bxor s13 (SS.delta x12) = s12 := by native_decide
+@[simp] lemma bxor_s5_dx12  : SS.bxor s5 (SS.delta x12) = s6  := by decide
+@[simp] lemma bxor_s6_dx12  : SS.bxor s6 (SS.delta x12) = s5  := by decide
+@[simp] lemma bxor_s12_dx12 : SS.bxor s12 (SS.delta x12) = s13 := by decide
+@[simp] lemma bxor_s13_dx12 : SS.bxor s13 (SS.delta x12) = s12 := by decide
 
 -- delta(x13) XOR partners
-@[simp] lemma bxor_s4_dx13  : SS.bxor s4 (SS.delta x13) = s6  := by native_decide
-@[simp] lemma bxor_s6_dx13  : SS.bxor s6 (SS.delta x13) = s4  := by native_decide
-@[simp] lemma bxor_s11_dx13 : SS.bxor s11 (SS.delta x13) = s13 := by native_decide
-@[simp] lemma bxor_s13_dx13 : SS.bxor s13 (SS.delta x13) = s11 := by native_decide
+@[simp] lemma bxor_s4_dx13  : SS.bxor s4 (SS.delta x13) = s6  := by decide
+@[simp] lemma bxor_s6_dx13  : SS.bxor s6 (SS.delta x13) = s4  := by decide
+@[simp] lemma bxor_s11_dx13 : SS.bxor s11 (SS.delta x13) = s13 := by decide
+@[simp] lemma bxor_s13_dx13 : SS.bxor s13 (SS.delta x13) = s11 := by decide
 
 /-!
 ### Precomputed `bdot` values for each (standard basis vector, support string) pair.
@@ -358,116 +358,116 @@ issue where `si → ![...]` fires before `coeff c si → c k`.
 -/
 
 -- bdot e1 (bit 0): s7..s13 = true, s0..s6 = false
-@[simp] lemma bdot_e1_s0  : SS.bdot e1 s0  = false := by native_decide
-@[simp] lemma bdot_e1_s1  : SS.bdot e1 s1  = false := by native_decide
-@[simp] lemma bdot_e1_s2  : SS.bdot e1 s2  = false := by native_decide
-@[simp] lemma bdot_e1_s3  : SS.bdot e1 s3  = false := by native_decide
-@[simp] lemma bdot_e1_s4  : SS.bdot e1 s4  = false := by native_decide
-@[simp] lemma bdot_e1_s5  : SS.bdot e1 s5  = false := by native_decide
-@[simp] lemma bdot_e1_s6  : SS.bdot e1 s6  = false := by native_decide
-@[simp] lemma bdot_e1_s7  : SS.bdot e1 s7  = true  := by native_decide
-@[simp] lemma bdot_e1_s8  : SS.bdot e1 s8  = true  := by native_decide
-@[simp] lemma bdot_e1_s9  : SS.bdot e1 s9  = true  := by native_decide
-@[simp] lemma bdot_e1_s10 : SS.bdot e1 s10 = true  := by native_decide
-@[simp] lemma bdot_e1_s11 : SS.bdot e1 s11 = true  := by native_decide
-@[simp] lemma bdot_e1_s12 : SS.bdot e1 s12 = true  := by native_decide
-@[simp] lemma bdot_e1_s13 : SS.bdot e1 s13 = true  := by native_decide
+@[simp] lemma bdot_e1_s0  : SS.bdot e1 s0  = false := by decide
+@[simp] lemma bdot_e1_s1  : SS.bdot e1 s1  = false := by decide
+@[simp] lemma bdot_e1_s2  : SS.bdot e1 s2  = false := by decide
+@[simp] lemma bdot_e1_s3  : SS.bdot e1 s3  = false := by decide
+@[simp] lemma bdot_e1_s4  : SS.bdot e1 s4  = false := by decide
+@[simp] lemma bdot_e1_s5  : SS.bdot e1 s5  = false := by decide
+@[simp] lemma bdot_e1_s6  : SS.bdot e1 s6  = false := by decide
+@[simp] lemma bdot_e1_s7  : SS.bdot e1 s7  = true  := by decide
+@[simp] lemma bdot_e1_s8  : SS.bdot e1 s8  = true  := by decide
+@[simp] lemma bdot_e1_s9  : SS.bdot e1 s9  = true  := by decide
+@[simp] lemma bdot_e1_s10 : SS.bdot e1 s10 = true  := by decide
+@[simp] lemma bdot_e1_s11 : SS.bdot e1 s11 = true  := by decide
+@[simp] lemma bdot_e1_s12 : SS.bdot e1 s12 = true  := by decide
+@[simp] lemma bdot_e1_s13 : SS.bdot e1 s13 = true  := by decide
 
 -- bdot e2 (bit 1): s5,s6,s12,s13 = true, rest = false
-@[simp] lemma bdot_e2_s0  : SS.bdot e2 s0  = false := by native_decide
-@[simp] lemma bdot_e2_s1  : SS.bdot e2 s1  = false := by native_decide
-@[simp] lemma bdot_e2_s2  : SS.bdot e2 s2  = false := by native_decide
-@[simp] lemma bdot_e2_s3  : SS.bdot e2 s3  = false := by native_decide
-@[simp] lemma bdot_e2_s4  : SS.bdot e2 s4  = false := by native_decide
-@[simp] lemma bdot_e2_s5  : SS.bdot e2 s5  = true  := by native_decide
-@[simp] lemma bdot_e2_s6  : SS.bdot e2 s6  = true  := by native_decide
-@[simp] lemma bdot_e2_s7  : SS.bdot e2 s7  = false := by native_decide
-@[simp] lemma bdot_e2_s8  : SS.bdot e2 s8  = false := by native_decide
-@[simp] lemma bdot_e2_s9  : SS.bdot e2 s9  = false := by native_decide
-@[simp] lemma bdot_e2_s10 : SS.bdot e2 s10 = false := by native_decide
-@[simp] lemma bdot_e2_s11 : SS.bdot e2 s11 = false := by native_decide
-@[simp] lemma bdot_e2_s12 : SS.bdot e2 s12 = true  := by native_decide
-@[simp] lemma bdot_e2_s13 : SS.bdot e2 s13 = true  := by native_decide
+@[simp] lemma bdot_e2_s0  : SS.bdot e2 s0  = false := by decide
+@[simp] lemma bdot_e2_s1  : SS.bdot e2 s1  = false := by decide
+@[simp] lemma bdot_e2_s2  : SS.bdot e2 s2  = false := by decide
+@[simp] lemma bdot_e2_s3  : SS.bdot e2 s3  = false := by decide
+@[simp] lemma bdot_e2_s4  : SS.bdot e2 s4  = false := by decide
+@[simp] lemma bdot_e2_s5  : SS.bdot e2 s5  = true  := by decide
+@[simp] lemma bdot_e2_s6  : SS.bdot e2 s6  = true  := by decide
+@[simp] lemma bdot_e2_s7  : SS.bdot e2 s7  = false := by decide
+@[simp] lemma bdot_e2_s8  : SS.bdot e2 s8  = false := by decide
+@[simp] lemma bdot_e2_s9  : SS.bdot e2 s9  = false := by decide
+@[simp] lemma bdot_e2_s10 : SS.bdot e2 s10 = false := by decide
+@[simp] lemma bdot_e2_s11 : SS.bdot e2 s11 = false := by decide
+@[simp] lemma bdot_e2_s12 : SS.bdot e2 s12 = true  := by decide
+@[simp] lemma bdot_e2_s13 : SS.bdot e2 s13 = true  := by decide
 
 -- bdot e3 (bit 2): s4,s6,s11,s13 = true, rest = false
-@[simp] lemma bdot_e3_s0  : SS.bdot e3 s0  = false := by native_decide
-@[simp] lemma bdot_e3_s1  : SS.bdot e3 s1  = false := by native_decide
-@[simp] lemma bdot_e3_s2  : SS.bdot e3 s2  = false := by native_decide
-@[simp] lemma bdot_e3_s3  : SS.bdot e3 s3  = false := by native_decide
-@[simp] lemma bdot_e3_s4  : SS.bdot e3 s4  = true  := by native_decide
-@[simp] lemma bdot_e3_s5  : SS.bdot e3 s5  = false := by native_decide
-@[simp] lemma bdot_e3_s6  : SS.bdot e3 s6  = true  := by native_decide
-@[simp] lemma bdot_e3_s7  : SS.bdot e3 s7  = false := by native_decide
-@[simp] lemma bdot_e3_s8  : SS.bdot e3 s8  = false := by native_decide
-@[simp] lemma bdot_e3_s9  : SS.bdot e3 s9  = false := by native_decide
-@[simp] lemma bdot_e3_s10 : SS.bdot e3 s10 = false := by native_decide
-@[simp] lemma bdot_e3_s11 : SS.bdot e3 s11 = true  := by native_decide
-@[simp] lemma bdot_e3_s12 : SS.bdot e3 s12 = false := by native_decide
-@[simp] lemma bdot_e3_s13 : SS.bdot e3 s13 = true  := by native_decide
+@[simp] lemma bdot_e3_s0  : SS.bdot e3 s0  = false := by decide
+@[simp] lemma bdot_e3_s1  : SS.bdot e3 s1  = false := by decide
+@[simp] lemma bdot_e3_s2  : SS.bdot e3 s2  = false := by decide
+@[simp] lemma bdot_e3_s3  : SS.bdot e3 s3  = false := by decide
+@[simp] lemma bdot_e3_s4  : SS.bdot e3 s4  = true  := by decide
+@[simp] lemma bdot_e3_s5  : SS.bdot e3 s5  = false := by decide
+@[simp] lemma bdot_e3_s6  : SS.bdot e3 s6  = true  := by decide
+@[simp] lemma bdot_e3_s7  : SS.bdot e3 s7  = false := by decide
+@[simp] lemma bdot_e3_s8  : SS.bdot e3 s8  = false := by decide
+@[simp] lemma bdot_e3_s9  : SS.bdot e3 s9  = false := by decide
+@[simp] lemma bdot_e3_s10 : SS.bdot e3 s10 = false := by decide
+@[simp] lemma bdot_e3_s11 : SS.bdot e3 s11 = true  := by decide
+@[simp] lemma bdot_e3_s12 : SS.bdot e3 s12 = false := by decide
+@[simp] lemma bdot_e3_s13 : SS.bdot e3 s13 = true  := by decide
 
 -- bdot e4 (bit 3): s3,s4,s5,s10,s11,s12 = true, rest = false
-@[simp] lemma bdot_e4_s0  : SS.bdot e4 s0  = false := by native_decide
-@[simp] lemma bdot_e4_s1  : SS.bdot e4 s1  = false := by native_decide
-@[simp] lemma bdot_e4_s2  : SS.bdot e4 s2  = false := by native_decide
-@[simp] lemma bdot_e4_s3  : SS.bdot e4 s3  = true  := by native_decide
-@[simp] lemma bdot_e4_s4  : SS.bdot e4 s4  = true  := by native_decide
-@[simp] lemma bdot_e4_s5  : SS.bdot e4 s5  = true  := by native_decide
-@[simp] lemma bdot_e4_s6  : SS.bdot e4 s6  = false := by native_decide
-@[simp] lemma bdot_e4_s7  : SS.bdot e4 s7  = false := by native_decide
-@[simp] lemma bdot_e4_s8  : SS.bdot e4 s8  = false := by native_decide
-@[simp] lemma bdot_e4_s9  : SS.bdot e4 s9  = false := by native_decide
-@[simp] lemma bdot_e4_s10 : SS.bdot e4 s10 = true  := by native_decide
-@[simp] lemma bdot_e4_s11 : SS.bdot e4 s11 = true  := by native_decide
-@[simp] lemma bdot_e4_s12 : SS.bdot e4 s12 = true  := by native_decide
-@[simp] lemma bdot_e4_s13 : SS.bdot e4 s13 = false := by native_decide
+@[simp] lemma bdot_e4_s0  : SS.bdot e4 s0  = false := by decide
+@[simp] lemma bdot_e4_s1  : SS.bdot e4 s1  = false := by decide
+@[simp] lemma bdot_e4_s2  : SS.bdot e4 s2  = false := by decide
+@[simp] lemma bdot_e4_s3  : SS.bdot e4 s3  = true  := by decide
+@[simp] lemma bdot_e4_s4  : SS.bdot e4 s4  = true  := by decide
+@[simp] lemma bdot_e4_s5  : SS.bdot e4 s5  = true  := by decide
+@[simp] lemma bdot_e4_s6  : SS.bdot e4 s6  = false := by decide
+@[simp] lemma bdot_e4_s7  : SS.bdot e4 s7  = false := by decide
+@[simp] lemma bdot_e4_s8  : SS.bdot e4 s8  = false := by decide
+@[simp] lemma bdot_e4_s9  : SS.bdot e4 s9  = false := by decide
+@[simp] lemma bdot_e4_s10 : SS.bdot e4 s10 = true  := by decide
+@[simp] lemma bdot_e4_s11 : SS.bdot e4 s11 = true  := by decide
+@[simp] lemma bdot_e4_s12 : SS.bdot e4 s12 = true  := by decide
+@[simp] lemma bdot_e4_s13 : SS.bdot e4 s13 = false := by decide
 
 -- bdot e5 (bit 4): s2,s3,s6,s9,s10,s13 = true, rest = false
-@[simp] lemma bdot_e5_s0  : SS.bdot e5 s0  = false := by native_decide
-@[simp] lemma bdot_e5_s1  : SS.bdot e5 s1  = false := by native_decide
-@[simp] lemma bdot_e5_s2  : SS.bdot e5 s2  = true  := by native_decide
-@[simp] lemma bdot_e5_s3  : SS.bdot e5 s3  = true  := by native_decide
-@[simp] lemma bdot_e5_s4  : SS.bdot e5 s4  = false := by native_decide
-@[simp] lemma bdot_e5_s5  : SS.bdot e5 s5  = false := by native_decide
-@[simp] lemma bdot_e5_s6  : SS.bdot e5 s6  = true  := by native_decide
-@[simp] lemma bdot_e5_s7  : SS.bdot e5 s7  = false := by native_decide
-@[simp] lemma bdot_e5_s8  : SS.bdot e5 s8  = false := by native_decide
-@[simp] lemma bdot_e5_s9  : SS.bdot e5 s9  = true  := by native_decide
-@[simp] lemma bdot_e5_s10 : SS.bdot e5 s10 = true  := by native_decide
-@[simp] lemma bdot_e5_s11 : SS.bdot e5 s11 = false := by native_decide
-@[simp] lemma bdot_e5_s12 : SS.bdot e5 s12 = false := by native_decide
-@[simp] lemma bdot_e5_s13 : SS.bdot e5 s13 = true  := by native_decide
+@[simp] lemma bdot_e5_s0  : SS.bdot e5 s0  = false := by decide
+@[simp] lemma bdot_e5_s1  : SS.bdot e5 s1  = false := by decide
+@[simp] lemma bdot_e5_s2  : SS.bdot e5 s2  = true  := by decide
+@[simp] lemma bdot_e5_s3  : SS.bdot e5 s3  = true  := by decide
+@[simp] lemma bdot_e5_s4  : SS.bdot e5 s4  = false := by decide
+@[simp] lemma bdot_e5_s5  : SS.bdot e5 s5  = false := by decide
+@[simp] lemma bdot_e5_s6  : SS.bdot e5 s6  = true  := by decide
+@[simp] lemma bdot_e5_s7  : SS.bdot e5 s7  = false := by decide
+@[simp] lemma bdot_e5_s8  : SS.bdot e5 s8  = false := by decide
+@[simp] lemma bdot_e5_s9  : SS.bdot e5 s9  = true  := by decide
+@[simp] lemma bdot_e5_s10 : SS.bdot e5 s10 = true  := by decide
+@[simp] lemma bdot_e5_s11 : SS.bdot e5 s11 = false := by decide
+@[simp] lemma bdot_e5_s12 : SS.bdot e5 s12 = false := by decide
+@[simp] lemma bdot_e5_s13 : SS.bdot e5 s13 = true  := by decide
 
 -- bdot e6 (bit 5): s1,s3,s6,s8,s10,s13 = true, rest = false
-@[simp] lemma bdot_e6_s0  : SS.bdot e6 s0  = false := by native_decide
-@[simp] lemma bdot_e6_s1  : SS.bdot e6 s1  = true  := by native_decide
-@[simp] lemma bdot_e6_s2  : SS.bdot e6 s2  = false := by native_decide
-@[simp] lemma bdot_e6_s3  : SS.bdot e6 s3  = true  := by native_decide
-@[simp] lemma bdot_e6_s4  : SS.bdot e6 s4  = false := by native_decide
-@[simp] lemma bdot_e6_s5  : SS.bdot e6 s5  = false := by native_decide
-@[simp] lemma bdot_e6_s6  : SS.bdot e6 s6  = true  := by native_decide
-@[simp] lemma bdot_e6_s7  : SS.bdot e6 s7  = false := by native_decide
-@[simp] lemma bdot_e6_s8  : SS.bdot e6 s8  = true  := by native_decide
-@[simp] lemma bdot_e6_s9  : SS.bdot e6 s9  = false := by native_decide
-@[simp] lemma bdot_e6_s10 : SS.bdot e6 s10 = true  := by native_decide
-@[simp] lemma bdot_e6_s11 : SS.bdot e6 s11 = false := by native_decide
-@[simp] lemma bdot_e6_s12 : SS.bdot e6 s12 = false := by native_decide
-@[simp] lemma bdot_e6_s13 : SS.bdot e6 s13 = true  := by native_decide
+@[simp] lemma bdot_e6_s0  : SS.bdot e6 s0  = false := by decide
+@[simp] lemma bdot_e6_s1  : SS.bdot e6 s1  = true  := by decide
+@[simp] lemma bdot_e6_s2  : SS.bdot e6 s2  = false := by decide
+@[simp] lemma bdot_e6_s3  : SS.bdot e6 s3  = true  := by decide
+@[simp] lemma bdot_e6_s4  : SS.bdot e6 s4  = false := by decide
+@[simp] lemma bdot_e6_s5  : SS.bdot e6 s5  = false := by decide
+@[simp] lemma bdot_e6_s6  : SS.bdot e6 s6  = true  := by decide
+@[simp] lemma bdot_e6_s7  : SS.bdot e6 s7  = false := by decide
+@[simp] lemma bdot_e6_s8  : SS.bdot e6 s8  = true  := by decide
+@[simp] lemma bdot_e6_s9  : SS.bdot e6 s9  = false := by decide
+@[simp] lemma bdot_e6_s10 : SS.bdot e6 s10 = true  := by decide
+@[simp] lemma bdot_e6_s11 : SS.bdot e6 s11 = false := by decide
+@[simp] lemma bdot_e6_s12 : SS.bdot e6 s12 = false := by decide
+@[simp] lemma bdot_e6_s13 : SS.bdot e6 s13 = true  := by decide
 
 -- bdot e7 (bit 6): s1,s2,s4,s5,s8,s9,s11,s12 = true, rest = false
-@[simp] lemma bdot_e7_s0  : SS.bdot e7 s0  = false := by native_decide
-@[simp] lemma bdot_e7_s1  : SS.bdot e7 s1  = true  := by native_decide
-@[simp] lemma bdot_e7_s2  : SS.bdot e7 s2  = true  := by native_decide
-@[simp] lemma bdot_e7_s3  : SS.bdot e7 s3  = false := by native_decide
-@[simp] lemma bdot_e7_s4  : SS.bdot e7 s4  = true  := by native_decide
-@[simp] lemma bdot_e7_s5  : SS.bdot e7 s5  = true  := by native_decide
-@[simp] lemma bdot_e7_s6  : SS.bdot e7 s6  = false := by native_decide
-@[simp] lemma bdot_e7_s7  : SS.bdot e7 s7  = false := by native_decide
-@[simp] lemma bdot_e7_s8  : SS.bdot e7 s8  = true  := by native_decide
-@[simp] lemma bdot_e7_s9  : SS.bdot e7 s9  = true  := by native_decide
-@[simp] lemma bdot_e7_s10 : SS.bdot e7 s10 = false := by native_decide
-@[simp] lemma bdot_e7_s11 : SS.bdot e7 s11 = true  := by native_decide
-@[simp] lemma bdot_e7_s12 : SS.bdot e7 s12 = true  := by native_decide
-@[simp] lemma bdot_e7_s13 : SS.bdot e7 s13 = false := by native_decide
+@[simp] lemma bdot_e7_s0  : SS.bdot e7 s0  = false := by decide
+@[simp] lemma bdot_e7_s1  : SS.bdot e7 s1  = true  := by decide
+@[simp] lemma bdot_e7_s2  : SS.bdot e7 s2  = true  := by decide
+@[simp] lemma bdot_e7_s3  : SS.bdot e7 s3  = false := by decide
+@[simp] lemma bdot_e7_s4  : SS.bdot e7 s4  = true  := by decide
+@[simp] lemma bdot_e7_s5  : SS.bdot e7 s5  = true  := by decide
+@[simp] lemma bdot_e7_s6  : SS.bdot e7 s6  = false := by decide
+@[simp] lemma bdot_e7_s7  : SS.bdot e7 s7  = false := by decide
+@[simp] lemma bdot_e7_s8  : SS.bdot e7 s8  = true  := by decide
+@[simp] lemma bdot_e7_s9  : SS.bdot e7 s9  = true  := by decide
+@[simp] lemma bdot_e7_s10 : SS.bdot e7 s10 = false := by decide
+@[simp] lemma bdot_e7_s11 : SS.bdot e7 s11 = true  := by decide
+@[simp] lemma bdot_e7_s12 : SS.bdot e7 s12 = true  := by decide
+@[simp] lemma bdot_e7_s13 : SS.bdot e7 s13 = false := by decide
 
 /-!
 ### Sum expansion helpers (right-associated RHS to match Finset.sum_insert output)
@@ -479,19 +479,19 @@ lemma sum_S0 {M : Type*} [AddCommMonoid M] (f : SS.BitString 7 → M) :
       f s0 + (f s1 + (f s2 + (f s3 + (f s4 + (f s5 + (f s6 +
       (f s7 + (f s8 + (f s9 + (f s10 + (f s11 + (f s12 + f s13)))))))))))) := by
   simp only [S0,
-    Finset.sum_insert (by native_decide : s0 ∉ ({s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s1 ∉ ({s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s2 ∉ ({s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s3 ∉ ({s4,s5,s6,s7,s8,s9,s10,s11,s12,s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s4 ∉ ({s5,s6,s7,s8,s9,s10,s11,s12,s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s5 ∉ ({s6,s7,s8,s9,s10,s11,s12,s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s6 ∉ ({s7,s8,s9,s10,s11,s12,s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s7 ∉ ({s8,s9,s10,s11,s12,s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s8 ∉ ({s9,s10,s11,s12,s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s9 ∉ ({s10,s11,s12,s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s10 ∉ ({s11,s12,s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s11 ∉ ({s12,s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s12 ∉ ({s13} : Finset _)),
+    Finset.sum_insert (by decide : s0 ∉ ({s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13} : Finset _)),
+    Finset.sum_insert (by decide : s1 ∉ ({s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13} : Finset _)),
+    Finset.sum_insert (by decide : s2 ∉ ({s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13} : Finset _)),
+    Finset.sum_insert (by decide : s3 ∉ ({s4,s5,s6,s7,s8,s9,s10,s11,s12,s13} : Finset _)),
+    Finset.sum_insert (by decide : s4 ∉ ({s5,s6,s7,s8,s9,s10,s11,s12,s13} : Finset _)),
+    Finset.sum_insert (by decide : s5 ∉ ({s6,s7,s8,s9,s10,s11,s12,s13} : Finset _)),
+    Finset.sum_insert (by decide : s6 ∉ ({s7,s8,s9,s10,s11,s12,s13} : Finset _)),
+    Finset.sum_insert (by decide : s7 ∉ ({s8,s9,s10,s11,s12,s13} : Finset _)),
+    Finset.sum_insert (by decide : s8 ∉ ({s9,s10,s11,s12,s13} : Finset _)),
+    Finset.sum_insert (by decide : s9 ∉ ({s10,s11,s12,s13} : Finset _)),
+    Finset.sum_insert (by decide : s10 ∉ ({s11,s12,s13} : Finset _)),
+    Finset.sum_insert (by decide : s11 ∉ ({s12,s13} : Finset _)),
+    Finset.sum_insert (by decide : s12 ∉ ({s13} : Finset _)),
     Finset.sum_singleton]
 
 /-- Expand `∑ s ∈ {s5,s6,s12,s13}, f s`. -/
@@ -499,9 +499,9 @@ lemma sum_4elt_5_6_12_13 {M : Type*} [AddCommMonoid M] (f : SS.BitString 7 → M
     ∑ s ∈ ({s5, s6, s12, s13} : Finset (SS.BitString 7)), f s =
       f s5 + (f s6 + (f s12 + f s13)) := by
   simp only [
-    Finset.sum_insert (by native_decide : s5 ∉ ({s6, s12, s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s6 ∉ ({s12, s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s12 ∉ ({s13} : Finset _)),
+    Finset.sum_insert (by decide : s5 ∉ ({s6, s12, s13} : Finset _)),
+    Finset.sum_insert (by decide : s6 ∉ ({s12, s13} : Finset _)),
+    Finset.sum_insert (by decide : s12 ∉ ({s13} : Finset _)),
     Finset.sum_singleton]
 
 /-- Expand `∑ s ∈ {s4,s6,s11,s13}, f s`. -/
@@ -509,9 +509,9 @@ lemma sum_4elt_4_6_11_13 {M : Type*} [AddCommMonoid M] (f : SS.BitString 7 → M
     ∑ s ∈ ({s4, s6, s11, s13} : Finset (SS.BitString 7)), f s =
       f s4 + (f s6 + (f s11 + f s13)) := by
   simp only [
-    Finset.sum_insert (by native_decide : s4 ∉ ({s6, s11, s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s6 ∉ ({s11, s13} : Finset _)),
-    Finset.sum_insert (by native_decide : s11 ∉ ({s13} : Finset _)),
+    Finset.sum_insert (by decide : s4 ∉ ({s6, s11, s13} : Finset _)),
+    Finset.sum_insert (by decide : s6 ∉ ({s11, s13} : Finset _)),
+    Finset.sum_insert (by decide : s11 ∉ ({s13} : Finset _)),
     Finset.sum_singleton]
 
 /-!

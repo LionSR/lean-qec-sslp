@@ -1,0 +1,24 @@
+{
+  "input": "search/distance2_catalogue/data/codes_all_details_multi_allK.zip",
+  "checker": "indep_check_core_multi.check_one_hit_multi; matel_Yi carries the accumulated factor and the standard Y phase, verify_transversal_U_multi checks the advertised phase directly, and crosscheck_terms_vs_problist compares the exact `states` probabilities against the numerical `P_list` on the support",
+  "total": 111315,
+  "passed_overall": 111315,
+  "failed_overall": 0,
+  "wall_time_s": 6586.9,
+  "failed_records": [],
+  "note": "Run in two invocations covering the catalogue exactly once: records 0-89999 and, via --start 90000, records 90000-111314.  wall_time_s is their sum.",
+  "segments": [
+    {
+      "start": 0,
+      "count": 90000,
+      "passed": 90000,
+      "wall_time_s": 5249.0
+    },
+    {
+      "start": 90000,
+      "count": 21315,
+      "passed": 21315,
+      "wall_time_s": 1337.9
+    }
+  ]
+}

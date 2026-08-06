@@ -11,3 +11,15 @@ import Examples.D3.BD16v8
 import Examples.D3.BD16v9
 import Examples.D3.BD16v10
 import Examples.D3.NoGo
+import Examples.D3.BD16v10Kernel
+import Examples.D3.BD16v1Kernel
+import Examples.D3.BD16v2Kernel
+import Examples.D3.BD16v3aKernel
+import Examples.D3.BD16v3bKernel
+import Examples.D3.BD16v3cKernel
+import Examples.D3.BD16v4Kernel
+import Examples.D3.BD16v5Kernel
+import Examples.D3.BD16v6aKernel
+import Examples.D3.BD16v7Kernel
+import Examples.D3.BD16v8Kernel
+import Examples.D3.BD16v9Kernel
